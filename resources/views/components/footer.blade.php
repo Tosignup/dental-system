@@ -6,15 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-   
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+
     <title>Document</title>
 </head>
 
 <body>
     <hr>
-    <footer class="flex flex-col justify-center items-center py-8 px-4 z-20">
+    <footer class="flex flex-col justify-center items-center py-8 px-4 z-20 bg-white">
         <section
             class="flex  gap-20 max-md:gap-4 max-md:hidden max-md:text-sm justify-evenly w-full items-start py-4 mb-12">
             <div>
@@ -24,15 +26,15 @@
                 <hr class="border-t-2 border-green-700 my-4">
                 <div class="flex flex-col gap-8">
                     <div class="flex justify-start items-center gap-4">
-                        <img class="h-8" src="{{ asset('images/calendar.png') }}" alt="">
+                        <img class="h-8" src="{{ asset('assets/images/calendar.png') }}" alt="">
                         <h1>Monday - Sunday: 9:00 AM - 5:00 PM</h1>
                     </div>
                     <div class="flex justify-start items-center gap-4">
-                        <img class="h-8" src="{{ asset('images/telephone.png') }}" alt="">
+                        <img class="h-8" src="{{ asset('assets/images/telephone.png') }}" alt="">
                         <h1>0927 802 2807</h1>
                     </div>
                     <div class="flex justify-start items-center gap-4">
-                        <img class="h-8" src="{{ asset('images/location.png') }}" alt="">
+                        <img class="h-8" src="{{ asset('assets/images/location.png') }}" alt="">
                         <h1>Mabalacat, Philippines, 2010</h1>
                     </div>
                 </div>
@@ -67,8 +69,8 @@
                 </h1>
                 <hr class="border-t-2 border-green-700 my-4">
                 <div class="flex gap-4 flex-wrap">
-                    <img class="h-12" src="{{ asset('images/gmail-logo.png') }}" alt="">
-                    <img class="h-12" src="{{ asset('images/google.png') }}" alt="">
+                    <img class="h-12" src="{{ asset('assets/images/gmail-logo.png') }}" alt="">
+                    <img class="h-12" src="{{ asset('assets/images/google.png') }}" alt="">
                 </div>
 
             </div>
@@ -78,9 +80,9 @@
                 </h1>
                 <hr class="border-t-2 border-green-700 my-4">
                 <div class="flex gap-5 flex-wrap">
-                    <img class="h-12" src="{{ asset('images/facebook.png') }}" alt="">
-                    <img class="h-12" src="{{ asset('images/gmail-logo.png') }}" alt="">
-                    <img class="h-12" src="{{ asset('images/instagram.png') }}" alt="">
+                    <img class="h-12" src="{{ asset('assets/images/facebook-icon.png') }}" alt="">
+                    <img class="h-12" src="{{ asset('assets/images/gmail-logo.png') }}" alt="">
+                    <img class="h-12" src="{{ asset('assets/images/instagram.png') }}" alt="">
                 </div>
 
             </div>
@@ -92,7 +94,7 @@
                 <h1>Privacy Policy | Accessibility Statement</h1>
             </div>
             <div class="flex flex-col max-md:text-sm text-center justify-center items-center gap-4">
-                <img class="h-12" src="{{ asset('images/logo.png') }}" alt="">
+                <img class="h-12" src="{{ asset('assets/images/logo.png') }}" alt="">
                 <h1>Tooth Impressions Dental Clinic</h1>
             </div>
             <div class="max-md:text-sm">

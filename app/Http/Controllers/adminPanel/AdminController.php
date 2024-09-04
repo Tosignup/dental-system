@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\adminPanel;
 
 use Carbon\Carbon;
+use App\Models\Dentist;
 use App\Models\Patient;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
+use App\Models\DentistSchedule;
 use App\Http\Controllers\Controller;
 
 class AdminController extends Controller
@@ -59,8 +61,21 @@ class AdminController extends Controller
         return view('content.patients', compact('patients'));
     }
 
+    public function dentist(){
+        $dentists = Dentist::all();
+
+        return view('content.dentist-overview', compact('dentists'));
+    }
+
     public function inventory(){
         return view('content.inventory');
+    }
+
+    public function schedule(){
+        $schedules = DentistSchedule::with('dentist')->get();
+
+        return view('content.schedule', compact('schedules'));
+
     }
 
 

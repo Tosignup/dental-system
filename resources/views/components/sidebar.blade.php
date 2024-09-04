@@ -26,12 +26,18 @@
                 <h1 class="text-sm">Tooth Impressions Dental Clinic</h1>
             </div>
             @if (Auth::user()->role === 'admin')
-                <div class="flex flex-col items-start gap-4">
+                <div class="flex flex-col items-start gap-6">
                     <a class="flex justify-center items-center gap-2 active:bg-green-600"
                         href="{{ route('admin.dashboard') }}">
                         <img class="h-8" src="{{ asset('assets/images/dashboard-icon.png') }}" alt="">
                         <button class="hover:font-bold  transition-all">
                             Dashboard
+                        </button>
+                    </a>
+                    <a class="flex justify-center items-center gap-2" href="{{ route('dentist') }}">
+                        <img class="h-8" src="{{ asset('assets/images/dentist.png') }}" alt="">
+                        <button class="hover:font-bold transition-all">
+                            Dentist
                         </button>
                     </a>
                     <a class="flex justify-center items-center gap-2" href="{{ route('patient_list') }}">
@@ -40,10 +46,16 @@
                             Patient list
                         </button>
                     </a>
+                    <a class="flex justify-center items-center gap-2" href="{{ route('schedule') }}">
+                        <img class="h-8" src="{{ asset('assets/images/appointment-calendar.png') }}" alt="">
+                        <button class="hover:font-bold transition-all">
+                            Schedule
+                        </button>
+                    </a>
                     <a class="flex justify-center items-center gap-2" href="{{ route('appointment.submission') }}">
                         <img class="h-8" src="{{ asset('assets/images/appointment.png') }}" alt="">
                         <button class="hover:font-bold transition-all">
-                            Appointment submissions
+                            Appointment List
                         </button>
                     </a>
                     <a class="flex justify-center items-center gap-2" href="inventory">
@@ -74,7 +86,7 @@
         </div>
         <form action="{{ route('logout') }}" method="POST" class="flex justify-center self-start gap-2">
             @csrf
-            <img class="h-8" src="{{ asset('assets/images/patient-list-icon.png') }}" alt="">
+            <img class="h-7" src="{{ asset('assets/images/logout.png') }}" alt="">
             <button class="hover:font-bold transition-all font-semibold hover:text-red-600">
                 Log out
             </button>

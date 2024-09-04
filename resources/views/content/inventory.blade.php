@@ -15,7 +15,7 @@
                 <button
                     class="flex justify-center items-center gap-2  rounded-md py-2 px-4 min-w-max border-2 border-gray-600 hover:shadow-md hover:border-green-700 font-semibold text-gray-800 transition-all">
                     Add Item
-                    <img class="h-8" src="{{ asset('assets/images/dental-sealant.png') }}" alt="">
+                    <img class="h-6" src="{{ asset('assets/images/add.png') }}" alt="">
                 </button>
             </form>
         </div>
@@ -47,7 +47,7 @@
                             </a>
                             <a class="border border-slate-600 rounded-md py-2 px-4 text-white font-semibold hover:bg-gray-400 transition-all"
                                 href="#">
-                                <img class=h-6 src="{{ asset('assets/images/view-icon.png') }}" alt="">
+                                <img class=h-6 src="{{ asset('assets/images/user-icon.png') }}" alt="">
                             </a>
                         </div>
                     </td>

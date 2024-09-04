@@ -16,9 +16,11 @@ class Dentist extends Model
         'dentist_last_name',
         'dentist_birth_date',
         'dentist_email',
-        'dentist_password',
+        'dentist_gender',
+        'dentist_phone_number',
+        'password',
         'dentist_specialization',
-        'dentist_schedule',
+        'branch',
     ];
 
     public function user()
@@ -39,5 +41,28 @@ class Dentist extends Model
     public function appointments()
     {
         return $this->hasMany(Appointment::class);
+    }
+
+    public function dentistSchedule()
+    {
+        return $this->hasMany(DentistSchedule::class);
+    }
+    
+    
+    public function getDentistFirstNameAttribute($value)
+    {
+        return ucwords(strtolower($value));
+    }
+    public function getDentistLastNameAttribute($value)
+    {
+        return ucwords(strtolower($value));
+    }
+    public function getDentistSpecializationAttribute($value)
+    {
+        return ucwords(strtolower($value));
+    }
+    public function getBranchAttribute($value)
+    {
+        return ucwords(strtolower($value));
     }
 }

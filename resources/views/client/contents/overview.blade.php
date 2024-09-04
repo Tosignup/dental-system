@@ -1,6 +1,6 @@
 @extends('client.profile')
 @section('content')
-    <section class="flex gap-5 bg-gray-100 p-6 border-2 border-red-500">
+    <section class="flex gap-5 bg-gray-100 p-6">
         <!-- Sidebar -->
         <div class="min-w-80 w-1/4 bg-white p-4 rounded-lg shadow-md">
             <div class="flex flex-col items-center text-center">
@@ -59,20 +59,7 @@
             <!-- Table -->
             <div>
                 <div id="tab1" class="tab-content text-gray-700 hidden">
-                    <h1 class="font-bold mt-9 mb-4 text-2xl">Appointment</h1>
-                    <p class="text-xl">Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio, ad?</p>
-                </div>
-                <div id="tab2" class="tab-content text-gray-700 hidden">
-                    <h1 class="font-bold mt-9 mb-4 text-2xl">Next Visit</h1>
-                    <p class="text-xl">Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit sunt possimus enim
-                        cumque ullam exercitationem, rerum itaque illum repellendus consequuntur?</p>
-                </div>
-                <div id="tab3" class="tab-content text-gray-700 hidden">
-                    <h1 class="font-bold mt-9 mb-4 text-2xl">Payment</h1>
-                    <p class="text-xl">Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur excepturi unde
-                        doloribus.</p>
-                </div>
-                {{-- <table class="min-w-full bg-white border">
+                    {{-- <table class="min-w-full bg-white border">
                         <thead>
                             <tr class="w-full bg-gray-100">
                                 <th class="py-2 px-4 border-b text-left text-gray-600">Date Visit</th>
@@ -95,6 +82,17 @@
                             </tr>
                         </tbody>
                     </table> --}}
+                </div>
+                <div id="tab2" class="tab-content text-gray-700 hidden">
+                    <h1 class="font-bold mt-9 mb-4 text-2xl">Next Visit</h1>
+                    <p class="text-xl">Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit sunt possimus enim
+                        cumque ullam exercitationem, rerum itaque illum repellendus consequuntur?</p>
+                </div>
+                <div id="tab3" class="tab-content text-gray-700 hidden">
+                    <h1 class="font-bold mt-9 mb-4 text-2xl">Payment</h1>
+                    <p class="text-xl">Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur excepturi unde
+                        doloribus.</p>
+                </div>
             </div>
         </div>
     </section>

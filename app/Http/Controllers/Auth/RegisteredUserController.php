@@ -67,6 +67,22 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
+        $request->validate([
+            'email' => 'required|string|email',
+            'password' => 'required|string',
+        ]);
+
+        if (Auth::attempt($request->only('email', 'password'))) {
+            $request->session()->regenerate();
+
+            $user = User::where('email', $request->email)->first();
+
+            if ($user && $user->patient_id) {
+                session(['patient_id' => $user->patient_id]);
+            }
+        }
+
+
         return redirect(RouteServiceProvider::HOME);
     }
 }

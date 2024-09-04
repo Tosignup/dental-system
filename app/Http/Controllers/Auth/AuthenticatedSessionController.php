@@ -41,6 +41,7 @@ class AuthenticatedSessionController extends Controller
 
     public function store(LoginRequest $request): RedirectResponse
     {
+   
         $request->validate([
             'email' => 'required|string|email',
             'password' => 'required|string',
@@ -49,15 +50,12 @@ class AuthenticatedSessionController extends Controller
         if (Auth::attempt($request->only('email', 'password'))) {
             $request->session()->regenerate();
 
-            // Get the logged in user
             $user = User::where('email', $request->email)->first();
 
             if ($user && $user->patient_id) {
-                // Store the patient ID in session
                 session(['patient_id' => $user->patient_id]);
             }
 
-            // Redirect to the intended route
             if($request->user()->role === 'admin'){
                 return redirect()->route('admin.dashboard');
             } elseif($request->user()->role === 'staff'){

@@ -17,9 +17,11 @@ return new class extends Migration
             $table->string('dentist_last_name');
             $table->date('dentist_birth_date');
             $table->string('dentist_email')->unique();
-            $table->string('dentist_password');
+            $table->string('dentist_gender');
+            $table->string('dentist_phone_number');
+            $table->enum('branch', ['dau','angeles','sindalan'])->default('dau');
             $table->string('dentist_specialization');
-            $table->string('dentist_schedule');
+            $table->string('password');
             $table->timestamps();
         });
     }

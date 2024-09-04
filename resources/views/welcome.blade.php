@@ -11,7 +11,7 @@
             <h1 class="text-lg">Top-rated clinicians</h1>
             <div class="w-1/2 py-2 flex flex-col justify-center items-start gap-4">
                 <a class="max-w-sm text-center mt-4" href="{{ route('appointments.request') }}">
-                {{-- <a class="max-w-sm text-center mt-4" href="{{ route('welcome') }}"> --}}
+                    {{-- <a class="max-w-sm text-center mt-4" href="{{ route('welcome') }}"> --}}
                     <h1
                         class="min-w-max bg-green-600 rounded-md py-4 max-md:text-sm px-8 font-bold text-white hover:bg-green-700 transition-all">
                         BOOK NOW</h1>
@@ -59,9 +59,9 @@
                     <h1 class="text-white text-md">Our dentists don't make a commission on procedures.</h1>
                 </div>
             </div>
-            <a onclick="test(`test`)" href="" class="my-4">
+            <a onclick="test(`test`)" href="" class="my-4 self-center">
                 <h1
-                    class="bg-white text-gray-900 font-semibold text-md py-4 px-8 rounded-md hover:bg-gray-900 hover:text-white transition-all">
+                    class="bg-white text-gray-900 font-semibold text-md py-4 px-8 rounded-md hover:bg-gray-900 hover:text-white transition-all self-center">
                     Learn more</h1>
             </a>
         </div>
@@ -86,8 +86,8 @@
             class="flex flex-wrap justify-evenly items-center gap-12 mx-6 p-6 bg-white shadow-lg rounded-lg w-1/2 justify-self-end self-end ">
             <div
                 class="flex flex-col justify-center items-center max-w-md bg-green-600 rounded-md py-4 px-2 hover:mt-[-15px] hover:bg-green-800 cursor-pointer transition-all">
-                <img class="h-44 bg-white m-4 p-5 rounded-md object-contain" src="{{ asset('assets/images/root-canal.png') }}"
-                    alt="">
+                <img class="h-44 bg-white m-4 p-5 rounded-md object-contain"
+                    src="{{ asset('assets/images/root-canal.png') }}" alt="">
                 <h1 class="text-white font-semibold text-center">Root Canal</h1>
 
             </div>
@@ -105,8 +105,8 @@
             </div>
             <div
                 class="flex flex-col justify-center items-center max-w-md bg-green-600 rounded-md py-4 px-2 hover:mt-[-15px] hover:bg-green-800 cursor-pointer transition-all">
-                <img class=" h-44 bg-white m-4 p-5 rounded-md object-contain" src="{{ asset('assets/images/dental-sealant.png') }}"
-                    alt="">
+                <img class=" h-44 bg-white m-4 p-5 rounded-md object-contain"
+                    src="{{ asset('assets/images/dental-sealant.png') }}" alt="">
                 <h1 class="text-white font-semibold text-center">Dental Sealant</h1>
             </div>
             <div
@@ -117,7 +117,8 @@
             </div>
             <div
                 class="flex flex-col justify-center items-center max-w-md bg-green-600 rounded-md py-4 px-2 hover:mt-[-15px] hover:bg-green-800 cursor-pointer transition-all">
-                <img class=" h-44 bg-white m-4 p-5 rounded-md object-contain" src="{{ asset('assets/images/dental-cleaning.png') }}" alt="">
+                <img class=" h-44 bg-white m-4 p-5 rounded-md object-contain"
+                    src="{{ asset('assets/images/dental-cleaning.png') }}" alt="">
                 <h1 class="text-white font-semibold text-center">Dental Cleaning</h1>
             </div>
         </div>

@@ -17,7 +17,7 @@
 
 <body class="">
     <nav
-        class="max-w-max min-w-max self-start h-full bg-white z-0 flex flex-col justify-between items-center py-4 px-8">
+        class="max-w-max min-w-max self-start h-full bg-white z-0 flex flex-col justify-between items-center py-4 px-8 ">
         <div class="flex flex-col gap-4">
             <div class="flex justify-start items-center gap-2 mb-4">
                 <a href="{{ route('welcome') }}">
@@ -26,6 +26,12 @@
                 <h1 class="text-sm">Tooth Impressions Dental Clinic</h1>
             </div>
             <div class="flex flex-col items-start gap-4">
+                <a class="flex justify-center items-center gap-2" href="{{ route('welcome') }}">
+                    <img class="h-7" src="{{ asset('assets/images/home-icon.png') }}" alt="">
+                    <button class="hover:font-bold transition-all">
+                        Homepage
+                    </button>
+                </a>
                 <a class="flex justify-center items-center gap-2 active:bg-green-600"
                     href="{{ route('client.overview', session('patient_id')) }}">
                     <img class="h-8" src="{{ asset('assets/images/dashboard-icon.png') }}" alt="">
@@ -39,15 +45,20 @@
                         User profile
                     </button>
                 </a>
+
             </div>
         </div>
-        <form action="{{ route('logout') }}" method="POST" class="flex justify-center self-start gap-2">
-            @csrf
-            <img class="h-8" src="{{ asset('assets/images/patient-list-icon.png') }}" alt="">
-            <button class="hover:font-bold transition-all font-semibold hover:text-red-600">
-                Log out
-            </button>
-        </form>
+        <div class="flex flex-col justify-center self-start gap-2">
+
+            <form action="{{ route('logout') }}" method="POST" class="flex justify-center self-start gap-2">
+                @csrf
+                <img class="h-8" src="{{ asset('assets/images/patient-list-icon.png') }}" alt="">
+                <button class="hover:font-bold transition-all font-semibold hover:text-red-600">
+                    Log out
+                </button>
+            </form>
+        </div>
+
     </nav>
 </body>
 
