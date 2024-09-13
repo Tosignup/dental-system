@@ -16,8 +16,10 @@
 <body>
     <div class="flex p-4 justify-between align-center shadow-lg">
         <div class="flex gap-4 text-md justify-center items-center">
-            {{-- <a href="{{ route('homepage') }}"> --}}
-            <img class="h-14" src="{{ asset('assets/images/logo.png') }}" alt="">
+            <a href="{{ route('welcome') }}">
+
+                <img class="h-14" src="{{ asset('assets/images/logo.png') }}" alt="">
+
             </a>
             <div class="flex gap-4 max-md:hidden">
                 <h1 class="hover:font-bold transition-all text-md font-semibold">Tooth Impressions Dental Clinic</h1>

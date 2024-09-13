@@ -140,7 +140,7 @@
                             @enderror
                         </label>
 
-                        <label class="flex flex-col flex-1" for="next_visit">
+                        <label class="flex flex-col flex-1 hidden" for="next_visit">
                             <h1 class="text-white">Date of next visit</h1>
                             <input class="border border-gray-400 py-2 px-4 rounded-md" name="next_visit"
                                 type="date" autocomplete="off" id="next_visit" disabled>
