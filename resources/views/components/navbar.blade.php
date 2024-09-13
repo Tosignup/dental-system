@@ -36,12 +36,13 @@
                         BOOK NOW</h1>
                 </a>
             @endguest
+            <div class="flex justify-center items-center gap-3">
             @auth
                 @if (Auth::user()->role === 'client')
-                    <form action="{{ route('logout') }}" method="POST" class="flex self-center justify-center gap-2">
+                    <form action="{{ route('logout') }}" method="POST" class="m-auto">
                         @csrf
-                        <button type="submit">
-                            <h1 class="font-bold">Log out</h1>
+                        <button type="submit" class="font-bold">
+                           Log out
                         </button>
                     </form>
                     @if (session('patient_id'))
@@ -59,6 +60,8 @@
                 @else
                 @endif
             @endauth
+            </div>
+            
 
 
 
