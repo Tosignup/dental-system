@@ -14,7 +14,7 @@
                     {{-- <a class="max-w-sm text-center mt-4" href="{{ route('welcome') }}"> --}}
                     <h1
                         class="min-w-max bg-green-600 rounded-md py-4 max-md:text-sm px-8 font-bold text-white hover:bg-green-700 transition-all">
-                        BOOK NOW</h1>
+                        Sining</h1>
                 </a>
                 <h1 class="text-sm min-w-max">
                     OR CALL: <span class="font-bold">212-2345-5918</span>

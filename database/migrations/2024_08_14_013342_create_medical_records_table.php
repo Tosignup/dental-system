@@ -16,6 +16,7 @@ return new class extends Migration
             $table->text('x_rays')->nullable();
             $table->text('background')->nullable();
             $table->text('contract')->nullable();
+            $table->foreignId('patient_id')->nullable()->constrained('patients')->onDelete('cascade');
             $table->timestamps();
         });
     }

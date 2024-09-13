@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('fb_name')->nullable();
+            $table->string('gender');
             $table->date('next_visit')->nullable();
             $table->timestamps();
         });

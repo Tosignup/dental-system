@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('proc_name');
             $table->decimal('proc_cost', 8, 2);
+            $table->foreignId('billing_id')->constrained('billings')->onDelete('cascade');
             $table->timestamps();
         });
     }
