@@ -3,7 +3,7 @@
     | Home
 @endsection
 @section('content')
-    <section class="flex flex-wrap justify-between md:justify-center mt-24 mx-8 items-start h-screen">
+    <section class="flex flex-wrap justify-between md:justify-center my-24 mx-8 items-start">
         <div class="bg-white flex flex-col py-11 px-12 mx-8 rounded-lg shadow-lg gap-6 md:max-w-lg ">
             <h1 class="text-7xl font-semibold max-md:text-5xl">
                 Look forward to the dentist

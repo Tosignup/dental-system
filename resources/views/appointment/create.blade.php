@@ -22,7 +22,8 @@
                 <div class="flex flex-col items-center p-3">
                     <div class="flex flex-col items-center">
                         <img class="logo" src="{{ asset('assets/images/logo.png') }}" alt="Dental Logo">
-                        <h1 class="w-full font-bold text-3xl text-white max-w-sm mb-6">Request an Appointment</h1>
+                        <h1 class="text-white font-semibold text-sm">Tooth Impression's Dental Clinic</h1>
+                        <h1 class="min-w-max font-bold text-4xl mt-5 text-white max-w-sm mb-6 text-center">Request an Appointment</h1>
                     </div>
                     
                     <form method="POST" action="{{ route('appointments.store') }}" class="flex flex-col justify-center items-center">
