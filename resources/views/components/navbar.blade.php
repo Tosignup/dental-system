@@ -38,13 +38,18 @@
             @endguest
             <div class="flex justify-center items-center gap-3">
             @auth
-                @if (Auth::user()->role === 'client')
+            @if (Auth::user()->role === 'admin')
+                        <a href="{{ route('admin.dashboard') }}" class="py-2 px-4 rounded-md text-white font-semibold bg-green-600 hover:bg-green-700 transition-all cursor-pointer">
+                            DASHBOARD
+                        </a>
+                @elseif (Auth::user()->role === 'client')
                     <form action="{{ route('logout') }}" method="POST" class="m-auto">
                         @csrf
                         <button type="submit" class="font-bold">
                            Log out
                         </button>
                     </form>
+                    
                     @if (session('patient_id'))
                         <p>Patient ID: {{ session('patient_id') }}</p>
                         <a class="flex gap-6 justify-center items-center"
