@@ -40,7 +40,6 @@
                             </label>
                         </div>
                         <div class="flex flex-row p-2 gap-5">
-                            
                             <div>
                                 <label for="first_name">
                                     <h1 class="font-semibold">First Name</h1>
