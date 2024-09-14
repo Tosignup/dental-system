@@ -12,7 +12,8 @@ use App\Http\Controllers\Controller;
 
 class AdminController extends Controller
 {
-    public function overview(){
+    public function overview()
+    {
         $today = Carbon::today();
 
         $totalPatients = Patient::count();
@@ -28,7 +29,8 @@ class AdminController extends Controller
         // return view('content.overview');
     }
 
-    public function patient_list(Request $request){
+    public function patient_list(Request $request)
+    {
         $patients = Patient::all();
         $patientQuery = Patient::query();
 
@@ -61,23 +63,22 @@ class AdminController extends Controller
         return view('content.patients', compact('patients'));
     }
 
-    public function dentist(){
+    public function dentist()
+    {
         $dentists = Dentist::all();
 
         return view('content.dentist-overview', compact('dentists'));
     }
 
-    public function inventory(){
+    public function inventory()
+    {
         return view('content.inventory');
     }
 
-    public function schedule(){
+    public function schedule()
+    {
         $schedules = DentistSchedule::with('dentist')->get();
 
         return view('content.schedule', compact('schedules'));
-
     }
-
-
-
 }
