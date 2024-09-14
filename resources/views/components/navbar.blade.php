@@ -51,7 +51,7 @@
                     </form>
                     
                     @if (session('patient_id'))
-                        <p>Patient ID: {{ session('patient_id') }}</p>
+                       
                         <a class="flex gap-6 justify-center items-center"
                             href="{{ route('client.overview', session('patient_id')) }}">
                             <h1
@@ -63,14 +63,10 @@
                         <p>{{ Auth::user()->patient_id }}</p>
                     @endif
                 @else
-                @endif
+            @endif
             @endauth
             </div>
             
-
-
-
-
             {{-- <a class="flex self-center justify-center gap-2" href="{{ route('login') }}">
                 <h1 class="font-bold">Login</h1>
             </a>
@@ -79,8 +75,6 @@
                     class="py-2 px-4 rounded-md text-white font-semibold bg-green-600 hover:bg-green-700 transition-all cursor-pointer">
                     BOOK NOW</h1>
             </a> --}}
-
-
 
         </div>
     </div>

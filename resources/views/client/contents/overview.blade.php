@@ -28,11 +28,25 @@
                         <h3 class="font-bold text-gray-600">Phone</h3>
                         <p>{{ $patient->phone_number }}</p>
                     </div>
-                    {{-- <hr class="w-full bg-gray">
+                    <hr class="w-full bg-gray">
+                    <div class="flex justify-between min-w-max my-2 py-2 px-4 gap-4">
+                        <h3 class="font-bold text-gray-600">Patient ID</h3>
+                        
+                        @auth
+                            @if (session('patient_id'))
+                                <p class="">{{ session('patient_id') }}</p>
+                            @else
+                                <p>No Patient ID found in session.</p>
+                            @endif
+                        @endauth
+                       
+                    </div>
+                    {{-- Commenting out the address block
                     <div class="flex justify-between min-w-max my-2 py-2 px-4 gap-4">
                         <h3 class="font-bold text-gray-600">Address</h3>
                         <p>San Joaquin, Mabalacat</p>
-                    </div> --}}
+                    </div> 
+                    --}}
                 </div>
             </div>
         </div>
@@ -59,7 +73,8 @@
             <!-- Table -->
             <div>
                 <div id="tab1" class="tab-content text-gray-700 hidden">
-                    {{-- <table class="min-w-full bg-white border">
+                    {{-- 
+                    <table class="min-w-full bg-white border">
                         <thead>
                             <tr class="w-full bg-gray-100">
                                 <th class="py-2 px-4 border-b text-left text-gray-600">Date Visit</th>
@@ -81,7 +96,8 @@
                                 <td class="py-2 px-4 border-b">-</td>
                             </tr>
                         </tbody>
-                    </table> --}}
+                    </table> 
+                    --}}
                 </div>
                 <div id="tab2" class="tab-content text-gray-700 hidden">
                     <h1 class="font-bold mt-9 mb-4 text-2xl">Next Visit</h1>
