@@ -16,7 +16,7 @@
 
 <body class="bg-slate-100">
     <section
-        class="flex flex-col justify-center items-center my-8 shadow-lg rounded-md min-w-3xl max-w-max bg-white p-6">
+        class="flex flex-col justify-center items-center my-8 shadow-lg rounded-md min-w-3xl max-w-5xl bg-white p-6">
         {{-- <form action="{{ route('submit.contact') }}" method="POST" class="flex justify-center items-center flex-col max-w-3xl bg-white p-8 rounded-md "> --}}
         @csrf
         <h1 class="text-slate-900 font-bold text-6xl text-center">Contact Us</h1>
