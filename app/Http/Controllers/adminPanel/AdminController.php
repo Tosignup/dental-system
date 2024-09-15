@@ -81,4 +81,5 @@ class AdminController extends Controller
 
         return view('content.schedule', compact('schedules'));
     }
+
 }
