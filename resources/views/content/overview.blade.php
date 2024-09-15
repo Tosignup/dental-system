@@ -4,7 +4,7 @@
     @include('components.search')
     <div class="rounded-xl shadow-lg p-7 bg-white my-4 gap-4 max-w-">
         <h1 class="text-5xl font-bold my-2">Good day, {{ Auth::user()->username }}!</h1>
-        <h1>Have a nice working day!</h1>
+        <h1>Let's brighten smiles and make a difference today!</h1>
     </div>
     <div class="w-full flex gap-5 justify-start items flex-wrap">
         <div class="w-full bg-white shadow-lg rounded-xl p-8 flex flex-col items-center justify-center max-w-md">
