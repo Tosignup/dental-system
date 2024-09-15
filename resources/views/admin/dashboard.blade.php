@@ -45,11 +45,11 @@
 </head>
 
 <body>
-    <section class="w-full sm:h-max lg:h-full bg-slate-100 flex justify-start">
+    <section class="w-full max-md:h-max md:h-full bg-slate-100 flex justify-start">
         <div>
             @include('components.sidebar')
         </div>
-        <div class="w-full">
+        <div class="w-full max-lg:mt-12">
             @yield('content')
         </div>
     </section>

@@ -54,7 +54,7 @@
 <body class="">
     <div id="overlay"></div>
     <nav
-        class="max-w-max min-w-max self-start h-full bg-white z-0 flex flex-col justify-between items-center py-4 px-8 max-md:hidden">
+        class="max-w-max min-w-max self-start h-full bg-white z-0 flex flex-col justify-between items-center py-4 px-8 max-lg:hidden">
         <div class="flex flex-col gap-4">
             <div class="flex justify-start items-center gap-2 mb-4">
                 <a href="{{ route('welcome') }}">
@@ -138,7 +138,7 @@
 
     {{-- - AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA - --}}
 
-    <div class="hidden max-md:flex absolute top-0 left-0 w-screen justify-between items-center p-4 bg-white border-b-2">
+    <div class="hidden max-lg:flex absolute top-0 left-0 w-screen justify-between items-center p-4 bg-white border-b-2">
         <button id="burger-icon" class="burger-icon">
             <img class="h-5" src="{{ asset('assets/images/hamburger-icon.png') }}" alt="Menu">
         </button>
@@ -151,7 +151,7 @@
     </div>
 
     <nav id="mobile-nav"
-        class="max-w-max min-w-max hidden self-start h-svh bg-white z-10 flex-col justify-between items-center py-4 px-4 transform -translate-x-full transition-transform duration-300 max-md:absolute max-md:flex fixed">
+        class="max-w-max min-w-max hidden self-start h-svh bg-white z-10 flex-col justify-between items-center py-4 px-4 transform -translate-x-full transition-transform duration-300 max-lg:absolute max-lg:flex max-lg:border-r fixed">
         <div class="flex flex-col gap-4 ">
             <div class="flex justify-between items-center gap-2 mb-4">
                 <a href="{{ route('welcome') }}">
@@ -163,7 +163,25 @@
             </div>
             @if (Auth::user()->role === 'admin')
                 <div class="flex flex-col items-start gap-2">
-                    @include('components.search')
+                    <div class="block lg:hidden">
+                        <form method="GET" class="flex justify-center items-center gap-2"
+                            action="{{ route('patient_list') }} ">
+                            @csrf
+                            <input placeholder="Search..." autocomplete="off" name="search" type="search"
+                                class="py-1 px-2 text-xs border-gray-400 rounded-md ">
+                            <button type="submit"
+                                class="border py-1 px-2 rounded-md bg-white hover:bg-gray-800 hover:text-white transition-all">
+                                <img class="h-4" src="{{ asset('assets/images/search-icon.png') }}"
+                                    alt="">
+                            </button>
+                        </form> <!-- Show on mobile -->
+                    </div>
+                    <div class="hidden lg:block">
+                        <div class="justify-between items-center hidden max-lg:flex">
+                            @include('components.search')
+                        </div>
+                    </div>
+
                     <a class="flex justify-start items-center gap-2 active:bg-green-600 hover:bg-gray-300 transition-all w-full p-2 rounded-md"
                         href="{{ route('admin.dashboard') }}">
                         <img class="h-5" src="{{ asset('assets/images/dashboard-icon.png') }}" alt="">
