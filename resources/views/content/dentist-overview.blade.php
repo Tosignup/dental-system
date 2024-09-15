@@ -12,12 +12,11 @@
                 @csrf
                 <button onclick="openModal()"
                     class="flex self-center justify-center  items-center gap-2 rounded-md py-2 px-4 min-w-max border-2 border-gray-600 hover:shadow-md hover:border-green-700 font-semibold text-gray-800 transition-all max-md:py-1 max-md:px-2 max-md:text-xs">
-                    <span class="max-md:hidden"> Add Dentist</span>
+                    <span class=""> Add Dentist</span>
                     <img class="h-8 max-md:h-5" src="{{ asset('assets/images/add-patient.png') }}" alt="">
                 </button>
             </form>
         </div>
-
         <table class="w-full table-auto mb-2 overflow-hidden">
             <thead>
                 <tr>
@@ -40,14 +39,16 @@
                         <td class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">{{ $dentist->branch }}</td>
                         <td class="border py-2 max-md:py-2">
                             <div class="flex gap-2 justify-center items-center">
-                                <a class=" border border-slate-600 rounded-md py-2 px-4 text-white font-semibold hover:bg-gray-400 transition-all"
+                                <a class=" border border-slate-600 rounded-md py-2 px-4 max-md:py-1 max-md:px-2 text-white font-semibold hover:bg-gray-400 transition-all"
                                     href=" {{ route('edit.dentist', $dentist->id) }} ">
-                                    <img class=h-5 src="{{ asset('assets/images/edit-icon.png') }}" alt="">
+                                    <img class="h-5 sm:h-4 sm:w-4 max-sm:h-4 max-sm:w-5"
+                                        src="{{ asset('assets/images/edit-icon.png') }}" alt="">
                                 </a>
 
                                 <a href="{{ route('show.dentist', $dentist->id) }}"
-                                    class="border border-slate-600 rounded-md py-2 px-4 text-white font-semibold hover:bg-gray-400 transition-all">
-                                    <img class=h-5 src="{{ asset('assets/images/user-icon.png') }}" alt="">
+                                    class="border border-slate-600 rounded-md py-2 px-4 max-md:py-1 max-md:px-2 text-white font-semibold hover:bg-gray-400 transition-all">
+                                    <img class="h-5 sm:h-4 sm:w-4 max-md:h-4 max-md:w-5"src="{{ asset('assets/images/user-icon.png') }}"
+                                        alt="">
                                 </a>
                             </div>
                         </td>

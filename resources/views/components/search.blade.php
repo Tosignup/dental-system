@@ -29,8 +29,18 @@
     </div>
 
     <div class="flex gap-3 justify-center items-center self-start">
-        <img class="h-12" src="{{ asset('assets/images/logo.png') }}" alt="">
-        <h1 class="text-md font-semibold">{{ Auth::user()->name }}</h1>
+        <div class="flex gap-3 justify-center items-center">
+            @if (Auth::user()->role === 'Admin')
+                <p class="max-md:text-xs text-sm font-semibold max-w-sm">{{ Auth::user()->username }}</p>
+            @elseif(Auth::user()->role === 'Dentist')
+                <p class="max-md:text-xs text-sm font-semibold max-w-sm">{{ Auth::user()->username }}</p>
+            @elseif(Auth::user()->role === 'Staff')
+                <p class="max-md:text-xs text-sm font-semibold max-w-sm">{{ Auth::user()->username }}</p>
+            @else
+                <p class="max-md:text-xs text-sm font-semibold max-w-xs">{{ Auth::user()->username }}</p>
+            @endif
+        </div>
+        <img class="h-9" src="{{ asset('assets/images/logo.png') }}" alt="">
     </div>
 </div>
 

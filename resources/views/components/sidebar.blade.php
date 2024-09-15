@@ -142,14 +142,21 @@
         <button id="burger-icon" class="burger-icon">
             <img class="h-5" src="{{ asset('assets/images/hamburger-icon.png') }}" alt="Menu">
         </button>
-
-        <img class="h-8" src="{{ asset('assets/images/logo.png') }}" alt="">
-        <div class="flex gap-3 justify-center items-center self-start">
-            {{-- <img class="h-12" src="{{ asset('assets/images/logo.png') }}" alt="">
-            <h1 class="text-md font-semibold">{{ Auth::user()->name }}</h1> --}}
+        <div class="flex justify-center items-center gap-2">
+            <div class="flex gap-3 justify-center items-center">
+                @if (Auth::user()->role === 'Admin')
+                    <p class="text-xs font-semibold max-w-sm">{{ Auth::user()->username }}</p>
+                @elseif(Auth::user()->role === 'Dentist')
+                    <p class="text-xs font-semibold max-w-sm">{{ Auth::user()->username }}</p>
+                @elseif(Auth::user()->role === 'Staff')
+                    <p class="text-xs font-semibold max-w-sm">{{ Auth::user()->username }}</p>
+                @else
+                    <p class="text-xs font-semibold max-w-xs">{{ Auth::user()->username }}</p>
+                @endif
+            </div>
+            <img class="h-8" src="{{ asset('assets/images/logo.png') }}" alt="">
         </div>
     </div>
-
     <nav id="mobile-nav"
         class="max-w-max min-w-max hidden self-start h-svh bg-white z-10 flex-col justify-between items-center py-4 px-4 transform -translate-x-full transition-transform duration-300 max-lg:absolute max-lg:flex max-lg:border-r fixed">
         <div class="flex flex-col gap-4 ">
@@ -229,7 +236,7 @@
                 </div>
             @else
                 <div class="flex flex-col items-start gap-4">
-                    <a class="flex justify-start items-center gap-2 active:bg-green-600 hover:bg-gray-300 transition-all w-full p-2 rounded-md active:bg-green-600 hover:bg-gray-300 transition-all border"
+                    <a class="flex justify-start items-center gap-2  w-full p-2 rounded-md active:bg-green-600 hover:bg-gray-300 transition-all border"
                         href="{{ route('receptionist.dashboard') }}">
                         <img class="h-8" src="{{ asset('assets/images/dashboard-icon.png') }}" alt="">
                         <button class="hover:font-bold  transition-all">
