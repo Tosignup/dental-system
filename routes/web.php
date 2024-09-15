@@ -12,7 +12,9 @@ use App\Http\Controllers\patientPanel\PaymentController;
 use App\Http\Controllers\receptionistPanel\ReceptionistController;
 
 
-Route::get('/', function () {return view('welcome');})->name('welcome');
+Route::get('/', function () {
+    return view('welcome');
+})->name('welcome');
 
 // Route::get('/dashboard', [ClientController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -22,7 +24,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 
 Route::post('/appointments/{id}/approve', [AppointmentController::class, 'approve'])->name('appointments.approve');
@@ -30,7 +32,7 @@ Route::post('/appointments/{id}/decline', [AppointmentController::class, 'declin
 
 
 // Admin Routes
-Route::group(['middleware' => ['auth','verified', 'role:admin']], function () {
+Route::group(['middleware' => ['auth', 'verified', 'role:admin']], function () {
     //Navbar
     Route::get('/admin/dashboard', [AdminController::class, 'overview'])->name('admin.dashboard');
     Route::get('/admin/dentist', [AdminController::class, 'dentist'])->name('dentist');
@@ -39,7 +41,7 @@ Route::group(['middleware' => ['auth','verified', 'role:admin']], function () {
     Route::get('/admin/schedule', [AdminController::class, 'schedule'])->name('schedule');
     Route::get('/admin/appointment-submission', [AppointmentController::class, 'appointment_submission'])->name('appointment.submission');
 
-    // Doctor 
+    // Doctor
     Route::get('/admin/add-dentist', [DentistController::class, 'addDentist'])->name('add.dentist');
     Route::post('/dentist', [DentistController::class, 'storeDentist'])->name('store.dentist');
     Route::get('/admin/edit-dentist/{dentist}', [DentistController::class, 'editDentist'])->name('edit.dentist');
@@ -49,7 +51,7 @@ Route::group(['middleware' => ['auth','verified', 'role:admin']], function () {
     //Dentist Schedule
     Route::get('/admin/add-dentist-schedule', [ScheduleController::class, 'addSchedule'])->name('add.schedule');
     Route::post('/dentist-schedule', [ScheduleController::class, 'storeSchedule'])->name('store.schedule');
-    
+
 
 
     // Patients
@@ -65,16 +67,14 @@ Route::group(['middleware' => ['auth','verified', 'role:admin']], function () {
     Route::get('/patient/edit-payment/{patient}/{payment}', [PaymentController::class, 'editPayment'])->name('edit.payment');
     Route::put('/patient/update-payment/{patient}/{payment}', [PaymentController::class, 'testUpPayment'])->name('update.payment');
     Route::get('/patient/{patient}/payment-history/{payment}', [PaymentController::class, 'showPaymentHistory'])->name('history.payment');
-
 });
 
 // Receptionist Routes
-Route::group(['middleware' =>['auth', 'role:receptionist']], function () {
+Route::group(['middleware' => ['auth', 'role:receptionist']], function () {
     Route::get('/receptionist/dashboard', [AdminController::class, 'overview'])->name('receptionist.dashboard');
-
 });
 //Client Routes
-Route::group(['middleware' =>['auth','verified', 'role:client']], function () {
+Route::group(['middleware' => ['auth', 'verified', 'role:client']], function () {
     Route::get('/client/dashboard', [ClientController::class, 'dashboard'])->name('dashboard');
     Route::get('/client/dashboard/overview/{patient}', [ClientController::class, 'profileOverview'])->name('client.overview');
     Route::get('/client/dashboard/user-profile', [ClientController::class, 'profileUserProfile'])->name('client.user-profile');
