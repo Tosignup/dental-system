@@ -39,7 +39,7 @@
                         <td class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">{{ $dentist->branch }}</td>
                         <td class="border py-2 max-md:py-2">
                             <div class="flex gap-2 justify-center items-center">
-                                <a class=" border border-slate-600 rounded-md py-2 px-4 max-md:py-1 max-md:px-2 text-white font-semibold hover:bg-gray-400 transition-all"
+                                <a class="max-md:hidden border border-slate-600 rounded-md py-2 px-4 max-md:py-1 max-md:px-2 text-white font-semibold hover:bg-gray-400 transition-all"
                                     href=" {{ route('edit.dentist', $dentist->id) }} ">
                                     <img class="h-5 sm:h-4 sm:w-4 max-sm:h-4 max-sm:w-5"
                                         src="{{ asset('assets/images/edit-icon.png') }}" alt="">
@@ -47,8 +47,9 @@
 
                                 <a href="{{ route('show.dentist', $dentist->id) }}"
                                     class="border border-slate-600 rounded-md py-2 px-4 max-md:py-1 max-md:px-2 text-white font-semibold hover:bg-gray-400 transition-all">
-                                    <img class="h-5 sm:h-4 sm:w-4 max-md:h-4 max-md:w-5"src="{{ asset('assets/images/user-icon.png') }}"
+                                    <img class="h-5 max-md:hidden sm:h-4 sm:w-4 max-md:h-4 max-md:w-5"src="{{ asset('assets/images/user-icon.png') }}"
                                         alt="">
+                                    <h1 class="hidden max-md:block text-gray-800 text-xs">View</h1>
                                 </a>
                             </div>
                         </td>

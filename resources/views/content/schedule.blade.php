@@ -7,17 +7,6 @@
         <div class="flex items-center justify-between py-4">
             <label class="flex items-center gap-2" for="time">
                 <h1 class="font-bold text-3xl mr-4">Schedule list</h1>
-                {{-- <form method="GET" action="{{ route('patient_list') }}" class="flex gap-4 items-center justify-center m-4">
-                    <h1>Sort by: </h1>
-                    <select name="sort" class="border text-sm w-32 border-gray-400 p-2 px-4 mx-2 rounded-md"
-                        id="sort">
-                        <option value="id" {{ request()->get('sort') == 'id' ? 'selected' : '' }}>ID</option>
-                        <option value="date_of_next_visit"
-                            {{ request()->get('sort') == 'date_of_next_visit' ? 'selected' : '' }}>Next visit</option>
-                        <option value="name" {{ request()->get('sort') == 'name' ? 'selected' : '' }}>Name</option>
-
-                    </select>
-                </form> --}}
             </label>
             <form method="GET" action="{{ route('add.schedule') }}">
                 @csrf
