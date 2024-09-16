@@ -14,37 +14,38 @@
 
     @vite('resources/css/app.css')
 </head>
-<div class="flex justify-between items-center max-md:hidden">
-    <form method="GET" class="flex justify-center items-center gap-2" action="{{ route('patient_list') }} ">
-        @csrf
-        <img class="h-12" src="{{ asset('assets/images/search-icon.png') }}" alt="">
-        <input placeholder="Search..." autocomplete="off" name="search" type="search"
-            class="py-2 px-4 border-gray-400 rounded-md">
-        <button type="submit"
-            class="shadow-md py-2 px-6 rounded-md bg-white hover:bg-gray-800 hover:text-white transition-all">
-            Search
-        </button>
-    </form>
+<div id="mobile-nav" class="flex justify-between items-center max-lg:hidden">
+    <div class="flex gap-4 items-center justify-center">
+        <form method="GET" class="flex justify-center items-center gap-2" action="{{ route('patient_list') }} ">
+            @csrf
+            <img class="h-12" src="{{ asset('assets/images/search-icon.png') }}" alt="">
+            <input placeholder="Search..." autocomplete="off" name="search" type="search"
+                class="py-2 px-4 border-gray-400 rounded-md">
+            <button type="submit"
+                class="shadow-md py-2 px-6 rounded-md bg-white hover:bg-gray-800 hover:text-white transition-all">
+                Search
+            </button>
+        </form>
+    </div>
+
     <div class="flex gap-3 justify-center items-center self-start">
-        <img class="h-12" src="{{ asset('assets/images/logo.png') }}" alt="">
-        <h1 class="text-md font-semibold">{{ Auth::user()->name }}</h1>
+        <div class="flex gap-3 justify-center items-center">
+            @if (Auth::user()->role === 'Admin')
+                <p class="max-md:text-xs text-sm font-semibold max-w-sm">{{ Auth::user()->username }}</p>
+            @elseif(Auth::user()->role === 'Dentist')
+                <p class="max-md:text-xs text-sm font-semibold max-w-sm">{{ Auth::user()->username }}</p>
+            @elseif(Auth::user()->role === 'Staff')
+                <p class="max-md:text-xs text-sm font-semibold max-w-sm">{{ Auth::user()->username }}</p>
+            @else
+                <p class="max-md:text-xs text-sm font-semibold max-w-xs">{{ Auth::user()->username }}</p>
+            @endif
+        </div>
+        <img class="h-9" src="{{ asset('assets/images/logo.png') }}" alt="">
     </div>
 </div>
 
 {{-- AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA --}}
 
-
-<div class="flex justify-between items-center md:hidden">
-    <form method="GET" class="flex justify-center items-center gap-2" action="{{ route('patient_list') }} ">
-        @csrf
-        <input placeholder="Search..." autocomplete="off" name="search" type="search"
-            class="py-1 px-2 text-xs border-gray-400 rounded-md ">
-        <button type="submit"
-            class="border py-1 px-2 rounded-md bg-white hover:bg-gray-800 hover:text-white transition-all">
-            <img class="h-4" src="{{ asset('assets/images/search-icon.png') }}" alt="">
-        </button>
-    </form>
-</div>
 </body>
 
 </html>

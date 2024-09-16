@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>{{ config('app.name') }} | Admin Dashboard </title>
-    <link rel="icon" href="{{ asset('/images/logo.png') }}">
+    <link rel="icon" href="{{ asset('assets/images/logo.png') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -45,11 +45,11 @@
 </head>
 
 <body>
-    <section class="w-full sm:h-max lg:h-full bg-slate-100 flex justify-start">
+    <section class="w-full max-md:h-max md:h-full bg-slate-100 flex justify-start">
         <div>
             @include('components.sidebar')
         </div>
-        <div class="w-full">
+        <div class="w-full max-lg:mt-12">
             @yield('content')
         </div>
     </section>

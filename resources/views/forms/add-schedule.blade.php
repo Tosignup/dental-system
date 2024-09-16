@@ -32,7 +32,6 @@
                             @foreach ($branches as $branch)
                                 <option value="{{ $branch->id }}">
                                     {{ $branch->branch_loc }}
-
                                 </option>
                             @endforeach
                         </select>

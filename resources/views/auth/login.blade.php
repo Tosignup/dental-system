@@ -22,51 +22,51 @@
 </head>
 
 <body>
-    <section class="h-screen bg-slate-100 flex justify-center items-center">
-        <div class="bg-white rounded-lg shadow-lg flex">
-            <div class="bg-green-600 rounded-lg text-white p-8 flex flex-col justify-between">
-                <div>
-                    <h1 class="font-bold text-4xl text-white max-w-sm mb-6">Login to your account</h1>
-
-                    <!-- Display error message if exists -->
+    <section class="h-screen bg-slate-100 flex justify-center items-center p-2 rounded-lg">
+        <div class="bg-white rounded-lg shadow-lg flex max-lg:flex-col-reverse border border-gray-300">
+            <div class="bg-green-600 max-lg:rounded-sm rounded-lg text-white p-8 flex flex-col justify-between">
+                <div class="">
+                    <h1 class="font-bold text-4xl text-white max-w-sm mb-6 max-lg:text-3xl">Login to your account</h1>
                     @if ($errors->any())
                         <div class="error-message show">
                             {{ $errors->first() }}
                         </div>
                     @endif
-
-
-
                     <form method="POST" action="{{ route('login') }}" class="flex flex-col gap-4 mb-8">
                         @csrf
                         <label for="email">
-                            <h1 class="font-semibold">E-mail</h1>
-                            <input class="w-full border text-black border-gray-400 py-2 px-4 rounded-md" type="email"
-                                name="email" id="email" value="{{ old('email') }}">
+                            <h1 class="font-semibold max-lg:text-sm">E-mail</h1>
+                            <input
+                                class="w-full border text-black border-gray-400 py-2 px-4 max-lg:py-1 max-lg:text-sm max-lg:px-2 rounded-md"
+                                type="email" name="email" id="email" value="{{ old('email') }}">
                         </label>
                         <label for="password">
-                            <h1 class="font-semibold">Password</h1>
-                            <input class="w-full border text-black border-gray-400 py-2 px-4 rounded-md" type="password"
-                                name="password" id="password">
+                            <h1 class="font-semibold max-lg:text-sm">Password</h1>
+                            <input
+                                class="w-full border text-black border-gray-400 py-2 px-4 max-lg:py-1 max-lg:text-sm max-lg:px-2 rounded-md"
+                                type="password" name="password" id="password">
                         </label>
-                        <a class="text-sm hover:font-semibold transition-all"
+                        <a class="text-sm max-lg:text-xs hover:font-semibold transition-all"
                             href="{{ route('password.request') }}">Forgot your password?</a>
                         <button
                             class="bg-slate-200 max-w-min text-slate-900 font-bold py-2 px-8 rounded-md hover:bg-slate-900 hover:text-slate-100 transition-all">Login</button>
                     </form>
                 </div>
-
                 <div class="flex gap-2 flex-col text-sm max-w-44">
-                    <a class="hover:font-semibold transition-all" href="{{ route('register') }}">Don't have an
+                    <a class="hover:font-semibold transition-all max-lg:text-xs" href="{{ route('register') }}">Don't
+                        have an
                         account?</a>
-                    <a class="hover:font-semibold transition-all" href="{{ route('welcome') }}">Go back to homepage</a>
+                    <a class="hover:font-semibold transition-all max-lg:text-xs" href="{{ route('welcome') }}">Go back
+                        to homepage</a>
                 </div>
             </div>
-            <div class="p-8">
-                <img class="mx-8" src="{{ asset('assets/images/logo.png') }}" alt="">
-                <div class="flex flex-col justify-center text-center mt-6">
-                    <h1 class="font-bold text-xl">Tooth Impressions Dental Clinic</h1>
-                    <h1 class="text-sm">Your Smile, Our Passion: Quality Dental Care You Can Trust.</h1>
+            <div class="p-8 max-lg:px-2 max-lg:py-4 max-lg:flex max-lg:items-center max-lg:justify-center">
+                <img class="mx-8 max-lg:mx-4 max-lg:h-16" src="{{ asset('assets/images/logo.png') }}" alt="">
+                <div
+                    class="flex flex-col justify-center text-center max-lg:text-left mt-6 max-lg:justify-start max-lg:mt-2 ">
+                    <h1 class="font-bold text-xl max-lg:text-sm max-lg:w-max">Tooth Impressions Dental Clinic
+                    </h1>
+                    <h1 class="text-sm max-lg:text-xs">Your Smile, Our Passion: Quality Dental Care You Can Trust.</h1>
                 </div>
             </div>
         </div>

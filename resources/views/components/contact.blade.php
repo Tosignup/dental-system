@@ -19,12 +19,12 @@
         class="flex flex-col justify-center items-center my-8 shadow-lg rounded-md min-w-3xl max-w-5xl bg-white p-6">
         {{-- <form action="{{ route('submit.contact') }}" method="POST" class="flex justify-center items-center flex-col max-w-3xl bg-white p-8 rounded-md "> --}}
         @csrf
-        <h1 class="text-slate-900 font-bold text-6xl text-center">Contact Us</h1>
-        <h1 class="text-center my-4">
+        <h1 class="text-slate-900 font-bold text-6xl text-center max-lg:text-4xl">Contact Us</h1>
+        <h1 class="text-center my-4 max-lg:text-md">
             Consult with our team online by filling out the form below. If you have specific inquiries regarding our
             services, please don't hesitate to get in touch. We will respond as soon as possible.
         </h1>
-        <div class="flex flex-col justify-center items-start gap-7 w-full">
+        <div class="flex flex-col justify-center items-start gap-7 w-full mt-6">
             <input autocomplete="off" required class="py-2 px-4 rounded-md w-full border border-gray-600"
                 placeholder="Name" type="text" name="name" id="name">
             <input autocomplete="off" required class="py-2 px-4 rounded-md w-full border border-gray-600"
