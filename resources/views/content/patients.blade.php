@@ -70,7 +70,6 @@
                                     <img class="h-5 sm:h-4 sm:w-4 max-md:h-4 max-md:w-4"
                                         src="{{ asset('assets/images/edit-icon.png') }}" alt="">
                                 </a>
-
                                 <a href="{{ route('show.patient', $patient->id) }}"
                                     class="border border-slate-600 rounded-md py-2 px-4 max-md:py-1 max-md:px-2 text-white font-semibold hover:bg-gray-400 transition-all">
                                     <h1 class="hidden max-md:block text-xs font-semibold text-gray-800">View</h1>

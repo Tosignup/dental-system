@@ -185,7 +185,7 @@
                     <img class="h-8" src="{{ asset('assets/images/logo.png') }}" alt="">
                 </a>
                 <button id="back-icon" class="back-icon">
-                    <img class="h-7 border p-1 rounded-md" src="{{ asset('assets/images/back-icon.png') }}"
+                    <img class="h-5 border p-1 rounded-md" src="{{ asset('assets/images/back-icon.png') }}"
                         alt="Menu">
                 </button>
             </div>
