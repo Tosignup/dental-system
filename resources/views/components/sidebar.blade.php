@@ -178,7 +178,7 @@
         </div>
     </div>
     <nav id="mobile-nav"
-        class="max-w-max min-w-max hidden self-start h-svh bg-white z-10 flex-col justify-between items-center py-4 px-4 transform -translate-x-full transition-transform duration-300 max-lg:absolute max-lg:flex max-lg:border-r fixed">
+        class="max-w-max min-w-max hidden self-start h-svh bg-white z-10 flex-col justify-between items-center py-4 px-4 transform -translate-x-full transition-transform duration-300 max-lg:absolute max-lg:top-0 max-lg:flex max-lg:border-r fixed">
         <div class="flex flex-col gap-4">
             <div class="flex justify-between items-center gap-2 mb-4">
                 <a href="{{ route('welcome') }}" class="flex gap-2 justify-center items-center">

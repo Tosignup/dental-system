@@ -29,6 +29,7 @@ require __DIR__ . '/auth.php';
 
 Route::post('/appointments/{id}/approve', [AppointmentController::class, 'approve'])->name('appointments.approve');
 Route::post('/appointments/{id}/decline', [AppointmentController::class, 'decline'])->name('appointments.decline');
+Route::get('/appointments/show-appointment/{appointment}', [AppointmentController::class, 'show'])->name('show.appointment');
 
 
 // Admin Routes
