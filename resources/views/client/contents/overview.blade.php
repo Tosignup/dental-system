@@ -1,6 +1,6 @@
 @extends('client.profile')
 @section('content')
-    <section class="flex gap-5 bg-gray-100 p-6">
+    <section class="flex gap-5 bg-gray-100 p-6 max-2xl:flex-wrap max-2xl:mt-16">
         <!-- Sidebar -->
         <div class="min-w-80 w-1/4 bg-white p-4 rounded-lg shadow-md">
             <div class="flex flex-col items-center text-center">
@@ -31,7 +31,7 @@
                     <hr class="w-full bg-gray">
                     <div class="flex justify-between min-w-max my-2 py-2 px-4 gap-4">
                         <h3 class="font-bold text-gray-600">Patient ID</h3>
-                        
+
                         @auth
                             @if (session('patient_id'))
                                 <p class="">{{ session('patient_id') }}</p>
@@ -39,14 +39,14 @@
                                 <p>No Patient ID found in session.</p>
                             @endif
                         @endauth
-                       
+
                     </div>
-                    {{-- Commenting out the address block
+
                     <div class="flex justify-between min-w-max my-2 py-2 px-4 gap-4">
                         <h3 class="font-bold text-gray-600">Address</h3>
                         <p>San Joaquin, Mabalacat</p>
-                    </div> 
-                    --}}
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -73,7 +73,7 @@
             <!-- Table -->
             <div>
                 <div id="tab1" class="tab-content text-gray-700 hidden">
-                    {{-- 
+
                     <table class="min-w-full bg-white border">
                         <thead>
                             <tr class="w-full bg-gray-100">
@@ -96,8 +96,8 @@
                                 <td class="py-2 px-4 border-b">-</td>
                             </tr>
                         </tbody>
-                    </table> 
-                    --}}
+                    </table>
+
                 </div>
                 <div id="tab2" class="tab-content text-gray-700 hidden">
                     <h1 class="font-bold mt-9 mb-4 text-2xl">Next Visit</h1>

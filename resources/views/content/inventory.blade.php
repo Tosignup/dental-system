@@ -43,7 +43,7 @@
                                     alt="">
                                 <h1 class="hidden max-md:block text-xs text-gray-700 text-center">Edit</h1>
                             </a>
-                            <a class="border border-slate-600 rounded-md py-2 px-4 max-md:py-1 max-md:px-2 text-white font-semibold hover:bg-gray-400 transition-all"
+                            <a class="border border-slate-600 flex max-md:flex-1 justify-center items-center rounded-md py-2 px-4 max-md:py-1 max-md:px-2 text-white font-semibold hover:bg-gray-400 transition-all"
                                 href="#">
                                 <img class="h-6 max-md:hidden"src="{{ asset('assets/images/user-icon.png') }}"
                                     alt="">

@@ -17,6 +17,9 @@
             opacity: 0;
         }
     </style>
+    <div class="m-4 mb-8">
+        @include('components.search')
+    </div>
     <section class="bg-white shadow-lg rounded-md max-w-max p-2 m-6">
         <h1 class="font-bold text-3xl p-4">Add Dentist Schedule</h1>
         <form method="POST" action="{{ route('store.schedule') }}">
