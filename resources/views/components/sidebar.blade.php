@@ -130,8 +130,7 @@
         <div class="flex self-start max-md:text-xs m-2.5">
             <div class="flex gap-2 items-center justify-center">
                 <button class="btn flex justify-center items-center gap-2" onclick="my_modal_2.showModal()">
-                    <img class="max-md:h-4 h-6 " src="{{ asset('assets/images/logout.png') }}" alt="">Log
-                    out</button>
+
             </div>
             <dialog id="my_modal_2" class="modal border shadow-lg border-gray-800  p-8 rounded-md max-md:text-lg">
                 <div class="modal-box flex flex-col ">
@@ -151,6 +150,15 @@
                     </div>
                 </div>
             </dialog>
+            <div x-data="{ showModal: false }">
+                <button x-on:click="showModal = true" class="py-2 flex gap-2 text-gray-800 rounded">
+                    <img class="max-md:h-4 h-6" src="{{ asset('assets/images/logout.png') }}" alt="">
+                    <span>Log
+                        out</span>
+                </button>
+                </button>
+
+            </div>
         </div>
     </nav>
 
