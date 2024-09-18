@@ -23,6 +23,8 @@
 
     #mobile-nav.active {
         transform: translateX(0);
+        z-index: 30;
+        /* Higher than the overlay */
     }
 
     /* Add this to your CSS file */
@@ -33,26 +35,79 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(255, 255, 255, 0.5);
-        /* Semi-transparent white */
+        background-color: rgba(0, 0, 0, 0.5);
+        /* Semi-transparent black */
         z-index: 9;
-        /* Ensure it is above other content */
+        /* Updated z-index to be above mobile-nav */
     }
+
 
     #overlay.active {
         display: block;
     }
+
+    /* Ensure the container including the name and dropdown is above the overlay */
+    #user-container {
+        position: relative;
+        z-index: 9;
+    }
+
+    /* Ensure the dropdown is above the overlay */
+    #user-dropdown {
+        position: relative;
+        z-index: 9;
+    }
+
 
 
     .no-scroll {
         overflow: hidden;
         height: 100vh;
     }
+
+    .dropdown {
+        position: relative;
+    }
+
+    .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        display: none;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .dropdown[open] .dropdown-menu {
+        display: block;
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    #dropdown-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        /* Semi-transparent black */
+        z-index: 8;
+        /* Below the dropdown but above other content */
+    }
+
+    #dropdown-overlay.active {
+        display: block;
+    }
+
     }
 </style>
 
 <body class="">
     <div id="overlay"></div>
+    <div id="dropdown-overlay"></div>
     <nav
         class="max-w-max min-w-max self-start h-full bg-white z-0 flex flex-col justify-between items-center py-4 px-8 max-lg:hidden">
         <div class="flex flex-col gap-4">
@@ -131,20 +186,22 @@
             <div class="flex gap-2 items-center justify-center">
                 <button class="btn flex justify-center items-center gap-2" onclick="my_modal_2.showModal()">
 
+                    <img class="max-md:h-4 h-4" src="{{ asset('assets/images/logout.png') }}" alt="">
+                    <button class="btn" onclick="my_modal_2.showModal()">Log out</button>
             </div>
-            <dialog id="my_modal_2" class="modal border shadow-lg border-gray-800  p-8 rounded-md max-md:text-lg">
+            <dialog id="my_modal_2" class="modal border-2 shadow-lg border-gray-400  p-8 rounded-md max-md:text-lg">
                 <div class="modal-box flex flex-col ">
                     <h3 class="text-2xl font-bold max-md:text-sm">Log out</h3>
                     <p class="py-4 max-md:text-sm">Are you sure you want to log out?</p>
                     <div class="modal-action flex gap-2 self-end">
-                        <form method="dialog" class="border rounded-md  py-2 px-4">
+                        <form method="dialog" class="border rounded-md w-max py-2 px-4">
                             <button class="btn max-md:text-xs">Close</button>
                         </form>
-                        <form action="{{ route('logout') }}" method="POST"
-                            class="border rounded-md border-red-600 py-2 px-4 ">
+                        <form action="{{ route('logout') }}" method="POST" class="border rounded-md py-2 px-4 ">
                             @csrf
-                            <button class="btn max-md:text-xs">
-                                Log out
+                            <button class="btn max-md:text-xs w-max flex gap-2">
+                                Log
+                                out
                             </button>
                         </form>
                     </div>
@@ -152,9 +209,7 @@
             </dialog>
             <div x-data="{ showModal: false }">
                 <button x-on:click="showModal = true" class="py-2 flex gap-2 text-gray-800 rounded">
-                    <img class="max-md:h-4 h-6" src="{{ asset('assets/images/logout.png') }}" alt="">
-                    <span>Log
-                        out</span>
+
                 </button>
                 </button>
 
@@ -168,22 +223,77 @@
         <button id="burger-icon" class="burger-icon">
             <img class="h-7 border p-1 rounded-md" src="{{ asset('assets/images/hamburger-icon.png') }}"
                 alt="Menu">
-
         </button>
-        <div class="flex justify-center items-center gap-2">
-            <div class="flex gap-3 justify-center items-center">
-                @if (Auth::user()->role === 'Admin')
-                    <p class="text-xs font-semibold max-w-sm">{{ Auth::user()->username }}</p>
-                @elseif(Auth::user()->role === 'Dentist')
-                    <p class="text-xs font-semibold max-w-sm">{{ Auth::user()->username }}</p>
-                @elseif(Auth::user()->role === 'Staff')
-                    <p class="text-xs font-semibold max-w-sm">{{ Auth::user()->username }}</p>
-                @else
-                    <p class="text-xs font-semibold max-w-xs">{{ Auth::user()->username }}</p>
-                @endif
-            </div>
-            <img class="h-8" src="{{ asset('assets/images/logo.png') }}" alt="">
+        <div class="flex flex-col gap-3 justify-center items-center max-md:hidden">
+            <img class="h-6" src="{{ asset('assets/images/logo.png') }}" alt="Menu">
+            <h1 class="text-xs font-semibold">Tooth Impression's Dental Clinic</h1>
         </div>
+
+        <div id="user-container" class="flex justify-center items-center gap-2  self-center">
+            <details id="user-dropdown" class="self-center dropdown absolute right-0 top-0 justify-self-center">
+                <summary class="flex btn my-2 self-center justify-center items-center gap-2 py-2 px-8 text-sm">
+                    @if (Auth::user()->role === 'Admin')
+                        <p class="text-xs font-semibold max-w-sm">{{ Auth::user()->username }}</p>
+                    @elseif(Auth::user()->role === 'Dentist')
+                        <p class="text-xs font-semibold max-w-sm">{{ Auth::user()->username }}</p>
+                    @elseif(Auth::user()->role === 'Staff')
+                        <p class="text-xs font-semibold max-w-sm">{{ Auth::user()->username }}</p>
+                    @else
+                        <p class="text-xs font-semibold max-w-xs">{{ Auth::user()->username }}</p>
+                    @endif
+                    <img class="h-7 p-1 border border-gray-600 rounded-full bg-white"
+                        src="{{ asset('assets/images/user-icon.png') }}" alt="">
+                </summary>
+                <ul
+                    class="dropdown-menu menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow flex flex-col justify-end items-end gap-2 bg-white rounded-md">
+                    <div class="flex gap-2 justify-start items-center py-4 border-b">
+                        <img class="h-5 p-1 border border-gray-600 rounded-full bg-white"
+                            src="{{ asset('assets/images/user-icon.png') }}" alt="">
+                        @if (Auth::user()->role === 'Admin')
+                            <p class="text-xs font-semibold max-w-sm">{{ Auth::user()->username }}</p>
+                        @elseif(Auth::user()->role === 'Dentist')
+                            <p class="text-xs font-semibold max-w-sm">{{ Auth::user()->username }}</p>
+                        @elseif(Auth::user()->role === 'Staff')
+                            <p class="text-xs font-semibold max-w-sm">{{ Auth::user()->username }}</p>
+                        @else
+                            <p class="text-xs font-semibold max-w-xs">{{ Auth::user()->username }}</p>
+                        @endif
+
+                    </div>
+                    <li class="py-3"><a class="" href=" {{ route('patient_list') }} ">
+                            <h1 class="max-lg:text-xs text-left">Profile</h1>
+                        </a></li>
+                    <hr class="bg-gray-700 w-full">
+                    <li class="py-3">
+                        <div class="">
+                            <div class="text-left">
+                                <button class="btn max-lg:text-xs text-right" onclick="my_modal_3.showModal()">Log
+                                    out</button>
+                            </div>
+                            <dialog id="my_modal_3" class="modal p-4 rounded-md max-md:text-lg">
+                                <div class="modal-box flex flex-col">
+                                    <h3 class="text-lg font-bold max-md:text-sm">Log out</h3>
+                                    <p class="py-4 max-md:text-sm">Are you sure you want to log out?</p>
+                                    <div class="modal-action flex gap-2 self-end">
+                                        <form method="dialog" class="border rounded-md  py-2 px-4">
+                                            <button class="btn max-md:text-xs">Close</button>
+                                        </form>
+                                        <form action="{{ route('logout') }}" method="POST"
+                                            class="border rounded-md bg-red-600 py-2 px-4 text-white ">
+                                            @csrf
+                                            <button class="btn font-semibold max-md:text-xs">
+                                                Log out
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </dialog>
+                        </div>
+                    </li>
+                </ul>
+            </details>
+        </div>
+
     </div>
     <nav id="mobile-nav"
         class="max-w-max min-w-max hidden self-start h-svh bg-white z-10 flex-col justify-between items-center py-4 px-4 transform -translate-x-full transition-transform duration-300 max-lg:absolute max-lg:top-0 max-lg:flex max-lg:border-r fixed">
@@ -210,7 +320,7 @@
                                 <img class="h-4" src="{{ asset('assets/images/search-icon.png') }}"
                                     alt="">
                             </button>
-                        </form> <!-- Show on mobile -->
+                        </form>
                     </div>
                     <div class="hidden lg:block">
                         <div class="justify-between items-center hidden max-lg:flex">
@@ -310,34 +420,52 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const overlay = document.getElementById('overlay');
+            const dropdown = document.getElementById('user-dropdown');
+            const mobileNav = document.getElementById('mobile-nav');
             const burgerIcon = document.getElementById('burger-icon');
             const backIcon = document.getElementById('back-icon');
-            const mobileNav = document.getElementById('mobile-nav');
-            const overlay = document.getElementById('overlay');
-            const body = document.body; // Reference to the body element
 
-            // Toggle the menu, overlay, and no-scroll class when the burger icon is clicked
+            // Show the overlay when the dropdown is opened
+            dropdown.addEventListener('toggle', function(event) {
+                if (event.target.open) {
+                    overlay.classList.add('active'); // Show the overlay
+                } else {
+                    overlay.classList.remove('active'); // Hide the overlay
+                }
+            });
+
+            // Close the dropdown and hide the overlay when clicking outside of it
+            document.addEventListener('click', function(event) {
+                const isClickInside = dropdown.contains(event.target);
+
+                if (!isClickInside && dropdown.hasAttribute('open')) {
+                    dropdown.removeAttribute('open');
+                    overlay.classList.remove('active'); // Hide the overlay
+                }
+            });
+
+            // Show mobile navigation
             burgerIcon.addEventListener('click', function() {
-                mobileNav.classList.toggle('active');
-                overlay.classList.toggle('active');
-                body.classList.toggle('no-scroll'); // Toggle the no-scroll class
+                mobileNav.classList.add('active');
+                overlay.classList.add('active'); // Show the overlay
             });
 
-            // Hide the menu, overlay, and remove the no-scroll class when the overlay is clicked
-            overlay.addEventListener('click', function() {
-                mobileNav.classList.remove('active');
-                overlay.classList.remove('active');
-                body.classList.remove('no-scroll'); // Remove the no-scroll class
-            });
-
-            // Hide the menu, overlay, and remove the no-scroll class when the back icon is clicked
+            // Hide mobile navigation
             backIcon.addEventListener('click', function() {
                 mobileNav.classList.remove('active');
-                overlay.classList.remove('active');
-                body.classList.remove('no-scroll'); // Remove the no-scroll class
+                overlay.classList.remove('active'); // Hide the overlay
+            });
+
+            // Close mobile navigation when clicking outside
+            overlay.addEventListener('click', function() {
+                mobileNav.classList.remove('active');
+                overlay.classList.remove('active'); // Hide the overlay
             });
         });
     </script>
+
+
 
 
 

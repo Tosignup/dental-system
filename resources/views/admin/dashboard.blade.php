@@ -42,6 +42,20 @@
             visibility: visible;
             opacity: 1;
         }
+
+        details[open] .dropdown-content {
+            max-height: 500px;
+            /* Adjust this value based on the maximum height of your dropdown */
+            opacity: 1;
+            transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out;
+        }
+
+        .dropdown-content {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out;
+        }
     </style>
 </head>
 
@@ -55,7 +69,6 @@
         </div>
     </section>
     <hr>
-    {{-- @include('components.footer') --}}
 </body>
 
 </html>
