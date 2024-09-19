@@ -3,7 +3,7 @@
     <div class="m-4 mb-8">
         @include('components.search')
     </div>
-    <section class="m-4 p-4 bg-white shadow-lg rounded-md">
+    <section class="m-4 max-lg:mt-14 p-4 bg-white shadow-lg rounded-md">
         <div class="flex items-start justify-center max-md:items-start max-md:justify-start flex-col max-md:flex-wrap">
             <label class="flex justify-between w-full items-start gap-2" for="time">
                 <h1 class="font-bold text-3xl max-md:text-xl min-w-max">Patient list</h1>

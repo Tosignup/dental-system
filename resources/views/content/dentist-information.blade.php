@@ -3,7 +3,7 @@
     <div class="m-4">
         @include('components.search')
     </div>
-    <section class="bg-white max-md:mt-7 m-4 p-8 shadow-lg rounded-md flex flex-wrap justify-between z-0">
+    <section class="bg-white  max-lg:mt-14 m-4 p-8 shadow-lg rounded-md flex flex-wrap justify-between z-0">
         <div class="flex flex-wrap justify-between items-start">
             <div class="flex justify-between mb-6 gap-4 items-start ">
                 <h1 class="text-5xl font-bold max-md:text-3xl">{{ $dentist->dentist_first_name }}

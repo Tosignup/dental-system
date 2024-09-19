@@ -15,19 +15,19 @@
     @vite('resources/css/app.css')
 </head>
 <style>
-    /* Custom CSS */
+    /* Sidebar styling */
     #mobile-nav {
         transition: transform 0.3s ease;
-        z-index: 20;
+        z-index: 50;
+        /* Ensure it's above the overlay and dropdown */
     }
+
 
     #mobile-nav.active {
         transform: translateX(0);
-        z-index: 30;
-        /* Higher than the overlay */
     }
 
-    /* Add this to your CSS file */
+    /* Main overlay styling */
     #overlay {
         display: none;
         position: fixed;
@@ -35,38 +35,25 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        /* Semi-transparent black */
-        z-index: 9;
-        /* Updated z-index to be above mobile-nav */
+        background-color: rgba(86, 86, 86, 0.5);
+        z-index: 40;
+        /* Ensure it's between the sidebar and dropdown */
     }
-
 
     #overlay.active {
         display: block;
     }
 
-    /* Ensure the container including the name and dropdown is above the overlay */
-    #user-container {
-        position: relative;
-        z-index: 9;
-    }
-
-    /* Ensure the dropdown is above the overlay */
-    #user-dropdown {
-        position: relative;
-        z-index: 9;
-    }
-
-
-
+    /* Prevent scrolling when overlay is active */
     .no-scroll {
         overflow: hidden;
-        height: 100vh;
     }
 
-    .dropdown {
+    /* Dropdown styling */
+    #user-dropdown {
         position: relative;
+        z-index: 30;
+        /* Ensure it's below the sidebar but above the dropdown overlay */
     }
 
     .dropdown-menu {
@@ -77,6 +64,8 @@
         opacity: 0;
         transform: translateY(-10px);
         transition: opacity 0.3s ease, transform 0.3s ease;
+        z-index: 30;
+        /* Ensure it's above other content but below the overlay */
     }
 
     .dropdown[open] .dropdown-menu {
@@ -85,6 +74,14 @@
         transform: translateY(0);
     }
 
+    /* Ensure dropdown is not interactive when sidebar is active */
+    #mobile-nav.active~#user-dropdown .dropdown-menu {
+        pointer-events: none;
+        /* Prevent interaction */
+    }
+
+
+    /* Dropdown overlay styling */
     #dropdown-overlay {
         display: none;
         position: fixed;
@@ -93,15 +90,12 @@
         width: 100%;
         height: 100%;
         background-color: rgba(0, 0, 0, 0.5);
-        /* Semi-transparent black */
-        z-index: 8;
-        /* Below the dropdown but above other content */
+        z-index: 20;
+        /* Ensure it's below the sidebar */
     }
 
     #dropdown-overlay.active {
         display: block;
-    }
-
     }
 </style>
 
@@ -207,31 +201,27 @@
                     </div>
                 </div>
             </dialog>
-            <div x-data="{ showModal: false }">
-                <button x-on:click="showModal = true" class="py-2 flex gap-2 text-gray-800 rounded">
 
-                </button>
-                </button>
-
-            </div>
         </div>
     </nav>
 
     {{-- - AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA - --}}
 
-    <div class="hidden max-lg:flex absolute top-0 left-0 w-screen justify-between items-center p-4 bg-white border-b-2">
+    <div id="dropdown-parent"
+        class="hidden max-lg:flex absolute top-0 left-0 w-screen justify-between items-center p-4 bg-white border-b-2 ">
         <button id="burger-icon" class="burger-icon">
             <img class="h-7 border p-1 rounded-md" src="{{ asset('assets/images/hamburger-icon.png') }}"
                 alt="Menu">
         </button>
-        <div class="flex flex-col gap-3 justify-center items-center max-md:hidden">
-            <img class="h-6" src="{{ asset('assets/images/logo.png') }}" alt="Menu">
+        <div class="flex gap-3 justify-center items-center max-md:hidden">
+            <img class="h-8" src="{{ asset('assets/images/logo.png') }}" alt="Menu">
             <h1 class="text-xs font-semibold">Tooth Impression's Dental Clinic</h1>
         </div>
 
         <div id="user-container" class="flex justify-center items-center gap-2  self-center">
-            <details id="user-dropdown" class="self-center dropdown absolute right-0 top-0 justify-self-center">
-                <summary class="flex btn my-2 self-center justify-center items-center gap-2 py-2 px-8 text-sm">
+            <details id="user-dropdown"
+                class="self-center rounded-md border border-gray-700 dropdown absolute right-0 top-0 justify-self-center">
+                <summary class="flex my-2 self-center justify-center items-center gap-2 py-2 px-8 text-sm">
                     @if (Auth::user()->role === 'Admin')
                         <p class="text-xs font-semibold max-w-sm">{{ Auth::user()->username }}</p>
                     @elseif(Auth::user()->role === 'Dentist')
@@ -241,13 +231,13 @@
                     @else
                         <p class="text-xs font-semibold max-w-xs">{{ Auth::user()->username }}</p>
                     @endif
-                    <img class="h-7 p-1 border border-gray-600 rounded-full bg-white"
+                    <img class="h-7 p-1 border border-gray-600 rounded-full "
                         src="{{ asset('assets/images/user-icon.png') }}" alt="">
                 </summary>
                 <ul
-                    class="dropdown-menu menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow flex flex-col justify-end items-end gap-2 bg-white rounded-md">
+                    class="dropdown-menu menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow flex flex-col bg-white justify-end items-end gap-2 rounded-md">
                     <div class="flex gap-2 justify-start items-center py-4 border-b">
-                        <img class="h-5 p-1 border border-gray-600 rounded-full bg-white"
+                        <img class="h-5 p-1 border border-gray-600 rounded-full "
                             src="{{ asset('assets/images/user-icon.png') }}" alt="">
                         @if (Auth::user()->role === 'Admin')
                             <p class="text-xs font-semibold max-w-sm">{{ Auth::user()->username }}</p>
@@ -258,11 +248,12 @@
                         @else
                             <p class="text-xs font-semibold max-w-xs">{{ Auth::user()->username }}</p>
                         @endif
-
                     </div>
-                    <li class="py-3"><a class="" href=" {{ route('patient_list') }} ">
+                    <li class="py-3">
+                        <a class="" href=" {{ route('admin.profile', ['user' => Auth::id()]) }} ">
                             <h1 class="max-lg:text-xs text-left">Profile</h1>
-                        </a></li>
+                        </a>
+                    </li>
                     <hr class="bg-gray-700 w-full">
                     <li class="py-3">
                         <div class="">
@@ -296,7 +287,7 @@
 
     </div>
     <nav id="mobile-nav"
-        class="max-w-max min-w-max hidden self-start h-svh bg-white z-10 flex-col justify-between items-center py-4 px-4 transform -translate-x-full transition-transform duration-300 max-lg:absolute max-lg:top-0 max-lg:flex max-lg:border-r fixed">
+        class="max-w-max h-svh min-w-max hidden self-start bg-white z-10 flex-col justify-between items-center py-4 px-4 transform -translate-x-full transition-transform duration-300 max-lg:absolute max-lg:top-0 max-lg:flex max-lg:border-r fixed">
         <div class="flex flex-col gap-4">
             <div class="flex justify-between items-center gap-2 mb-4">
                 <a href="{{ route('welcome') }}" class="flex gap-2 justify-center items-center">
@@ -365,7 +356,7 @@
                         </button>
                     </a>
                     <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
-                        href="inventory">
+                        href="{{ route('inventory') }}">
                         <img class="h-5" src="{{ asset('assets/images/inventory.png') }}" alt="">
                         <button class="hover:font-bold transition-all text-xs">
                             Inventory
@@ -392,6 +383,7 @@
                 </div>
             @endif
         </div>
+        <div id="overlay"></div>
         <div class="flex self-start max-md:text-xs m-2.5">
             <div class="flex gap-2 items-center justify-center">
                 <img class="max-md:h-4 h-4" src="{{ asset('assets/images/logout.png') }}" alt="">
@@ -425,50 +417,50 @@
             const mobileNav = document.getElementById('mobile-nav');
             const burgerIcon = document.getElementById('burger-icon');
             const backIcon = document.getElementById('back-icon');
-
-            // Show the overlay when the dropdown is opened
-            dropdown.addEventListener('toggle', function(event) {
-                if (event.target.open) {
-                    overlay.classList.add('active'); // Show the overlay
-                } else {
-                    overlay.classList.remove('active'); // Hide the overlay
-                }
-            });
-
-            // Close the dropdown and hide the overlay when clicking outside of it
-            document.addEventListener('click', function(event) {
-                const isClickInside = dropdown.contains(event.target);
-
-                if (!isClickInside && dropdown.hasAttribute('open')) {
-                    dropdown.removeAttribute('open');
-                    overlay.classList.remove('active'); // Hide the overlay
-                }
-            });
+            const dropdownParent = document.getElementById('dropdown-parent');
+            const body = document.body;
 
             // Show mobile navigation
             burgerIcon.addEventListener('click', function() {
                 mobileNav.classList.add('active');
+                dropdownParent.classList.add('border-none');
                 overlay.classList.add('active'); // Show the overlay
+                body.classList.add('no-scroll'); // Disable scrolling
+                dropdown.removeAttribute('open'); // Ensure dropdown is closed
+                dropdown.style.pointerEvents = 'none'; // Disable dropdown interaction
             });
 
             // Hide mobile navigation
             backIcon.addEventListener('click', function() {
                 mobileNav.classList.remove('active');
                 overlay.classList.remove('active'); // Hide the overlay
+                body.classList.remove('no-scroll'); // Enable scrolling
+                dropdown.style.pointerEvents = ''; // Enable dropdown interaction
             });
 
             // Close mobile navigation when clicking outside
             overlay.addEventListener('click', function() {
                 mobileNav.classList.remove('active');
                 overlay.classList.remove('active'); // Hide the overlay
+                body.classList.remove('no-scroll'); // Enable scrolling
+                dropdown.style.pointerEvents = ''; // Enable dropdown interaction
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(event) {
+                const isClickInsideDropdown = dropdown.contains(event.target);
+                const isClickInsideMobileNav = mobileNav.contains(event.target);
+
+                // Only close the dropdown if not clicking inside it and not inside mobile nav
+                if (!isClickInsideDropdown && !isClickInsideMobileNav && dropdown.hasAttribute('open')) {
+                    dropdown.removeAttribute('open');
+                    overlay.classList.remove('active'); // Hide the overlay
+                    body.classList.remove('no-scroll'); // Enable scrolling
+                    dropdown.style.pointerEvents = ''; // Enable dropdown interaction
+                }
             });
         });
     </script>
-
-
-
-
-
 </body>
 
 </html>

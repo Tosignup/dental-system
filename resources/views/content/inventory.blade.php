@@ -3,7 +3,7 @@
     <div class="m-4 mb-8">
         @include('components.search')
     </div>
-    <section class=" m-4 p-4 bg-white shadow-lg rounded-md">
+    <section class=" m-4 p-4 bg-white shadow-lg rounded-md max-lg:mt-14">
         <div class="flex items-center justify-between py-2  max-lg:flex-wrap">
             <label class="flex items-center gap-2" for="time">
                 <h1 class="font-bold text-3xl mr-4 max-md:mr-0 max-md:text-2xl">Inventory list</h1>
@@ -39,17 +39,30 @@
                         <div class="flex gap-2 justify-center flex-wrap items-center">
                             <a class=" border border-slate-600 flex max-md:flex-1 justify-center items-center rounded-md py-2 px-4 max-md:py-1 max-md:px-2 text-white font-semibold hover:bg-gray-400 transition-all"
                                 href="#">
-                                <img class="h-6 max-md:hidden" src="{{ asset('assets/images/edit-icon.png') }}"
-                                    alt="">
                                 <h1 class="hidden max-md:block text-xs text-gray-700 text-center">Edit</h1>
                             </a>
-                            <a class="border border-slate-600 flex max-md:flex-1 justify-center items-center rounded-md py-2 px-4 max-md:py-1 max-md:px-2 text-white font-semibold hover:bg-gray-400 transition-all"
-                                href="#">
-                                <img class="h-6 max-md:hidden"src="{{ asset('assets/images/user-icon.png') }}"
-                                    alt="">
-                                <h1 class="hidden max-md:block text-xs text-gray-700">Delete</h1>
-                            </a>
 
+                            <div class="flex self-start max-md:text-xs ">
+                                <div
+                                    class=" border border-slate-600 flex max-md:flex-1 justify-center items-center rounded-md py-2 px-4 max-md:py-1 max-md:px-2 text-white font-semibold hover:bg-gray-400 transition-all">
+                                    <button class="hidden max-md:block text-xs text-gray-700 text-center"
+                                        onclick="my_modal_5.showModal()">Delete</button>
+                                </div>
+                                <dialog id="my_modal_5" class="modal p-4 rounded-md max-md:text-lg">
+                                    <div class="modal-box flex flex-col">
+                                        <h3 class="text-lg font-bold max-md:text-sm">Inventory</h3>
+                                        <p class="py-4 max-md:text-sm">Are you sure you want to delete this item?</p>
+                                        <div class="modal-action flex gap-2 self-end">
+                                            <form method="dialog" class="border rounded-md  py-2 px-4">
+                                                <button class="btn max-md:text-xs">Close</button>
+                                            </form>
+                                            <form method="dialog" class="border rounded-md  py-2 px-4">
+                                                <button class="btn max-md:text-xs">Delete</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </dialog>
+                            </div>
                         </div>
 
                     </td>

@@ -3,7 +3,7 @@
     <div class="m-4">
         @include('components.search')
     </div>
-    <section class="flex flex-col gap-2 m-6 rounded-md p-4  bg-white shadow-md max-lg:flex-col">
+    <section class="flex flex-col gap-2 m-6 rounded-md p-4  bg-white shadow-md max-lg:flex-col  max-lg:mt-14">
         <label class="flex items-center gap-2 max-lg:flex-wrap" for="time">
             <h1 class="font-bold text-3xl mr-4 max-md:text-2xl">Appointment Submissions</h1>
             <form method="GET" action="{{ route('appointment.submission') }}"

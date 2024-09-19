@@ -4,7 +4,7 @@
     <div class="m-4">
         @include('components.search')
     </div>
-    <section class="bg-white p-8 m-2 shadow-lg rounded-md flex flex-col justify-center z-0">
+    <section class="bg-white p-8 m-2 shadow-lg rounded-md flex flex-col justify-center z-0  max-lg:mt-14">
         <div class="flex justify-between items-start">
             <div>
                 <div class="flex flex-col max-2xl:flex-wrap mb-7 ">
