@@ -155,15 +155,15 @@
                             <p class="text-xs font-semibold max-w-xs">{{ Auth::user()->username }}</p>
                         @endif
                     </div>
-                    <li class="py-3 px-2">
+                    <li class="py-3 my-2 px-2 hover:bg-gray-200 transition-all rounded-sm">
                         <a class="" href="{{ route('admin.profile', ['user' => Auth::id()]) }}">
-                            <h1 class="max-lg:text-xs text-sm text-left">Profile</h1>
+                            <h1 class="max-lg:text-xs text-sm text-left ">Profile</h1>
                         </a>
                     </li>
                     <hr class="bg-gray-700 w-full">
-                    <li class="py-3 px-2">
+                    <li class="py-3 my-2 px-2 hover:bg-gray-200 transition-all rounded-sm">
                         <div class="flex self-start text-sm max-md:text-xs">
-                            <div class="flex gap-2 items-center justify-center">
+                            <div class="flex  gap-2 items-center justify-center">
                                 <button class="btn" onclick="document.getElementById('my_modal_2').showModal()">
                                     Log out
                                 </button>
