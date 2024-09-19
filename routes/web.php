@@ -42,6 +42,9 @@ Route::group(['middleware' => ['auth', 'verified', 'role:admin']], function () {
     Route::get('/admin/schedule', [AdminController::class, 'schedule'])->name('schedule');
     Route::get('/admin/appointment-submission', [AppointmentController::class, 'appointment_submission'])->name('appointment.submission');
 
+    //Viewing user profile
+    Route::get('/admin/overview/{user}', [AdminController::class, 'profileOverview'])->name('admin.profile');
+
     // Doctor
     Route::get('/admin/add-dentist', [DentistController::class, 'addDentist'])->name('add.dentist');
     Route::post('/dentist', [DentistController::class, 'storeDentist'])->name('store.dentist');

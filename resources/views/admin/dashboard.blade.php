@@ -45,7 +45,6 @@
 
         details[open] .dropdown-content {
             max-height: 500px;
-            /* Adjust this value based on the maximum height of your dropdown */
             opacity: 1;
             transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out;
         }
@@ -60,6 +59,8 @@
 </head>
 
 <body>
+    <div id="overlay"></div>
+    <div id="dropdown-overlay"></div>
     <section class="w-full max-md:h-max md:h-full bg-slate-100 flex justify-start">
         <div>
             @include('components.sidebar')
