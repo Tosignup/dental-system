@@ -18,7 +18,7 @@ class AppointmentController extends Controller
 
     public function store(Request $request)
     {
-        
+
         $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -38,7 +38,8 @@ class AppointmentController extends Controller
         return redirect()->route('appointments.request')->with('success', 'Appointment requested successfully.');
     }
 
-    public function appointment_submission(Request $request){
+    public function appointment_submission(Request $request)
+    {
         $appointments = Appointment::all();
         $appointmentsQuery = Appointment::query();
 
@@ -56,7 +57,7 @@ class AppointmentController extends Controller
         } else {
             $appointmentsQuery->orderBy('created_at', 'ASC');
         }
-        
+
         $appointments = $appointmentsQuery->get();
 
         return view('content.appointment-submissions', compact('appointments'));
@@ -83,5 +84,12 @@ class AppointmentController extends Controller
         Notification::route('mail', $appointment->email)->notify(new AppointmentDeclined($appointment));
 
         return redirect()->route('appointment.submission')->with('success', 'Appointment declined and email sent.');
+    }
+
+    public function show($id)
+    {
+        $appointment = Appointment::findOrFail($id);
+
+        return view('content.appointment-information', compact('appointment'));
     }
 }

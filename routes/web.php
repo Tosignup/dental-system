@@ -29,6 +29,7 @@ require __DIR__ . '/auth.php';
 
 Route::post('/appointments/{id}/approve', [AppointmentController::class, 'approve'])->name('appointments.approve');
 Route::post('/appointments/{id}/decline', [AppointmentController::class, 'decline'])->name('appointments.decline');
+Route::get('/appointments/show-appointment/{appointment}', [AppointmentController::class, 'show'])->name('show.appointment');
 
 
 // Admin Routes
@@ -41,6 +42,9 @@ Route::group(['middleware' => ['auth', 'verified', 'role:admin']], function () {
     Route::get('/admin/schedule', [AdminController::class, 'schedule'])->name('schedule');
     Route::get('/admin/appointment-submission', [AppointmentController::class, 'appointment_submission'])->name('appointment.submission');
 
+    //Viewing user profile
+    Route::get('/admin/overview/{user}', [AdminController::class, 'profileOverview'])->name('admin.profile');
+
     // Doctor
     Route::get('/admin/add-dentist', [DentistController::class, 'addDentist'])->name('add.dentist');
     Route::post('/dentist', [DentistController::class, 'storeDentist'])->name('store.dentist');
@@ -52,8 +56,7 @@ Route::group(['middleware' => ['auth', 'verified', 'role:admin']], function () {
     Route::get('/admin/add-dentist-schedule', [ScheduleController::class, 'addSchedule'])->name('add.schedule');
     Route::post('/dentist-schedule', [ScheduleController::class, 'storeSchedule'])->name('store.schedule');
     Route::get('/admin/show-schedule/{schedule}', [ScheduleController::class, 'showSchedule'])->name('show.schedule');
-    Route::get('/admin/edit-patient/{patient}', [PatientController::class, 'editPatient'])->name('edit.patient');
-    Route::put('/patients/{patient}', [PatientController::class, 'updatePatient'])->name('update.patient');
+    
 
     // Patients
     Route::get('/admin/add-patient', [PatientController::class, 'addPatient'])->name('add.patient');
