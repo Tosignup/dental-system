@@ -22,7 +22,6 @@
         /* Ensure it's above the overlay and dropdown */
     }
 
-
     #mobile-nav.active {
         transform: translateX(0);
     }
@@ -179,9 +178,7 @@
         <div class="flex self-start max-md:text-xs m-2.5">
             <div class="flex gap-2 items-center justify-center">
                 <button class="btn flex justify-center items-center gap-2" onclick="my_modal_2.showModal()">
-
-                    <img class="max-md:h-4 h-4" src="{{ asset('assets/images/logout.png') }}" alt="">
-                    <button class="btn" onclick="my_modal_2.showModal()">Log out</button>
+                    <button class="btn" onclick="my_modal_2 .showModal()"></button>
             </div>
             <dialog id="my_modal_2" class="modal border-2 shadow-lg border-gray-400  p-8 rounded-md max-md:text-lg">
                 <div class="modal-box flex flex-col ">
@@ -191,7 +188,7 @@
                         <form method="dialog" class="border rounded-md w-max py-2 px-4">
                             <button class="btn max-md:text-xs">Close</button>
                         </form>
-                        <form action="{{ route('logout') }}" method="POST" class="border rounded-md py-2 px-4 ">
+                        <form action="{{ route('logout') }}" method="POST" class="border rounded-md bg-red-600 py-2 px-4 text-white  ">
                             @csrf
                             <button class="btn max-md:text-xs w-max flex gap-2">
                                 Log

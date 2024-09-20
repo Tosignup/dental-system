@@ -178,9 +178,9 @@
                                             <button class="btn max-md:text-xs">Close</button>
                                         </form>
                                         <form action="{{ route('logout') }}" method="POST"
-                                            class="border rounded-md py-2 px-4">
+                                            class="border  bg-red-600 text-white rounded-md py-2 px-4">
                                             @csrf
-                                            <button class="btn max-md:text-xs w-max flex gap-2">Log out</button>
+                                            <button class="btn  bg-red-600 text-white max-md:text-xs w-max flex gap-2">Log out</button>
                                         </form>
                                     </div>
                                 </div>
