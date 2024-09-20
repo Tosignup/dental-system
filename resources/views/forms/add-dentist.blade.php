@@ -20,12 +20,12 @@
     <div class="m-4 mb-8">
         @include('components.search')
     </div>
-    <section class="bg-white shadow-lg rounded-md max-w-max p-6 m-6  max-lg:mt-14">
-        <h1 class="font-bold text-5xl p-4 max-md:text-3xl">Add Dentist</h1>
+    <section class="bg-white shadow-lg rounded-md max-w-max p-6 m-6">
+        <h1 class="font-bold text-5xl p-4 max-md:text-2xl">Add Dentist</h1>
         <form method="POST" action="{{ route('store.dentist') }}">
             @method('POST')
             @csrf
-            <div class="flex flex-wrap items-start justify-start gap-8 max-md:gap-4 max-w-4xl p-8 max-md:p-2">
+            <div class="flex flex-wrap items-start justify-start gap-8 max-md:gap-4 max-w-4xl p-8">
                 <label class="flex flex-col flex-1" for="dentist_first_name">
                     <h1 class="max-md:text-sm">First name</h1>
                     <input
@@ -139,17 +139,17 @@
                 </label>
                 <div class="flex gap-2 mt-4">
                     <button
-                        class="flex justify-center items-center  py-2 px-8 text-center max-md:py-2 max-md:px-2 max-md:text-xs font-semibold rounded-md hover:bg-green-600 hover:border-green-600 hover:text-white text-gray-800 border-2 border-gray-600 transition-all"
+                        class="flex justify-center items-center  py-2 px-8 text-center max-md:py-1 max-md:px-2 max-md:text-xs font-semibold rounded-md hover:bg-green-600 hover:border-green-600 hover:text-white text-gray-800 border-2 border-gray-600 transition-all"
                         type="submit">
                         Add Dentist
                     </button>
                     <button
-                        class="flex justify-center items-center py-2 px-8 text-center max-md:py-2 max-md:px-2 max-md:text-xs font-semibold rounded-md hover:bg-gray-600 border-2 border-gray-600 hover:text-white text-gray-800  transition-all"
+                        class="flex justify-center items-center py-2 px-8 text-center max-md:py-1 max-md:px-2 max-md:text-xs font-semibold rounded-md hover:bg-gray-600 border-2 border-gray-600 hover:text-white text-gray-800  transition-all"
                         type="reset">
                         Reset
                     </button>
                     <a href=" {{ route('dentist') }} "
-                        class="flex justify-center items-center py-2 px-8 text-center max-md:py-2 max-md:px-2 max-md:text-xs font-semibold rounded-md hover:bg-red-600 hover:border-red-600 border-2 border-gray-600 text-gray-800  hover:text-white transition-all"
+                        class="flex justify-center items-center py-2 px-8 text-center max-md:py-1 max-md:px-2 max-md:text-xs font-semibold rounded-md hover:bg-red-600 hover:border-red-600 border-2 border-gray-600 text-gray-800  hover:text-white transition-all"
                         type="reset">
                         Cancel
                     </a>

@@ -20,7 +20,7 @@
     <div class="m-4 mb-8">
         @include('components.search')
     </div>
-    <section class="bg-white shadow-lg rounded-md max-w-max p-6 m-6  max-lg:m-3 max-lg:p-3 max-lg:mt-14">
+    <section class="bg-white shadow-lg rounded-md max-w-max p-6 m-6">
         <h1 class="font-bold text-5xl p-4 max-md:text-2xl">Update patient information</h1>
         <form method="POST" action="{{ route('update.patient', $patient->id) }}">
             @method('PUT')

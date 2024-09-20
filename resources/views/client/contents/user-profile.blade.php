@@ -1,8 +1,8 @@
 @extends('client.profile')
 @section('content')
-    <section class="flex gap-5 h-max p-6 max-xl:mt-14">
+    <section class="flex gap-5 h-svh p-6">
         <!-- Main Content -->
-        <div class=" bg-white p-4 rounded-lg shadow-md max-xl:text-xs">
+        <div class="w-3/4 bg-white p-4 rounded-lg shadow-md">
             <!-- Tab Navigation -->
             <div class="border-b border-gray-200 mb-4">
                 <nav class="flex flex-wrap gap-5">
@@ -19,22 +19,21 @@
                         data-tab-target="#tab3">Contract</button>
                 </nav>
             </div>
+
             <!-- Table -->
             <div>
-                <div id="tab1" class="tab-content text-gray-700 hidden max-h-max">
+                <div id="tab1" class="tab-content text-gray-700 hidden">
                     <h1 class="font-bold mt-9 mb-4 text-2xl">Patient Background</h1>
-                    <img class="max-h-[45rem] object-contain"
-                        src="{{ asset('assets/images/patient-background-image.png') }}" alt="">
+                    <img class="h-4/6 w-4/6" src="{{ asset('assets/images/patient-background-image.png') }}" alt="">
                 </div>
                 <div id="tab2" class="tab-content text-gray-700 hidden">
                     <h1 class="font-bold mt-9 mb-4 text-2xl">X-rays</h1>
-                    <img class="max-h-[45rem]  object-contain" src="{{ asset('assets/images/x-ray-image.png') }}"
-                        alt="">
+                    <img class="" src="{{ asset('assets/images/x-ray-image.png') }}" alt="">
                 </div>
                 <div id="tab3" class="tab-content text-gray-700 hidden">
-                    <img class="max-h-[45rem]  object-contain" src="{{ asset('assets/images/contract-image.png') }}"
-                        alt="">
+                    <img class="h-4/6 w-4/6" src="{{ asset('assets/images/contract-image.png') }}" alt="">
                 </div>
+
             </div>
         </div>
     </section>

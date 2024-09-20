@@ -29,7 +29,6 @@ require __DIR__ . '/auth.php';
 
 Route::post('/appointments/{id}/approve', [AppointmentController::class, 'approve'])->name('appointments.approve');
 Route::post('/appointments/{id}/decline', [AppointmentController::class, 'decline'])->name('appointments.decline');
-Route::get('/appointments/show-appointment/{appointment}', [AppointmentController::class, 'show'])->name('show.appointment');
 
 
 // Admin Routes
@@ -41,9 +40,6 @@ Route::group(['middleware' => ['auth', 'verified', 'role:admin']], function () {
     Route::get('/admin/inventory', [AdminController::class, 'inventory'])->name('inventory');
     Route::get('/admin/schedule', [AdminController::class, 'schedule'])->name('schedule');
     Route::get('/admin/appointment-submission', [AppointmentController::class, 'appointment_submission'])->name('appointment.submission');
-
-    //Viewing user profile
-    Route::get('/admin/overview/{user}', [AdminController::class, 'profileOverview'])->name('admin.profile');
 
     // Doctor
     Route::get('/admin/add-dentist', [DentistController::class, 'addDentist'])->name('add.dentist');
