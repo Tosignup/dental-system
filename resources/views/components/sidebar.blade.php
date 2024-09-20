@@ -148,7 +148,7 @@
                         </button>
                     </a>
                     <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
-                        href="inventory">
+                        href="{{ route('inventory') }}">
                         <img class="h-8" src="{{ asset('assets/images/inventory.png') }}" alt="">
                         <button class="hover:font-bold transition-all">
                             Inventory
@@ -188,7 +188,8 @@
                         <form method="dialog" class="border rounded-md w-max py-2 px-4">
                             <button class="btn max-md:text-xs">Close</button>
                         </form>
-                        <form action="{{ route('logout') }}" method="POST" class="border rounded-md bg-red-600 py-2 px-4 text-white  ">
+                        <form action="{{ route('logout') }}" method="POST"
+                            class="border rounded-md bg-red-600 py-2 px-4 text-white  ">
                             @csrf
                             <button class="btn max-md:text-xs w-max flex gap-2">
                                 Log
@@ -315,7 +316,6 @@
                             @include('components.search')
                         </div>
                     </div>
-
                     <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
                         href="{{ route('admin.dashboard') }}">
                         <img class="h-5" src="{{ asset('assets/images/dashboard-icon.png') }}" alt="">

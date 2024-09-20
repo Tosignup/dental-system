@@ -20,7 +20,7 @@
     <div class="m-4 mb-8">
         @include('components.search')
     </div>
-    <section class="bg-white shadow-lg rounded-md max-w-max p-2 m-6">
+    <section class="bg-white shadow-lg rounded-md max-w-max p-2 m-6 max-lg:mt-14">
         <h1 class="font-bold text-3xl p-4">Add Dentist Schedule</h1>
         <form method="POST" action="{{ route('store.schedule') }}">
             @method('POST')
@@ -104,7 +104,7 @@
                             max-md:py-2 max-md:px-4
                         font-semibold rounded-md hover:bg-green-600 hover:border-green-600 hover:text-white text-gray-800 border-2 border-gray-600 transition-all"
                         type="submit">
-                        Add Schedule
+                        Add
                     </button>
                     <button
                         class="py-2 max-md:text-xs

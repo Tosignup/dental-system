@@ -23,16 +23,16 @@
             <div>
                 <div id="tab1" class="tab-content text-gray-700 hidden max-h-max">
                     <h1 class="font-bold mt-9 mb-4 text-2xl">Patient Background</h1>
-                    <img class="max-h-[45rem] object-contain"
+                    <img class="max-h-[40rem] object-contain"
                         src="{{ asset('assets/images/patient-background-image.png') }}" alt="">
                 </div>
                 <div id="tab2" class="tab-content text-gray-700 hidden">
                     <h1 class="font-bold mt-9 mb-4 text-2xl">X-rays</h1>
-                    <img class="max-h-[45rem]  object-contain" src="{{ asset('assets/images/x-ray-image.png') }}"
+                    <img class="max-h-[40rem]  object-contain" src="{{ asset('assets/images/x-ray-image.png') }}"
                         alt="">
                 </div>
                 <div id="tab3" class="tab-content text-gray-700 hidden">
-                    <img class="max-h-[45rem]  object-contain" src="{{ asset('assets/images/contract-image.png') }}"
+                    <img class="max-h-[40rem]  object-contain" src="{{ asset('assets/images/contract-image.png') }}"
                         alt="">
                 </div>
             </div>

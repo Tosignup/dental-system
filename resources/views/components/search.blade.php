@@ -110,20 +110,23 @@
 <body>
     <div id="overlay"></div>
     <div id="dropdown-overlay"></div>
-    <div id="mobile-nav" class="flex justify-between items-center max-lg:hidden">
-        <div class="flex gap-4 items-center justify-center">
-            <form method="GET" class="flex justify-center items-center gap-2" action="{{ route('patient_list') }} ">
-                @csrf
-                <img class="h-12" src="{{ asset('assets/images/search-icon.png') }}" alt="">
-                <input placeholder="Search..." autocomplete="off" name="search" type="search"
-                    class="py-2 px-4 border-gray-400 rounded-md">
-                <button type="submit"
-                    class="shadow-md py-2 px-6 rounded-md bg-white hover:bg-gray-800 hover:text-white transition-all">
-                    Search
-                </button>
-            </form>
-        </div>
-
+    <div id="mobile-nav" class="flex justify-end items-center max-lg:hidden">
+        @if (Auth::user()->role === 'Admin')
+            <div class="flex gap-4 items-center justify-center">
+                <form method="GET" class="flex justify-center items-center gap-2"
+                    action="{{ route('patient_list') }} ">
+                    @csrf
+                    <img class="h-12" src="{{ asset('assets/images/search-icon.png') }}" alt="">
+                    <input placeholder="Search..." autocomplete="off" name="search" type="search"
+                        class="py-2 px-4 border-gray-400 rounded-md">
+                    <button type="submit"
+                        class="shadow-md py-2 px-6 rounded-md bg-white hover:bg-gray-800 hover:text-white transition-all">
+                        Search
+                    </button>
+                </form>
+            </div>
+        @else
+        @endif
         <div id="user-container" class="flex justify-center items-center gap-2 cursor-pointer self-center">
             <details id="user-dropdown"
                 class="self-center bg-white rounded-md border dropdown absolute right-0 top-0 justify-self-center">
@@ -146,20 +149,51 @@
                         <img class="h-5 p-1 border border-gray-600 rounded-full bg-white"
                             src="{{ asset('assets/images/user-icon.png') }}" alt="">
                         @if (Auth::user()->role === 'Admin')
-                            <p class="text-xs font-semibold max-w-sm">{{ Auth::user()->username }}</p>
+                            <p class="text-xs font-semibold max-w-sm">{{ Auth::user()->username }}
+                                {{ ['user' => Auth::id()] }}
+                            </p>
                         @elseif(Auth::user()->role === 'Dentist')
                             <p class="text-xs font-semibold max-w-sm">{{ Auth::user()->username }}</p>
                         @elseif(Auth::user()->role === 'Staff')
                             <p class="text-xs font-semibold max-w-sm">{{ Auth::user()->username }}</p>
                         @else
-                            <p class="text-xs font-semibold max-w-xs">{{ Auth::user()->username }}</p>
+                            <p class="text-xs font-semibold max-w-xs">{{ Auth::user()->username }}
+                            </p>
                         @endif
                     </div>
-                    <li class="py-3 my-2 px-2 hover:bg-gray-200 transition-all rounded-sm">
-                        <a class="" href="{{ route('admin.profile', ['user' => Auth::id()]) }}">
-                            <h1 class="max-lg:text-xs text-sm text-left ">Profile</h1>
-                        </a>
-                    </li>
+
+                    @if (Auth::user()->role === 'admin')
+                        <li class="py-3 my-2 px-2 hover:bg-gray-200 transition-all rounded-sm">
+                            <a class="" href="{{ route('admin.profile', ['user' => Auth::id()]) }}">
+                                <h1 class="max-lg:text-xs text-sm text-left ">Profile</h1>
+                            </a>
+                        </li>
+                    @elseif(Auth::user()->role === 'client')
+                        <li class="py-3 my-2 px-2 hover:bg-gray-200 transition-all rounded-sm">
+                            <a class="" href="{{ route('client.overview', ['patient' => Auth::id()]) }}">
+                                <h1 class="max-lg:text-xs text-sm text-left ">Profile</h1>
+                            </a>
+                        </li>
+                    @elseif(Auth::user()->role === 'dentist')
+                        <li class="py-3 my-2 px-2 hover:bg-gray-200 transition-all rounded-sm">
+                            <a class="" href="">
+                                <h1 class="max-lg:text-xs text-sm text-left ">Profile</h1>
+                            </a>
+                        </li>
+                    @elseif(Auth::user()->role === 'staff')
+                        <li class="py-3 my-2 px-2 hover:bg-gray-200 transition-all rounded-sm">
+                            <a class="" href="">
+                                <h1 class="max-lg:text-xs text-sm text-left ">Profile</h1>
+                            </a>
+                        </li>
+                    @else
+                        <li class="py-3 my-2 px-2 hover:bg-gray-200 transition-all rounded-sm">
+                            <a class="" href="">
+                                <h1 class="max-lg:text-xs text-sm text-left ">Default</h1>
+                            </a>
+                        </li>
+                    @endif
+
                     <hr class="bg-gray-700 w-full">
                     <li class="py-3 my-2 px-2 hover:bg-gray-200 transition-all rounded-sm">
                         <div class="flex self-start text-sm max-md:text-xs">
@@ -180,7 +214,9 @@
                                         <form action="{{ route('logout') }}" method="POST"
                                             class="border  bg-red-600 text-white rounded-md py-2 px-4">
                                             @csrf
-                                            <button class="btn  bg-red-600 text-white max-md:text-xs w-max flex gap-2">Log out</button>
+                                            <button
+                                                class="btn  bg-red-600 text-white max-md:text-xs w-max flex gap-2">Log
+                                                out</button>
                                         </form>
                                     </div>
                                 </div>

@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Branch;
 use App\Models\Dentist;
+
 use Illuminate\Http\Request;
 use App\Models\DentistSchedule;
-use Illuminate\Console\Scheduling\Schedule;
 
 class ScheduleController extends Controller
 {
@@ -65,34 +65,20 @@ class ScheduleController extends Controller
 
         return redirect()->route('schedule')->with('success', 'Schedule added successfully.');
     }
-    public function showSchedule($id)
+
+    // ORIGINAL SHOW WITH DYNAMIC ID
+    // public function show($id)
+    // {
+    //     $schedule = DentistSchedule::findOrFail($id);
+
+    //     return view('content.schedule-information', compact('schedule'));
+    // }
+
+
+    // DUMMY SHOW FOR FRONT-END TESTING
+    public function show()
     {
-        $schedule = Schedule::findOrFail($id);
 
-        return view('content.schedule-information', compact('schedule'));
-    }
-
-    public function editSchedule($id)
-    {
-        $patient = Schedule::findOrFail($id);
-
-        return view('forms.update-schedule', compact('schedule'));
-    }
-
-    public function updateSchedule(Request $request, $id)
-    {
-        $schedule = Schedule::findOrFail($id);
-
-        $validated = $request->validate([
-            'dentist_id' => 'required|exists:dentists,id',
-            'branch_id' => 'required|exists:branches,id',
-            'date' => 'required|date',
-            'start_time' => 'required|date_format:H:i',
-            'end_time' => 'required|date_format:H:i|after:start_time',
-            'appointment_duration' => 'required|integer|min:15',
-        ]);
-
-        $schedule->update($validated);
-        return redirect()->route('schedule', compact('schedule'))->with('success', 'schedule updated');
+        return view('content.schedule-information');
     }
 }

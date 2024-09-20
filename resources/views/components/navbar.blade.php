@@ -41,6 +41,12 @@
                             class="py-2 px-4 rounded-md text-white font-semibold bg-green-600 hover:bg-green-700 transition-all cursor-pointer max-lg:py-1 max-lg:px-2 max-lg:text-xs ">
                             DASHBOARD
                         </a>
+                        <form action="{{ route('logout') }}" method="POST" class="m-auto">
+                            @csrf
+                            <button type="submit" class="font-bold max-lg:text-sm">
+                                Log out
+                            </button>
+                        </form>
                     @elseif (Auth::user()->role === 'client')
                         <form action="{{ route('logout') }}" method="POST" class="m-auto">
                             @csrf
@@ -48,7 +54,6 @@
                                 Log out
                             </button>
                         </form>
-
                         @if (session('patient_id'))
                             <a class="flex gap-6 justify-center items-center"
                                 href="{{ route('client.overview', session('patient_id')) }}">
@@ -60,6 +65,28 @@
                             <p>No Patient ID found in session.</p>
                             <p>{{ Auth::user()->patient_id }}</p>
                         @endif
+                    @elseif (Auth::user()->role === 'staff')
+                        <form action="{{ route('logout') }}" method="POST" class="m-auto">
+                            @csrf
+                            <button type="submit" class="font-bold max-lg:text-sm">
+                                Log out
+                            </button>
+                        </form>
+                        <a href="{{ route('admin.dashboard') }}"
+                            class="py-2 px-4 rounded-md text-white font-semibold bg-green-600 hover:bg-green-700 transition-all cursor-pointer max-lg:py-1 max-lg:px-2 max-lg:text-xs ">
+                            DASHBOARD
+                        </a>
+                    @elseif (Auth::user()->role === 'dentist')
+                        <form action="{{ route('logout') }}" method="POST" class="m-auto">
+                            @csrf
+                            <button type="submit" class="font-bold max-lg:text-sm">
+                                Log out
+                            </button>
+                        </form>
+                        <a href="{{ route('admin.dashboard') }}"
+                            class="py-2 px-4 rounded-md text-white font-semibold bg-green-600 hover:bg-green-700 transition-all cursor-pointer max-lg:py-1 max-lg:px-2 max-lg:text-xs ">
+                            DASHBOARD
+                        </a>
                     @else
                     @endif
                 @endauth

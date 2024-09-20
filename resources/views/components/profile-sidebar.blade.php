@@ -106,7 +106,7 @@
         class="max-w-max min-w-max self-start h-screen bg-white z-0 flex flex-col justify-between items-center py-4 px-8 max-lg:hidden">
         <div class="flex flex-col justify-between items-center h-full gap-4">
             <div class="flex flex-col gap-4">
-                <div class="flex justify-start items-center mb-4">
+                <div class="flex justify-start items-center mb-4 gap-2">
                     <a href="{{ route('welcome') }}">
                         <img class="h-10" src="{{ asset('assets/images/logo.png') }}" alt="">
                     </a>
@@ -129,37 +129,10 @@
                     <a class="flex justify-center items-center gap-2" href="{{ route('client.user-profile') }}">
                         <img class="h-8" src="{{ asset('assets/images/patient-list-icon.png') }}" alt="">
                         <button class="hover:font-bold transition-all">
-                            User profile
+                            Records
                         </button>
                     </a>
                 </div>
-            </div>
-            <div class="flex self-start max-md:text-xs m-2.5">
-                <div class="flex gap-2 items-center justify-center">
-                    <button class="btn flex justify-center items-center gap-2" onclick="my_modal_2.showModal()">
-
-                        <img class="max-md:h-4 h-4" src="{{ asset('assets/images/logout.png') }}" alt="">
-                        <button class="btn" onclick="my_modal_2.showModal()">Log out</button>
-                </div>
-                <dialog id="my_modal_2" class="modal border-2 shadow-lg border-gray-400  p-8 rounded-md max-md:text-lg">
-                    <div class="modal-box flex flex-col ">
-                        <h3 class="text-2xl font-bold max-md:text-sm">Log out</h3>
-                        <p class="py-4 max-md:text-sm">Are you sure you want to log out?</p>
-                        <div class="modal-action flex gap-2 self-end">
-                            <form method="dialog" class="border rounded-md w-max py-2 px-4">
-                                <button class="btn max-md:text-xs">Close</button>
-                            </form>
-                            <form action="{{ route('logout') }}" method="POST" class="border rounded-md py-2 px-4 ">
-                                @csrf
-                                <button class="btn max-md:text-xs w-max flex gap-2">
-                                    Log
-                                    out
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </dialog>
-
             </div>
     </nav>
 
@@ -212,7 +185,13 @@
                             <h1 class="max-lg:text-xs text-left">Profile</h1>
                         </a>
                     </li>
-                    <hr class="bg-gray-700 w-full">
+                    <hr>
+                    <li class="py-3">
+                        <a class="" href=" {{ route('client.user-profile', ['patient' => Auth::id()]) }} ">
+                            <h1 class="max-lg:text-xs text-left">Records</h1>
+                        </a>
+                    </li>
+                    <hr>
                     <li class="py-3">
                         <div class="">
                             <div class="text-left">
