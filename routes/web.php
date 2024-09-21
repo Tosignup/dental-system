@@ -55,7 +55,9 @@ Route::group(['middleware' => ['auth', 'verified', 'role:admin']], function () {
     //Dentist Schedule
     Route::get('/admin/add-dentist-schedule', [ScheduleController::class, 'addSchedule'])->name('add.schedule');
     Route::post('/dentist-schedule', [ScheduleController::class, 'storeSchedule'])->name('store.schedule');
-    Route::get('/admin/show-schedule', [ScheduleController::class, 'show'])->name('show.schedule');
+
+     Route::get('/admin/show-schedule', [ScheduleController::class, 'show'])->name('show.schedule');
+    
 
 
     // Patients

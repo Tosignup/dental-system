@@ -39,6 +39,7 @@
                                 <h1 class="text-slate-900 max-md:hidden">Edit information</h1>
                             </a>
                         </div>
+
                     </div>
 
                     @if ($dentist && $dentist->schedules)

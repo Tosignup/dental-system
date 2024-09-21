@@ -3,7 +3,7 @@
     <div class="m-4 mb-8">
         @include('components.search')
     </div>
-    <section class=" m-4 px-4 pb-4 bg-white shadow-lg rounded-md  max-lg:mt-14">
+    <section class=" m-4 px-4 pb-4 bg-white shadow-lg rounded-md  max-xl:mt-14">
         <div class="flex items-center justify-between py-4">
             <label class="flex items-center gap-2" for="time">
                 <h1 class="font-bold text-3xl max-md:text-xl min-w-max">Schedule list</h1>
@@ -21,8 +21,10 @@
             <thead>
                 <tr>
                     <th class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Dentist</th>
+                    <th class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Branch</th>
                     <th class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Date</th>
-                    <th class="px-4 py-2 max-xl:hidden">Start Time</th>
+
+                   <th class="px-4 py-2 max-xl:hidden">Start Time</th>
                     <th class="px-4 py-2 max-xl:hidden">End Time</th>
                     <th class="px-4 py-2 max-xl:hidden">Appointment Duration</th>
                     <th class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Action</th>
@@ -90,6 +92,7 @@
                     </td>
                 </tr>
                 {{-- @endforeach --}}
+
             </tbody>
         </table>
     </section>
@@ -99,6 +102,11 @@
             this.form.submit();
             document.getElementById('package').toUpperCase();
         });
+
+        function openDeleteModal() {
+            const deleteModal = document.getElementById('deleteModal');
+            deleteModal.showModal();
+        }
     </script>
 @endsection
 

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\adminPanel;
 
 use Carbon\Carbon;
 use App\Models\Dentist;
-use App\Models\User;
 use App\Models\Patient;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
@@ -83,23 +82,4 @@ class AdminController extends Controller
         return view('content.schedule', compact('schedules'));
     }
 
-    public function profileOverview($userId)
-    {
-        // Fetch the user's details from the database
-        $user = User::find($userId);
-
-        // Check if the user exists
-        if (!$user) {
-            abort(404, 'User not found.');
-        }
-
-        // Check if the user is an Admin, Receptionist, or Dentist
-        if (in_array($user->role, ['admin', 'receptionist', 'dentist'])) {
-            // Pass the user data to the profile view
-            return view('admin.admin-profile', compact('user'));
-        }
-
-        // Handle cases where the user role is not authorized to view this page
-        abort(403, 'Unauthorized action.');
-    }
 }

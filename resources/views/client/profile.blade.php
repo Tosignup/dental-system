@@ -15,9 +15,9 @@
 </head>
 
 <body class="bg-slate-100">
-    <section class="flex justify-start items-start">
+    <section class="flex justify-start items-center">
         <div>
-            <div class="h-full">
+            <div class="h-svh">
                 @include('components.profile-sidebar')
             </div>
         </div>

@@ -3,7 +3,7 @@
     <div class="m-4 mb-8">
         @include('components.search')
     </div>
-    <section class=" m-4 max-lg:mt-14 px-4 pb-4 bg-white shadow-lg rounded-md">
+    <section class=" m-4 px-4 pb-4 bg-white shadow-lg rounded-md">
         <div class="flex items-center justify-between py-4 max-md:py-2">
             <label class="flex items-center gap-2" for="time">
                 <h1 class="font-bold text-3xl max-md:text-xl">Dentist list</h1>

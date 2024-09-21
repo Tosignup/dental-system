@@ -30,6 +30,9 @@ class ScheduleController extends Controller
             'appointment_duration' => 'required|integer|min:15', // assuming duration in minutes
         ]);
 
+
+        
+
         // Parse the date and time
         $date = Carbon::parse($request->date);
         $startTime = Carbon::parse($request->date . ' ' . $request->start_time);
@@ -66,17 +69,15 @@ class ScheduleController extends Controller
         return redirect()->route('schedule')->with('success', 'Schedule added successfully.');
     }
 
+
     // ORIGINAL SHOW WITH DYNAMIC ID
     // public function show($id)
     // {
     //     $schedule = DentistSchedule::findOrFail($id);
 
-    //     return view('content.schedule-information', compact('schedule'));
-    // }
 
 
-    // DUMMY SHOW FOR FRONT-END TESTING
-    public function show()
+ public function show()
     {
 
         return view('content.schedule-information');

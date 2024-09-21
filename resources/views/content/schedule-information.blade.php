@@ -9,13 +9,14 @@
             <div>
                 <div class="flex flex-col mb-7">
                     <h1 class="text-5xl font-bold max-md:text-3xl">
-                        {{-- {{ $schedule->dentist->dentist_first_name . ' ' . $schedule->dentist->dentist_last_name }} --}}
+                       {{-- {{ $schedule->dentist->dentist_first_name . ' ' . $schedule->dentist->dentist_last_name }} --}}
                         Dentist Name HAHA
+
                     </h1>
                 </div>
 
                 <div class="flex flex-col gap-3 text-md">
-                    <h1 class="max-md:text-sm"> Branch: <span class="font-semibold">
+                     <h1 class="max-md:text-sm"> Branch: <span class="font-semibold">
                             {{-- {{ $schedule->dentist->branch }} --}}
                             branchLoc
                         </span> </h1>
@@ -35,6 +36,7 @@
                     <h1 class="max-md:text-sm">Appointment Duration: <span class="font-semibold">
                             {{-- {{ $schedule->appointment_duration }} --}}
                             60
+
                             minutes </span> </h1>
                 </div>
                 <div class="flex justify-start items-center gap-4 mt-4">
@@ -47,6 +49,7 @@
                         <div class="flex self-start max-md:text-xs ">
                             <div
                                 class="max-lg:text-xs flex-1 flex items-center justify-start gap-2 py-2 px-4 border border-gray-500 rounded-md hover:border-gray-700 hover:shadow-sm transition-all">
+
                                 <button class=" text-gray-700 text-center" onclick="openDeleteModal()">Delete</button>
                             </div>
                             <dialog id="deleteModal" class="modal p-4 rounded-md max-md:text-lg">
