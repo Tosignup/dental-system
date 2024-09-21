@@ -24,14 +24,19 @@
             <div>
                 <div id="tab1" class="tab-content text-gray-700 hidden">
                     <h1 class="font-bold mt-9 mb-4 text-2xl">Patient Background</h1>
-                    <img class="h-4/6 w-4/6" src="{{ asset('assets/images/patient-background-image.png') }}" alt="">
+
+                    <img class="max-h-[40rem] object-contain"
+                        src="{{ asset('assets/images/patient-background-image.png') }}" alt="">
                 </div>
                 <div id="tab2" class="tab-content text-gray-700 hidden">
                     <h1 class="font-bold mt-9 mb-4 text-2xl">X-rays</h1>
-                    <img class="" src="{{ asset('assets/images/x-ray-image.png') }}" alt="">
+                    <img class="max-h-[40rem]  object-contain" src="{{ asset('assets/images/x-ray-image.png') }}"
+                        alt="">
                 </div>
                 <div id="tab3" class="tab-content text-gray-700 hidden">
-                    <img class="h-4/6 w-4/6" src="{{ asset('assets/images/contract-image.png') }}" alt="">
+                    <img class="max-h-[40rem]  object-contain" src="{{ asset('assets/images/contract-image.png') }}"
+                        alt="">
+
                 </div>
 
             </div>

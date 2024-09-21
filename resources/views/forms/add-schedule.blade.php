@@ -17,8 +17,13 @@
             opacity: 0;
         }
     </style>
-    <section class="bg-white shadow-lg rounded-md max-w-max p-2 m-6">
-        <h1 class="font-bold text-2xl p-4">Add Dentist Schedule</h1>
+
+  <div class="m-4 mb-8">
+        @include('components.search')
+    </div>
+    <section class="bg-white shadow-lg rounded-md max-w-max p-2 m-6 max-lg:mt-14">
+        <h1 class="font-bold text-3xl p-4">Add Dentist Schedule</h1>
+
         <form method="POST" action="{{ route('store.schedule') }}">
             @method('POST')
             @csrf
@@ -99,7 +104,7 @@
                     <button
                         class="py-2 px-8 font-semibold rounded-md hover:bg-green-600 hover:border-green-600 hover:text-white text-gray-800 border-2 border-gray-600 transition-all"
                         type="submit">
-                        Add Schedule
+                        Add
                     </button>
                     <button
                         class="py-2 px-8 font-semibold rounded-md hover:bg-gray-600 border-2 border-gray-600 hover:text-white text-gray-800  transition-all"

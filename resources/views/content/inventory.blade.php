@@ -50,7 +50,9 @@
                                 <img class=h-6 src="{{ asset('assets/images/user-icon.png') }}" alt="">
                             </a>
                         </div>
-                    </td>
+
+                  </td>
+                   
                     {{-- @endforeach --}}
                 </tr>
             </tbody>

@@ -21,7 +21,10 @@
                 @include('components.profile-sidebar')
             </div>
         </div>
-        <div>
+        <div class="max-lg:mt-10 max-xl:self-start max-xl:justify-self-center w-full">
+            <div class="m-2">
+                @include('components.search')
+            </div>
             @yield('content')
         </div>
     </section>

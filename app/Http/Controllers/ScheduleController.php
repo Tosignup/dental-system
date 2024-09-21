@@ -30,47 +30,56 @@ class ScheduleController extends Controller
             'appointment_duration' => 'required|integer|min:15', // assuming duration in minutes
         ]);
 
-         // Parse the date and time
-         $date = Carbon::parse($request->date);
-         $startTime = Carbon::parse($request->date . ' ' . $request->start_time);
-         $endTime = Carbon::parse($request->date . ' ' . $request->end_time);
- 
-         // Check for overlapping schedules
-         $overlappingSchedule = DentistSchedule::where('dentist_id', $request->dentist_id)
-             ->whereDate('date', $date)
-             ->where(function($query) use ($startTime, $endTime) {
-                 $query->where(function($q) use ($startTime, $endTime) {
-                     $q->where('start_time', '<', $endTime)
-                       ->where('end_time', '>', $startTime);
-                 });
-             })
-             ->exists();
- 
-         if ($overlappingSchedule) {
-             return back()->withErrors([
-                 'start_time' => 'This schedule overlaps with an existing one.',
-                 'end_time' => 'This schedule overlaps with an existing one.',
-             ])->withInput();
-         }
- 
-         // Save the schedule if valid
-         DentistSchedule::create([
-             'dentist_id' => $request->dentist_id,
-             'branch_id' => $request->branch_id,
-             'date' => $date,
-             'start_time' => $startTime,
-             'end_time' => $endTime,
-             'appointment_duration' => $request->appointment_duration,
-         ]);
- 
-         return redirect()->route('schedule')->with('success', 'Schedule added successfully.');
-     }
 
-     public function show($id)
-    {   
-        $schedule = DentistSchedule::findOrFail($id);
+        
 
-        return view('content.schedule-information', compact('schedule'));
+        // Parse the date and time
+        $date = Carbon::parse($request->date);
+        $startTime = Carbon::parse($request->date . ' ' . $request->start_time);
+        $endTime = Carbon::parse($request->date . ' ' . $request->end_time);
+
+        // Check for overlapping schedules
+        $overlappingSchedule = DentistSchedule::where('dentist_id', $request->dentist_id)
+            ->whereDate('date', $date)
+            ->where(function ($query) use ($startTime, $endTime) {
+                $query->where(function ($q) use ($startTime, $endTime) {
+                    $q->where('start_time', '<', $endTime)
+                        ->where('end_time', '>', $startTime);
+                });
+            })
+            ->exists();
+
+        if ($overlappingSchedule) {
+            return back()->withErrors([
+                'start_time' => 'This schedule overlaps with an existing one.',
+                'end_time' => 'This schedule overlaps with an existing one.',
+            ])->withInput();
+        }
+
+        // Save the schedule if valid
+        DentistSchedule::create([
+            'dentist_id' => $request->dentist_id,
+            'branch_id' => $request->branch_id,
+            'date' => $date,
+            'start_time' => $startTime,
+            'end_time' => $endTime,
+            'appointment_duration' => $request->appointment_duration,
+        ]);
+
+        return redirect()->route('schedule')->with('success', 'Schedule added successfully.');
     }
 
- }
+
+    // ORIGINAL SHOW WITH DYNAMIC ID
+    // public function show($id)
+    // {
+    //     $schedule = DentistSchedule::findOrFail($id);
+
+
+
+ public function show()
+    {
+
+        return view('content.schedule-information');
+    }
+}
