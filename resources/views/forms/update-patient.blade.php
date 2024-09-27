@@ -20,13 +20,13 @@
     <div class="m-4 mb-8">
         @include('components.search')
     </div>
-    <section class="bg-white shadow-lg rounded-md max-w-max p-6 m-6">
-        <h1 class="font-bold text-5xl p-4">Update patient information</h1>
+    <section class="bg-white shadow-lg rounded-md max-w-max p-6 m-6  max-lg:m-3 max-lg:p-3 max-lg:mt-14">
+        <h1 class="font-bold text-5xl p-4 max-md:text-2xl">Update patient information</h1>
         <form method="POST" action="{{ route('update.patient', $patient->id) }}">
             @method('PUT')
             @csrf
-            <div class="flex flex-wrap items-start justify-start gap-8 max-w-4xl p-8">
-                <label class="flex flex-col flex-1" for="first_name">
+            <div class="flex flex-wrap items-start justify-start gap-8 max-md:gap-2 max-w-4xl p-8 max-md:p-4">
+                <label class="flex flex-col flex-1 max-md:text-sm" for="first_name">
                     <h1>First name</h1>
                     <input class="border border-gray-400 py-2 px-4 rounded-md" name="first_name" type="text"
                         id="first_name" value="{{ old('firstname', $patient->first_name) }}" autocomplete="off"
@@ -36,7 +36,7 @@
                             class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
                     @enderror
                 </label>
-                <label class="flex flex-col flex-1" for="last_name">
+                <label class="flex flex-col flex-1 max-md:text-sm" for="last_name">
                     <h1>Last name</h1>
                     <input class="border border-gray-400 py-2 px-4 rounded-md" name="last_name" type="text"
                         id="last_name" value="{{ old('last_name', $patient->last_name) }}" autocomplete="off"
@@ -46,7 +46,7 @@
                             class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
                     @enderror
                 </label>
-                <label class="flex flex-col flex-1" for="gender">
+                <label class="flex flex-col flex-1 max-md:text-sm" for="gender">
                     <h1>Gender</h1>
                     <select class="border border-gray-400 py-2 px-4 rounded-md" name="gender" id="gender"
                         oninput="validateInput('gender')">
@@ -65,7 +65,7 @@
                             class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
                     @enderror
                 </label>
-                <label class="flex flex-col flex-1" for="date_of_birth">
+                <label class="flex flex-col flex-1 max-md:text-sm" for="date_of_birth">
                     <h1>Date of birth</h1>
                     <input class="border border-gray-400 py-2 px-4 rounded-md" name="date_of_birth" type="date"
                         value="{{ old('date_of_birth', $patient->date_of_birth) }}" id="date_of_birth"
@@ -75,7 +75,7 @@
                             class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
                     @enderror
                 </label>
-                <label class="flex flex-col flex-1" for="fb_name">
+                <label class="flex flex-col flex-1 max-md:text-sm" for="fb_name">
                     <h1>Facebook name</h1>
                     <input class="border border-gray-400 py-2 px-4 rounded-md" name="fb_name" type="text"
                         autocomplete="off" id="fb_name" value="{{ old('fb_name', $patient->fb_name) }}"
@@ -85,7 +85,7 @@
                             class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
                     @enderror
                 </label>
-                <label class="flex flex-col flex-1" for="Package">
+                {{-- <label class="flex flex-col flex-1 max-md:text-sm" for="Package">
                     <h1>Package</h1>
                     <select class="border border-gray-400 py-2 px-4 rounded-md" name="package" id="package"
                         oninput="validateInput('package')">
@@ -104,8 +104,8 @@
                         <span id="package_error"
                             class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
                     @enderror
-                </label>
-                <label class="flex flex-col flex-1" for="phone_number">
+                </label> --}}
+                <label class="flex flex-col flex-1 max-md:text-sm" for="phone_number">
                     <h1>Phone number</h1>
                     <input class="border border-gray-400 py-2 px-4 rounded-md" name="phone_number" type="text"
                         autocomplete="off" oninput="validateInput('phone_number')"
@@ -115,40 +115,29 @@
                             class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
                     @enderror
                 </label>
-                <label class="flex flex-col flex-1" for="date_of_next_visit">
+                <label class="flex flex-col flex-1 max-md:text-sm" for="next_visit">
                     <h1>Date of next visit</h1>
-                    <input class="border border-gray-400 py-2 px-4 rounded-md" name="date_of_next_visit" type="date"
-                        value="{{ old('date_of_next_visit', $patient->date_of_next_visit) }}" autocomplete="off"
-                        id="date_of_next_visit" oninput="validateInput('date_of_next_visit')">
-                    @error('date_of_next_visit')
-                        <span id="date_of_next_visit_error"
+                    <input class="border border-gray-400 py-2 px-4 rounded-md" name="next_visit" type="date"
+                        value="{{ old('next_visit', $patient->next_visit) }}" autocomplete="off" id="next_visit"
+                        oninput="validateInput('next_visit')">
+                    @error('next_visit')
+                        <span id="next_visit_error"
                             class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
                     @enderror
                 </label>
 
-                <label class="w-full" for="address">
-                    <h1>Address</h1>
-                    <input class="border border-gray-400 py-2 px-4 rounded-md min-w-full" name="address" type="text"
-                        autocomplete="off" id="address" value="{{ old('address', $patient->address) }}"
-                        placeholder="123 Sparkling Street, Dentopolis, Smileville, USA"
-                        oninput="validateInput('address')">
-                    @error('address')
-                        <span id="address_error"
-                            class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
-                    @enderror
-                </label>
                 <div class="flex gap-4 mt-4">
                     <button
-                        class="py-2 px-8 font-semibold rounded-md hover:bg-green-600 hover:text-white text-gray-800 border-2 border-green-600 transition-all"
+                        class="max-md:flex max-md:justify-center max-md:items-center  py-2 px-8 max-md:py-1 max-md:text-center max-md:px-2 max-md:text-sm font-semibold rounded-md hover:bg-green-600 hover:text-white text-gray-800 border-2 border-green-600 transition-all"
                         type="submit">
-                        Update patient
+                        Update
                     </button>
                     <button
-                        class="py-2 px-8 font-semibold rounded-md hover:bg-gray-600 border-2 border-gray-600 hover:text-white text-gray-800  transition-all"
+                        class="max-md:flex max-md:justify-center max-md:items-center  py-2 px-8 max-md:py-1 max-md:text-center max-md:px-2 max-md:text-sm font-semibold rounded-md hover:bg-gray-600 border-2 border-gray-600 hover:text-white text-gray-800  transition-all"
                         type="reset">
                         Reset
                     </button>
-                    <a class="py-2 px-8 font-semibold rounded-md hover:bg-red-600 border-2 border-red-600 text-gray-800  hover:text-white transition-all"
+                    <a class="max-md:flex max-md:justify-center max-md:items-center py-2 px-8 max-md:py-1 max-md:text-center max-md:px-2 max-md:text-sm font-semibold rounded-md hover:bg-red-600 border-2 border-red-600 text-gray-800  hover:text-white transition-all"
                         href=" {{ route('patient_list') }} ">
                         Cancel
                     </a>

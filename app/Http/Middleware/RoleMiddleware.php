@@ -14,21 +14,38 @@ class RoleMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, $role): Response
+    // public function handle(Request $request, Closure $next, $role): Response
+    // {
+    //     if (auth()->user()->role !== $role) {
+    //         abort(404);
+    //         return view('/');
+    //     }
+    //     return $next($request);
+    // }
+    public function handle(Request $request, Closure $next, ...$roles): Response
     {
-        if (auth()->user()->role !== $role) {
-            abort(404);
-            return view('welcome');
+        // Make sure roles are passed as an array
+        $allowedRoles = is_array($roles) ? $roles : explode(',', $roles);
+
+        // Check if the authenticated user's role is one of the allowed roles
+        if (!in_array(auth()->user()->role, $allowedRoles)) {
+            return abort(403);  // Forbidden (or 404 if you prefer)
         }
+
         return $next($request);
     }
 
+
+    
+
     // public function handle(Request $request, Closure $next, ...$roles)
     // {
-    //     if (Auth::check() && in_array(Auth::user()->role, $roles)) {
+    //     $rolesArray = explode(',', $roles); // Convert roles into an array
+    
+    //     if (auth()->check() && in_array(auth()->user()->role, $rolesArray)) {
     //         return $next($request);
     //     }
-
-    //     return redirect('/')->with('error', 'You do not have access to this page.');
+        
+    //     return redirect('/')->with('error', 'Unauthorized Access');
     // }
 }

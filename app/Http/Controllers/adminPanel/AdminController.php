@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\adminPanel;
 
 use Carbon\Carbon;
+use App\Models\User;
+use App\Models\Staff;
 use App\Models\Dentist;
 use App\Models\Patient;
 use App\Models\Appointment;
@@ -12,7 +14,8 @@ use App\Http\Controllers\Controller;
 
 class AdminController extends Controller
 {
-    public function overview(){
+    public function overview()
+    {
         $today = Carbon::today();
 
         $totalPatients = Patient::count();
@@ -27,57 +30,35 @@ class AdminController extends Controller
 
         // return view('content.overview');
     }
+    
 
-    public function patient_list(Request $request){
-        $patients = Patient::all();
-        $patientQuery = Patient::query();
+    public function staff()
+    {
+        $staffs = Staff::with('branch')->get();
 
-        if ($request->has('search') && !empty($request->get('search'))) {
-            $searchTerm = $request->get('search');
-            $patientQuery->where(function ($query) use ($searchTerm) {
-                $query->where('last_name', 'like', '%' . $searchTerm . '%')
-                    ->orWhere('first_name', 'like', '%' . $searchTerm . '%');
-            });
-        }
+        // $staffs = Staff::all();
 
-        if ($request->has('sort')) {
-            $sortOption = $request->get('sort');
-            if ($sortOption == 'next_visit') {
-                $patientQuery->orderBy('next_visit', 'ASC');
-            } elseif ($sortOption == 'id') {
-                $patientQuery->orderBy('id', 'ASC');
-            } elseif ($sortOption == 'name') {
-                $patientQuery->orderBy('last_name', 'ASC')->orderBy('first_name', 'ASC');
-            } elseif ($sortOption == 'date_added') {
-                $patientQuery->orderBy('created_at', 'ASC');
-            }
-        } else {
-            $patientQuery->orderBy('created_at', 'ASC');
-        }
-
-        $patients = $patientQuery->paginate(10); //to edit
-
-
-        return view('content.patients', compact('patients'));
+        return view('content.staff-overview', compact('staffs'));
     }
-
-    public function dentist(){
+    public function dentist()
+    {
         $dentists = Dentist::all();
 
         return view('content.dentist-overview', compact('dentists'));
     }
 
-    public function inventory(){
+    public function inventory()
+    {
         return view('content.inventory');
     }
 
-    public function schedule(){
+    public function schedule()
+    {
         $schedules = DentistSchedule::with('dentist')->get();
 
         return view('content.schedule', compact('schedules'));
-
     }
 
-
+    
 
 }

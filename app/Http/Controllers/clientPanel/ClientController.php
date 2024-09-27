@@ -13,11 +13,12 @@ class ClientController extends Controller
     public function dashboard() {
         if(Auth::user()->role === 'admin') {
             return redirect()->route('admin.dashboard');
-        } elseif(Auth::user()->role === 'receptionist') {
-            return redirect()->route('receptionist.dashboard');
-        }
+        } elseif(Auth::user()->role === 'staff') {
+            return redirect()->route('staff.dashboard');
+        } else {
 
         return view('client.dashboard');
+        }
     }
     // public function profileOverview(){
     //     $patientId = session('patient_id');

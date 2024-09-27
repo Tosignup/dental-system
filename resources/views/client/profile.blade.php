@@ -15,13 +15,16 @@
 </head>
 
 <body class="bg-slate-100">
-    <section class="flex justify-start items-center">
+    <section class="flex justify-start items-start">
         <div>
-            <div class="h-svh">
+            <div class="h-full">
                 @include('components.profile-sidebar')
             </div>
         </div>
-        <div>
+        <div class="max-lg:mt-10 max-xl:self-start max-xl:justify-self-center w-full">
+            <div class="m-2">
+                @include('components.search')
+            </div>
             @yield('content')
         </div>
     </section>

@@ -13,67 +13,94 @@
     @vite('resources/css/app.css')
 </head>
 
-<body>
+<body class="">
     <div class="flex p-4 justify-between align-center shadow-lg">
         <div class="flex gap-4 text-md justify-center items-center">
             <a href="{{ route('welcome') }}">
-
-                <img class="h-14" src="{{ asset('assets/images/logo.png') }}" alt="">
-
+                <img class="h-14 max-lg:h-8" src="{{ asset('assets/images/logo.png') }}" alt="">
             </a>
             <div class="flex gap-4 max-md:hidden">
                 <h1 class="hover:font-bold transition-all text-md font-semibold">Tooth Impressions Dental Clinic</h1>
             </div>
         </div>
-        <div class="flex gap-6 justify-center items-center">
+        <div class="flex gap-6 max-lg:gap-3 justify-center items-center max-w-4xl">
             @guest
-                <a class="flex self-center justify-center gap-2" href="{{ route('login') }}">
+                <a class="flex self-center justify-center gap-2 max-lg:text-sm" href="{{ route('login') }}">
                     <h1 class="font-bold">Login</h1>
                 </a>
-                <a class="flex gap-6 justify-center items-center" href="{{ route('appointments.request') }}">
+                <a class="flex justify-center items-center" href="{{ route('appointments.request') }}">
                     <h1
-                        class="py-2 px-4 rounded-md text-white font-semibold bg-green-600 hover:bg-green-700 transition-all cursor-pointer">
+                        class="py-2 max-lg:text-xs px-4 rounded-md text-white font-semibold bg-green-600 hover:bg-green-700 transition-all cursor-pointer max-lg:py-1 max-lg:px-2">
                         BOOK NOW</h1>
                 </a>
             @endguest
-            @auth
-                @if (Auth::user()->role === 'client')
-                    <form action="{{ route('logout') }}" method="POST" class="flex self-center justify-center gap-2">
-                        @csrf
-                        <button type="submit">
-                            <h1 class="font-bold">Log out</h1>
-                        </button>
-                    </form>
-                    @if (session('patient_id'))
-                        <p>Patient ID: {{ session('patient_id') }}</p>
-                        <a class="flex gap-6 justify-center items-center"
-                            href="{{ route('client.overview', session('patient_id')) }}">
-                            <h1
-                                class="py-2 px-4 rounded-md text-white font-semibold bg-green-600 hover:bg-green-700 transition-all cursor-pointer">
-                                PROFILE</h1>
+            <div class="flex justify-center items-center gap-3 max-w-4xl">
+                @auth
+                    @if (Auth::user()->role === 'admin')
+                        <a href="{{ route('admin.dashboard') }}"
+                            class="py-2 px-4 rounded-md text-white font-semibold bg-green-600 hover:bg-green-700 transition-all cursor-pointer max-lg:py-1 max-lg:px-2 max-lg:text-xs ">
+                            DASHBOARD
+                        </a>
+                        <form action="{{ route('logout') }}" method="POST" class="m-auto">
+                            @csrf
+                            <button type="submit" class="font-bold max-lg:text-sm">
+                                Log out
+                            </button>
+                        </form>
+                    @elseif (Auth::user()->role === 'staff')
+                        <a href="{{ route('staff.dashboard') }}"
+                            class="py-2 px-4 rounded-md text-white font-semibold bg-green-600 hover:bg-green-700 transition-all cursor-pointer max-lg:py-1 max-lg:px-2 max-lg:text-xs ">
+                            DASHBOARD
+                        </a>
+                    @elseif (Auth::user()->role === 'dentist')
+                        <a href="{{ route('staff.dashboard') }}"
+                            class="py-2 px-4 rounded-md text-white font-semibold bg-green-600 hover:bg-green-700 transition-all cursor-pointer max-lg:py-1 max-lg:px-2 max-lg:text-xs ">
+                            DASHBOARD
+                        </a>
+                    @elseif (Auth::user()->role === 'client')
+                        <form action="{{ route('logout') }}" method="POST" class="m-auto">
+                            @csrf
+                            <button type="submit" class="font-bold max-lg:text-sm">
+                                Log out
+                            </button>
+                        </form>
+                        @if (session('patient_id'))
+                            <a class="flex gap-6 justify-center items-center"
+                                href="{{ route('client.overview', session('patient_id')) }}">
+                                <h1
+                                    class="py-2 px-4 rounded-md text-white font-semibold bg-green-600 hover:bg-green-700 transition-all cursor-pointer max-lg:py-1 max-lg:px-2 max-lg:text-xs ">
+                                    PROFILE</h1>
+                            </a>
+                        @else
+                            <p>No Patient ID found in session.</p>
+                            <p>{{ Auth::user()->patient_id }}</p>
+                        @endif
+                    @elseif (Auth::user()->role === 'staff')
+                        <form action="{{ route('logout') }}" method="POST" class="m-auto">
+                            @csrf
+                            <button type="submit" class="font-bold max-lg:text-sm">
+                                Log out
+                            </button>
+                        </form>
+                        <a href="{{ route('admin.dashboard') }}"
+                            class="py-2 px-4 rounded-md text-white font-semibold bg-green-600 hover:bg-green-700 transition-all cursor-pointer max-lg:py-1 max-lg:px-2 max-lg:text-xs ">
+                            DASHBOARD
+                        </a>
+                    @elseif (Auth::user()->role === 'dentist')
+                        <form action="{{ route('logout') }}" method="POST" class="m-auto">
+                            @csrf
+                            <button type="submit" class="font-bold max-lg:text-sm">
+                                Log out
+                            </button>
+                        </form>
+                        <a href="{{ route('admin.dashboard') }}"
+                            class="py-2 px-4 rounded-md text-white font-semibold bg-green-600 hover:bg-green-700 transition-all cursor-pointer max-lg:py-1 max-lg:px-2 max-lg:text-xs ">
+                            DASHBOARD
                         </a>
                     @else
-                        <p>No Patient ID found in session.</p>
-                        <p>{{ Auth::user()->patient_id }}</p>
                     @endif
-                @else
-                @endif
-            @endauth
-
-
-
-
-            {{-- <a class="flex self-center justify-center gap-2" href="{{ route('login') }}">
-                <h1 class="font-bold">Login</h1>
-            </a>
-            <a class="flex gap-6 justify-center items-center" href="{{ route('appointments.request') }}">
-                <h1
-                    class="py-2 px-4 rounded-md text-white font-semibold bg-green-600 hover:bg-green-700 transition-all cursor-pointer">
-                    BOOK NOW</h1>
-            </a> --}}
-
-
-
+                @endauth
+            </div>
         </div>
     </div>
 </body>

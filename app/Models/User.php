@@ -26,6 +26,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at',
         'role',
         'patient_id',
+        'staff_id',
         'dentist_id',
     ];
 
@@ -57,5 +58,9 @@ class User extends Authenticatable implements MustVerifyEmail
     public function dentist()
     {
         return $this->belongsTo(Dentist::class);
+    }
+    public function staff()
+    {
+        return $this->belongsTo(Staff::class);
     }
 }

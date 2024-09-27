@@ -23,6 +23,18 @@ class Patient extends Model
         'gender'
     ];
 
+    // Define a scope to get only non-archived patients
+    public function scopeActive($query)
+    {
+        return $query->whereNull('archived_at');
+    }
+
+    // Define a scope to get only archived patients
+    public function scopeArchived($query)
+    {
+        return $query->whereNotNull('archived_at');
+    }
+
     public function user()
     {
         return $this->hasOne(User::class);
@@ -46,6 +58,11 @@ class Patient extends Model
     public function transaction()
     {
         return $this->hasMany(Transaction::class);
+    }
+
+    public function image()
+    {
+        return $this->hasMany(Image::class);
     }
 
     public function getFirstInitialAttribute()

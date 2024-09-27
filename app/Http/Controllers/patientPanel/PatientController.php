@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\patientPanel;
 
 use App\Models\User;
+use App\Models\Image;
 use App\Models\Patient;
 use App\Models\Payment;
 use Illuminate\Http\Request;
@@ -11,6 +12,62 @@ use Illuminate\Support\Facades\Hash;
 
 class PatientController extends Controller
 {
+
+    public function patient_list(Request $request)
+    {
+        $patients = Patient::all();
+        $patientQuery = Patient::query();
+
+        // Check if the search term exists
+        if ($request->has('search') && !empty($request->get('search'))) {
+            $searchTerm = $request->get('search');
+            $patientQuery->where(function ($query) use ($searchTerm) {
+                $query->where('last_name', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('first_name', 'like', '%' . $searchTerm . '%');
+            });
+        }
+
+        // Filter by archived status if provided
+        if ($request->has('archived')) {
+            $archivedStatus = $request->get('archived');
+        
+            // Show active patients if "false" is selected
+            if ($archivedStatus === 'false') {
+                $patientQuery->where('is_archived', false);
+            }
+            // Show archived patients if "true" is selected
+            elseif ($archivedStatus === 'true') {
+                $patientQuery->where('is_archived', true);
+            }
+            // Show all patients (no filtering by archived status)
+        }
+        // Sorting logic
+        if ($request->has('sort')) {
+            $sortOption = $request->get('sort');
+            if ($sortOption == 'next_visit') {
+                $patientQuery->orderBy('next_visit', 'ASC');
+            } elseif ($sortOption == 'id') {
+                $patientQuery->orderBy('id', 'ASC');
+            } elseif ($sortOption == 'name') {
+                $patientQuery->orderBy('last_name', 'ASC')->orderBy('first_name', 'ASC');
+            } elseif ($sortOption == 'date_added') {
+                $patientQuery->orderBy('created_at', 'ASC');
+            }
+        } else {
+            // Default sorting by created date
+            $patientQuery->orderBy('created_at', 'ASC');
+        }
+
+        // Execute the query and get the results
+        $patients = $patientQuery->get();
+
+
+        $patients = $patientQuery->paginate(10); //to edit
+
+
+        return view('content.patients', compact('patients'));
+    }
+    
     public function addPatient()
     {
         return view('forms.add-patient');
@@ -76,15 +133,66 @@ class PatientController extends Controller
             'last_name' => 'required|min:3|max:254',
             'gender' => 'required',
             'date_of_birth' => 'required|date',
-            'facebook_name' => 'required|string|max:255',
-            'package' => 'required|string|max:255',
+            'fb_name' => 'required|string|max:255',
             'phone_number' => 'required|string|max:20',
-            'date_of_next_visit' => 'required|date',
-            'address' => 'required|string|max:500'
+            'next_visit' => 'required|date',
         ]);
 
         $patient->update($validated);
-        return redirect()->route('show_patient', compact('patient'))->with('success','patient updated');
+        return redirect()->route('show.patient', compact('patient'))->with('success','patient updated');
 
     }
+
+    public function patientContract(Request $request, $id)
+    {
+        $patient = Patient::findOrFail($id);
+        $image = Image::where('patient_id', $id)
+                        ->where('image_type', 'contract')
+                        ->first();
+        
+        return view('content.patient-contract', compact('patient', 'image'));
+    }
+
+    public function patientBackground(Request $request, $id)
+    {
+        $patient = Patient::findOrFail($id);
+        $image = Image::where('patient_id', $id)
+                        ->where('image_type', 'background')
+                        ->first();
+
+        return view('content.patient-background', compact('patient', 'image'));
+    }
+    public function patientXray(Request $request, $id)
+    {
+        $patient = Patient::findOrFail($id);
+        $image = Image::where('patient_id', $id)
+                        ->where('image_type', 'xray')
+                        ->first();
+
+        return view('content.patient-background', compact('patient', 'image'));
+    }
+
+
+    //Archiving Patient Data
+    public function archivePatient($id)
+    {
+        $patient = Patient::find($id);
+        $patient->is_archived = 1;
+        $patient->archived_at = now();  // Mark patient as archived with current timestamp
+        $patient->save();
+        
+        return redirect()->back()->with('success', 'Patient has been archived.');
+    }
+
+    public function restorePatient($id)
+    {
+        $patient = Patient::find($id);
+        $patient->is_archived = 0;   
+        $patient->archived_at = null;  // Restore patient by nullifying the archived_at field
+        $patient->save();
+        
+        return redirect()->back()->with('success', 'Patient has been restored.');
+    }
+
+
 }

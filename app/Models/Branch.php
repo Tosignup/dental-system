@@ -27,4 +27,14 @@ class Branch extends Model
     {
         return $this->hasMany(Appointment::class, 'branch_id');
     }
+
+    public function staff()
+    {
+        return $this->hasMany(Staff::class);
+    }
+    
+    public function getBranchLocAttribute($value)
+    {
+        return ucwords(strtolower($value));
+    }
 }
