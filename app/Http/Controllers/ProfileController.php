@@ -22,6 +22,7 @@ class ProfileController extends Controller
             'user' => $request->user(),
         ]);
     }
+    
      public function profileOverview($id)
     {
         $user = User::findOrFail($id);
@@ -52,6 +53,19 @@ class ProfileController extends Controller
         $request->$user->save();
 
         return Redirect::route('profile', compact('user'))->with('status', 'profile-updated');
+    }
+
+    public function editProfile(ProfileUpdateRequest $request): RedirectResponse
+    {
+        $request->user()->fill($request->validated());
+
+        if ($request->user()->isDirty('email')) {
+            $request->user()->email_verified_at = null;
+        }
+
+        $request->user()->save();
+
+        return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
 
     /**

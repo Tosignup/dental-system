@@ -22,9 +22,10 @@ Route::get('/', function () {
 // Route::get('/dashboard', [ClientController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::get('/profile-overview/{user}', [ProfileController::class, 'profileOverview'])->name('profile');
-    Route::put('/profile/{user}', [ProfileController::class, 'profileUpdate'])->name('profile.update');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile-overview', [ProfileController::class, 'profileOverview'])->name('profile');
+    // Route::patch('/profile/{user}', [ProfileController::class, 'profileUpdate'])->name('profile.update');
+    Route::patch('/profile', [ProfileController::class, 'editProfile'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 });
@@ -36,6 +37,20 @@ Route::get('/preview-email', function () {
     $notification = new VerifyEmail();
 
     return $notification->toMail($user);
+});
+
+Route::get('/send-test-email', function () {
+    $details = [
+        'subject' => 'Test Email from Laravel',
+        'body' => 'This is a test email sent from Laravel using Mailtrap.'
+    ];
+
+    Mail::raw($details['body'], function ($message) use ($details) {
+        $message->to('recipient@example.com')
+                ->subject($details['subject']);
+    });
+
+    return 'Test email has been sent!';
 });
 
 // Route::get('/test-email', function () {
@@ -53,7 +68,7 @@ Route::post('/appointments/{id}/approve', [AppointmentController::class, 'approv
 Route::post('/appointments/{id}/decline', [AppointmentController::class, 'decline'])->name('appointments.decline');
 Route::get('/appointments/show-appointment/{appointment}', [AppointmentController::class, 'show'])->name('show.appointment');
 
-Route::group(['middleware' => ['auth', 'verified','role:admin,staff,dentist']], function () {
+Route::group(['middleware' => ['auth', 'verified','role:admin,staff']], function () {
     Route::get('/patient-list', [PatientController::class, 'patient_list'])->name('patient_list');
     Route::get('/appointment-submission', [AppointmentController::class, 'appointment_submission'])->name('appointment.submission');
     Route::get('/inventory', [AdminController::class, 'inventory'])->name('inventory');
@@ -123,11 +138,11 @@ Route::group(['middleware' => ['auth', 'role:staff']], function () {
 
 });
 //Dentist Routes
-Route::group(['middleware' => ['auth', 'role:dentist']], function () {
-    Route::get('/staff/dashboard', [StaffController::class, 'overview'])->name('staff.dashboard');
-    // Route::get('/staff/patient-list', [StaffController::class, 'patient_list'])->name('patient_list');
+// Route::group(['middleware' => ['auth', 'role:dentist']], function () {
+//     Route::get('/staff/dashboard', [StaffController::class, 'overview'])->name('staff.dashboard');
+//     // Route::get('/staff/patient-list', [StaffController::class, 'patient_list'])->name('patient_list');
 
-});
+// });
 //Client Routes
 Route::group(['middleware' => ['auth', 'verified', 'role:client']], function () {
     Route::get('/client/dashboard', [ClientController::class, 'dashboard'])->name('dashboard');

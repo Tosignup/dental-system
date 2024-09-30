@@ -35,21 +35,21 @@
             <h1>Go back to patient list</h1>
         </a>
     </div>
-    <div class=" flex flex-col max-w-4xl py-6 mx-auto sm:px-6 lg:px-8  ">
+    <div class=" flex flex-col max-w-4xl mx-auto sm:px-6 lg:px-8  ">
         <div class="w-full mx-auto sm:px-6 lg:px-8">
-            <div class="p-4 my-4 sm:p-8 bg-gray-400 shadow sm:rounded-lg ">
+            <div class="p-4 my-4 sm:p-8 bg-green-500 shadow sm:rounded-lg ">
                 <div class="w-full ">
-                    @include('profile.partials.update-profile-information-form')
+                    @include('profile.partials.edit-profile-information-form')
                 </div>
             </div>
 
-            <div class="p-4 my-4 sm:p-8 bg-green-600 shadow sm:rounded-lg">
+            <div class="p-4 my-4 sm:p-8 bg-green-500 shadow sm:rounded-lg">
                 <div class="w-full">
                     @include('profile.partials.update-password-form')
                 </div>
             </div>
 
-            <div class="p-4 my-4 sm:p-8 bg-green-600 shadow sm:rounded-lg">
+            <div class="p-4 my-4 sm:p-8 bg-green-700 shadow sm:rounded-lg">
                 <div class="w-full">
                     @include('profile.partials.delete-user-form')
                 </div>

@@ -65,7 +65,12 @@ class PatientController extends Controller
         $patients = $patientQuery->paginate(10); //to edit
 
 
-        return view('content.patients', compact('patients'));
+        return view('content.patients', [
+            'patients' => $patients,
+            'search' => $request->get('search'),
+            'archived' => $request->get('archived'),
+            'sort' => $request->get('sort')
+        ]);
     }
     
     public function addPatient()

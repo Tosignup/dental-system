@@ -41,10 +41,10 @@
 
                 <select class="max-md:text-sm max-md:py-1 max-md:px-2 border border-gray-400 py-2 px-4 rounded-md"
                     name="sort">
-                    <option value="next_visit">Next Visit</option>
-                    <option value="id">ID</option>
-                    <option value="name">Name</option>
-                    <option value="date_added">Date Added</option>
+                    <option value="next_visit" {{ $sort == 'next_visit' ? 'selected' : '' }}>Next Visit</option>
+                    <option value="id" {{ $sort == 'id' ? 'selected' : '' }}>ID</option>
+                    <option value="name" {{ $sort == 'name' ? 'selected' : '' }}>Name</option>
+                    <option value="date_added" {{ $sort == 'date_added' ? 'selected' : '' }}>Date Added</option>
                 </select>
 
                 <button
@@ -104,11 +104,11 @@
                                 <a
                                     class="border border-slate-600 rounded-md  text-white font-semibold hover:bg-gray-400 max-d transition-all max-md:hidden">
                                     @if (is_null($patient->archived_at))
-                                        <button class="py-2 px-4 max-md:py-1 max-md:px-2" type="submit"><img
-                                                class="h-5 sm:h-4 sm:w-4 max-md:h-4 max-md:w-4 max-md:hidden"
-                                                src="{{ asset('assets/images/archive.png') }}" alt=""
-                                                onclick="document.getElementById('my_modal_4').showModal()"></button>
-                                        <dialog id="my_modal_4"
+                                        <button class="py-2 px-4 max-md:py-1 max-md:px-2 " type="submit"
+                                            onclick="document.getElementById('archive_modal_{{ $patient->id }}').showModal()">
+                                            <img class="h-5 sm:h-4 sm:w-4 max-md:h-4 max-md:w-4 max-md:hidden"
+                                                src="{{ asset('assets/images/archive.png') }}" alt=""></button>
+                                        <dialog id="archive_modal_{{ $patient->id }}"
                                             class="modal border-2 shadow-lg border-gray-400 p-8 rounded-md max-md:text-lg">
                                             <div class="modal-box flex flex-col">
                                                 <h3 class="text-2xl font-bold max-md:text-sm">Archive Patient</h3>
@@ -131,8 +131,8 @@
                                     @else
                                         <form action="{{ route('restore.patient', $patient->id) }}" method="POST">
                                             @csrf
-                                            <button class="py-2 px-4 max-md:py-1 max-md:px-2" type="submit"><img
-                                                    class="h-5 sm:h-4 sm:w-4 max-md:h-4 max-md:w-4 max-md:hidden"
+                                            <button class="py-2 px-4 max-md:py-1 max-md:px-2" type="submit">
+                                                <img class="h-5 sm:h-4 sm:w-4 max-md:h-4 max-md:w-4 max-md:hidden"
                                                     src="{{ asset('assets/images/restore.png') }}" alt=""></button>
                                         </form>
                                     @endif
@@ -156,7 +156,7 @@
         });
 
         document.addEventListener('DOMContentLoaded', function() {
-            const modal = document.getElementById('my_modal_4');
+            const modal = document.getElementById('archive_modal_{{ $patient->id }}');
             const closeButton = modal.querySelector('button[type="button"]');
         });
     </script>

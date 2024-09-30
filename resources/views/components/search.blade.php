@@ -164,7 +164,7 @@
 
                     @if (Auth::user()->role === 'admin')
                         <li class="py-3 my-2 px-2 hover:bg-gray-200 transition-all rounded-sm">
-                            <a class="" href="{{ route('profile', ['user' => Auth::id()]) }}">
+                            <a class="" href="{{ route('profile.edit', ['user' => Auth::id()]) }}">
                                 <h1 class="max-lg:text-xs text-sm text-left ">Profile</h1>
                             </a>
                         </li>
@@ -176,13 +176,15 @@
                         </li>
                     @elseif(Auth::user()->role === 'dentist')
                         <li class="py-3 my-2 px-2 hover:bg-gray-200 transition-all rounded-sm">
-                            <a class="" href="">
+                            <a class="" href="{{ route('profile.edit', ['user' => Auth::id()]) }}">
+
                                 <h1 class="max-lg:text-xs text-sm text-left ">Profile</h1>
                             </a>
                         </li>
                     @elseif(Auth::user()->role === 'staff')
                         <li class="py-3 my-2 px-2 hover:bg-gray-200 transition-all rounded-sm">
-                            <a class="" href="{{ route('profile', ['user' => Auth::id()]) }}">
+                            <a class="" href="{{ route('profile.edit', ['user' => Auth::id()]) }}">
+
                                 <h1 class="max-lg:text-xs text-sm text-left ">Profile</h1>
                             </a>
                         </li>
