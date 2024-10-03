@@ -17,6 +17,10 @@ class DentistSchedule extends Model
         'end_time', 
         'appointment_duration',
     ];
+    // protected function serializeDate(DateTimeInterface $date)
+    // {
+    //     return $date->format('d-m-Y H:i:s'); // Customize the format as needed
+    // }
 
     public function dentist()
     {
@@ -26,5 +30,10 @@ class DentistSchedule extends Model
     public function branch()
     {
         return $this->belongsTo(Branch::class);
+    }
+
+    public function appointment()
+    {
+        return $this->hasMany(Appointment::class);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\adminPanel;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Staff;
+use App\Models\Branch;
 use App\Models\Dentist;
 use App\Models\Patient;
 use App\Models\Appointment;
@@ -36,15 +37,14 @@ class AdminController extends Controller
     {
         $staffs = Staff::with('branch')->get();
 
-        // $staffs = Staff::all();
-
         return view('content.staff-overview', compact('staffs'));
     }
     public function dentist()
     {
-        $dentists = Dentist::all();
-
+        
+        $dentists = Dentist::with('branch')->get();
         return view('content.dentist-overview', compact('dentists'));
+
     }
 
     public function inventory()

@@ -10,11 +10,16 @@ class Appointment extends Model
     use HasFactory;
 
     protected $fillable = [
-        'appointment_date',
         'patient_id',
         'dentist_id',
         'branch_id',
+        'schedule_id',
         'proc_id',
+        'preferred_time',
+        'appointment_date',
+        'status',
+        'pending',
+        'is_online',
     ];
 
     public function patient()
@@ -32,8 +37,13 @@ class Appointment extends Model
         return $this->belongsTo(Branch::class);
     }
 
+    public function dentistSchedule()
+    {
+        return $this->belongsTo(DentistSchedule::class);
+    }
+
     public function procedure()
     {
-        return $this->belongsTo(Procedure::class);
+        return $this->belongsTo(Procedure::class, 'proc_id');
     }
 }

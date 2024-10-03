@@ -16,18 +16,6 @@
                     </button>
                 </form>
             </label>
-            {{-- <form method="GET" action="{{ route('patient_list') }}"
-                class="flex gap-4 max-md:gap-1 items-center justify-center m-4 max-md:m-2">
-                <h1 class="max-md:text-xs min-w-max">Sort by: </h1>
-                <select name="sort"
-                    class="border text-sm w-32 border-gray-400 p-2 px-4 mx-2 rounded-md max-md:text-xs max-md:px-2 max-md:mx-1 max-md:p-1 max-md:w-lg"
-                    id="sort">
-                    <option value="id" {{ request()->get('sort') == 'id' ? 'selected' : '' }}>ID</option>
-                    <option value="date_of_next_visit"
-                        {{ request()->get('sort') == 'date_of_next_visit' ? 'selected' : '' }}>Next visit</option>
-                    <option value="name" {{ request()->get('sort') == 'name' ? 'selected' : '' }}>Name</option>
-                </select>
-            </form> --}}
             <form method="GET" action="{{ route('patient_list') }}">
                 <input class="max-md:text-sm max-md:py-1 max-md:px-2 border border-gray-400 py-2 px-4 rounded-md"
                     type="text" name="search" placeholder="Search...">
@@ -67,6 +55,7 @@
                 </tr>
             </thead>
             <tbody>
+
                 @foreach ($patients as $patient)
                     {{-- <tr class="odd:bg-green-100 even:bg-slate-100"> --}}
                     <tr class="{{ $patient->is_archived ? 'bg-slate-100' : 'bg-green-100' }}">
@@ -112,7 +101,8 @@
                                             class="modal border-2 shadow-lg border-gray-400 p-8 rounded-md max-md:text-lg">
                                             <div class="modal-box flex flex-col">
                                                 <h3 class="text-2xl font-bold max-md:text-sm">Archive Patient</h3>
-                                                <p class="py-4 font-normal max-md:text-sm">Are you sure you want to archive
+                                                <p class="py-4 font-normal max-md:text-sm">Are you sure you want to
+                                                    archive
                                                     {{ $patient->last_name . ' ' . $patient->first_name }}?</p>
                                                 <div class="modal-action flex gap-2 self-end">
                                                     <form method="dialog" class="border rounded-md w-max py-2 px-4">
@@ -155,9 +145,21 @@
             document.getElementById('package').toUpperCase();
         });
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const modal = document.getElementById('archive_modal_{{ $patient->id }}');
-            const closeButton = modal.querySelector('button[type="button"]');
+
+
+        // Check if the modal element exists before interacting with it
+        document.querySelectorAll('[id^="archive_modal_"]').forEach((modal) => {
+            if (modal) {
+                const modalId = modal.id;
+                const button = document.querySelector(
+                    `[onclick="document.getElementById('${modalId}').showModal()"]`);
+
+                if (button) {
+                    button.addEventListener('click', () => {
+                        modal.showModal();
+                    });
+                }
+            }
         });
     </script>
 @endsection

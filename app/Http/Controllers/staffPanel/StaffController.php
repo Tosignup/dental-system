@@ -5,6 +5,7 @@ namespace App\Http\Controllers\staffPanel;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Staff;
+use App\Models\Branch;
 use App\Models\Patient;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
@@ -34,7 +35,8 @@ class StaffController extends Controller
 
     public function addStaff()
     {
-        return view('forms.add-staff');
+        $branches = Branch::all();
+        return view('forms.add-staff', compact('branches'));
     }
 
     public function storeStaff(Request $request)

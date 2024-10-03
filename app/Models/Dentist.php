@@ -20,7 +20,7 @@ class Dentist extends Model
         'dentist_phone_number',
         'password',
         'dentist_specialization',
-        'branch',
+        'branch_id',
     ];
 
     public function user()
@@ -30,7 +30,7 @@ class Dentist extends Model
 
     public function branch()
     {
-        return $this->belongsTo(Branch::class);
+        return $this->belongsTo(Branch::class, 'branch_id');
     }
 
     public function patients()
@@ -48,6 +48,10 @@ class Dentist extends Model
         return $this->hasMany(DentistSchedule::class);
     }
     
+    public function getFirstInitialAttribute()
+    {
+        return substr($this->dentist_first_name, 0, 1);
+    }
     
     public function getDentistFirstNameAttribute($value)
     {
@@ -61,8 +65,8 @@ class Dentist extends Model
     {
         return ucwords(strtolower($value));
     }
-    public function getBranchAttribute($value)
-    {
-        return ucwords(strtolower($value));
-    }
+    // public function getBranchAttribute($value)
+    // {
+    //     return ucwords(strtolower($value));
+    // }
 }

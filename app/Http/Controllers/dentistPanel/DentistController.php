@@ -2,18 +2,58 @@
 
 namespace App\Http\Controllers\dentistPanel;
 
+use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Branch;
 use App\Models\Dentist;
-use App\Models\DentistSchedule;
+use App\Models\Patient;
+use App\Models\Appointment;
 use Illuminate\Http\Request;
+use App\Models\DentistSchedule;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 
 class DentistController extends Controller
-{
+{   
+    public function overview($id)
+    {
+        $dentist = Dentist::find($id);
+        
+
+        $appointments = Appointment::where('dentist_id', $id)
+                                    ->with(['patient']) // Eager load the necessary relationships
+                                    ->paginate(5); // Adjust pagination as needed
+        
+
+        return view('dentist.contents.overview', compact('dentist', 'appointments'));
+    }
+
+    public function dentistAppointments($id)
+    {
+        // Get the logged-in dentist's ID
+        $dentist = Dentist::find($id);
+
+
+        // Fetch pending and approved appointments separately
+        $pendingAppointments = Appointment::where('dentist_id', $id)
+                                        ->where('pending', 'Pending')
+                                        ->with(['patient', 'procedure', 'branch'])
+                                        ->paginate(5, ['*'], 'pending_page'); // Custom pagination query param
+        
+        $approvedAppointments = Appointment::where('dentist_id', $id)
+                                        ->where('pending', 'approved')
+                                        ->with(['patient', 'procedure', 'branch'])
+                                        ->paginate(5, ['*'], 'approved_page'); // Custom pagination query param
+
+        // Pass both sets of appointments to the view
+        return view('dentist.contents.overview', compact('dentist','pendingAppointments', 'approvedAppointments'));
+    }
+
+
     public function addDentist()
     {
-        return view('forms.add-dentist');
+        $branches = Branch::all();
+        return view('forms.add-dentist', compact('branches'));
     }
 
     public function storeDentist(Request $request)
@@ -27,7 +67,8 @@ class DentistController extends Controller
             'dentist_gender' => 'nullable|string',
             'password' => 'required|string|min:8|confirmed',
             'dentist_specialization' => 'required|string|max:50',
-            'branch' => 'required|string',
+            'branch_id' => 'required|exists:branches,id',
+
         ]);
 
         $dentist = Dentist::create([
@@ -39,7 +80,7 @@ class DentistController extends Controller
             'dentist_phone_number' => $request->dentist_phone_number,
             'password' => Hash::make($request->password),
             'dentist_specialization' => $request->dentist_specialization,
-            'branch' => $request->branch,
+            'branch_id' => $request->branch_id,
         ]);
 
         User::create([
@@ -86,4 +127,111 @@ class DentistController extends Controller
 
         return view('content.dentist-information', compact('dentist'));
     }
+
+    public function getDentists($branchId)
+    {
+        try {
+            // Fetch dentists associated with the given branch ID
+            $dentists = Dentist::where('branch_id', $branchId)->get(['id', 'dentist_last_name', 'dentist_first_name']);
+            return response()->json($dentists);
+        } catch (\Exception $e) {
+            // Log the exception and return a 500 error response
+            \Log::error('Error fetching dentists: ' . $e->getMessage());
+            return response()->json(['error' => 'Failed to fetch dentists'], 500);
+        }
+    }
+
+    // Fetch procedures for a specific dentist
+    public function getProceduresByDentist($dentistId)
+    {
+        $procedures = Procedure::where('dentist_id', $dentistId)->get();
+        return response()->json($procedures);
+    }
+
+    // Fetch schedules for a specific dentist
+    public function getSchedulesByDentist($dentistId)
+    {
+        try {
+            $schedules = DentistSchedule::where('dentist_id', $dentistId)->get();
+
+            if ($schedules->isEmpty()) {
+                return response()->json([], 200);
+            }
+
+            return response()->json($schedules, 200);
+        } catch (\Exception $e) {
+            \Log::error('Error fetching schedules: ' . $e->getMessage());
+            return response()->json(['error' => 'Error fetching schedules'], 500);
+        }
+    }
+
+    public function getDentistSchedules($dentistId)
+    {
+        // Fetch the dentist's schedules
+        $schedules = DentistSchedule::where('dentist_id', $dentistId)->get();
+
+        if ($schedules->isEmpty()) {
+            return response()->json(['error' => 'No schedules found'], 404);
+        }
+
+        // Return the schedule with the appointment date, start, and end times
+        return response()->json($schedules->map(function ($schedule) {
+            return [
+                'id' => $schedule->id,
+                'appointment_date' => $schedule->appointment_date,
+                'start_time' => $schedule->start_time,
+                'end_time' => $schedule->end_time
+            ];
+        }));
+    }
+
+    public function getAvailableTimeSlots($scheduleId)
+    {
+        // Fetch the schedule for the selected schedule_id
+        $schedule = DentistSchedule::find($scheduleId);
+
+        if (!$schedule) {
+            return response()->json(['error' => 'No schedule found'], 404);
+        }
+
+        // Start and end times from the schedule
+        $startTime = new \DateTime($schedule->start_time);
+        $endTime = new \DateTime($schedule->end_time);
+        $appointmentDuration = $schedule->appointment_duration; // Duration in minutes
+
+        // Array to store time slots
+        $timeSlots = [];
+
+        // Generate time slots between start and end time
+        while ($startTime < $endTime) {
+            $slotStart = clone $startTime;
+            $slotEnd = clone $startTime;
+            $slotEnd->modify("+{$appointmentDuration} minutes");
+
+            if ($slotEnd <= $endTime) {
+                // Format the slot as '08:00 - 08:30'
+                $timeSlots[] = $slotStart->format('H:i') . ' - ' . $slotEnd->format('H:i');
+            }
+
+            // Move to the next slot
+            $startTime = $slotEnd;
+        }
+
+        // Return the available time slots as a JSON response
+        return response()->json($timeSlots);
+    }
+
+    public function getScheduleDetails($scheduleId) {
+        $schedule = DentistSchedule::find($scheduleId);
+        return response()->json([
+            'date' => $schedule->date
+        ]);
+    }
+    
+
+
+
+
+
+
 }

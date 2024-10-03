@@ -19,9 +19,9 @@ return new class extends Migration
             $table->string('dentist_email')->unique();
             $table->string('dentist_gender');
             $table->string('dentist_phone_number');
-            $table->enum('branch', ['dau','angeles','sindalan'])->default('dau');
             $table->string('dentist_specialization');
             $table->string('password');
+            $table->foreignId('branch_id')->nullable()->constrained('branches')->onDelete('cascade');
             $table->timestamps();
         });
     }

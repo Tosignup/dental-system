@@ -36,7 +36,10 @@
                         </td>
                         <td class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">
                             {{ $dentist->dentist_specialization }}</td>
-                        <td class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">{{ $dentist->branch }}</td>
+                        <td class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">
+                            {{ $dentist->branch ? $dentist->branch->branch_loc : 'No branch assigned' }}
+                            {{-- {{ $dentist->branch_id }} --}}
+                        </td>
                         <td class="border py-2 max-md:py-2">
                             <div class="flex gap-2 justify-center items-center">
                                 <a class="max-md:hidden border border-slate-600 rounded-md py-2 px-4 max-md:py-1 max-md:px-2 text-white font-semibold hover:bg-gray-400 transition-all"

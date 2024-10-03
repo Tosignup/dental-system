@@ -22,6 +22,9 @@ return new class extends Migration
             $table->string('fb_name')->nullable();
             $table->string('gender');
             $table->date('next_visit')->nullable();
+            $table->boolean('is_archived')->default(false);
+            $table->timestamp('archived_at')->nullable();
+
             $table->timestamps();
         });
 

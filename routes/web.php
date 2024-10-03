@@ -28,6 +28,20 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'editProfile'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::get('/appointments/add-walk-in', [AppointmentController::class, 'addWalkIn'])->name('add.walkIn');
+    Route::get('/appointments/add-online/{patient}', [AppointmentController::class, 'addOnline'])->name('add.online');
+    Route::post('/appointments', [AppointmentController::class, 'storeWalkIn'])->name('store.walkIn');
+    Route::post('/appointments/{patient}', [AppointmentController::class, 'storeOnline'])->name('store.online');
+
+    //Working Routes
+    Route::get('/appointments/add-walk-in/dentists/{branch}', [DentistController::class, 'getDentists']);
+    // Route::get('/appointments/add-walk-in/procedures/{dentistId}', [DentistController::class, 'getProceduresByDentist']);
+    Route::get('/appointments/add-walk-in/schedules/{dentistId}', [DentistController::class, 'getDentistSchedules']);
+
+    //Testing Routes
+    Route::get('/appointments/add-walk-in/schedules/{dentistId}', [DentistController::class, 'getSchedulesByDentist']);
+    Route::get('/appointments/add-walk-in/timeslots/{scheduleId}', [DentistController::class, 'getAvailableTimeSlots']);
+    Route::get('/appointments/add-walk-in/schedule/{scheduleId}', [DentistController::class, 'getScheduleDetails']);
 });
 
 require __DIR__ . '/auth.php';
@@ -64,11 +78,10 @@ Route::get('/send-test-email', function () {
 //     return 'Test email sent!';
 // });
 
-Route::post('/appointments/{id}/approve', [AppointmentController::class, 'approve'])->name('appointments.approve');
-Route::post('/appointments/{id}/decline', [AppointmentController::class, 'decline'])->name('appointments.decline');
+
 Route::get('/appointments/show-appointment/{appointment}', [AppointmentController::class, 'show'])->name('show.appointment');
 
-Route::group(['middleware' => ['auth', 'verified','role:admin,staff']], function () {
+Route::group(['middleware' => ['auth', 'verified','role:admin,staff,dentist']], function () {
     Route::get('/patient-list', [PatientController::class, 'patient_list'])->name('patient_list');
     Route::get('/appointment-submission', [AppointmentController::class, 'appointment_submission'])->name('appointment.submission');
     Route::get('/inventory', [AdminController::class, 'inventory'])->name('inventory');
@@ -82,6 +95,9 @@ Route::group(['middleware' => ['auth', 'verified','role:admin,staff']], function
     //Image Upload
     Route::post('/upload-image', [ImageController::class, 'uploadImage'])->name('upload.image');
 
+    //Appointment
+    // Route::get('/appointments/create', [AppointmentController::class, 'create'])->name('appointment.create');
+    // Route::post('/appointments/store', [AppointmentController::class, 'store'])->name('appointment.store');
 
  });
 
@@ -111,7 +127,7 @@ Route::group(['middleware' => ['auth', 'verified', 'role:admin']], function () {
     //Dentist Schedule
     Route::get('/admin/add-dentist-schedule', [ScheduleController::class, 'addSchedule'])->name('add.schedule');
     Route::post('/dentist-schedule', [ScheduleController::class, 'storeSchedule'])->name('store.schedule');
-    Route::get('/admin/show-schedule/{schedule}', [ScheduleController::class, 'showSchedule'])->name('show.schedule');
+    // Route::get('/admin/show-schedule/{schedule}', [ScheduleController::class, 'showSchedule'])->name('show.schedule');
     
 
     // Patients
@@ -132,24 +148,27 @@ Route::group(['middleware' => ['auth', 'verified', 'role:admin']], function () {
 });
 
 // Staff Routes
-Route::group(['middleware' => ['auth', 'role:staff']], function () {
+Route::group(['middleware' => ['auth', 'verified', 'role:staff']], function () {
     Route::get('/staff/dashboard', [StaffController::class, 'overview'])->name('staff.dashboard');
     // Route::get('/staff/patient-list', [StaffController::class, 'patient_list'])->name('patient_list');
 
 });
-//Dentist Routes
-// Route::group(['middleware' => ['auth', 'role:dentist']], function () {
-//     Route::get('/staff/dashboard', [StaffController::class, 'overview'])->name('staff.dashboard');
-//     // Route::get('/staff/patient-list', [StaffController::class, 'patient_list'])->name('patient_list');
+// Dentist Routes
+Route::group(['middleware' => ['auth', 'role:dentist']], function () {
+    Route::get('/dentist/dashboard/{dentist}', [DentistController::class, 'dentistAppointments'])->name('dentist.dashboard');
+    // Route::get('/staff/patient-list', [StaffController::class, 'patient_list'])->name('patient_list');
 
-// });
+    Route::post('/appointments/{id}/approve', [AppointmentController::class, 'approve'])->name('appointments.approve');
+    Route::post('/appointments/{id}/decline', [AppointmentController::class, 'decline'])->name('appointments.decline');
+
+});
 //Client Routes
 Route::group(['middleware' => ['auth', 'verified', 'role:client']], function () {
-    Route::get('/client/dashboard', [ClientController::class, 'dashboard'])->name('dashboard');
+    Route::get('/client/dashboard', [ClientController::class, 'dashboard'])->name('dashboard'); //for redirection
     Route::get('/client/dashboard/overview/{patient}', [ClientController::class, 'profileOverview'])->name('client.overview');
     Route::get('/client/dashboard/user-profile', [ClientController::class, 'profileUserProfile'])->name('client.user-profile');
 
 
-    Route::get('/appointment/request', [AppointmentController::class, 'create'])->name('appointments.request');
-    Route::post('/appointment/store', [AppointmentController::class, 'store'])->name('appointments.store');
+    // Route::get('/appointment/request', [AppointmentController::class, 'create'])->name('appointments.request');
+    // Route::post('/appointment/store', [AppointmentController::class, 'store'])->name('appointments.store');
 });

@@ -10,8 +10,9 @@ class Procedure extends Model
     use HasFactory;
 
     protected $fillable = [
-        'proc_name',
-        'proc_cost',
+        'name',
+        'description',
+        'price',
     ];
 
     public function billing()

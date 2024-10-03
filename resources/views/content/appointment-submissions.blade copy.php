@@ -25,7 +25,6 @@
 
             <div class="border-b border-gray-200 mb-4">
                 <nav class="flex flex-wrap gap-5 max-lg:gap-2">
-
                     <button
                         class="text-gray-500 pb-2 border-b-2 border-transparent focus:outline-none hover:border-b-green-300 transition-all"
                         data-tab-target="#walk-in">Walk-in Request</button>
@@ -63,110 +62,7 @@
                     {{-- testing --}}
                     <tbody>
 
-                        @foreach ($walkin_appointments as $appointment)
-                            <tr class="text-center">
-                                <td class=" max-lg:py-2 max-lg:px-2 border text-black max-lg:text-xs">
-                                    <span class="max-lg:hidden">{{ $appointment->patient->first_name }}</span>
-                                    {{ $appointment->patient->last_name }}
-
-                                </td>
-                                <td class=" max-lg:py-2 max-lg:px-2 border max-lg:text-xs ">
-                                    {{ $appointment->appointment_date }}
-                                </td>
-                                <td class=" max-lg:py-2 max-lg:px-2 border max-lg:text-xs max-2xl:hidden">
-
-                                    {{ $appointment->preferred_time }}</td>
-                                <td class=" max-lg:py-2 max-lg:px-2 border max-lg:text-xs max-2xl:hidden">
-
-                                    {{ $appointment->branch->branch_loc }}</td>
-                                <td class="border px-4 py-2 min-w-max h-full max-lg:text-xs ">
-                                    @if ($appointment->pending === 'Approved')
-                                        <h1 class="text-md text-green-600 font-semibold">Approved</h1>
-                                    @elseif ($appointment->pending === 'Declined')
-                                        <h1 class="text-md text-red-600 font-semibold">Declined</h1>
-                                    @else
-                                        <h1 class="text-md text-slate-600 font-semibold">Pending</h1>
-                                    @endif
-                                </td>
-                                {{-- <td class="py-2 px-2 border flex gap-2 justify-center max-lg:text-xs max-2xl:hidden h-max">
-                                    @if ($appointment->pending === 'Approved')
-                                        <form method="POST"
-                                            action="{{ route('appointments.approve', $appointment->id) }}">
-                                            @csrf
-                                            <div class="tooltip">
-                                                <button type="submit" class="btn btn-success btn-sm " disabled>
-                                                    <img src="{{ asset('assets/images/accept.png') }}" alt="">
-                                                    <span class="tooltiptext">Approved</span>
-                                                </button>
-                                            </div>
-                                        </form>
-                                    @elseif($appointment->pending === 'Declined')
-                                        <form method="POST"
-                                            action="{{ route('appointments.decline', $appointment->id) }}">
-                                            @csrf
-                                            <div class="tooltip">
-                                                <button type="submit" class="btn btn-danger btn-sm" disabled>
-                                                    <img src="{{ asset('assets/images/decline.png') }}" alt="">
-                                                    <span class="tooltiptext">Declined</span>
-                                                </button>
-                                            </div>
-                                        </form>
-                                    @else
-                                        <form method="POST"
-                                            action="{{ route('appointments.approve', $appointment->id) }}">
-                                            @csrf
-                                            <div class="tooltip">
-                                                <button type="submit" class="btn btn-success btn-sm">
-                                                    <img src="{{ asset('assets/images/accept.png') }}" alt="">
-                                                    <span class="tooltiptext">Approve</span>
-                                                </button>
-                                            </div>
-                                        </form>
-                                        <form method="POST"
-                                            action="{{ route('appointments.decline', $appointment->id) }}">
-                                            @csrf
-                                            <div class="tooltip">
-                                                <button type="submit" class="btn btn-danger btn-sm">
-                                                    <img src="{{ asset('assets/images/decline.png') }}" alt="">
-                                                    <span class="tooltiptext">Decline</span>
-                                                </button>
-                                            </div>
-                                        </form>
-                                    @endif
-                                </td> --}}
-                                <td class="p-2.5 justify-center items-center border max-lg:text-xs">
-                                    <a href="{{ route('show.appointment', $appointment->id) }}"
-                                        class="flex justify-center items-center border rounded-md py-2 px-4 max-md:py-1 max-md:px-2 text-white font-semibold hover:bg-gray-400 transition-all">
-                                        <h1 class="hidden max-2xl:block text-xs font-semibold text-gray-800">View</h1>
-                                        <img class="h-5 sm:h-4 sm:w-4 max-md:h-4 max-md:w-4 max-2xl:hidden"
-                                            src="{{ asset('assets/images/user-icon.png') }}" alt="">
-                                    </a>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-            {{-- Online Contents --}}
-            <div id="online" class="tab-content text-gray-700 hidden">
-                <table class="w-full table-auto text-center">
-                    <thead>
-                        <tr class="">
-                            <th class="max-lg:py-2 max-lg:px-2 border max-lg:text-xs">Patient</th>
-                            <th class="py-2 px-4 max-lg:py-2 max-lg:px-2 border max-lg:text-xs">Appointment Date</th>
-                            <th class="py-2 px-4 max-lg:py-2 max-lg:px-2 border max-lg:text-xs max-2xl:hidden">Preferred
-                                time
-                            </th>
-                            <th class="py-2 px-4 max-lg:py-2 max-lg:px-2 border max-lg:text-xs max-2xl:hidden">Branch</th>
-                            <th class="py-2 px-4 max-lg:py-2 max-lg:px-2 border max-lg:text-xs">Status</th>
-                            <th class="py-2 px-4 max-lg:py-2 max-lg:px-2 border max-lg:text-xs">Actions</th>
-                        </tr>
-                    </thead>
-                    {{-- testing --}}
-
-                    {{-- testing --}}
-                    <tbody>
-                        @foreach ($online_appointments as $appointment)
+                        @foreach ($appointments as $appointment)
                             <tr class="text-center">
                                 <td class=" max-lg:py-2 max-lg:px-2 border text-black max-lg:text-xs">
                                     <span class="max-lg:hidden">{{ $appointment->patient->first_name }}</span>
@@ -182,15 +78,15 @@
 
                                     {{ $appointment->branch->branch_loc }}</td>
                                 <td class="border px-4 py-2 min-w-max h-full max-lg:text-xs ">
-                                    @if ($appointment->pending === 'Approved')
+                                    @if ($appointment->status === 'approved')
                                         <h1 class="text-md text-green-600 font-semibold">Approved</h1>
-                                    @elseif ($appointment->pending === 'Declined')
+                                    @elseif ($appointment->status === 'declined')
                                         <h1 class="text-md text-red-600 font-semibold">Declined</h1>
                                     @else
-                                        <h1 class="text-md text-slate-600 font-semibold">Pending</h1>
+                                        <h1 class="text-md">Pending</h1>
                                     @endif
                                 </td>
-                                {{-- <td class="py-2 px-2 border flex gap-2 justify-center max-lg:text-xs max-2xl:hidden h-max">
+                                <td class="py-2 px-2 border flex gap-2 justify-center max-lg:text-xs max-2xl:hidden h-max">
                                     @if ($appointment->status === 'approved')
                                         <form method="POST"
                                             action="{{ route('appointments.approve', $appointment->id) }}">
@@ -234,9 +130,8 @@
                                                 </button>
                                             </div>
                                         </form>
-                                    @endif
-                                </td> --}}
-                                <td class=" p-2.5 justify-center items-center border max-lg:text-xs">
+                                </td>
+                                <td class="hidden max-2xl:flex p-2.5 justify-center items-center border max-lg:text-xs">
                                     <a href="{{ route('show.appointment', $appointment->id) }}"
                                         class="flex justify-center items-center border rounded-md py-2 px-4 max-md:py-1 max-md:px-2 text-white font-semibold hover:bg-gray-400 transition-all">
                                         <h1 class="hidden max-2xl:block text-xs font-semibold text-gray-800">View</h1>
@@ -244,7 +139,147 @@
                                             src="{{ asset('assets/images/user-icon.png') }}" alt="">
                                     </a>
                                 </td>
+                        @endif
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            {{-- Online Contents --}}
+            <div id="online" class="tab-content text-gray-700 hidden">
+                <table class="w-full table-auto text-center">
+                    <thead>
+                        <tr class="">
+                            <th class="max-lg:py-2 max-lg:px-2 border max-lg:text-xs">Patient</th>
+                            <th class="py-2 px-4 max-lg:py-2 max-lg:px-2 border max-lg:text-xs">Appointment Date</th>
+                            <th class="py-2 px-4 max-lg:py-2 max-lg:px-2 border max-lg:text-xs max-2xl:hidden">Preferred
+                                time
+                            </th>
+                            <th class="py-2 px-4 max-lg:py-2 max-lg:px-2 border max-lg:text-xs max-2xl:hidden">Branch</th>
+                            <th class="py-2 px-4 max-lg:py-2 max-lg:px-2 border max-lg:text-xs">Status</th>
+                            <th class="py-2 px-4 max-lg:py-2 max-lg:px-2 border max-lg:text-xs">Actions</th>
+                        </tr>
+                    </thead>
+                    {{-- testing --}}
+
+                    {{-- testing --}}
+                    <tbody>
+                        <td class=" max-lg:py-2 max-lg:px-2 border text-black max-lg:text-xs">
+                            <span class="max-lg:hidden">First</span>
+                            Last
+                        </td>
+                        <td class=" max-lg:py-2 max-lg:px-2 border text-black max-lg:text-xs">
+                            <span class="max-lg:hidden">First</span>
+                            Last
+                        </td>
+                        <td class=" max-lg:py-2 max-lg:px-2 border text-black max-lg:text-xs">
+                            <span class="max-lg:hidden">First</span>
+                            Last
+                        </td>
+                        <td class=" max-lg:py-2 max-lg:px-2 border text-black max-lg:text-xs">
+                            <span class="max-lg:hidden">First</span>
+                            Last
+                        </td>
+                        <td class=" max-lg:py-2 max-lg:px-2 border text-black max-lg:text-xs">
+                            <span class="max-lg:hidden">First</span>
+                            Last
+                        </td>
+                        <td class=" max-lg:py-2 max-lg:px-2 border text-black max-lg:text-xs">
+                            <span class="max-lg:hidden">First</span>
+                            Last
+                        </td>
+
+                        @foreach ($appointments as $appointment)
+                            @if ($appointment->is_online === 0)
+                                {
+                                <tr class="text-center">
+                                    <td class=" max-lg:py-2 max-lg:px-2 border text-black max-lg:text-xs">
+                                        <span class="max-lg:hidden">{{ $appointment->patient->first_name }}</span>
+                                        {{ $appointment->patient->last_name }}
+
+                                    </td>
+                                    <td class=" max-lg:py-2 max-lg:px-2 border max-lg:text-xs ">
+                                        {{ $appointment->appointment_date }}</td>
+                                    <td class=" max-lg:py-2 max-lg:px-2 border max-lg:text-xs max-2xl:hidden">
+
+                                        {{ $appointment->preferred_time }}</td>
+                                    <td class=" max-lg:py-2 max-lg:px-2 border max-lg:text-xs max-2xl:hidden">
+
+                                        {{ $appointment->branch->branch_loc }}</td>
+                                    <td class="border px-4 py-2 min-w-max h-full max-lg:text-xs ">
+                                        @if ($appointment->status === 'approved')
+                                            <h1 class="text-md text-green-600 font-semibold">Approved</h1>
+                                        @elseif ($appointment->status === 'declined')
+                                            <h1 class="text-md text-red-600 font-semibold">Declined</h1>
+                                        @else
+                                            <h1 class="text-md">Pending</h1>
+                                        @endif
+                                    </td>
+                                    <td
+                                        class="py-2 px-2 border flex gap-2 justify-center max-lg:text-xs max-2xl:hidden h-max">
+                                        @if ($appointment->status === 'approved')
+                                            <form method="POST"
+                                                action="{{ route('appointments.approve', $appointment->id) }}">
+                                                @csrf
+                                                <div class="tooltip">
+                                                    <button type="submit" class="btn btn-success btn-sm " disabled>
+                                                        <img src="{{ asset('assets/images/accept.png') }}"
+                                                            alt="">
+                                                        <span class="tooltiptext">Approved</span>
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        @elseif($appointment->status === 'declined')
+                                            <form method="POST"
+                                                action="{{ route('appointments.decline', $appointment->id) }}">
+                                                @csrf
+                                                <div class="tooltip">
+                                                    <button type="submit" class="btn btn-danger btn-sm" disabled>
+                                                        <img src="{{ asset('assets/images/decline.png') }}"
+                                                            alt="">
+                                                        <span class="tooltiptext">Declined</span>
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        @else
+                                            <form method="POST"
+                                                action="{{ route('appointments.approve', $appointment->id) }}">
+                                                @csrf
+                                                <div class="tooltip">
+                                                    <button type="submit" class="btn btn-success btn-sm">
+                                                        <img src="{{ asset('assets/images/accept.png') }}"
+                                                            alt="">
+                                                        <span class="tooltiptext">Approve</span>
+                                                    </button>
+                                                </div>
+                                            </form>
+                                            <form method="POST"
+                                                action="{{ route('appointments.decline', $appointment->id) }}">
+                                                @csrf
+                                                <div class="tooltip">
+                                                    <button type="submit" class="btn btn-danger btn-sm">
+                                                        <img src="{{ asset('assets/images/decline.png') }}"
+                                                            alt="">
+                                                        <span class="tooltiptext">Decline</span>
+                                                    </button>
+                                                </div>
+                                            </form>
+                                    </td>
+                                    <td
+                                        class="hidden max-2xl:flex p-2.5 justify-center items-center border max-lg:text-xs">
+                                        <a href="{{ route('show.appointment', $appointment->id) }}"
+                                            class="flex justify-center items-center border rounded-md py-2 px-4 max-md:py-1 max-md:px-2 text-white font-semibold hover:bg-gray-400 transition-all">
+                                            <h1 class="hidden max-2xl:block text-xs font-semibold text-gray-800">View</h1>
+                                            <img class="h-5 sm:h-4 sm:w-4 max-md:h-4 max-md:w-4 max-2xl:hidden"
+                                                src="{{ asset('assets/images/user-icon.png') }}" alt="">
+                                        </a>
+                                    </td>
+                            @endif
                             </tr>
+                        } @else{
+                            <h1>No online appointment request</h1>
+                            }
+                        @endif
                         @endforeach
 
                     </tbody>
@@ -279,19 +314,5 @@
                 tab.classList.add(activeClass);
             })
         });
-
-        function openModal(modalId) {
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                modal.classList.remove('hidden');
-            }
-        }
-
-        function closeModal(modalId) {
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                modal.classList.add('hidden');
-            }
-        }
     </script>
 @endsection

@@ -204,6 +204,18 @@
                     </a>
                 </div>
             @endif
+            @if (Auth::user()->role === 'dentist')
+                <div class="flex flex-col items-start gap-2">
+                    <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
+                        href="{{ route('dentist.dashboard', Auth::user()->dentist_id) }}">
+                        <img class="h-8" src="{{ asset('assets/images/dashboard-icon.png') }}" alt="">
+                        <button class="hover:font-bold  transition-all">
+                            Dashboard
+                        </button>
+                    </a>
+                </div>
+            @endif
+
         </div>
         <div class="flex self-start max-md:text-xs m-2.5">
             <div class="flex gap-2 items-center justify-center">

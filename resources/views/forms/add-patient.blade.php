@@ -20,7 +20,7 @@
     <div class="m-4 mb-8">
         @include('components.search')
     </div>
-    <section class="bg-white shadow-lg rounded-md max-w-max p-6 m-6 max-lg:p-3 max-lg:m-3  max-lg:mt-14">
+    <section class="bg-white shadow-lg rounded-md max-w-max p-6 my-4 mx-auto max-lg:p-3 max-lg:m-3  max-lg:mt-14">
         <h1 class="font-bold text-5xl p-4 max-md:text-3xl w-max">Add new patient</h1>
         <form method="POST" action="{{ route('store.patient') }}">
             @method('POST')

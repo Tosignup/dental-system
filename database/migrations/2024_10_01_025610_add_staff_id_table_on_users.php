@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('procedures', function (Blueprint $table) {
-            $table->id();
-            $table->string('proc_name');
-            $table->decimal('proc_cost', 8, 2);
-            $table->foreignId('billing_id')->constrained('billings')->onDelete('cascade');
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreignId('staff_id')->nullable()->constrained('staff')->onDelete('cascade');
+            
         });
     }
 
@@ -25,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('procedures');
+        Schema::table('users', function (Blueprint $table) {
+            //
+        });
     }
 };

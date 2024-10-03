@@ -28,10 +28,10 @@
                 <a class="flex self-center justify-center gap-2 max-lg:text-sm" href="{{ route('login') }}">
                     <h1 class="font-bold">Login</h1>
                 </a>
-                <a class="flex justify-center items-center" href="{{ route('appointments.request') }}">
-                    <h1
-                        class="py-2 max-lg:text-xs px-4 rounded-md text-white font-semibold bg-green-600 hover:bg-green-700 transition-all cursor-pointer max-lg:py-1 max-lg:px-2">
-                        BOOK NOW</h1>
+                {{-- <a class="flex justify-center items-center" href="{{ route('appointments.request') }}"> --}}
+                <h1
+                    class="py-2 max-lg:text-xs px-4 rounded-md text-white font-semibold bg-green-600 hover:bg-green-700 transition-all cursor-pointer max-lg:py-1 max-lg:px-2">
+                    BOOK NOW</h1>
                 </a>
             @endguest
             <div class="flex justify-center items-center gap-3 max-w-4xl">
@@ -53,7 +53,7 @@
                             DASHBOARD
                         </a>
                     @elseif (Auth::user()->role === 'dentist')
-                        <a href="{{ route('staff.dashboard') }}"
+                        <a href="{{ route('dentist.dashboard', Auth::user()->dentist_id) }}"
                             class="py-2 px-4 rounded-md text-white font-semibold bg-green-600 hover:bg-green-700 transition-all cursor-pointer max-lg:py-1 max-lg:px-2 max-lg:text-xs ">
                             DASHBOARD
                         </a>

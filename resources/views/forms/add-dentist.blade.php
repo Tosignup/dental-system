@@ -20,7 +20,7 @@
     <div class="m-4 mb-8">
         @include('components.search')
     </div>
-    <section class="bg-white shadow-lg rounded-md max-w-max p-6 m-6  max-lg:mt-14">
+    <section class="bg-white shadow-lg rounded-md max-w-max p-6 my-4 mx-auto  max-lg:mt-14">
         <h1 class="font-bold text-5xl p-4 max-md:text-3xl">Add Dentist</h1>
         <form method="POST" action="{{ route('store.dentist') }}">
             @method('POST')
@@ -103,20 +103,19 @@
                             class="validation-message text-white max-md:text-sm bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
                     @enderror
                 </label>
-                <label class="flex flex-col flex-1 pb-4" for="branch">
-                    <h1 class="max-md:text-sm">Branch</h1>
-                    <select
-                        class="border flex-grow min-w-max border-gray-400 py-2 px-4 rounded-md max-md:text-sm max-md:py-1 max-md:px-2"
-                        id="branch" name="branch" required>
-                        <option value="dau"> Dau</option>
-                        <option value="angeles"> Angeles</option>
-                        <option value="sindalan"> Sindalan</option>
+                <label class="flex flex-col flex-1 pb-4 " for="branch_id">
+                    <h1 class="">Select Branch</h1>
+                    <select class="border flex-grow min-w-max border-gray-400 py-2 px-4 rounded-md max-md:text-xs"
+                        id="branch_id" name="branch_id" required>
+                        <option class="max-md:text-xs" value="">Select your branch</option>
+                        @foreach ($branches as $branch)
+                            <option class="max-md:text-xs" value="{{ $branch->id }}">
+                                {{ $branch->branch_loc }}
+                            </option>
+                        @endforeach
                     </select>
-                    @error('branch')
-                        <span id="branch_error"
-                            class="validation-message text-white max-md:text-sm bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
-                    @enderror
                 </label>
+
                 <label class="flex flex-col flex-1" for="password">
                     <h1 class="max-md:text-sm">Password</h1>
                     <input class="border border-gray-400 py-2 px-4 rounded-md max-md:text-sm max-md:py-1 max-md:px-2"

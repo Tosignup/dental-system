@@ -9,6 +9,9 @@ class Branch extends Model
 {
     use HasFactory;
 
+    protected $table = 'branches';
+
+
     protected $fillable = [
         'branch_loc',
     ];
@@ -20,12 +23,12 @@ class Branch extends Model
 
     public function inventory()
     {
-        return $this->hasOne(Inventory::class, 'branch_id');
+        return $this->hasOne(Inventory::class);
     }
 
     public function appointments()
     {
-        return $this->hasMany(Appointment::class, 'branch_id');
+        return $this->hasMany(Appointment::class);
     }
 
     public function staff()
