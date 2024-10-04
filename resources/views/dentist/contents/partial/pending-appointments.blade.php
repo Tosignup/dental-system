@@ -7,7 +7,6 @@
                 <th class="py-2 px-4 border-b text-left text-gray-600 max-lg:text-xs">Appointment Date</th>
                 <th class="py-2 px-4 border-b text-left text-gray-600 max-xl:hidden">Patient</th>
                 <th class="py-2 px-4 border-b text-left text-gray-600  max-lg:text-xs">Procedure</th>
-                <th class="py-2 px-4 border-b text-left text-gray-600  max-xl:hidden">Fees</th>
                 <th class="py-2 px-4 border-b text-left text-gray-600  max-xl:hidden">Branch</th>
                 <th class="py-2 px-4 border-b text-left text-gray-600 max-lg:text-xs">
                     Actions</th>
@@ -24,11 +23,6 @@
                         {{ $appointment->patient->first_name }}</td>
                     <td class="py-2 px-4 border-b max-lg:text-xs">
                         {{ $appointment->procedure ? $appointment->procedure->name : 'N/A' }}
-                    </td>
-
-                    <td class="py-2 px-4 border-b  max-xl:hidden  max-lg:text-xs">
-                        &#8369 <!-- peso sign -->
-                        {{ $appointment->procedure->price }}
                     </td>
 
                     <td class="py-2 px-4 border-b  max-xl:hidden  ">

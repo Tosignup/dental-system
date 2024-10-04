@@ -46,4 +46,8 @@ class Appointment extends Model
     {
         return $this->belongsTo(Procedure::class, 'proc_id');
     }
+
+    public function payment() {
+        return $this->hasOne(Payment::class);
+    }
 }

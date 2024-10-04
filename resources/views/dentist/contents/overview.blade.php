@@ -2,7 +2,7 @@
 @section('content')
     <section class="flex max-lg:p-3  max-lg:gap-3 gap-5 bg-gray-100 p-6 max-2xl:flex-wrap max-xl:mt-20">
         <!-- Sidebar -->
-        <div class=" bg-white p-4 rounded-lg shadow-md max-xl:w-full">
+        <div class=" bg-white min-w-80 p-4 rounded-lg shadow-md max-xl:w-full border border-red-600">
             <div class="flex flex-col items-center text-center">
                 <div
                     class="w-20 h-20 rounded-full bg-gray-300 flex items-center justify-center text-4xl text-gray-700 font-bold">
@@ -61,22 +61,22 @@
                 <div id="tab1" class="tab-content text-gray-700 hidden">
 
                     <!-- component -->
-                    @include('dentist.contents.pending-appointments')
+                    @include('dentist.contents.partial.pending-appointments')
                     <div class="w-full">
                         {{ $pendingAppointments->links() }}
                     </div>
                 </div>
                 <div id="tab2" class="tab-content text-gray-700 hidden">
-                    @include('dentist.contents.approved-appointments')
+                    @include('dentist.contents.partial.approved-appointments')
                     <div class="w-full">
                         {{ $approvedAppointments->links() }}
                     </div>
                 </div>
                 <div id="tab3" class="tab-content text-gray-700 hidden">
-                    <h1 class="font-bold mt-9 max-lg:mt-4 mb-4 text-2xl max-xl:text-xs">Payment</h1>
-                    <p class="text-xl max-xl:text-xs">Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur
-                        excepturi unde
-                        doloribus.</p>
+                    @include('dentist.contents.partial.payment-list')
+                    <div class="w-full">
+                        {{ $payments->links() }}
+                    </div>
                 </div>
             </div>
         </div>

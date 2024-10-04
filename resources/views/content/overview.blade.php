@@ -1,12 +1,15 @@
 @extends('admin.dashboard')
 @section('content')
-    <section class="flex m-4 flex-col gap-4">
-        @include('components.search')
-        <div class="rounded-xl shadow-lg p-7 bg-white my-4 gap-4 mt-6 max-lg:mt-14 max-w-5xl">
-            <h1 class="text-5xl max-md:text-3xl font-bold my-2 ">Good day, {{ Auth::user()->username }}!</h1>
+    @include('components.search')
+    <section class="flex flex-col p-6">
+        <div
+            class="flex flex-col items-center justify-center w-full rounded-xl shadow-lg p-7 bg-white my-4 mx-auto gap-4 mt-6 max-lg:mt-14 max-w-5xl">
+            <h1 class=" text-5xl max-md:text-3xl font-bold my-2 ">Good day,
+                {{ Auth::user()->username }}!
+            </h1>
             <h1>Let's brighten smiles and make a difference today!</h1>
         </div>
-        <div class="w-full flex gap-5 justify-start max-lg:justify-center items flex-wrap">
+        <div class="w-full flex gap-5 justify-center max-lg:justify-center items flex-wrap">
             <div class="w-full bg-white shadow-lg rounded-xl p-8 flex flex-col items-center justify-center max-w-md">
                 <div class="mb-8 text-center">
                     <h1 class="text-3xl max-md:text-xl font-bold">Patient Statistics</h1>

@@ -17,6 +17,43 @@
             opacity: 0;
         }
     </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const branchSelect = document.querySelector('#branch_id');
+            const dentistSelect = document.querySelector('#dentist_id');
+
+
+            if (branchSelect) {
+                branchSelect.addEventListener('change', function() {
+                    const branchId = this.value;
+
+                    // Clear dentist and schedule options
+                    dentistSelect.innerHTML = '<option value="">Select Dentist</option>';
+
+                    if (branchId) {
+                        fetch(`/appointments/add-walk-in/dentists/${branchId}`)
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Network response was not ok');
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                data.forEach(dentist => {
+                                    const option = document.createElement('option');
+                                    option.value = dentist.id;
+                                    option.textContent =
+                                        `Dr. ${dentist.dentist_last_name } ${dentist.dentist_first_name}`;
+                                    dentistSelect.appendChild(option);
+                                });
+                            })
+                            .catch(error => console.error('Error fetching dentists:', error));
+                    }
+                });
+            }
+
+        });
+    </script>
     <div class="m-4 mb-8">
         @include('components.search')
     </div>
@@ -39,7 +76,7 @@
                             @endforeach
                         </select>
                     </label>
-                    <label class="flex flex-col flex-1 pb-4" for="dentist_id">
+                    {{-- <label class="flex flex-col flex-1 pb-4" for="dentist_id">
                         <h1>Select Dentist</h1>
                         <select class="border max-md:text-xs flex-grow min-w-max border-gray-400 py-2 px-4 rounded-md"
                             id="dentist_id" name="dentist_id" required>
@@ -49,6 +86,13 @@
                                     {{ $dentist->dentist_first_name . ' ' . $dentist->dentist_last_name }}
                                 </option>
                             @endforeach
+                        </select>
+                    </label> --}}
+                    <label class="flex flex-col flex-1 pb-4" for="dentist_id">
+                        <h1>Select Dentist</h1>
+                        <select class="border max-md:text-xs flex-grow min-w-max border-gray-400 py-2 px-4 rounded-md"
+                            id="dentist_id" name="dentist_id" required>
+                            <option class="max-md:text-xs" value="">Select Dentist</option>
                         </select>
                     </label>
                     <label class="flex flex-col flex-1 pb-4" for="date">
@@ -145,56 +189,5 @@
                 }
             }
         }
-
-        // const startTimeInput = document.getElementById('start_time');
-        // const endTimeInput = document.getElementById('end_time');
-        // const appointmentDurationSelect = document.getElementById('appointment_duration');
-
-        // // Function to round the time based on the appointment duration
-        // function roundTimeToInterval(timeString, interval) {
-        //     const [hours, minutes] = timeString.split(':').map(Number);
-
-        //     // Round minutes to the nearest interval (e.g., 0, 15, 30, 45)
-        //     const roundedMinutes = Math.round(minutes / interval) * interval;
-
-        //     // Ensure that minutes don't exceed 59 and roll over to the next hour if needed
-        //     let newMinutes = roundedMinutes % 60;
-        //     let newHours = hours + Math.floor(roundedMinutes / 60);
-
-        //     // Ensure the hours stay within the 24-hour range
-        //     if (newHours >= 24) {
-        //         newHours = newHours % 24;
-        //     }
-
-        //     // Return the formatted time string (e.g., "08:15")
-        //     return `${newHours.toString().padStart(2, '0')}:${newMinutes.toString().padStart(2, '0')}`;
-        // }
-
-        // // Apply rounding to start and end time based on selected duration
-        // function applyRounding() {
-        //     const duration = parseInt(appointmentDurationSelect.value, 10);
-
-        //     // Round the start time
-        //     const startTimeValue = startTimeInput.value;
-        //     if (startTimeValue) {
-        //         startTimeInput.value = roundTimeToInterval(startTimeValue, duration);
-        //     }
-
-        //     // Round the end time
-        //     const endTimeValue = endTimeInput.value;
-        //     if (endTimeValue) {
-        //         endTimeInput.value = roundTimeToInterval(endTimeValue, duration);
-        //     }
-        // }
-
-        // // When appointment duration changes, round the times accordingly
-        // appointmentDurationSelect.addEventListener('change', applyRounding);
-
-        // // Round time inputs when user interacts with start or end time fields
-        // startTimeInput.addEventListener('blur', applyRounding);
-        // endTimeInput.addEventListener('blur', applyRounding);
-
-        // // Initial rounding on page load (if any values are pre-filled)
-        // window.addEventListener('load', applyRounding);
     </script>
 @endsection

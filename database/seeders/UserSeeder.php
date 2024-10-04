@@ -20,18 +20,6 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('1234'),
                 'role' => 'admin',
             ],
-            [
-                'username' => 'Staff',
-                'email' => 'staff@gmail.com',
-                'password' => bcrypt('1234'),
-                'role' => 'staff',
-            ],
-            [
-                'username' => 'Client',
-                'email' => 'client@gmail.com',
-                'password' => bcrypt('1234'),
-                'role' => 'client',
-            ],
             ]);
     }
 }

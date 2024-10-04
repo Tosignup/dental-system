@@ -20,8 +20,6 @@
                     </h1>
                     <h1 class="max-md:text-sm"> Facebook name: <span class="font-semibold"> {{ $patient->fb_name }} </span>
                     </h1>
-                    <h1 class="max-md:text-sm"> Package availed: <span class="font-semibold"> {{ $patient->package }}
-                        </span> </h1>
                     <h1 class="max-md:text-sm"> Phone number: <span class="font-semibold"> {{ $patient->phone_number }}
                         </span> </h1>
                     <h1 class="max-md:text-sm"> Date of next visit: <span class="font-semibold"> {{ $patient->next_visit }}
@@ -73,14 +71,14 @@
                                     X-rays</h1>
                             </a>
                         </li>
-                        <li>
+                        {{-- <li>
                             <a href="{{ route('add.payment', $patient->id) }}"
                                 class=" flex items-center justify-start gap-2 py-2 px-4 border border-gray-500 rounded-md hover:border-gray-700 hover:shadow-sm transition-all">
                                 <img class="h-8 max-lg:h-4" src="{{ asset('assets/images/payment.png') }}" alt="">
                                 <h1 class="max-lg:text-xs">
                                     Add payment</h1>
                             </a>
-                        </li>
+                        </li> --}}
                         <li>
                             <a
                                 class=" flex items-center justify-start gap-2 py-2 px-4 border border-gray-500 rounded-md hover:border-gray-700 hover:shadow-sm transition-all">
@@ -153,12 +151,12 @@
                     <h1>
                         X-rays</h1>
                 </a>
-                <a href="{{ route('add.payment', $patient->id) }}"
+                {{-- <a href="{{ route('add.payment', $patient->id) }}"
                     class=" flex items-center justify-start gap-2 py-2 px-4 border border-gray-500 rounded-md hover:border-gray-700 hover:shadow-sm transition-all">
                     <img class="h-8" src="{{ asset('assets/images/payment.png') }}" alt="">
                     <h1>
                         Add payment</h1>
-                </a>
+                </a> --}}
                 <a
                     class=" flex items-center justify-start gap-2 py-2 px-4 border border-gray-500 rounded-md hover:border-gray-700 hover:shadow-sm transition-all">
                     @if (is_null($patient->archived_at))

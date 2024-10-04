@@ -35,32 +35,6 @@ class AppointmentController extends Controller
         return view('appointment.appointment-information', compact('appointment'));
     }
 
-    public function appointment_submission1(Request $request){
-        $appointments = Appointment::with(['patient', 'branch'])->get();
-        $appointmentsQuery = Appointment::query();
-
-        if ($request->has('sort')) {
-            $sortOption = $request->get('sort');
-            if ($sortOption == 'name') {
-                $appointmentsQuery->orderBy('last_name', 'ASC')->orderBy('first_name', 'ASC');
-            } elseif ($sortOption == 'appointment_date') {
-                $appointmentsQuery->orderBy('appointment_date', 'ASC');
-            } elseif ($sortOption == 'status') {
-                $appointmentsQuery->orderBy('status', 'ASC');
-            } elseif ($sortOption == 'branch') {
-                $appointmentsQuery->orderBy('branch', 'ASC');
-            }
-        } else {
-            $appointmentsQuery->orderBy('created_at', 'ASC');
-        }
-
-    
-        
-        $appointments = $appointmentsQuery->get();
-
-        return view('content.appointment-submissions', compact('appointments'));
-    }
-
     public function appointment_submission(Request $request)
     {
         $walkinAppointmentsQuery = Appointment::with(['patient', 'branch', 'dentistSchedule'])
@@ -68,42 +42,34 @@ class AppointmentController extends Controller
 
         $onlineAppointmentsQuery = Appointment::with(['patient', 'branch', 'dentistSchedule'])
             ->where('is_online', 1);
+            
 
-        if ($request->has('sort')) {
-            $sortOption = $request->get('sort');
-
-            if ($sortOption == 'name') {
-                $walkinAppointmentsQuery->orderBy('last_name', 'ASC')->orderBy('first_name', 'ASC');
-            } elseif ($sortOption == 'appointment_date') {
-                $walkinAppointmentsQuery->orderBy('appointment_date', 'ASC');
-            } elseif ($sortOption == 'status') {
-                $walkinAppointmentsQuery->orderBy('status', 'ASC');
-            } elseif ($sortOption == 'branch') {
-                $walkinAppointmentsQuery->orderBy('branch_id', 'ASC');
+            if ($request->has('sort')) {
+                $sortOption = $request->get('sort');
+    
+                if ($sortOption == 'created_at') {
+                    $walkinAppointmentsQuery->orderBy('created_at', 'ASC');
+                    $onlineAppointmentsQuery->orderBy('created_at', 'ASC');
+                } elseif ($sortOption == 'appointment_date') {
+                    $walkinAppointmentsQuery->orderBy('appointment_date', 'ASC');
+                    $onlineAppointmentsQuery->orderBy('appointment_date', 'ASC');
+                } elseif ($sortOption == 'status') {
+                    $walkinAppointmentsQuery->orderBy('pending', 'ASC');
+                    $onlineAppointmentsQuery->orderBy('pending', 'ASC');
+                } elseif ($sortOption == 'branch') {
+                    $walkinAppointmentsQuery->orderBy('branch_id', 'ASC');
+                    $onlineAppointmentsQuery->orderBy('branch_id', 'ASC');
+                }
+            } else {
+                $walkinAppointmentsQuery->orderBy('created_at', 'ASC');
+                $onlineAppointmentsQuery->orderBy('created_at', 'ASC');
             }
 
-            if ($sortOption == 'name') {
-                $onlineAppointmentsQuery->orderBy('last_name', 'ASC')->orderBy('first_name', 'ASC');
-            } elseif ($sortOption == 'appointment_date') {
-                $onlineAppointmentsQuery->orderBy('appointment_date', 'ASC');
-            } elseif ($sortOption == 'status') {
-                $onlineAppointmentsQuery->orderBy('status', 'ASC');
-            } elseif ($sortOption == 'branch') {
-                $onlineAppointmentsQuery->orderBy('branch_id', 'ASC');
-            }
-        } else {
-            $walkinAppointmentsQuery->orderBy('created_at', 'ASC');
-            $onlineAppointmentsQuery->orderBy('created_at', 'ASC');
-        }
-
-        $walkin_appointments = $walkinAppointmentsQuery->get();
-        $online_appointments = $onlineAppointmentsQuery->get();
+        $walkin_appointments = $walkinAppointmentsQuery->paginate(10);
+        $online_appointments = $onlineAppointmentsQuery->paginate(10);
 
         return view('content.appointment-submissions', compact('walkin_appointments', 'online_appointments'));
     }
-
-
-
 
     public function addWalkIn()
     {

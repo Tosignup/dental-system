@@ -49,7 +49,6 @@
                     <th class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">ID</th>
                     <th class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Name</th>
                     <th class="px-4 py-2 max-lg:hidden">Date of next visit</th>
-                    <th class="px-4 py-2 max-lg:hidden">Package</th>
                     <th class="px-4 py-2 max-lg:hidden">Contacts</th>
                     <th class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Actions</th>
                 </tr>
@@ -63,7 +62,6 @@
                         <td class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">{{ $patient->last_name }}
                             {{ $patient->first_name }}</td>
                         <td class="border px-4 py-2 max-lg:hidden">{{ $patient->next_visit }}</td>
-                        <td class="border px-4 py-2 max-lg:hidden">{{ $patient->package }}</td>
                         <td class="border px-4 py-2 max-lg:hidden">
                             <div class="flex justify-center items-center gap-6">
                                 <div class="tooltip">

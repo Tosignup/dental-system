@@ -83,7 +83,7 @@ Route::get('/appointments/show-appointment/{appointment}', [AppointmentControlle
 
 Route::group(['middleware' => ['auth', 'verified','role:admin,staff,dentist']], function () {
     Route::get('/patient-list', [PatientController::class, 'patient_list'])->name('patient_list');
-    Route::get('/appointment-submission', [AppointmentController::class, 'appointment_submission'])->name('appointment.submission');
+    Route::get('/appointments', [AppointmentController::class, 'appointment_submission'])->name('appointment.submission');
     Route::get('/inventory', [AdminController::class, 'inventory'])->name('inventory');
     Route::get('/admin/schedule', [AdminController::class, 'schedule'])->name('schedule');
 
@@ -98,6 +98,11 @@ Route::group(['middleware' => ['auth', 'verified','role:admin,staff,dentist']], 
     //Appointment
     // Route::get('/appointments/create', [AppointmentController::class, 'create'])->name('appointment.create');
     // Route::post('/appointments/store', [AppointmentController::class, 'store'])->name('appointment.store');
+
+    //Payment TEsting
+    Route::get('/appointments/{appointmentId}/payment', [PaymentController::class, 'create'])->name('payments.form');
+    Route::get('/payments/{paymentId}/history', [PaymentController::class, 'showPaymentHistory'])->name('payments.history');
+
 
  });
 
@@ -141,10 +146,10 @@ Route::group(['middleware' => ['auth', 'verified', 'role:admin']], function () {
 
     // Payment
     Route::get('/patient/payment-page/{patient}', [PaymentController::class, 'addPayment'])->name('add.payment');
-    Route::post('/patient/payment/{patient}', [PaymentController::class, 'testPayment'])->name('store.payment');
-    Route::get('/patient/edit-payment/{patient}/{payment}', [PaymentController::class, 'editPayment'])->name('edit.payment');
-    Route::put('/patient/update-payment/{patient}/{payment}', [PaymentController::class, 'testUpPayment'])->name('update.payment');
-    Route::get('/patient/{patient}/payment-history/{payment}', [PaymentController::class, 'showPaymentHistory'])->name('history.payment');
+    Route::post('/patient/payment/{patient}', [PaymentController::class, 'storePayment'])->name('store.payment');
+
+
+    
 });
 
 // Staff Routes
@@ -158,6 +163,9 @@ Route::group(['middleware' => ['auth', 'role:dentist']], function () {
     Route::get('/dentist/dashboard/{dentist}', [DentistController::class, 'dentistAppointments'])->name('dentist.dashboard');
     // Route::get('/staff/patient-list', [StaffController::class, 'patient_list'])->name('patient_list');
 
+    Route::get('/dentist/payments', [DentistController::class, 'viewPayments'])->name('dentist.payments');
+
+
     Route::post('/appointments/{id}/approve', [AppointmentController::class, 'approve'])->name('appointments.approve');
     Route::post('/appointments/{id}/decline', [AppointmentController::class, 'decline'])->name('appointments.decline');
 
@@ -168,6 +176,9 @@ Route::group(['middleware' => ['auth', 'verified', 'role:client']], function () 
     Route::get('/client/dashboard/overview/{patient}', [ClientController::class, 'profileOverview'])->name('client.overview');
     Route::get('/client/dashboard/user-profile', [ClientController::class, 'profileUserProfile'])->name('client.user-profile');
 
+    Route::get('/client/{appointmentId}/payment', [ClientController::class, 'createClientPayment'])->name('client.form');
+    Route::post('/client/{paymentId}/store', [ClientController::class, 'storeClientPartialPayment'])->name('client.store');
+    Route::get('/client/{paymentId}/history', [ClientController::class, 'showClientPaymentHistory'])->name('client.history');
 
     // Route::get('/appointment/request', [AppointmentController::class, 'create'])->name('appointments.request');
     // Route::post('/appointment/store', [AppointmentController::class, 'store'])->name('appointments.store');

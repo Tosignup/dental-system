@@ -24,4 +24,9 @@ class Procedure extends Model
     {
         return $this->hasMany(Appointment::class);
     }
+
+    public function getNameAttribute($value)
+    {
+        return ucwords(strtolower($value));
+    }
 }

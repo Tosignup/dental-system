@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Branch;
 use App\Models\Dentist;
 use App\Models\Patient;
+use App\Models\Payment;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
 use App\Models\DentistSchedule;
@@ -45,8 +46,11 @@ class DentistController extends Controller
                                         ->with(['patient', 'procedure', 'branch'])
                                         ->paginate(5, ['*'], 'approved_page'); // Custom pagination query param
 
-        // Pass both sets of appointments to the view
-        return view('dentist.contents.overview', compact('dentist','pendingAppointments', 'approvedAppointments'));
+        $appointmentIds = $pendingAppointments->pluck('id')->merge($approvedAppointments->pluck('id'));
+
+        // Fetch payments related to the dentist's appointments
+        $payments = Payment::whereIn('appointment_id', $appointmentIds)->paginate(5, ['*'], 'payment'); // Custom pagination query param
+        return view('dentist.contents.overview', compact('dentist','pendingAppointments', 'approvedAppointments', 'payments'));
     }
 
 
@@ -141,13 +145,6 @@ class DentistController extends Controller
         }
     }
 
-    // Fetch procedures for a specific dentist
-    public function getProceduresByDentist($dentistId)
-    {
-        $procedures = Procedure::where('dentist_id', $dentistId)->get();
-        return response()->json($procedures);
-    }
-
     // Fetch schedules for a specific dentist
     public function getSchedulesByDentist($dentistId)
     {
@@ -227,11 +224,16 @@ class DentistController extends Controller
             'date' => $schedule->date
         ]);
     }
+
+    // public function viewPayments(Request $request)
+    // {
+    //     // Assuming you have a relationship set up in your Dentist model
+    //     $dentist = auth()->user()->id; // Get the logged-in dentist's ID
+
+        
+
+    //     return view('dentist.contents.overview', compact('dentist','payments'));
+    // }
+
     
-
-
-
-
-
-
 }

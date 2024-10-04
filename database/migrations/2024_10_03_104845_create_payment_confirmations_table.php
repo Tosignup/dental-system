@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('transactions', function (Blueprint $table) {
+        Schema::create('payment_confirmations', function (Blueprint $table) {
             $table->id();
-            $table->date('transaction_date');
-            $table->string('transaction_status');
+            $table->foreignId('payment_id')->nullable()->constrained('payments')->onDelete('cascade');
             $table->foreignId('patient_id')->nullable()->constrained('patients')->onDelete('cascade');
-            $table->foreignId('billing_id')->nullable()->constrained('billings')->onDelete('cascade');
+            $table->boolean('is_confirmed')->default(false);  // Whether the payment is confirmed
             $table->timestamps();
         });
+        
     }
 
     /**
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('transactions');
+        Schema::dropIfExists('payment_confirmations');
     }
 };

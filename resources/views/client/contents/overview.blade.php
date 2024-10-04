@@ -80,22 +80,21 @@
                 <div id="tab1" class="tab-content text-gray-700 hidden">
 
                     <!-- component -->
-                    @include('client.contents.overview-appointments')
+                    @include('client.contents.partial.overview-appointments')
                     <div class="w-full mt-4">
                         {{ $appointments->links() }}
                     </div>
                 </div>
                 <div id="tab2" class="tab-content text-gray-700 hidden">
                     <h1 class="font-bold mt-9 max-lg:mt-4  mb-4 text-2xl max-xl:text-xs">Next Visit</h1>
-                    <p class="text-xl max-xl:text-xs">Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit sunt
-                        possimus enim
-                        cumque ullam exercitationem, rerum itaque illum repellendus consequuntur?</p>
+
+
                 </div>
                 <div id="tab3" class="tab-content text-gray-700 hidden">
-                    <h1 class="font-bold mt-9 max-lg:mt-4 mb-4 text-2xl max-xl:text-xs">Payment</h1>
-                    <p class="text-xl max-xl:text-xs">Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur
-                        excepturi unde
-                        doloribus.</p>
+                    @include('client.contents.partial.appointment-payment')
+                    <div class="w-full mt-4">
+                        {{ $payments->links() }}
+                    </div>
                 </div>
             </div>
         </div>
