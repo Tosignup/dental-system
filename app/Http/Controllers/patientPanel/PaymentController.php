@@ -15,57 +15,6 @@ use Illuminate\Support\Facades\Hash;
 
 class PaymentController extends Controller
 {
-    public function addPayment1($id){
-        $patient = Patient::findOrFail($id);
-
-        return view('forms.add-payment', compact('patient'));
-    }
-
-    public function addPayment($patientId)
-    {
-        $patient = Patient::findOrFail($patientId);
-
-        // Fetch all unpaid appointments for the patient
-        $appointments = Appointment::where('patient_id', $patient)
-                                ->whereDoesntHave('payments') // Ensures there's no payment linked
-                                ->get();
-        
-        return view('forms.add-payment', compact('patient','appointments'));
-    }
-
-
-    public function storePayment(Request $request)
-    {
-        // Find appointment or procedure
-        $patient = Patient::find($request->patient_id);
-
-        // Create a payment entry
-        $payment = Payment::create([
-            'appointment_id' => $appointment->id,
-            'patient_id' => $request->patient_id, // if applicable
-            'amount' => $request->total_amount,
-            'status' => 'Pending', // or 'Paid' based on logic
-            'payment_method' => $request->payment_method
-        ]);
-
-        // Record initial payment transaction
-        $paymentHistory = PaymentHistory::create([
-            'payment_id' => $payment->id,
-            'amount_paid' => $request->amount_paid,
-            'remaining_balance' => $payment->amount - $request->amount_paid,
-            'transaction_date' => now(),
-            'remarks' => $request->remarks,
-            'payment_method' => $request->payment_method
-        ]);
-
-        // Update the payment status if fully paid
-        if ($paymentHistory->remaining_balance == 0) {
-            $payment->update(['status' => 'Paid']);
-        }
-
-        return response()->json(['message' => 'Payment recorded successfully.']);
-    }
-
     public function create($appointmentId) {
         // Retrieve the appointment with related patient and procedure data
         $appointment = Appointment::with(['patient', 'procedure', 'dentist'])->find($appointmentId);
@@ -82,101 +31,9 @@ class PaymentController extends Controller
         $totalPaid = $payment ? $payment->total_paid : 0;
         $balanceRemaining = $appointment->procedure->price - $totalPaid;
 
-        return view('forms.payment_form', compact('appointment', 'payment', 'totalPaid', 'balanceRemaining'));
+        return view('forms.payment_form', compact('appointment', 'payment', 'totalPaid'));
     }
-    //working with payment_form
-    public function storePartialPayment1(Request $request) {
-        // Validate the incoming request
-        $request->validate([
-            'appointment_id' => 'required|exists:appointments,id',
-            'paid_amount' => 'required|numeric|min:0',
-        ]);
-    
-        // Retrieve the appointment and related payment record
-        $appointment = Appointment::with(['procedure'])->find($request->appointment_id);
-        $payment = Payment::where('appointment_id', $appointment->id)->first();
-    
-        // Initialize payment values
-        $totalPaid = 0;
-        $balanceRemaining = $appointment->procedure->price;
-        $status = 'pending'; // Initial status
-    
-        // If a payment record exists, update the values accordingly
-        if ($payment) {
-            $totalPaid = $payment->total_paid;
-            $balanceRemaining = $payment->balance_remaining;
-    
-            // Check if the new payment exceeds the remaining balance
-            if ($request->paid_amount > $balanceRemaining) {
-                return redirect()->back()->with('error', 'Payment exceeds the remaining balance of $' . number_format($balanceRemaining, 2));
-            }
-    
-            // Update the total paid and balance remaining
-            $totalPaid += $request->paid_amount;
-            $balanceRemaining -= $request->paid_amount;
-    
-            // Determine the payment status
-            if ($balanceRemaining <= 0) {
-                $status = 'Paid'; // Mark as completed if fully paid
-            } else {
-                $status = 'Pending'; // Mark as partially paid
-            }
-    
-            // Update the existing payment record
-            $payment->update([
-                'total_paid' => $totalPaid,
-                'balance_remaining' => $balanceRemaining,
-                'status' => $status,
-            ]);
-        } else {
-            // If no payment record exists, create a new payment record
-            if ($request->paid_amount > $balanceRemaining) {
-                return redirect()->back()->with('error', 'Payment exceeds the total amount due of $' . number_format($balanceRemaining, 2));
-            }
-    
-            // Create a new payment record
-            $payment = Payment::create([
-                'appointment_id' => $request->appointment_id,
-                'amount_due' => $appointment->procedure->price,
-                'total_paid' => $request->paid_amount,
-                'balance_remaining' => $balanceRemaining - $request->paid_amount,
-                'status' => 'pending', // Initial status for new payment
-            ]);
-        }
-    
-        // (Optional) Create a payment history record for tracking
-        PaymentHistory::create([
-            'payment_id' => $payment->id,
-            'paid_amount' => $request->paid_amount,
-            'payment_method' => $request->payment_method,
-            'remarks' => $request->remarks ?? null, // Optional remarks
-        ]);
-    
-        // Redirect back with a success message
-        return redirect()->route('show.appointment', $appointment->id)
-                         ->with('success', 'Payment processed successfully!');
-    }
-    
-    
-    public function showPaymentHistory1($appointmentId) {
-        // Retrieve the appointment with related patient and procedure data
-        $appointment = Appointment::with(['patient', 'procedure'])->find($appointmentId);
-    
-        // Check if the appointment exists
-        if (!$appointment) {
-            return redirect()->route('appointments.submission')->with('error', 'Appointment not found.');
-        }
-    
-        // Retrieve payment history for the appointment
-        $paymentHistory = PaymentHistory::where('payment_id', $appointment->id)->get();
-    
-        // Calculate total paid and balance remaining
-        $totalPaid = $paymentHistory->sum('paid_amount');
-        $balanceRemaining = $appointment->procedure->price - $totalPaid;
-    
-        return view('forms.payment_history', compact('appointment', 'paymentHistory', 'totalPaid', 'balanceRemaining'));
-    }
-
+   
     public function showPaymentHistory($appointmentId) {
         // Retrieve the appointment with related patient and procedure data
         $appointment = Appointment::with(['patient', 'procedure'])->find($appointmentId);
@@ -199,7 +56,7 @@ class PaymentController extends Controller
     }
     
     
-    //testing payment_form1
+    //testing payment_form
     public function storePartialPayment(Request $request) {
         // Validate the incoming request
         $request->validate([
@@ -218,7 +75,6 @@ class PaymentController extends Controller
         }
     
         // Payment processing logic...
-        // (Same as before)
         $totalPaid = 0;
         $balanceRemaining = $appointment->procedure->price;
         $status = 'pending'; // Initial status

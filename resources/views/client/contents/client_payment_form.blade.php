@@ -39,6 +39,42 @@
             padding: 20px;
             border-radius: 5px;
         }
+
+        .loading-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            /* Ensure it appears above other content */
+        }
+
+        .spinner {
+            border: 8px solid #f3f3f3;
+            /* Light grey */
+            border-top: 8px solid #3498db;
+            /* Blue */
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
     <div class="m-4 mb-8">
         @include('components.search')
@@ -119,6 +155,11 @@
                     </div>
                 </form>
 
+                <div id="loadingIndicator" style="display: none;" class="loading-indicator">
+                    <div class="spinner"></div>
+                    <p>Loading, please wait...</p>
+                </div>
+
                 <!-- Password Confirmation Modal -->
                 <div id="passwordModal" class="modal inset-0 items-center justify-center z-50" style="display: none">
                     <div class="bg-white rounded-lg shadow-lg p-6 w-96">
@@ -153,11 +194,20 @@
         });
 
         document.getElementById('confirmClientPayment').addEventListener('click', function() {
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            loadingIndicator.style.display = 'flex';
+
             const password = document.getElementById('password').value;
             const paidAmount = document.getElementById('paid_amount').value;
             const paymentMethod = document.getElementById('payment_method').value;
             const remarks = document.getElementById('remarks').value;
             const appointmentId = document.querySelector('input[name="appointment_id"]').value;
+
+            if (!paidAmount || paidAmount <= 0) {
+                alert('Please enter a valid amount.');
+                loadingIndicator.style.display = "none"; // Hide loading indicator
+                return;
+            }
 
             // Create a FormData object to send the data
             const formData = new FormData();

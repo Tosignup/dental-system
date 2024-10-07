@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Branch;
 use App\Models\Dentist;
 use App\Models\Patient;
@@ -71,6 +72,49 @@ class AppointmentController extends Controller
         return view('content.appointment-submissions', compact('walkin_appointments', 'online_appointments'));
     }
 
+
+    public function appointment_submission1(Request $request)
+    {
+        $walkinAppointmentsQuery = Appointment::with(['patient', 'branch', 'dentistSchedule'])
+            ->where('is_online', 0);
+
+        $onlineAppointmentsQuery = Appointment::with(['patient', 'branch', 'dentistSchedule'])
+            ->where('is_online', 1);
+            
+
+            if ($request->has('sort')) {
+                $sortOption = $request->get('sort');
+                $walkinAppointmentsQuery = $this->applySorting($walkinAppointmentsQuery, $sortOption);
+                $onlineAppointmentsQuery = $this->applySorting($onlineAppointmentsQuery, $sortOption);
+            } else {
+                $walkinAppointmentsQuery->orderBy('created_at', 'ASC');
+                $onlineAppointmentsQuery->orderBy('created_at', 'ASC');
+            }
+            
+
+        $walkin_appointments = $walkinAppointmentsQuery->paginate(10);
+        $online_appointments = $onlineAppointmentsQuery->paginate(10);
+
+        return view('content.appointment-submissions', compact('walkin_appointments', 'online_appointments'));
+    }
+
+    private function applySorting($query, $sortOption)
+    {
+        switch ($sortOption) {
+            case 'created_at':
+                return $query->orderBy('created_at', 'ASC');
+            case 'appointment_date':
+                return $query->orderBy('appointment_date', 'ASC');
+            case 'status':
+                return $query->orderBy('pending', 'ASC');
+            case 'branch':
+                return $query->orderBy('branch_id', 'ASC');
+            default:
+                return $query->orderBy('created_at', 'ASC');
+        }
+    }
+
+
     public function addWalkIn()
     {
         $branches = Branch::all();
@@ -120,20 +164,18 @@ class AppointmentController extends Controller
 
     //     return redirect()->route('appointments.request')->with('success', 'Appointment requested successfully.');
     // }
-
-    public function storeWalkIn(Request $request)
+    //working
+    public function storeWalkIn1(Request $request)
     {
         // Validate the request data
         $validatedData = $request->validate([
             'patient_id' => 'required',
             'dentist_id' => 'required',
             'branch_id' => 'required',
-            'schedule_id' => 'required', // Ensure schedule is valid
-            'proc_id' => 'required', // Ensure schedule is valid
-            'appointment_date' => 'required|date', // Ensure date is in valid format
-            'preferred_time' => 'required', // Ensure the user selects a time slot
-            'status' => 'scheduled',
-            'pending' => 'pending',
+            'schedule_id' => 'required',
+            'proc_id' => 'required',
+            'appointment_date' => 'required|date',
+            'preferred_time' => 'required',
             'is_online' => 'boolean',
         ]);
 
@@ -143,17 +185,71 @@ class AppointmentController extends Controller
             'patient_id' => $validatedData['patient_id'],
             'dentist_id' => $validatedData['dentist_id'],
             'branch_id' => $validatedData['branch_id'],
-            'schedule_id' => $validatedData['schedule_id'], // Store the selected schedule
-            'proc_id' => $validatedData['proc_id'], // Store the selected procedure
+            'schedule_id' => $validatedData['schedule_id'],
+            'proc_id' => $validatedData['proc_id'],
             'appointment_date' => $validatedData['appointment_date'],
-            'preferred_time' => $validatedData['preferred_time'], // Store the selected time slot
+            'preferred_time' => $validatedData['preferred_time'],
             'status' => 'scheduled',
-            'pending' => 'pending', // Assuming appointments are pending initially
+            'pending' => 'pending',
             'is_online' => $validatedData['is_online'],
         ]);
 
-        return redirect()->route('appointment.submission')->with('success', 'Appointment successfully created!');
+        return redirect()->route('appointments.walkIn')->with('success', 'Appointment successfully created!');
     }
+
+    public function storeWalkIn(Request $request)
+    {
+        // Validate the request data
+        $validatedData = $request->validate([
+            'patient_id' => 'required',
+            'dentist_id' => 'required',
+            'branch_id' => 'required',
+            'schedule_id' => 'required',
+            'proc_id' => 'required',
+            'appointment_date' => 'required|date',
+            'preferred_time' => 'required',
+            'is_online' => 'boolean',
+        ]);
+
+        // Check for existing appointments to prevent duplicates
+        // $existingAppointment = Appointment::where('patient_id', $validatedData['patient_id'])
+        //     ->where('dentist_id', $validatedData['dentist_id'])
+        //     ->where('branch_id', $validatedData['branch_id'])
+        //     ->where('schedule_id', $validatedData['schedule_id'])
+        //     ->where('appointment_date', $validatedData['appointment_date'])
+        //     ->where('preferred_time', $validatedData['preferred_time'])
+        //     ->first();
+
+        // if ($existingAppointment) {
+        //     return redirect()->back()->withErrors(['error' => 'This appointment slot is already taken.']);
+        // }
+
+        $existingAppointment = Appointment::where('patient_id', $validatedData['patient_id'])
+        ->where('appointment_date', $validatedData['appointment_date'])
+        ->where('preferred_time', $validatedData['preferred_time'])
+        ->first();
+
+        if ($existingAppointment) {
+            return redirect()->back()->withErrors(['error' => 'This appointment slot is already taken for this patient.']);
+        }
+
+        // Create the new appointment record
+        $appointment = Appointment::create([
+            'patient_id' => $validatedData['patient_id'],
+            'dentist_id' => $validatedData['dentist_id'],
+            'branch_id' => $validatedData['branch_id'],
+            'schedule_id' => $validatedData['schedule_id'],
+            'proc_id' => $validatedData['proc_id'],
+            'appointment_date' => $validatedData['appointment_date'],
+            'preferred_time' => $validatedData['preferred_time'],
+            'status' => 'scheduled',
+            'pending' => 'pending',
+            'is_online' => $validatedData['is_online'],
+        ]);
+
+        return redirect()->route('appointments.walkIn')->with('success', 'Appointment successfully created!');
+    }
+
 
     public function storeOnline(Request $request, $id)
     {
@@ -265,5 +361,93 @@ class AppointmentController extends Controller
         Notification::route('mail', $appointment->email)->notify(new AppointmentDeclined($appointment));
 
         return redirect()->back()->with('success', 'Appointment declined and email sent.');
+    }
+
+    //Testing sidebar
+
+    public function walkIn_appointment1(Request $request)
+    {
+        $walkinAppointmentsQuery = Appointment::with(['patient', 'branch', 'dentistSchedule'])
+            ->where('is_online', 0);
+            
+            if ($request->has('sortWalkin')) {
+                $sortOption = $request->get('sortWalkin');
+                if ($sortOption == 'created_at') {
+                    $walkinAppointmentsQuery->orderBy('created_at', 'ASC');
+                } elseif ($sortOption == 'appointment_date') {
+                    $walkinAppointmentsQuery->orderBy('appointment_date', 'ASC');
+                } elseif ($sortOption == 'status') {
+                    $walkinAppointmentsQuery->orderBy('pending', 'ASC');
+                } elseif ($sortOption == 'branch') {
+                    $walkinAppointmentsQuery->orderBy('branch_id', 'ASC');
+                }
+            } else {
+                $walkinAppointmentsQuery->orderBy('created_at', 'ASC');
+            }
+            
+
+        $walkin_appointments = $walkinAppointmentsQuery->paginate(10);
+
+        return view('content.partial.appointment-walkIn-list', compact('walkin_appointments'));
+    }
+    public function walkIn_appointment(Request $request)
+    {
+        $now = Carbon::now();
+
+        $walkinAppointmentsQuery = Appointment::with(['patient', 'branch', 'dentistSchedule'])
+        ->where('appointment_date', '>', $now)
+            ->where('is_online', 0);
+
+        // Check for sorting
+        if ($request->has('sortWalkin')) {
+            $sortOption = $request->get('sortWalkin');
+            if ($sortOption == 'created_at') {
+                $walkinAppointmentsQuery->orderBy('created_at', 'ASC');
+            } elseif ($sortOption == 'preferred_time') {
+                $walkinAppointmentsQuery->orderBy('preferred_time', 'ASC');
+            } elseif ($sortOption == 'appointment_date') {
+                $walkinAppointmentsQuery->orderBy('appointment_date', 'ASC');
+            } elseif ($sortOption == 'status') {
+                $walkinAppointmentsQuery->orderBy('pending', 'ASC');
+            } elseif ($sortOption == 'branch') {
+                $walkinAppointmentsQuery->orderBy('branch_id', 'ASC');
+            }
+        } else {
+            $walkinAppointmentsQuery->orderBy('created_at', 'ASC');
+        }
+
+        $walkin_appointments = $walkinAppointmentsQuery->paginate(10);
+
+        return view('content.appointment-walkIn-list', compact('walkin_appointments'));
+    }
+
+
+    public function online_appointment(Request $request)
+    {
+        $onlineAppointmentsQuery = Appointment::with(['patient', 'branch', 'dentistSchedule'])
+            ->where('is_online', 1);
+            
+
+            if ($request->has('sortOnline')) {
+                $sortOption = $request->get('sortOnline');
+                if ($sortOption == 'created_at') {
+                    $onlineAppointmentsQuery->orderBy('created_at', 'ASC');
+                } elseif ($sortOption == 'preferred_time') {
+                    $onlineAppointmentsQuery->orderBy('preferred_time', 'ASC');
+                } elseif ($sortOption == 'appointment_date') {
+                    $onlineAppointmentsQuery->orderBy('appointment_date', 'ASC');
+                } elseif ($sortOption == 'status') {
+                    $onlineAppointmentsQuery->orderBy('pending', 'ASC');
+                } elseif ($sortOption == 'branch') {
+                    $onlineAppointmentsQuery->orderBy('branch_id', 'ASC');
+                }
+            } else {
+                $onlineAppointmentsQuery->orderBy('created_at', 'ASC');
+            }
+            
+
+        $online_appointments = $onlineAppointmentsQuery->paginate(10);
+
+        return view('content.appointment-online-list', compact('online_appointments'));
     }
 }

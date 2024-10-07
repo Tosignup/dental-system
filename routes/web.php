@@ -34,14 +34,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/appointments/{patient}', [AppointmentController::class, 'storeOnline'])->name('store.online');
 
     //Working Routes
-    Route::get('/appointments/add-walk-in/dentists/{branch}', [DentistController::class, 'getDentists']);
-    // Route::get('/appointments/add-walk-in/procedures/{dentistId}', [DentistController::class, 'getProceduresByDentist']);
-    Route::get('/appointments/add-walk-in/schedules/{dentistId}', [DentistController::class, 'getDentistSchedules']);
-
-    //Testing Routes
+    Route::get('/appointments/add-walk-in/dentists/{branch}', [DentistController::class, 'getDentists']); //Branch Select
     Route::get('/appointments/add-walk-in/schedules/{dentistId}', [DentistController::class, 'getSchedulesByDentist']);
     Route::get('/appointments/add-walk-in/timeslots/{scheduleId}', [DentistController::class, 'getAvailableTimeSlots']);
     Route::get('/appointments/add-walk-in/schedule/{scheduleId}', [DentistController::class, 'getScheduleDetails']);
+
+    //Testing Routes
 });
 
 require __DIR__ . '/auth.php';
@@ -77,6 +75,7 @@ Route::get('/send-test-email', function () {
 
 //     return 'Test email sent!';
 // });
+Route::get('/audit-logs', [AdminController::class, 'viewAuditLogs'])->name('audit.logs');
 
 
 Route::get('/appointments/show-appointment/{appointment}', [AppointmentController::class, 'show'])->name('show.appointment');
@@ -85,7 +84,7 @@ Route::group(['middleware' => ['auth', 'verified','role:admin,staff,dentist']], 
     Route::get('/patient-list', [PatientController::class, 'patient_list'])->name('patient_list');
     Route::get('/appointments', [AppointmentController::class, 'appointment_submission'])->name('appointment.submission');
     Route::get('/inventory', [AdminController::class, 'inventory'])->name('inventory');
-    Route::get('/admin/schedule', [AdminController::class, 'schedule'])->name('schedule');
+    Route::get('/schedule', [AdminController::class, 'schedule'])->name('schedule');
 
     //Patient
     Route::get('/show-patient/{patient}/patient-contract', [PatientController::class, 'patientContract'])->name('patient.contract');
@@ -95,15 +94,24 @@ Route::group(['middleware' => ['auth', 'verified','role:admin,staff,dentist']], 
     //Image Upload
     Route::post('/upload-image', [ImageController::class, 'uploadImage'])->name('upload.image');
 
-    //Appointment
-    // Route::get('/appointments/create', [AppointmentController::class, 'create'])->name('appointment.create');
-    // Route::post('/appointments/store', [AppointmentController::class, 'store'])->name('appointment.store');
+    //Schedule
+    Route::get('/schedule/{scheduleId}/edit', [ScheduleController::class, 'editSchedule'])->name('schedule.edit');
+    Route::post('/schedule/{scheduleId}/edit', [ScheduleController::class, 'updateSchedule'])->name('schedule.update');
+    Route::delete('/schedule/{id}/delete', [ScheduleController::class, 'deleteSchedule'])->name('schedule.delete');
+
 
     //Payment TEsting
     Route::get('/appointments/{appointmentId}/payment', [PaymentController::class, 'create'])->name('payments.form');
+    Route::post('/payments/{paymentId}/store', [PaymentController::class, 'storePartialPayment'])->name('payments.store');
     Route::get('/payments/{paymentId}/history', [PaymentController::class, 'showPaymentHistory'])->name('payments.history');
 
+    //Testing
+    Route::get('/appointments/walk-in-request', [AppointmentController::class, 'walkIn_appointment'])->name('appointments.walkIn');
+    Route::get('/appointments/online-request', [AppointmentController::class, 'online_appointment'])->name('appointments.online');
 
+    //Archiving Patients
+    Route::post('/archive-patient/{patient}', [PatientController::class, 'archivePatient'])->name('archive.patient');
+    Route::post('/restore-patient/{patient}', [PatientController::class, 'restorePatient'])->name('restore.patient');
  });
 
 // Admin Routes
@@ -141,14 +149,6 @@ Route::group(['middleware' => ['auth', 'verified', 'role:admin']], function () {
     Route::get('/admin/edit-patient/{patient}', [PatientController::class, 'editPatient'])->name('edit.patient');
     Route::put('/patients/{patient}', [PatientController::class, 'updatePatient'])->name('update.patient');
     Route::get('/admin/show-patient/{patient}', [PatientController::class, 'showPatient'])->name('show.patient');
-    Route::post('/admin/archive-patient/{patient}', [PatientController::class, 'archivePatient'])->name('archive.patient');
-    Route::post('/admin/restore-patient/{patient}', [PatientController::class, 'restorePatient'])->name('restore.patient');
-
-    // Payment
-    Route::get('/patient/payment-page/{patient}', [PaymentController::class, 'addPayment'])->name('add.payment');
-    Route::post('/patient/payment/{patient}', [PaymentController::class, 'storePayment'])->name('store.payment');
-
-
     
 });
 

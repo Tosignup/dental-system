@@ -140,7 +140,6 @@
     <script>
         document.getElementById('sort').addEventListener('change', function() {
             this.form.submit();
-            document.getElementById('package').toUpperCase();
         });
 
 

@@ -43,51 +43,51 @@
                     @endif
                 </td>
                 {{-- <td class="py-2 px-2 border flex gap-2 justify-center max-lg:text-xs max-2xl:hidden h-max">
-                    @if ($appointment->status === 'approved')
-                        <form method="POST"
-                            action="{{ route('appointments.approve', $appointment->id) }}">
-                            @csrf
-                            <div class="tooltip">
-                                <button type="submit" class="btn btn-success btn-sm " disabled>
-                                    <img src="{{ asset('assets/images/accept.png') }}" alt="">
-                                    <span class="tooltiptext">Approved</span>
-                                </button>
-                            </div>
-                        </form>
-                    @elseif($appointment->status === 'declined')
-                        <form method="POST"
-                            action="{{ route('appointments.decline', $appointment->id) }}">
-                            @csrf
-                            <div class="tooltip">
-                                <button type="submit" class="btn btn-danger btn-sm" disabled>
-                                    <img src="{{ asset('assets/images/decline.png') }}" alt="">
-                                    <span class="tooltiptext">Declined</span>
-                                </button>
-                            </div>
-                        </form>
-                    @else
-                        <form method="POST"
-                            action="{{ route('appointments.approve', $appointment->id) }}">
-                            @csrf
-                            <div class="tooltip">
-                                <button type="submit" class="btn btn-success btn-sm">
-                                    <img src="{{ asset('assets/images/accept.png') }}" alt="">
-                                    <span class="tooltiptext">Approve</span>
-                                </button>
-                            </div>
-                        </form>
-                        <form method="POST"
-                            action="{{ route('appointments.decline', $appointment->id) }}">
-                            @csrf
-                            <div class="tooltip">
-                                <button type="submit" class="btn btn-danger btn-sm">
-                                    <img src="{{ asset('assets/images/decline.png') }}" alt="">
-                                    <span class="tooltiptext">Decline</span>
-                                </button>
-                            </div>
-                        </form>
-                    @endif
-                </td> --}}
+                            @if ($appointment->status === 'approved')
+                                <form method="POST"
+                                    action="{{ route('appointments.approve', $appointment->id) }}">
+                                    @csrf
+                                    <div class="tooltip">
+                                        <button type="submit" class="btn btn-success btn-sm " disabled>
+                                            <img src="{{ asset('assets/images/accept.png') }}" alt="">
+                                            <span class="tooltiptext">Approved</span>
+                                        </button>
+                                    </div>
+                                </form>
+                            @elseif($appointment->status === 'declined')
+                                <form method="POST"
+                                    action="{{ route('appointments.decline', $appointment->id) }}">
+                                    @csrf
+                                    <div class="tooltip">
+                                        <button type="submit" class="btn btn-danger btn-sm" disabled>
+                                            <img src="{{ asset('assets/images/decline.png') }}" alt="">
+                                            <span class="tooltiptext">Declined</span>
+                                        </button>
+                                    </div>
+                                </form>
+                            @else
+                                <form method="POST"
+                                    action="{{ route('appointments.approve', $appointment->id) }}">
+                                    @csrf
+                                    <div class="tooltip">
+                                        <button type="submit" class="btn btn-success btn-sm">
+                                            <img src="{{ asset('assets/images/accept.png') }}" alt="">
+                                            <span class="tooltiptext">Approve</span>
+                                        </button>
+                                    </div>
+                                </form>
+                                <form method="POST"
+                                    action="{{ route('appointments.decline', $appointment->id) }}">
+                                    @csrf
+                                    <div class="tooltip">
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            <img src="{{ asset('assets/images/decline.png') }}" alt="">
+                                            <span class="tooltiptext">Decline</span>
+                                        </button>
+                                    </div>
+                                </form>
+                            @endif
+                        </td> --}}
                 <td class="p-1 justify-center items-center border max-lg:text-xs">
                     <a href="{{ route('show.appointment', $appointment->id) }}"
                         class="flex justify-center items-center border rounded-md py-2 px-4 max-md:py-1 max-md:px-2 text-white font-semibold hover:bg-gray-400 transition-all">
@@ -101,3 +101,8 @@
 
     </tbody>
 </table>
+<script>
+    document.getElementById('sortOnline').addEventListener('change', function() {
+        this.form.submit();
+    });
+</script>

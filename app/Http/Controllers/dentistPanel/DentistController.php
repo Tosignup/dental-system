@@ -132,7 +132,7 @@ class DentistController extends Controller
         return view('content.dentist-information', compact('dentist'));
     }
 
-    public function getDentists($branchId)
+    public function getDentists($branchId) //w
     {
         try {
             // Fetch dentists associated with the given branch ID
@@ -146,7 +146,7 @@ class DentistController extends Controller
     }
 
     // Fetch schedules for a specific dentist
-    public function getSchedulesByDentist($dentistId)
+    public function getSchedulesByDentist1($dentistId)
     {
         try {
             $schedules = DentistSchedule::where('dentist_id', $dentistId)->get();
@@ -162,27 +162,31 @@ class DentistController extends Controller
         }
     }
 
-    public function getDentistSchedules($dentistId)
+    public function getSchedulesByDentist($dentistId)
     {
-        // Fetch the dentist's schedules
-        $schedules = DentistSchedule::where('dentist_id', $dentistId)->get();
+        try {
+            // Get the current date and time
+            $now = Carbon::now();
 
-        if ($schedules->isEmpty()) {
-            return response()->json(['error' => 'No schedules found'], 404);
+            // Retrieve only future schedules for the selected dentist
+            $schedules = DentistSchedule::where('dentist_id', $dentistId)
+                ->where('date', '>', $now) // Filter out past schedules
+                ->get();
+
+            if ($schedules->isEmpty()) {
+                return response()->json([], 200);
+            }
+
+            return response()->json($schedules, 200);
+        } catch (\Exception $e) {
+            \Log::error('Error fetching schedules: ' . $e->getMessage());
+            return response()->json(['error' => 'Error fetching schedules'], 500);
         }
-
-        // Return the schedule with the appointment date, start, and end times
-        return response()->json($schedules->map(function ($schedule) {
-            return [
-                'id' => $schedule->id,
-                'appointment_date' => $schedule->appointment_date,
-                'start_time' => $schedule->start_time,
-                'end_time' => $schedule->end_time
-            ];
-        }));
     }
 
-    public function getAvailableTimeSlots($scheduleId)
+
+
+    public function getAvailableTimeSlots($scheduleId) //w
     {
         // Fetch the schedule for the selected schedule_id
         $schedule = DentistSchedule::find($scheduleId);
@@ -218,7 +222,8 @@ class DentistController extends Controller
         return response()->json($timeSlots);
     }
 
-    public function getScheduleDetails($scheduleId) {
+    public function getScheduleDetails($scheduleId) //w
+    {
         $schedule = DentistSchedule::find($scheduleId);
         return response()->json([
             'date' => $schedule->date

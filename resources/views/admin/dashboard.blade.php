@@ -15,46 +15,6 @@
     @vite('resources/css/app.css')
     <style>
         /* styling for contact tooltips */
-        .tooltip {
-            position: relative;
-            display: inline-block;
-            cursor: pointer;
-        }
-
-        .tooltip .tooltiptext {
-            visibility: hidden;
-            width: 120px;
-            background-color: black;
-            color: #fff;
-            text-align: center;
-            border-radius: 6px;
-            padding: 5px;
-            position: absolute;
-            z-index: 1;
-            bottom: 125%;
-            left: 50%;
-            margin-left: -60px;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .tooltip:hover .tooltiptext {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        details[open] .dropdown-content {
-            max-height: 500px;
-            opacity: 1;
-            transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out;
-        }
-
-        .dropdown-content {
-            max-height: 0;
-            opacity: 0;
-            overflow: hidden;
-            transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out;
-        }
     </style>
 </head>
 

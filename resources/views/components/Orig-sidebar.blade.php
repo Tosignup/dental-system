@@ -14,6 +14,89 @@
 
     @vite('resources/css/app.css')
 </head>
+<style>
+    /* Sidebar styling */
+    #mobile-nav {
+        transition: transform 0.3s ease;
+        z-index: 50;
+        /* Ensure it's above the overlay and dropdown */
+    }
+
+    #mobile-nav.active {
+        transform: translateX(0);
+    }
+
+    /* Main overlay styling */
+    #overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(86, 86, 86, 0.5);
+        z-index: 40;
+        /* Ensure it's between the sidebar and dropdown */
+    }
+
+    #overlay.active {
+        display: block;
+    }
+
+    /* Prevent scrolling when overlay is active */
+    .no-scroll {
+        overflow: hidden;
+    }
+
+    /* Dropdown styling */
+    #user-dropdown {
+        position: relative;
+        z-index: 30;
+        /* Ensure it's below the sidebar but above the dropdown overlay */
+    }
+
+    .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        display: none;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        z-index: 30;
+        /* Ensure it's above other content but below the overlay */
+    }
+
+    .dropdown[open] .dropdown-menu {
+        display: block;
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Ensure dropdown is not interactive when sidebar is active */
+    #mobile-nav.active~#user-dropdown .dropdown-menu {
+        pointer-events: none;
+        /* Prevent interaction */
+    }
+
+
+    /* Dropdown overlay styling */
+    #dropdown-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 20;
+        /* Ensure it's below the sidebar */
+    }
+
+    #dropdown-overlay.active {
+        display: block;
+    }
+</style>
 
 <body class="">
     <div id="overlay"></div>
@@ -25,7 +108,7 @@
                 <a href="{{ route('welcome') }}">
                     <img class="h-10" src="{{ asset('assets/images/logo.png') }}" alt="">
                 </a>
-                <h1 class="text-sm">Test Tooth Impressions Dental Clinic</h1>
+                <h1 class="text-sm">Tooth Impressions Dental Clinic</h1>
             </div>
             @if (Auth::user()->role === 'admin')
                 <div class="flex flex-col items-start gap-2">
@@ -64,26 +147,13 @@
                             Schedule
                         </button>
                     </a>
-                    <div x-data="{ open: false }" class="w-full">
-                        <button @click="open = !open"
-                            class="flex justify-start items-center gap-2 hover:bg-gray-300 transition-all w-full p-2 rounded-md">
-                            <img class="h-8" src="{{ asset('assets/images/appointment.png') }}" alt="">
-                            <span class="hover:font-bold transition-all">Appointment</span>
-                            <svg class="w-4 h-4 ml-auto" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
-                            </svg>
+                    <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
+                        href="{{ route('appointment.submission') }}">
+                        <img class="h-8" src="{{ asset('assets/images/appointment.png') }}" alt="">
+                        <button class="hover:font-bold transition-all">
+                            Appointment List
                         </button>
-                        <div x-show="open" @click.away="open = false" class="ml-6 mt-1 space-y-1">
-                            <a href="{{ route('appointments.walkIn') }}"
-                                class="block px-4 py-2 text-md text-gray-700 hover:bg-gray-200 rounded-md">Walk-in
-                                Request</a>
-                            <a href="{{ route('appointments.online') }}"
-                                class="block px-4 py-2 text-md text-gray-700 hover:bg-gray-200 rounded-md">Online
-                                Request</a>
-                        </div>
-                    </div>
+                    </a>
                     <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
                         href="{{ route('inventory') }}">
                         <img class="h-8" src="{{ asset('assets/images/inventory.png') }}" alt="">
@@ -111,30 +181,16 @@
                             Patient List
                         </button>
                     </a>
-                    <div x-data="{ open: false }" class="w-full">
-                        <button @click="open = !open"
-                            class="flex justify-start items-center gap-2 hover:bg-gray-300 transition-all w-full p-2 rounded-md">
-                            <img class="h-8" src="{{ asset('assets/images/appointment.png') }}" alt="">
-                            <span class="hover:font-bold transition-all">Appointment</span>
-                            <svg class="w-4 h-4 ml-auto" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
-                            </svg>
+                    <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
+                        href="{{ route('appointment.submission') }}">
+                        <img class="h-8" src="{{ asset('assets/images/appointment.png') }}" alt="">
+                        <button class="hover:font-bold transition-all">
+                            Appointment List
                         </button>
-                        <div x-show="open" @click.away="open = false" class="ml-6 mt-1 space-y-1">
-                            <a href="{{ route('appointments.walkIn') }}"
-                                class="block px-4 py-2 text-md text-gray-700 hover:bg-gray-200 rounded-md">Walk-in
-                                Request</a>
-                            <a href="{{ route('appointments.online') }}"
-                                class="block px-4 py-2 text-md text-gray-700 hover:bg-gray-200 rounded-md">Online
-                                Request</a>
-                        </div>
-                    </div>
+                    </a>
                     <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
                         href="{{ route('schedule') }}">
-                        <img class="h-8" src="{{ asset('assets/images/appointment-calendar.png') }}"
-                            alt="">
+                        <img class="h-8" src="{{ asset('assets/images/appointment-calendar.png') }}" alt="">
                         <button class="hover:font-bold transition-all">
                             Schedule
                         </button>
@@ -331,26 +387,13 @@
                             Schedule
                         </button>
                     </a>
-                    <div x-data="{ open: false }" class="w-full">
-                        <button @click="open = !open"
-                            class="flex justify-start items-center gap-2 hover:bg-gray-300 transition-all w-full p-2 rounded-md">
-                            <img class="h-5" src="{{ asset('assets/images/appointment.png') }}" alt="">
-                            <span class="hover:font-bold transition-all text-xs">Appointment</span>
-                            <svg class="w-3 h-3 ml-auto" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
-                            </svg>
+                    <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
+                        href="{{ route('appointment.submission') }}">
+                        <img class="h-5" src="{{ asset('assets/images/appointment.png') }}" alt="">
+                        <button class="hover:font-bold transition-all text-xs">
+                            Appointment List
                         </button>
-                        <div x-show="open" @click.away="open = false" class="ml-6 mt-1 space-y-1">
-                            <a href="{{ route('appointments.walkIn') }}"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 rounded-md">Walk-in
-                                Request</a>
-                            <a href="{{ route('appointments.online') }}"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 rounded-md">Online
-                                Request</a>
-                        </div>
-                    </div>
+                    </a>
                     <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
                         href="{{ route('inventory') }}">
                         <img class="h-5" src="{{ asset('assets/images/inventory.png') }}" alt="">
@@ -377,26 +420,13 @@
                             Patient List
                         </button>
                     </a>
-                    <div x-data="{ open: false }" class="w-full">
-                        <button @click="open = !open"
-                            class="flex justify-start items-center gap-2 hover:bg-gray-300 transition-all w-full p-2 rounded-md">
-                            <img class="h-5" src="{{ asset('assets/images/appointment.png') }}" alt="">
-                            <span class="hover:font-bold transition-all text-xs">Appointment</span>
-                            <svg class="w-3 h-3 ml-auto" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
-                            </svg>
+                    <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
+                        href="{{ route('appointment.submission') }}">
+                        <img class="h-5" src="{{ asset('assets/images/appointment.png') }}" alt="">
+                        <button class="hover:font-bold transition-all text-xs">
+                            Appointment List
                         </button>
-                        <div x-show="open" @click.away="open = false" class="ml-6 mt-1 space-y-1">
-                            <a href="{{ route('appointments.walkIn') }}"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 rounded-md">Walk-in
-                                Request</a>
-                            <a href="{{ route('appointments.online') }}"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 rounded-md">Online
-                                Request</a>
-                        </div>
-                    </div>
+                    </a>
                     <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
                         href="{{ route('schedule') }}">
                         <img class="h-5" src="{{ asset('assets/images/appointment-calendar.png') }}"

@@ -39,6 +39,42 @@
             padding: 20px;
             border-radius: 5px;
         }
+
+        .loading-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            /* Ensure it appears above other content */
+        }
+
+        .spinner {
+            border: 8px solid #f3f3f3;
+            /* Light grey */
+            border-top: 8px solid #3498db;
+            /* Blue */
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
     <div class="m-4 mb-8">
         @include('components.search')
@@ -53,7 +89,6 @@
                     <h4 class="max-md:text-xs mb-1"> Procedure: </h4>
                     <h4 class="max-md:text-xs mb-1"> Appointment Date: </h4>
                     <h4 class="max-md:text-xs mb-1"> Total Amount Due: </h4>
-                    <h4 class="max-md:text-xs mb-1"> Remaining Balance: </h4>
                 </div>
                 <div class=" w-1/2 text-right">
                     <h2 class="max-md:text-xs font-semibold mb-1">
@@ -64,8 +99,8 @@
                         {{ $appointment->appointment_date }}</h2>
                     <h2 class="max-md:text-xs font-semibold mb-1">&#8369;
                         {{ number_format($appointment->procedure->price, 2) }}</h2>
-                    <h2 class="max-md:text-xs font-semibold mb-1">&#8369;
-                        {{ number_format($balanceRemaining, 2) }}</h2>
+                    {{-- <h2 class="max-md:text-xs font-semibold mb-1">&#8369;
+                        {{ number_format($balanceRemaining, 2) }}</h2> --}}
                     <h2 class="max-md:text-xs font-semibold mb-1">
                         {{ $appointment->id }}</h2>
                 </div>
@@ -117,10 +152,14 @@
                             type="reset">
                             Cancel
                         </a>
-
                     </div>
-
                 </form>
+
+                <div id="loadingIndicator" style="display: none;" class="loading-indicator">
+                    <div class="spinner"></div>
+                    <p>Loading, please wait...</p>
+                </div>
+
 
                 <!-- Password Confirmation Modal -->
                 <div id="passwordModal" class="modal inset-0 items-center justify-center z-50" style="display: none">
@@ -159,11 +198,20 @@
 
         // Confirm payment
         document.getElementById('confirmPayment').addEventListener('click', function() {
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            loadingIndicator.style.display = 'flex';
+
             const password = document.getElementById('password').value;
             const paidAmount = document.getElementById('paid_amount').value;
             const paymentMethod = document.getElementById('payment_method').value;
             const remarks = document.getElementById('remarks').value;
             const appointmentId = document.querySelector('input[name="appointment_id"]').value;
+
+            if (!paidAmount || paidAmount <= 0) {
+                alert('Please enter a valid amount.');
+                loadingIndicator.style.display = "none"; // Hide loading indicator
+                return;
+            }
 
             // Create a FormData object to send the data
             const formData = new FormData();
@@ -174,11 +222,19 @@
             formData.append('appointment_id', appointmentId);
             formData.append('_token', '{{ csrf_token() }}');
 
+
             // Send the data using Fetch API
             fetch('{{ route('payments.store', $appointment->id) }}', {
                     method: 'POST',
                     body: formData
                 })
+                // .then(response => {
+                //     loadingIndicator.style.display = 'none'; // Hide loading indicator
+                //     if (!response.ok) {
+                //         throw new Error('Network response was not ok ' + response.statusText);
+                //     }
+                //     return response.json();
+                // })
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {

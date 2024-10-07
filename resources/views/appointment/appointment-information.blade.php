@@ -5,7 +5,7 @@
     </div>
     <section class="bg-white p-8 m-2 shadow-lg rounded-md flex flex-col justify-center z-0  max-lg:mt-14">
         <div class="pb-4">
-            <a href=" {{ route('appointment.submission') }} "
+            <a @if ($appointment->is_online === 0) href=" {{ route('appointments.walkIn') }} " @elseif ($appointment->is_online === 1) href=" {{ route('appointments.online') }}" @endif
                 class="flex justify-start font-semibold max-lg:text-xs border-gray-600 py-1 max-lg:px-2 w-max gap-2"><img
                     class="h-6" src="{{ asset('assets/images/arrow-back.png') }}" alt=""> Back</a>
         </div>

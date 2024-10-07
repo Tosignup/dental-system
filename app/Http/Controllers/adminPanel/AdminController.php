@@ -8,6 +8,7 @@ use App\Models\Staff;
 use App\Models\Branch;
 use App\Models\Dentist;
 use App\Models\Patient;
+use App\Models\AuditLog;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
 use App\Models\DentistSchedule;
@@ -29,7 +30,6 @@ class AdminController extends Controller
 
         return view('content.overview', compact('totalPatients', 'newPatients', 'todayPatients', 'totalAppointments', 'newAppointments', 'todayAppointment'));
 
-        // return view('content.overview');
     }
     
 
@@ -52,13 +52,51 @@ class AdminController extends Controller
         return view('content.inventory');
     }
 
-    public function schedule()
+    public function schedule1()
     {
-        $schedules = DentistSchedule::with('dentist')->get();
+        // Get the current date and time
+        $now = Carbon::now();
+
+        // Retrieve schedules that are in the future
+        $schedules = DentistSchedule::with('dentist')
+            ->where('date', '>', $now) 
+            ->get();
 
         return view('content.schedule', compact('schedules'));
     }
 
+    public function schedule(Request $request)
+    {
+        $now = Carbon::now();
+
+        $scheduleQuery = DentistSchedule::with(['dentist']);
+                        // ->where('date', '>', $now);
+                        
+            if ($request->has('sortSchedule')) {
+                $sortOption = $request->get('sortSchedule');
+                if ($sortOption == 'date') {
+                    $scheduleQuery->orderBy('date', 'ASC');
+                } elseif ($sortOption == 'start_time') {
+                    $scheduleQuery->orderBy('start_time', 'ASC');
+                } elseif ($sortOption == 'end_time') {
+                    $scheduleQuery->orderBy('end_time', 'ASC');
+                }
+            } else {
+                $scheduleQuery->orderBy('date', 'ASC');
+            }
+            
+
+        $schedules = $scheduleQuery->paginate(10);
     
+        return view('content.schedule', compact('schedules'));
+    }
+
+    //Testing for AuditLog
+
+    public function viewAuditLogs()
+    {
+        $auditLogs = AuditLog::orderBy('created_at', 'desc')->get();
+        return view('audit.logs', compact('auditLogs'));
+    }
 
 }

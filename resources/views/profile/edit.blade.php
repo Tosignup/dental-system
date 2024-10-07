@@ -29,8 +29,8 @@
     <div class="max-w-4xl mx-auto sm:px-6 lg:px-8 ">
         <a class=" flex items-center justify-start gap-2 py-2 px-4 my-4 transition-all"
             @if (Auth::user()->role === 'admin') href=" {{ route('admin.dashboard') }} " @endif
-            @if (Auth::user()->role === 'staff') href=" {{ route('staff.dashboard') }} " @endif
-            @if (Auth::user()->role === 'dentist') href=" {{ route('dentist.dashboard') }} " @endif
+            @if (Auth::user()->role === 'staff') href=" {{ route('staff.dashboard', Auth::user()->staff_id) }} " @endif
+            @if (Auth::user()->role === 'dentist') href=" {{ route('dentist.dashboard', Auth::user()->dentist_id) }} " @endif
             @if (Auth::user()->role === 'client') href=" {{ route('client.overview', Auth::user()->patient_id) }} " @endif>
             <img class="h-8" src="{{ asset('assets/images/arrow-back.png') }}" alt="">
             <h1>Go back to patient list</h1>
