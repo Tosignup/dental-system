@@ -5,8 +5,8 @@
     </div>
     <section class="bg-white p-8 m-2 shadow-lg rounded-md flex flex-col justify-center z-0  max-lg:mt-14">
         <div class="pb-4">
-            <a @if ($appointment->is_online === 0) href=" {{ route('appointments.walkIn') }} "
-            @elseif ($appointment->is_online === 1) href=" {{ route('appointments.online') }}" @endif
+            <a @if ($appointment->pending === 'Pending') href=" {{ route('appointments.pending', $appointment->dentist_id) }}"
+            @elseif($appointment->pending === 'Approved') href=" {{ route('appointments.approved', $appointment->dentist_id) }}" @endif
                 class="flex justify-start font-semibold max-lg:text-xs border-gray-600 py-1 max-lg:px-2 w-max gap-2"><img
                     class="h-6" src="{{ asset('assets/images/arrow-back.png') }}" alt=""> Back</a>
         </div>
@@ -110,24 +110,24 @@
                         <h1 class="text-xl font-bold max-md:text-3xl mb-4 max-lg:mb-2">Appointment has been declined</h1>
                     @else
                         @if (is_null($appointment->payment))
-                            <a href="{{ route('payments.form', $appointment->id) }}"
+                            <a href="{{ route('dentist.paymentForm', $appointment->id) }}"
                                 class="flex items-center justify-start gap-2 py-2 px-4 my-2 border border-gray-500 rounded-md hover:border-gray-700 hover:shadow-sm transition-all max-sm:justify-center">
                                 <img class="h-8 max-lg:h-4" src="{{ asset('assets/images/payment.png') }}" alt="">
                                 <h1 class="max-lg:text-xs">Add payment</h1>
                             </a>
                         @elseif ($appointment->payment->status === 'Pending')
-                            <a href="{{ route('payments.form', $appointment->id) }}"
+                            <a href="{{ route('dentist.paymentForm', $appointment->id) }}"
                                 class="flex items-center justify-start gap-2 py-2 px-4 my-2 border border-gray-500 rounded-md hover:border-gray-700 hover:shadow-sm transition-all max-sm:justify-center">
                                 <img class="h-8 max-lg:h-4" src="{{ asset('assets/images/payment.png') }}" alt="">
                                 <h1 class="max-lg:text-xs">Add payment</h1>
                             </a>
-                            <a href="{{ route('payments.history', $appointment->id) }}"
+                            <a href="{{ route('dentist.paymentHistory', $appointment->id) }}"
                                 class="flex items-center justify-start gap-2 py-2 px-4 my-2 border border-gray-500 rounded-md hover:border-gray-700 hover:shadow-sm transition-all max-sm:justify-center">
                                 <img class="h-8 max-lg:h-4" src="{{ asset('assets/images/payment.png') }}" alt="">
                                 <h1 class="max-lg:text-xs">Payment history</h1>
                             </a>
                         @elseif ($appointment->payment->status === 'Paid')
-                            <a href="{{ route('payments.history', $appointment->id) }}"
+                            <a href="{{ route('dentist.paymentHistory', $appointment->id) }}"
                                 class="flex items-center justify-start gap-2 py-2 px-4 my-2 border border-gray-500 rounded-md hover:border-gray-700 hover:shadow-sm transition-all max-sm:justify-center">
                                 <img class="h-8 max-lg:h-4" src="{{ asset('assets/images/payment.png') }}" alt="">
                                 <h1 class="max-lg:text-xs">Payment history</h1>

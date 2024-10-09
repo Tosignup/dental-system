@@ -126,12 +126,15 @@
                             Dashboard
                         </button>
                     </a>
-                    <a class="flex justify-center items-center gap-2" href="{{ route('client.user-profile') }}">
+                    <a class="flex justify-center items-center gap-2"
+                        href="{{ route('client.user-profile', Auth::user()->patient_id) }}">
                         <img class="h-8" src="{{ asset('assets/images/patient-list-icon.png') }}" alt="">
                         <button class="hover:font-bold transition-all">
                             Records
                         </button>
                     </a>
+
+
                 </div>
             </div>
     </nav>
@@ -181,13 +184,13 @@
                         @endif
                     </div>
                     <li class="py-3">
-                        <a class="" href=" {{ route('client.overview', ['patient' => Auth::id()]) }} ">
+                        <a class="" href=" {{ route('client.overview', Auth::user()->patient_id) }} ">
                             <h1 class="max-lg:text-xs text-left">Profile</h1>
                         </a>
                     </li>
                     <hr>
                     <li class="py-3">
-                        <a class="" href=" {{ route('client.user-profile', ['patient' => Auth::id()]) }} ">
+                        <a class="" href=" {{ route('client.user-profile', Auth::user()->patient_id) }} ">
                             <h1 class="max-lg:text-xs text-left">Records</h1>
                         </a>
                     </li>
@@ -251,7 +254,8 @@
                         Dashboard
                     </button>
                 </a>
-                <a class="flex justify-center items-center gap-2" href="{{ route('client.user-profile') }}">
+                <a class="flex justify-center items-center gap-2"
+                    href="{{ route('client.user-profile', Auth::user()->patient_id) }}">
                     <img class="h-8 max-lg:h-5" src="{{ asset('assets/images/patient-list-icon.png') }}"
                         alt="">
                     <button class="hover:font-bold transition-all text-xs">

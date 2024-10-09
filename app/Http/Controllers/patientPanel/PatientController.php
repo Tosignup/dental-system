@@ -6,6 +6,8 @@ use App\Models\User;
 use App\Models\Image;
 use App\Models\Patient;
 use App\Models\Payment;
+use App\Models\AuditLog;
+use App\Models\Appointment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -179,22 +181,46 @@ class PatientController extends Controller
 
 
     //Archiving Patient Data
-    public function archivePatient($id)
+    public function archivePatient(Request $request, $id)
     {
         $patient = Patient::find($id);
         $patient->is_archived = 1;
         $patient->archived_at = now();  // Mark patient as archived with current timestamp
         $patient->save();
+
+        Appointment::where('patient_id', $id)
+        ->update(['is_archived' => 1, 'archived_at' => now()]); // Assuming you have an archived_at field in appointments
+
+        AuditLog::create([
+            'action' => 'archive',
+            'model_type' => 'DentistSchedule',
+            'model_id' => $patient->id,
+            'user_id' => auth()->id(),
+            'user_email' => auth()->user()->email,
+            'changes' => json_encode($request->all()), // Log the request data
+        ]);
         
         return redirect()->back()->with('success', 'Patient has been archived.');
     }
 
-    public function restorePatient($id)
+    public function restorePatient(Request $request, $id)
     {
         $patient = Patient::find($id);
         $patient->is_archived = 0;   
         $patient->archived_at = null;  // Restore patient by nullifying the archived_at field
         $patient->save();
+
+        Appointment::where('patient_id', $id)
+        ->update(['is_archived' => 0, 'archived_at' => null]);
+
+        AuditLog::create([
+            'action' => 'restore',
+            'model_type' => 'DentistSchedule',
+            'model_id' => $patient->id,
+            'user_id' => auth()->id(),
+            'user_email' => auth()->user()->email,
+            'changes' => json_encode($request->all()), // Log the request data
+        ]);
         
         return redirect()->back()->with('success', 'Patient has been restored.');
     }

@@ -23,6 +23,8 @@ return new class extends Migration
             $table->enum('status', ['Scheduled', 'Completed', 'Cancelled'])->default('Scheduled');
             $table->enum('pending', ['Pending', 'Approved', 'Declined'])->default('Pending');
             $table->boolean('is_online')->default(false);
+            $table->boolean('is_archived')->default(false);
+            $table->timestamp('archived_at')->nullable();
             $table->timestamps();
         });
     }

@@ -1,6 +1,8 @@
 @extends('dentist.dashboard')
 @section('content')
-    <section class="flex max-lg:p-3  max-lg:gap-3 gap-5 bg-gray-100 p-6 max-2xl:flex-wrap max-xl:mt-20">
+    <section class="bg-white shadow-lg rounded-md p-6 my-4 mx-2  max-lg:mt-14">
+        <h1 class="font-bold text-3xl p-4">Approved Appointments</h1>
+
         @if ($approvedAppointments->isEmpty())
             <p>No approved appointments.</p>
         @else
@@ -11,8 +13,7 @@
                         <th class="py-2 px-4 border-b text-left text-gray-600 max-xl:hidden">Patient</th>
                         <th class="py-2 px-4 border-b text-left text-gray-600  max-lg:text-xs">Procedure</th>
                         <th class="py-2 px-4 border-b text-left text-gray-600  max-xl:hidden">Branch</th>
-                        <th class="py-2 px-4 border-b text-left text-gray-600 max-lg:text-xs ">
-                            Actions</th>
+                        <th class="py-2 px-4 border-b text-left text-gray-600 max-lg:text-xs ">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -32,9 +33,16 @@
                                 {{ $appointment->branch ? $appointment->branch->branch_loc : 'N/A' }}</td>
 
                             <td class="borderb-b py-2 px-4 max-xl:flex justify-center items-center text-xs">
-                                <button class="text-gray-800 border-2 rounded-md px-4 py-2  transition"
+                                {{-- <button class="text-gray-800 border-2 rounded-md px-4 py-2  transition"
                                     onclick="openModal('view_modal_{{ $appointment->id }}')">
-                                    View</button>
+                                    View</button> --}}
+
+                                <a href="{{ route('appointments.show', $appointment->id) }}"
+                                    class="flex justify-center items-center border rounded-md py-2 px-4 max-md:py-1 max-md:px-2 text-white font-semibold hover:bg-gray-400 transition-all">
+                                    <h1 class="hidden max-2xl:block text-xs font-semibold text-gray-800">View</h1>
+                                    <img class="h-5 sm:h-4 sm:w-4 max-md:h-4 max-md:w-4 max-2xl:hidden"
+                                        src="{{ asset('assets/images/user-icon.png') }}" alt="">
+                                </a>
 
                                 <div id="view_modal_{{ $appointment->id }}"
                                     class="fixed hidden z-50 inset-0 bg-gray-900 bg-opacity-60 overflow-y-auto h-full w-full px-4 modal">

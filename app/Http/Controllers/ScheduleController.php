@@ -109,25 +109,31 @@ class ScheduleController extends Controller
          }
  
          // Save the schedule if valid
-         $schedule->update([
-             'date' => $date,
-             'start_time' => $startTime,
-             'end_time' => $endTime,
-             'appointment_duration' => $request->appointment_duration,
-         ]);
+        $schedule->update([
+            'date' => $date,
+            'start_time' => $startTime,
+            'end_time' => $endTime,
+            'appointment_duration' => $request->appointment_duration,
+        ]);
+
+        AuditLog::create([
+            'action' => 'create',
+            'model_type' => 'DentistSchedule',
+            'model_id' => $schedule->id,
+            'user_id' => auth()->id(),
+            'user_email' => auth()->user()->email,
+            'changes' => json_encode($request->all()), // Log the request data
+        ]);
  
          return redirect()->route('schedule')->with('success', 'Schedule added successfully.');
     }
 
     public function deleteSchedule1($id)
     {
-        // Find the schedule by ID or fail
         $schedule = DentistSchedule::findOrFail($id);
 
-        // Delete the schedule
         $schedule->delete();
 
-        // Redirect back with a success message
         return redirect()->route('schedule')->with('success', 'Schedule deleted successfully.');
     }
 
@@ -173,7 +179,7 @@ class ScheduleController extends Controller
             }
 
             // Save the schedule for the specific date
-            DentistSchedule::create([
+            $schedule = DentistSchedule::create([
                 'dentist_id' => $request->dentist_id,
                 'branch_id' => $request->branch_id,
                 'date' => $date,
@@ -183,65 +189,14 @@ class ScheduleController extends Controller
             ]);
         }
 
-        return redirect()->route('schedule')->with('success', 'Schedules added successfully.');
-    }
-
-    //Working with Checkboxes approach
-    public function storeSchedule111(Request $request)
-    {
-        $request->validate([
-            'dentist_id' => 'required|exists:dentists,id',
-            'branch_id' => 'required|exists:branches,id',
-            'start_time' => 'required|date_format:H:i',
-            'end_time' => 'required|date_format:H:i|after:start_time',
-            'appointment_duration' => 'required|integer|min:15',
-            'base_date' => 'required|date', // Base date for scheduling
-            'days_of_week' => 'required|array', // Selected days of the week
-            'days_of_week.*' => 'in:Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday', // Valid days
+        AuditLog::create([
+            'action' => 'create',
+            'model_type' => 'DentistSchedule',
+            'model_id' => $schedule->id,
+            'user_id' => auth()->id(),
+            'user_email' => auth()->user()->email,
+            'changes' => json_encode($request->all()), // Log the request data
         ]);
-
-        // Parse the base date
-        $baseDate = Carbon::parse($request->base_date);
-
-        // Loop through each selected day of the week
-        foreach ($request->days_of_week as $day) {
-            // Calculate the date for the specific day of the week
-            $dayOfWeek = Carbon::parse($day);
-            $daysToAdd = ($dayOfWeek->dayOfWeek - $baseDate->dayOfWeek + 7) % 7; // Calculate days to add
-            $scheduleDate = $baseDate->copy()->addDays($daysToAdd); // Get the correct date for the day of the week
-
-            // Create start and end time for the schedule
-            $startTime = Carbon::parse($scheduleDate->toDateString() . ' ' . $request->start_time);
-            $endTime = Carbon::parse($scheduleDate->toDateString() . ' ' . $request->end_time);
-
-            // Check for overlapping schedules
-            $overlappingSchedule = DentistSchedule::where('dentist_id', $request->dentist_id)
-                ->whereDate('date', $scheduleDate)
-                ->where(function($query) use ($startTime, $endTime) {
-                    $query->where(function($q) use ($startTime, $endTime) {
-                        $q->where('start_time', '<', $endTime)
-                        ->where('end_time', '>', $startTime);
-                    });
-                })
-                ->exists();
-
-            if ($overlappingSchedule) {
-                return back()->withErrors([
-                    'start_time' => 'This schedule overlaps with an existing one.',
-                    'end_time' => 'This schedule overlaps with an existing one.',
-                ])->withInput();
-            }
-
-            // Save the schedule for the specific day
-            DentistSchedule::create([
-                'dentist_id' => $request->dentist_id,
-                'branch_id' => $request->branch_id,
-                'date' => $scheduleDate,
-                'start_time' => $startTime,
-                'end_time' => $endTime,
-                'appointment_duration' => $request->appointment_duration,
-            ]);
-        }
 
         return redirect()->route('schedule')->with('success', 'Schedules added successfully.');
     }
@@ -338,24 +293,25 @@ class ScheduleController extends Controller
              ])->withInput();
          }
  
-         // Save the schedule if valid
-         $schedule = DentistSchedule::create([
-             'dentist_id' => $request->dentist_id,
-             'branch_id' => $request->branch_id,
-             'date' => $date,
-             'start_time' => $startTime,
-             'end_time' => $endTime,
-             'appointment_duration' => $request->appointment_duration,
-         ]);
+        // Save the schedule if valid
+        $schedule = DentistSchedule::create([
+            'dentist_id' => $request->dentist_id,
+            'branch_id' => $request->branch_id,
+            'date' => $date,
+            'start_time' => $startTime,
+            'end_time' => $endTime,
+            'appointment_duration' => $request->appointment_duration,
+        ]);
 
          // Log the action
-    AuditLog::create([
-        'action' => 'create',
-        'model_type' => 'DentistSchedule',
-        'model_id' => $schedule->id,
-        'user_id' => auth()->id(),
-        'changes' => json_encode($request->all()), // Log the request data
-    ]);
+        AuditLog::create([
+            'action' => 'create',
+            'model_type' => 'DentistSchedule',
+            'model_id' => $schedule->id,
+            'user_id' => auth()->id(),
+            'user_email' => auth()->email(),
+            'changes' => json_encode($request->all()), // Log the request data
+        ]);
  
          return redirect()->route('schedule')->with('success', 'Schedule added successfully.');
     }
@@ -378,22 +334,22 @@ class ScheduleController extends Controller
          $endTime = Carbon::parse($request->date . ' ' . $request->end_time);
  
          // Check for overlapping schedules
-         $overlappingSchedule = DentistSchedule::where('dentist_id', $request->dentist_id)
-             ->whereDate('date', $date)
-             ->where(function($query) use ($startTime, $endTime) {
-                 $query->where(function($q) use ($startTime, $endTime) {
-                     $q->where('start_time', '<', $endTime)
-                       ->where('end_time', '>', $startTime);
-                 });
-             })
-             ->exists();
- 
-         if ($overlappingSchedule) {
-             return back()->withErrors([
-                 'start_time' => 'This schedule overlaps with an existing one.',
-                 'end_time' => 'This schedule overlaps with an existing one.',
-             ])->withInput();
-         }
+        $overlappingSchedule = DentistSchedule::where('dentist_id', $request->dentist_id)
+            ->whereDate('date', $date)
+            ->where(function($query) use ($startTime, $endTime) {
+                $query->where(function($q) use ($startTime, $endTime) {
+                    $q->where('start_time', '<', $endTime)
+                    ->where('end_time', '>', $startTime);
+                });
+            })
+            ->exists();
+
+        if ($overlappingSchedule) {
+            return back()->withErrors([
+                'start_time' => 'This schedule overlaps with an existing one.',
+                'end_time' => 'This schedule overlaps with an existing one.',
+            ])->withInput();
+        }
  
          // Save the schedule if valid
          $schedule->update([
@@ -404,18 +360,19 @@ class ScheduleController extends Controller
          ]);
 
           // Log the action
-    AuditLog::create([
-        'action' => 'update',
-        'model_type' => 'DentistSchedule',
-        'model_id' => $schedule->id,
-        'user_id' => auth()->id(),
-        'changes' => json_encode($request->all()), // Log the request data
-    ]);
+        AuditLog::create([
+            'action' => 'update',
+            'model_type' => 'DentistSchedule',
+            'model_id' => $schedule->id,
+            'user_id' => auth()->id(),
+            'user_email' => auth()->user()->email,
+            'changes' => json_encode($request->all()), // Log the request data
+        ]);
  
          return redirect()->route('schedule')->with('success', 'Schedule added successfully.');
     }
 
-    public function deleteSchedule($id)
+    public function deleteSchedule(Request $request,$id)
     {
         // Find the schedule by ID or fail
         $schedule = DentistSchedule::findOrFail($id);
@@ -426,7 +383,8 @@ class ScheduleController extends Controller
             'model_type' => 'DentistSchedule',
             'model_id' => $schedule->id,
             'user_id' => auth()->id(),
-            'changes' => 'Schedule Deleted', // No changes to log for deletion
+            'user_email' => auth()->user()->email,
+            'changes' => json_encode($schedule->toArray()),// Log the request data
         ]);
 
         // Delete the schedule

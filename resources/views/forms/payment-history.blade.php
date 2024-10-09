@@ -80,17 +80,11 @@
                 </tbody>
             </table>
 
-            <div class="w-full flex justify-between gap-2 mt-4">
-                <a href="{{ route('payments.form', $appointment->id) }}"
-                    class="flex justify-center items-center  py-2 px-6 text-center max-md:py-2 max-md:px-2 max-md:text-xs font-semibold rounded-md hover:bg-green-600 hover:border-green-600 hover:text-white text-gray-800 border-2 border-gray-600 transition-all"
-                    type="submit">
-                    Make a New Payment
-                </a>
-
+            <div class="w-full flex gap-2 mt-4">
                 <a @if (Auth::user()->role === 'admin' || Auth::user()->role === 'staff') href=" {{ route('show.appointment', $appointment->id) }} "
                              @elseif (Auth::user()->role === 'dentist') 
-                            href=" {{ route('dentist.dashboard', $appointment->id) }} " @endif
-                    class="flex justify-center items-center py-2 px-16 text-center max-md:py-2 max-md:px-12 max-md:text-xs font-semibold rounded-md hover:bg-red-600 hover:border-red-600 border-2 border-gray-600 text-gray-800  hover:text-white transition-all"
+                            href=" {{ route('appointments.payment', $appointment->dentist_id) }} " @endif
+                    class="flex w-full justify-center items-center py-2 px-16 text-center max-md:py-2 max-md:px-12 max-md:text-xs font-semibold rounded-md hover:bg-red-600 hover:border-red-600 border-2 border-gray-600 text-gray-800  hover:text-white transition-all"
                     type="reset">
                     Return
                 </a>

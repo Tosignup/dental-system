@@ -1,9 +1,10 @@
 @extends('dentist.dashboard')
 @section('content')
-    <section class="flex max-lg:p-3  max-lg:gap-3 gap-5 bg-gray-100 p-6 max-2xl:flex-wrap max-xl:mt-20">
+    <section class="flex flex-col justify-center items-center p-6 border border-blue-600">
+
         <!-- Sidebar -->
-        <div class=" bg-white min-w-80 p-4 rounded-lg shadow-md max-xl:w-full border border-red-600">
-            <div class="flex flex-col items-center text-center">
+        {{-- <div class="w-full bg-white min-w-80 p-4 rounded-lg shadow-md max-xl:w-full border border-red-600">
+            <div class="w-full flex flex-col items-center text-center">
                 <div
                     class="w-20 h-20 rounded-full bg-gray-300 flex items-center justify-center text-4xl text-gray-700 font-bold">
                     {{ $dentist->first_initial }}
@@ -36,50 +37,48 @@
 
                 </div>
             </div>
+        </div> --}}
+
+        <div
+            class="flex flex-col items-center justify-center w-full rounded-xl shadow-lg p-7 bg-white my-4 mx-auto gap-4 mt-6 max-lg:mt-14 max-w-5xl border border-green-500">
+            <h1 class=" text-5xl max-md:text-3xl font-bold my-2 ">Good day,
+                {{ Auth::user()->username }}!
+            </h1>
+            <h1>Let's brighten smiles and make a difference today!</h1>
         </div>
 
-        <!-- Main Content -->
-        <div class="bg-white max-xl:w-full p-4 max-lg:p-2 max-xl:text-xs rounded-lg shadow-md">
-            <!-- Tab Navigation -->
-            <div class="border-b border-gray-200 mb-4">
-                <nav class="flex flex-wrap gap-5 max-lg:gap-2">
-
-                    <button
-                        class="text-gray-500 pb-2 border-b-2 border-transparent focus:outline-none hover:border-b-green-300 transition-all"
-                        data-tab-target="#tab1">Appointment Request</button>
-                    <button
-                        class="text-gray-500 pb-2 border-b-2 border-transparent focus:outline-none hover:border-b-green-300 transition-all"
-                        data-tab-target="#tab2">Next Appointment</button>
-                    <button
-                        class="text-gray-500 pb-2 border-b-2 border-transparent focus:outline-none hover:border-b-green-300 transition-all"
-                        data-tab-target="#tab3">Payment</button>
-                </nav>
+        <div class="w-full bg-white shadow-lg rounded-xl p-8 flex flex-col items-center justify-center max-w-md">
+            <div class="mb-8 text-center">
+                <h1 class="text-3xl max-md:text-xl font-bold">Appointment Summary</h1>
             </div>
-
-            <!-- Table -->
-            <div>
-                <div id="tab1" class="tab-content text-gray-700 hidden">
-
-                    <!-- component -->
-                    @include('dentist.contents.partial.pending-appointments')
-                    <div class="w-full">
-                        {{ $pendingAppointments->links() }}
-                    </div>
-                </div>
-                <div id="tab2" class="tab-content text-gray-700 hidden">
-                    @include('dentist.contents.partial.approved-appointments')
-                    <div class="w-full">
-                        {{ $approvedAppointments->links() }}
-                    </div>
-                </div>
-                <div id="tab3" class="tab-content text-gray-700 hidden">
-                    @include('dentist.contents.partial.payment-list')
-                    <div class="w-full">
-                        {{ $payments->links() }}
-                    </div>
-                </div>
+            <div class="flex gap-4 max-md:gap-2 md:flex-col">
+                <a href="{{ route('appointment.submission') }}"
+                    class="flex-1 flex max-md:flex-col max-md:p-2 py-4 px-8 justify-between bg-white shadow-lg items-center gap-2 rounded-md hover:bg-gray-100 transition-all  ">
+                    <img class="h-12 max-md:h-6" src="{{ asset('assets/images/appointment-total.png') }}" alt="">
+                    <h1 class="text-md font-semibold max-md:text-xs max-md:text-center">Total of Appointments</h1>
+                    <h1 class="text-4xl font-bold max-md:text-2xl">
+                        {{ $totalAppointments > 0 ? $totalAppointments : 0 }}
+                    </h1>
+                </a>
+                <a href="{{ route('appointment.submission') }}"
+                    class="flex-1 flex max-md:flex-col max-md:p-2 py-4 px-8 justify-between bg-white shadow-lg items-center gap-2 rounded-md hover:bg-gray-100 transition-all  ">
+                    <img class="h-12 max-md:h-6" src="{{ asset('assets/images/appointment-new.png') }}" alt="">
+                    <h1 class="text-md font-semibold max-md:text-xs max-md:text-center">New Appointments</h1>
+                    <h1 class="text-4xl font-bold max-md:text-2xl">
+                        {{ $newAppointments > 0 ? $newAppointments : 0 }}
+                    </h1>
+                </a>
+                <a href="{{ route('appointment.submission') }}"
+                    class="flex-1 flex max-md:flex-col max-md:p-2 py-4 px-8 justify-between bg-white shadow-lg items-center gap-2 rounded-md hover:bg-gray-100 transition-all  ">
+                    <img class="h-12 max-md:h-6" src="{{ asset('assets/images/appointment-today.png') }}" alt="">
+                    <h1 class="text-md font-semibold max-md:text-xs max-md:text-center">Today's Appointments</h1>
+                    <h1 class="text-4xl font-bold max-md:text-2xl">
+                        {{ $todayAppointment > 0 ? $todayAppointment : 0 }}
+                    </h1>
+                </a>
             </div>
         </div>
+
     </section>
 @endsection
 <script>

@@ -1,30 +1,41 @@
 @extends('admin.dashboard')
 @section('content')
-    <div class="container">
-        <h1>Audit Logs</h1>
-        <table class="table">
-            <thead>
+    <div class="m-4 ">
+        @include('components.search')
+    </div>
+    <section class="bg-white shadow-lg rounded-md py-2 px-4 mx-2 max-h-screen  max-lg:mt-14">
+        <h1 class="font-bold text-2xl p-4 max-md:text-3xl">Audit Logs</h1>
+        <table class="table text-wrap">
+            <thead class="">
                 <tr>
-                    <th>Action</th>
-                    <th>Model Type</th>
-                    <th>Model ID</th>
-                    <th>User ID</th>
-                    <th>Changes</th>
-                    <th>Timestamp</th>
+                    {{-- <th class="">User ID</th> --}}
+                    <th class="">User Email</th>
+                    <th class="">Action</th>
+                    {{-- <th class="">Model Type</th>
+                        <th class="">Model ID</th> --}}
+                    {{-- <th class="">Changes</th> --}}
+                    <th class="">Date</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($auditLogs as $log)
+                @foreach ($auditLogs as $auditLog)
                     <tr>
-                        <td>{{ $log->action }}</td>
-                        <td>{{ $log->model_type }}</td>
-                        <td>{{ $log->model_id }}</td>
-                        <td>{{ $log->user_id }}</td>
-                        <td>{{ $log->changes }}</td>
-                        <td>{{ $log->created_at }}</td>
+                        <td class="px-2 font-semibold">{{ $auditLog->user_email }}</td>
+                        <td class="px-2 font-semibold">{{ $auditLog->action }} <span>
+                                <ul class="flex flex-wrap font-normal text-xs">
+                                    @if (isset($auditLog->changes['message']))
+                                        <li>{{ $auditLog->changes['message'] }}</li>
+                                    @else
+                                        @foreach ($auditLog->changes as $key => $value)
+                                            <li><strong>{{ ucfirst($key) }}:</strong> {{ $value }}</li>
+                                        @endforeach
+                                    @endif
+                                </ul>
+                            </span></td>
+                        <td class="px-2 font-semibold">{{ $auditLog->created_at }}</td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
-    </div>
+    </section>
 @endsection

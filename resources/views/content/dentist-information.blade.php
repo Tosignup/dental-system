@@ -41,43 +41,8 @@
                         </div>
                     </div>
 
-                    @if ($dentist && $dentist->schedules)
-                        {
-                        @foreach ($dentist->schedules as $schedule)
-                            <tr class="odd:bg-green-100 even:bg-slate-100">
-                                <td class="border px-4 py-2 max-md:text-xs">{{ $schedule->date }}</td>
-                                <td class="border px-4 py-2 max-md:text-xs">{{ $schedule->start_time }}</td>
-                                <td class="border px-4 py-2 max-md:text-xs">{{ $schedule->end_time }}</td>
-                                <td class="border px-4 py-2 max-md:text-xs">{{ $schedule->appointment_duration }}</td>
-                                <td class="border py-2">
-                                    <div class="flex gap-2 justify-center items-center">
-                                        <a
-                                            class=" border border-slate-600 rounded-md py-2 px-4 text-white font-semibold hover:bg-gray-400 transition-all">
-                                            {{-- href=" {{ route('edit.schedule', $schedule->id) }} "> --}}
-                                            <img class=h-6 src="{{ asset('assets/images/edit-icon.png') }}" alt="">
-                                        </a>
 
-                                        <a href="{{ route('show.patient', $schedule->id) }}"
-                                            class="border border-slate-600 rounded-md py-2 px-4 text-white font-semibold hover:bg-gray-400 transition-all">
-                                            <img class=h-6 src="{{ asset('assets/images/view-icon.png') }}" alt="">
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                        }
-                    @else
-                        <div class="flex gap-2 items-center justify-center">
-                            <img class="h-8 max-md:h-5" src="{{ asset('assets/images/exclamation-mark.png') }}"
-                                alt="">
-                            <p class="font-semibold text-red-600 max-md:text-xs ">No schedules found for
-                                this
-                                dentist.</p>
-                        </div>
-                    @endif
                 </div>
-
             </div>
-        </div>
     </section>
 @endsection

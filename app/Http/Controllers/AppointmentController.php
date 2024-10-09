@@ -36,6 +36,7 @@ class AppointmentController extends Controller
         return view('appointment.appointment-information', compact('appointment'));
     }
 
+
     public function appointment_submission(Request $request)
     {
         $walkinAppointmentsQuery = Appointment::with(['patient', 'branch', 'dentistSchedule'])
@@ -212,17 +213,13 @@ class AppointmentController extends Controller
         ]);
 
         // Check for existing appointments to prevent duplicates
-        // $existingAppointment = Appointment::where('patient_id', $validatedData['patient_id'])
-        //     ->where('dentist_id', $validatedData['dentist_id'])
-        //     ->where('branch_id', $validatedData['branch_id'])
-        //     ->where('schedule_id', $validatedData['schedule_id'])
-        //     ->where('appointment_date', $validatedData['appointment_date'])
-        //     ->where('preferred_time', $validatedData['preferred_time'])
-        //     ->first();
+        $existingAppointment = Appointment::where('appointment_date', $validatedData['appointment_date'])
+                ->where('preferred_time', $validatedData['preferred_time'])
+                ->first();
 
-        // if ($existingAppointment) {
-        //     return redirect()->back()->withErrors(['error' => 'This appointment slot is already taken.']);
-        // }
+        if ($existingAppointment) {
+            return redirect()->back()->withErrors(['error' => 'This appointment slot is already taken.']);
+        }
 
         $existingAppointment = Appointment::where('patient_id', $validatedData['patient_id'])
         ->where('appointment_date', $validatedData['appointment_date'])
@@ -347,6 +344,11 @@ class AppointmentController extends Controller
         $appointment->Pending = 'Approved';
         $appointment->save();
 
+        $patient = $appointment->patient; // Assuming the relationship is defined in the Appointment model
+        $patient->next_visit = $appointment->appointment_date; // Set next visit to the appointment date
+        $patient->save(); // Save the updated patient record
+        
+
         Notification::route('mail', $appointment->email)->notify(new AppointmentApproved($appointment));
 
         return redirect()->back()->with('success', 'Appointment approved and email sent.');
@@ -365,37 +367,13 @@ class AppointmentController extends Controller
 
     //Testing sidebar
 
-    public function walkIn_appointment1(Request $request)
-    {
-        $walkinAppointmentsQuery = Appointment::with(['patient', 'branch', 'dentistSchedule'])
-            ->where('is_online', 0);
-            
-            if ($request->has('sortWalkin')) {
-                $sortOption = $request->get('sortWalkin');
-                if ($sortOption == 'created_at') {
-                    $walkinAppointmentsQuery->orderBy('created_at', 'ASC');
-                } elseif ($sortOption == 'appointment_date') {
-                    $walkinAppointmentsQuery->orderBy('appointment_date', 'ASC');
-                } elseif ($sortOption == 'status') {
-                    $walkinAppointmentsQuery->orderBy('pending', 'ASC');
-                } elseif ($sortOption == 'branch') {
-                    $walkinAppointmentsQuery->orderBy('branch_id', 'ASC');
-                }
-            } else {
-                $walkinAppointmentsQuery->orderBy('created_at', 'ASC');
-            }
-            
-
-        $walkin_appointments = $walkinAppointmentsQuery->paginate(10);
-
-        return view('content.partial.appointment-walkIn-list', compact('walkin_appointments'));
-    }
     public function walkIn_appointment(Request $request)
     {
         $now = Carbon::now();
 
         $walkinAppointmentsQuery = Appointment::with(['patient', 'branch', 'dentistSchedule'])
-        ->where('appointment_date', '>', $now)
+            ->where('appointment_date', '>', $now)
+            ->where('is_archived', 0)
             ->where('is_online', 0);
 
         // Check for sorting
@@ -425,6 +403,7 @@ class AppointmentController extends Controller
     public function online_appointment(Request $request)
     {
         $onlineAppointmentsQuery = Appointment::with(['patient', 'branch', 'dentistSchedule'])
+            ->where('is_archived', 0)
             ->where('is_online', 1);
             
 

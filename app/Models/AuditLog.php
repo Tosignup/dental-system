@@ -14,6 +14,7 @@ class AuditLog extends Model
         'model_type',
         'model_id',
         'user_id',
+        'user_email',
         'changes',
     ];
 }

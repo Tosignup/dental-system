@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('model_type'); // Model type (e.g., DentistSchedule)
             $table->unsignedBigInteger('model_id'); // ID of the model
             $table->unsignedBigInteger('user_id'); // ID of the user who performed the action
+            $table->string('user_email');
             $table->text('changes')->nullable(); // Changes made (if applicable)
             $table->timestamps();
         });

@@ -144,7 +144,7 @@
                         src="{{ asset('assets/images/user-icon.png') }}" alt="">
                 </summary>
                 <ul
-                    class="dropdown-menu menu dropdown-content bg-base-100 mt-4 rounded-box z-[1] w-52 p-2 shadow flex flex-col justify-end items-end gap-2 bg-white rounded-md">
+                    class="dropdown-menu menu dropdown-content bg-base-100 mt-1 rounded-box z-[1] w-52 p-2 shadow flex flex-col justify-end items-end gap-2 bg-white rounded-md">
                     <div class="flex gap-2 justify-start items-center py-4 border-b">
                         <img class="h-5 p-1 border border-gray-600 rounded-full bg-white"
                             src="{{ asset('assets/images/user-icon.png') }}" alt="">

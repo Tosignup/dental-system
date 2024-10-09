@@ -65,6 +65,8 @@ class Patient extends Model
         return $this->hasMany(Image::class);
     }
 
+    
+    //Attribute
     public function getFirstInitialAttribute()
     {
         return substr($this->first_name, 0, 1);

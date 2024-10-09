@@ -4,6 +4,7 @@ namespace App\Http\Controllers\clientPanel;
 
 use Auth;
 use App\Models\User;
+use App\Models\Image;
 use App\Models\Patient;
 use App\Models\Payment;
 use App\Models\Appointment;
@@ -22,7 +23,6 @@ class ClientController extends Controller
         } elseif(Auth::user()->role === 'dentist') {
             return redirect()->route('dentist.dashboard');
         } else {
-
         return view('client.dashboard');
         }
     }
@@ -47,8 +47,22 @@ class ClientController extends Controller
         return view('client.contents.overview', compact('patient', 'appointments', 'payments'));
     }
     
-    public function profileUserProfile(){
-        return view('client.contents.user-profile');
+    public function profileUserProfile($id){
+
+        $xrayImages = Image::where('patient_id', $id)
+                ->where('image_type', 'xray')
+                ->get();
+
+        $contractImage = Image::where('patient_id', $id)
+                ->where('image_type', 'contract')
+                ->first();
+                
+        $backgroundImage = Image::where('patient_id', $id)
+                ->where('image_type', 'background')
+                ->first();
+
+
+        return view('client.contents.user-profile', compact('xrayImages', 'contractImage', 'backgroundImage'));
     }
 
     public function createClientPayment($appointmentId) {

@@ -111,6 +111,13 @@
                             Patient List
                         </button>
                     </a>
+                    <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
+                        href="{{ route('schedule') }}">
+                        <img class="h-8" src="{{ asset('assets/images/appointment-calendar.png') }}" alt="">
+                        <button class="hover:font-bold transition-all">
+                            Schedule
+                        </button>
+                    </a>
                     <div x-data="{ open: false }" class="w-full">
                         <button @click="open = !open"
                             class="flex justify-start items-center gap-2 hover:bg-gray-300 transition-all w-full p-2 rounded-md">
@@ -132,14 +139,6 @@
                         </div>
                     </div>
                     <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
-                        href="{{ route('schedule') }}">
-                        <img class="h-8" src="{{ asset('assets/images/appointment-calendar.png') }}"
-                            alt="">
-                        <button class="hover:font-bold transition-all">
-                            Schedule
-                        </button>
-                    </a>
-                    <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
                         href="{{ route('inventory') }}">
                         <img class="h-8" src="{{ asset('assets/images/inventory.png') }}" alt="">
                         <button class="hover:font-bold transition-all">
@@ -157,6 +156,31 @@
                             Dashboard
                         </button>
                     </a>
+
+                    <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
+                        href="{{ route('appointments.pending', Auth::user()->dentist_id) }}">
+                        <img class="h-8" src="{{ asset('assets/images/appointment.png') }}" alt="">
+                        <button class="hover:font-bold  transition-all">
+                            Pending Appointments
+                        </button>
+                    </a>
+
+                    <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
+                        href="{{ route('appointments.approved', Auth::user()->dentist_id) }}">
+                        <img class="h-8" src="{{ asset('assets/images/appointment.png') }}" alt="">
+                        <button class="hover:font-bold  transition-all">
+                            Approved Appointments
+                        </button>
+                    </a>
+
+                    <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
+                        href="{{ route('appointments.payment', Auth::user()->dentist_id) }}">
+                        <img class="h-8" src="{{ asset('assets/images/payment.png') }}" alt="">
+                        <button class="hover:font-bold  transition-all">
+                            Payments
+                        </button>
+                    </a>
+
                 </div>
             @endif
 
@@ -344,10 +368,10 @@
                         </button>
                         <div x-show="open" @click.away="open = false" class="ml-6 mt-1 space-y-1">
                             <a href="{{ route('appointments.walkIn') }}"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 rounded-md">Walk-in
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 rounded-md max-md:text-xs">Walk-in
                                 Request</a>
                             <a href="{{ route('appointments.online') }}"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 rounded-md">Online
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 rounded-md max-md:text-xs">Online
                                 Request</a>
                         </div>
                     </div>
@@ -358,23 +382,24 @@
                             Inventory
                         </button>
                     </a>
-
                 </div>
             @endif
             @if (Auth::user()->role === 'staff')
-                <div class="flex flex-col items-start gap-4">
-                    <a class="flex justify-start items-center gap-2  w-full p-2 rounded-md  hover:bg-gray-300 transition-all border"
+                <div class="flex flex-col items-start gap-2">
+
+                    <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
                         href="{{ route('staff.dashboard') }}">
-                        <img class="h-8" src="{{ asset('assets/images/dashboard-icon.png') }}" alt="">
-                        <button class="hover:font-bold  transition-all">
+
+                        <img class="h-5" src="{{ asset('assets/images/dashboard-icon.png') }}" alt="">
+                        <button class="hover:font-bold transition-all text-xs">
                             Dashboard
                         </button>
                     </a>
                     <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
                         href="{{ route('patient_list') }}">
-                        <img class="h-8" src="{{ asset('assets/images/patient-list-icon.png') }}" alt="">
-                        <button class="hover:font-bold transition-all">
-                            Patient List
+                        <img class="h-5" src="{{ asset('assets/images/patient-list-icon.png') }}" alt="">
+                        <button class="hover:font-bold transition-all text-xs">
+                            Patient list
                         </button>
                     </a>
                     <div x-data="{ open: false }" class="w-full">
@@ -390,10 +415,10 @@
                         </button>
                         <div x-show="open" @click.away="open = false" class="ml-6 mt-1 space-y-1">
                             <a href="{{ route('appointments.walkIn') }}"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 rounded-md">Walk-in
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 rounded-md max-md:text-xs">Walk-in
                                 Request</a>
                             <a href="{{ route('appointments.online') }}"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 rounded-md">Online
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 rounded-md max-md:text-xs">Online
                                 Request</a>
                         </div>
                     </div>
@@ -407,8 +432,8 @@
                     </a>
                     <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
                         href="{{ route('inventory') }}">
-                        <img class="h-8" src="{{ asset('assets/images/inventory.png') }}" alt="">
-                        <button class="hover:font-bold transition-all">
+                        <img class="h-5" src="{{ asset('assets/images/inventory.png') }}" alt="">
+                        <button class="hover:font-bold transition-all text-xs">
                             Inventory
                         </button>
                     </a>

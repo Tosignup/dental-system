@@ -31,7 +31,7 @@ class PaymentController extends Controller
         $totalPaid = $payment ? $payment->total_paid : 0;
         $balanceRemaining = $appointment->procedure->price - $totalPaid;
 
-        return view('forms.payment_form', compact('appointment', 'payment', 'totalPaid'));
+        return view('forms.payment-form', compact('appointment', 'payment', 'totalPaid'));
     }
    
     public function showPaymentHistory($appointmentId) {
@@ -52,7 +52,7 @@ class PaymentController extends Controller
         $totalPaid = $paymentHistory->sum('paid_amount');
         $balanceRemaining = $appointment->procedure->price - $totalPaid;
     
-        return view('forms.payment_history', compact('appointment', 'paymentHistory', 'totalPaid', 'balanceRemaining'));
+        return view('forms.payment-history', compact('appointment', 'paymentHistory', 'totalPaid', 'balanceRemaining'));
     }
     
     

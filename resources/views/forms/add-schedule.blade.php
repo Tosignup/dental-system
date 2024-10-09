@@ -107,27 +107,18 @@
                         @enderror
                     </label> --}}
 
-                    {{-- Checkboxes Approach --}}
-                    {{-- <label for="base_date">Select Base Date:</label>
-                    <input type="date" id="base_date" name="base_date" required>
-
-                    <div>
-                        <label><input type="checkbox" name="days_of_week[]" value="Monday"> Monday</label>
-                        <label><input type="checkbox" name="days_of_week[]" value="Tuesday"> Tuesday</label>
-                        <label><input type="checkbox" name="days_of_week[]" value="Wednesday"> Wednesday</label>
-                        <label><input type="checkbox" name="days_of_week[]" value="Thursday"> Thursday</label>
-                        <label><input type="checkbox" name="days_of_week[]" value="Friday"> Friday</label>
-                        <label><input type="checkbox" name="days_of_week[]" value="Saturday"> Saturday</label>
-                        <label><input type="checkbox" name="days_of_week[]" value="Sunday"> Sunday</label>
-                    </div> --}}
-
                     {{-- JavaScript Approach --}}
-                    <label for="date">Select Date:</label>
-                    <input type="date" id="date" name="date" required>
-                    <button type="button" id="addDate">Add Date</button>
+                    <label class="flex flex-col flex-1 pb-4" for="date">Select Date:
+                        <input type="date" id="date" name="date"
+                            class="border max-md:text-xs flex-grow min-w-max border-gray-400 py-2 px-4 rounded-md" required>
+                        <button type="button" id="addDate"
+                            class="mt-1 px-8 max-md:text-xs max-md:py-2 max-md:px-4 font-medium rounded-md hover:bg-green-600 hover:border-green-600 hover:text-white text-gray-800 border border-gray-600 transition-all">Add
+                            Date</button>
+                        <input type="hidden" name="selected_dates" id="selected_dates">
+                        <div id="selected_dates_display" class="mt-2 text-gray-800">
+                        </div>
 
-                    <input type="hidden" name="selected_dates" id="selected_dates">
-
+                    </label>
                     <script>
                         const selectedDates = [];
 
@@ -138,11 +129,27 @@
                             if (dateValue && !selectedDates.includes(dateValue)) {
                                 selectedDates.push(dateValue);
                                 document.getElementById('selected_dates').value = JSON.stringify(selectedDates);
-                                alert(`Date ${dateValue} added!`);
+                                updateSelectedDatesDisplay();
                             } else {
                                 alert('Please select a valid date or avoid duplicates.');
                             }
                         });
+
+                        function updateSelectedDatesDisplay() {
+                            const displayElement = document.getElementById('selected_dates_display');
+                            displayElement.innerHTML = '';
+                            if (selectedDates.length > 0) {
+                                const list = document.createElement('ul');
+                                selectedDates.forEach(date => {
+                                    const listItem = document.createElement('li');
+                                    listItem.textContent = date;
+                                    list.appendChild(listItem);
+                                });
+                                displayElement.appendChild(list);
+                            } else {
+                                displayElement.textContent = 'No dates selected.';
+                            }
+                        }
                     </script>
 
                     {{-- Date Range Picker Approach --}}
@@ -154,7 +161,7 @@
 
 
                     <div class="flex flex-wrap flex-1 gap-4 pb-4">
-                        <label class="flex flex-col flex-1 pb-4" for="start_time">
+                        <label class="flex flex-col flex-1" for="start_time">
                             <h1>Start Time</h1>
                             <input class="border max-md:text-xs flex-grow min-w-max border-gray-400 py-2 px-4 rounded-md"
                                 name="start_time" type="time" id="start_time" step="600">
@@ -163,7 +170,7 @@
                                     class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
                             @enderror
                         </label>
-                        <label class="flex flex-col flex-1 pb-4" for="end_time">
+                        <label class="flex flex-col flex-1" for="end_time">
                             <h1>End Time</h1>
                             <input class="border max-md:text-xs flex-grow min-w-max border-gray-400 py-2 px-4 rounded-md"
                                 name="end_time" type="time" id="end_time" step="600">
@@ -173,7 +180,7 @@
                             @enderror
                         </label>
                     </div>
-                    <label class="flex flex-col flex-1 pb-4" for="appointment_duration">
+                    <label class="flex flex-col flex-1" for="appointment_duration">
                         <h1>Appointment Duration</h1>
                         <select class="border max-md:text-xs flex-grow min-w-max border-gray-400 py-2 px-4 rounded-md"
                             id="appointment_duration" name="appointment_duration" required>
@@ -188,7 +195,7 @@
                         @enderror
                     </label>
                 </div>
-                <div class="flex gap-4 mt-4 ">
+                <div class="flex gap-4 ">
                     <button
                         class="py-2 px-8 max-md:text-xs
                             max-md:py-2 max-md:px-4

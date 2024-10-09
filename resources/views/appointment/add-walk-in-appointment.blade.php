@@ -283,6 +283,34 @@
                 transform: rotate(360deg);
             }
         }
+
+        .alert {
+            position: fixed;
+            text-align: center;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px 0;
+            z-index: 1000;
+        }
+
+        .alert-success {
+            background-color: rgba(76, 161, 84, 1);
+        }
+
+        .alert-danger {
+            background-color: rgb(255, 30, 30);
+            color: #fff;
+        }
+
+        .fade-out {
+            opacity: 1;
+            transition: opacity 1s ease-out;
+        }
+
+        .fade-out.hidden {
+            opacity: 0;
+        }
     </style>
     <div class="m-4 mb-8">
         @include('components.search')
@@ -290,10 +318,10 @@
     <section class="bg-white shadow-lg rounded-md max-w-max p-6 my-4 mx-auto  max-lg:mt-14">
 
         @if ($errors->any())
-            <div class="alert alert-danger">
+            <div class="alert alert-danger fade-out" onclick="fadeOut(this)">
                 <ul>
                     @foreach ($errors->all() as $messages)
-                        <li>{{ $error }}</li>
+                        <li>{{ $messages }}</li>
                     @endforeach
                 </ul>
             </div>
@@ -399,6 +427,24 @@
     <script>
         const today = new Date().toISOString().split('T')[0];
         document.getElementById('appointment_date').setAttribute('min', today);
+
+        function fadeOut(element) {
+            element.classList.add('hidden');
+            setTimeout(() => {
+                element.style.display = 'none'; // Optionally hide the element after fading out
+            }, 1000); // Match this duration with the CSS transition duration
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const messages = document.querySelectorAll('.fade-out');
+            messages.forEach(message => {
+                setTimeout(() => {
+                        fadeOut(message);
+                    },
+                    1000
+                ); // Change this duration to how long you want the message to be visible (in milliseconds)
+            });
+        });
 
         function validateInput(field) {
             const input = document.getElementById(field);

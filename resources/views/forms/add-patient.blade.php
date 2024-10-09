@@ -123,7 +123,7 @@
                     @enderror
                 </label>
                 <label class="flex flex-col flex-1" for="next_visit">
-                    <h1 class="max-md:text-sm">Date of next visit</h1>
+                    <h1 class="max-md:text-sm">Date of visit</h1>
                     <input class="max-md:text-sm max-md:py-1 max-md:px-2 border border-gray-400 py-2 px-4 rounded-md"
                         name="next_visit" type="date" autocomplete="off" id="next_visit"
                         value="{{ old('next_visit') }}" oninput="validateInput('next_visit')">

@@ -96,6 +96,18 @@ class AdminController extends Controller
     public function viewAuditLogs()
     {
         $auditLogs = AuditLog::orderBy('created_at', 'desc')->get();
+
+        foreach($auditLogs as $auditLog) {
+            $decodedChanges = json_decode($auditLog->changes, true); // Decode JSON to associative array
+        
+        // Check if decoding was successful and is an array
+            if (is_array($decodedChanges)) {
+                $auditLog->changes = $decodedChanges; // Assign decoded changes back to the audit log
+            } else {
+                $auditLog->changes = []; // Assign an empty array if decoding failed
+            }
+        }
+        
         return view('audit.logs', compact('auditLogs'));
     }
 

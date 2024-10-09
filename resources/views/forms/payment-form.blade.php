@@ -146,8 +146,8 @@
                         </a>
 
                         <a @if (Auth::user()->role === 'admin' || Auth::user()->role === 'staff') href=" {{ route('show.appointment', $appointment->id) }} "
-                             @elseif (Auth::user()->role === 'dentist')href=" {{ route('dentist.dashboard', $appointment->id) }} "  
-                             @elseif (Auth::user()->role === 'dentist') href=" {{ route('client.overview', $appointment->patient_id) }} " @endif
+                             @elseif (Auth::user()->role === 'dentist')href=" {{ route('appointments.payment', $appointment->dentist_id) }} "  
+                             @elseif (Auth::user()->role === 'client') href=" {{ route('client.overview', $appointment->patient_id) }} " @endif
                             class="flex justify-center items-center py-2 px-8 text-center max-md:py-2 max-md:text-xs font-semibold rounded-md hover:bg-red-600 hover:border-red-600 border-2 border-gray-600 text-gray-800  hover:text-white transition-all"
                             type="reset">
                             Cancel
@@ -174,7 +174,7 @@
                             </div>
                             <input type="hidden" name="appointment_id" value="{{ $appointment->id }}">
                             <div class="flex justify-end">
-                                <button type="button" class="mr-2 bg-gray-300 text-gray-700 px-4 py-2 rounded-md"
+                                <button type="reset" class="mr-2 bg-gray-300 text-gray-700 px-4 py-2 rounded-md"
                                     id="cancelModalBtn">Cancel</button>
                                 <button type="button" class="bg-green-600 text-white px-4 py-2 rounded-md"
                                     id="confirmPayment">Confirm Payment</button>
@@ -246,12 +246,9 @@
                         const userRole = '{{ Auth::user()->role }}';
                         if (userRole === 'admin') {
                             window.location.href = '{{ route('show.appointment', $appointment->id) }}';
-                        } else if (userRole === 'dentist') {
+                        } else if (userRole === 'staff') {
                             window.location.href =
-                                '{{ route('dentist.dashboard', $appointment->dentist_id) }}';
-                        } else if (userRole === 'client') {
-                            window.location.href =
-                                '{{ route('client.overview', $appointment->patient_id) }}';
+                                '{{ route('show.appointment', $appointment->id) }}';
                         }
                     } else {
                         // Handle error (e.g., show an error message)

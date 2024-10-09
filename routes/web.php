@@ -75,44 +75,51 @@ Route::get('/send-test-email', function () {
 
 //     return 'Test email sent!';
 // });
-Route::get('/audit-logs', [AdminController::class, 'viewAuditLogs'])->name('audit.logs');
 
 
-Route::get('/appointments/show-appointment/{appointment}', [AppointmentController::class, 'show'])->name('show.appointment');
-
+//remove dentist here
 Route::group(['middleware' => ['auth', 'verified','role:admin,staff,dentist']], function () {
     Route::get('/patient-list', [PatientController::class, 'patient_list'])->name('patient_list');
     Route::get('/appointments', [AppointmentController::class, 'appointment_submission'])->name('appointment.submission');
     Route::get('/inventory', [AdminController::class, 'inventory'])->name('inventory');
     Route::get('/schedule', [AdminController::class, 'schedule'])->name('schedule');
-
+    
     //Patient
     Route::get('/show-patient/{patient}/patient-contract', [PatientController::class, 'patientContract'])->name('patient.contract');
     Route::get('/show-patient/{patient}/patient-background', [PatientController::class, 'patientBackground'])->name('patient.background');
     Route::get('/show-patient/{patient}/patient-xray', [PatientController::class, 'patientXray'])->name('patient.xray');
-
+    
     //Image Upload
     Route::post('/upload-image', [ImageController::class, 'uploadImage'])->name('upload.image');
-
+    
     //Schedule
+    Route::get('/admin/add-dentist-schedule', [ScheduleController::class, 'addSchedule'])->name('add.schedule');
+    Route::post('/dentist-schedule', [ScheduleController::class, 'storeSchedule'])->name('store.schedule');
     Route::get('/schedule/{scheduleId}/edit', [ScheduleController::class, 'editSchedule'])->name('schedule.edit');
     Route::post('/schedule/{scheduleId}/edit', [ScheduleController::class, 'updateSchedule'])->name('schedule.update');
     Route::delete('/schedule/{id}/delete', [ScheduleController::class, 'deleteSchedule'])->name('schedule.delete');
-
-
+    
     //Payment TEsting
     Route::get('/appointments/{appointmentId}/payment', [PaymentController::class, 'create'])->name('payments.form');
     Route::post('/payments/{paymentId}/store', [PaymentController::class, 'storePartialPayment'])->name('payments.store');
     Route::get('/payments/{paymentId}/history', [PaymentController::class, 'showPaymentHistory'])->name('payments.history');
-
+    
     //Testing
+    Route::get('/appointments/show-appointment/{appointment}', [AppointmentController::class, 'show'])->name('show.appointment');
     Route::get('/appointments/walk-in-request', [AppointmentController::class, 'walkIn_appointment'])->name('appointments.walkIn');
     Route::get('/appointments/online-request', [AppointmentController::class, 'online_appointment'])->name('appointments.online');
 
     //Archiving Patients
     Route::post('/archive-patient/{patient}', [PatientController::class, 'archivePatient'])->name('archive.patient');
     Route::post('/restore-patient/{patient}', [PatientController::class, 'restorePatient'])->name('restore.patient');
- });
+
+    // Patients
+    Route::get('/add-patient', [PatientController::class, 'addPatient'])->name('add.patient');
+    Route::post('/patients', [PatientController::class, 'storePatient'])->name('store.patient');
+    Route::get('/edit-patient/{patient}', [PatientController::class, 'editPatient'])->name('edit.patient');
+    Route::put('/patients/{patient}', [PatientController::class, 'updatePatient'])->name('update.patient');
+    Route::get('/show-patient/{patient}', [PatientController::class, 'showPatient'])->name('show.patient');
+});
 
 // Admin Routes
 Route::group(['middleware' => ['auth', 'verified', 'role:admin']], function () {
@@ -123,7 +130,7 @@ Route::group(['middleware' => ['auth', 'verified', 'role:admin']], function () {
 
     //Viewing user profile
 
-    // Doctor
+    // Dentist
     Route::get('/admin/add-dentist', [DentistController::class, 'addDentist'])->name('add.dentist');
     Route::post('/dentist', [DentistController::class, 'storeDentist'])->name('store.dentist');
     Route::get('/admin/edit-dentist/{dentist}', [DentistController::class, 'editDentist'])->name('edit.dentist');
@@ -137,18 +144,10 @@ Route::group(['middleware' => ['auth', 'verified', 'role:admin']], function () {
     Route::put('/staffs/{staff}', [StaffController::class, 'updateStaff'])->name('update.staff');
     Route::get('/admin/show-staff/{staff}', [StaffController::class, 'showStaff'])->name('show.staff');
 
-    //Dentist Schedule
-    Route::get('/admin/add-dentist-schedule', [ScheduleController::class, 'addSchedule'])->name('add.schedule');
-    Route::post('/dentist-schedule', [ScheduleController::class, 'storeSchedule'])->name('store.schedule');
-    // Route::get('/admin/show-schedule/{schedule}', [ScheduleController::class, 'showSchedule'])->name('show.schedule');
+    //Audit Log
+    Route::get('/audit-logs', [AdminController::class, 'viewAuditLogs'])->name('audit.logs');
     
 
-    // Patients
-    Route::get('/admin/add-patient', [PatientController::class, 'addPatient'])->name('add.patient');
-    Route::post('/patients', [PatientController::class, 'storePatient'])->name('store.patient');
-    Route::get('/admin/edit-patient/{patient}', [PatientController::class, 'editPatient'])->name('edit.patient');
-    Route::put('/patients/{patient}', [PatientController::class, 'updatePatient'])->name('update.patient');
-    Route::get('/admin/show-patient/{patient}', [PatientController::class, 'showPatient'])->name('show.patient');
     
 });
 
@@ -159,22 +158,35 @@ Route::group(['middleware' => ['auth', 'verified', 'role:staff']], function () {
 
 });
 // Dentist Routes
-Route::group(['middleware' => ['auth', 'role:dentist']], function () {
-    Route::get('/dentist/dashboard/{dentist}', [DentistController::class, 'dentistAppointments'])->name('dentist.dashboard');
+Route::group(['middleware' => ['auth','verified', 'role:dentist']], function () {
+    Route::get('/dentist/{dentist}/dashboard', [DentistController::class, 'overview'])->name('dentist.dashboard');
     // Route::get('/staff/patient-list', [StaffController::class, 'patient_list'])->name('patient_list');
 
     Route::get('/dentist/payments', [DentistController::class, 'viewPayments'])->name('dentist.payments');
 
+    //
+    Route::get('/dentist/{id}/appointments/pending', [DentistController::class, 'pendingAppointment'])->name('appointments.pending');
+    Route::get('/dentist/{id}/appointments/approved', [DentistController::class, 'approvedAppointment'])->name('appointments.approved');
+    Route::get('/dentist/{id}/payments-list', [DentistController::class, 'appointmentPayment'])->name('appointments.payment');
+    Route::get('/dentist/appointments/show/{id}', [DentistController::class, 'showDentistAppointmentInfo'])->name('appointments.show');
 
     Route::post('/appointments/{id}/approve', [AppointmentController::class, 'approve'])->name('appointments.approve');
     Route::post('/appointments/{id}/decline', [AppointmentController::class, 'decline'])->name('appointments.decline');
 
+    //Payment
+    Route::get('/dentist/payment/{id}', [DentistController::class, 'createDentistPayment'])->name('dentist.paymentForm');
+    Route::post('dentist/payment/{id}/store', [DentistController::class, 'storeDentistPartialPayment'])->name('dentist.paymentStore');
+    Route::get('/dentist/{paymentId}/history', [DentistController::class, 'showDentistPaymentHistory'])->name('dentist.paymentHistory');
+
+
 });
+
+
 //Client Routes
 Route::group(['middleware' => ['auth', 'verified', 'role:client']], function () {
     Route::get('/client/dashboard', [ClientController::class, 'dashboard'])->name('dashboard'); //for redirection
-    Route::get('/client/dashboard/overview/{patient}', [ClientController::class, 'profileOverview'])->name('client.overview');
-    Route::get('/client/dashboard/user-profile', [ClientController::class, 'profileUserProfile'])->name('client.user-profile');
+    Route::get('/client/dashboard/overview/{id}', [ClientController::class, 'profileOverview'])->name('client.overview');
+    Route::get('/client/dashboard/user-profile/{id}', [ClientController::class, 'profileUserProfile'])->name('client.user-profile');
 
     Route::get('/client/{appointmentId}/payment', [ClientController::class, 'createClientPayment'])->name('client.form');
     Route::post('/client/{paymentId}/store', [ClientController::class, 'storeClientPartialPayment'])->name('client.store');
