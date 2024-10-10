@@ -181,11 +181,11 @@ class PatientController extends Controller
     public function patientXray(Request $request, $id)
     {
         $patient = Patient::findOrFail($id);
-        $image = Image::where('patient_id', $id)
-                        ->where('image_type', 'xray')
-                        ->first();
+        $xrayImages = Image::where('patient_id', $id)
+                ->where('image_type', 'xray')
+                ->get();
 
-        return view('content.patient-background', compact('patient', 'image'));
+        return view('content.patient-xray', compact('patient', 'xrayImages'));
     }
 
 

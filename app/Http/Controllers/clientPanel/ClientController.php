@@ -47,7 +47,7 @@ class ClientController extends Controller
         return view('client.contents.overview', compact('patient', 'appointments', 'payments'));
     }
     
-    public function profileUserProfile($id){
+    public function clientRecords($id){
 
         $xrayImages = Image::where('patient_id', $id)
                 ->where('image_type', 'xray')
@@ -62,7 +62,7 @@ class ClientController extends Controller
                 ->first();
 
 
-        return view('client.contents.user-profile', compact('xrayImages', 'contractImage', 'backgroundImage'));
+        return view('client.contents.client-records', compact('xrayImages', 'contractImage', 'backgroundImage'));
     }
 
     public function createClientPayment($appointmentId) {
@@ -77,7 +77,7 @@ class ClientController extends Controller
         $totalPaid = $payment ? $payment->total_paid : 0;
         $balanceRemaining = $appointment->procedure->price - $totalPaid;
 
-        return view('client.contents.client_payment_form', compact('appointment', 'payment', 'totalPaid', 'balanceRemaining'));
+        return view('client.contents.client-payment-form', compact('appointment', 'payment', 'totalPaid', 'balanceRemaining'));
     }
 
     public function storeClientPartialPayment(Request $request) {
@@ -169,6 +169,6 @@ class ClientController extends Controller
         $totalPaid = $paymentHistory->sum('paid_amount');
         $balanceRemaining = $appointment->procedure->price - $totalPaid;
     
-        return view('client.contents.client_payment_history', compact('appointment', 'paymentHistory', 'totalPaid', 'balanceRemaining'));
+        return view('client.contents.client-payment-history', compact('appointment', 'paymentHistory', 'totalPaid', 'balanceRemaining'));
     }
 }

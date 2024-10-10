@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ScheduleController;
@@ -9,10 +10,10 @@ use App\Http\Controllers\adminPanel\AdminController;
 use App\Http\Controllers\adminPanel\ImageController;
 use App\Http\Controllers\staffPanel\StaffController;
 use App\Http\Controllers\clientPanel\ClientController;
+use App\Http\Controllers\adminPanel\ProcedureController;
 use App\Http\Controllers\dentistPanel\DentistController;
 use App\Http\Controllers\patientPanel\PatientController;
 use App\Http\Controllers\patientPanel\PaymentController;
-use Illuminate\Support\Facades\Mail;
 
 
 Route::get('/', function () {
@@ -78,11 +79,12 @@ Route::get('/send-test-email', function () {
 
 
 //remove dentist here
-Route::group(['middleware' => ['auth', 'verified','role:admin,staff,dentist']], function () {
+Route::group(['middleware' => ['auth', 'verified','role:admin,staff']], function () {
     Route::get('/patient-list', [PatientController::class, 'patient_list'])->name('patient_list');
-    Route::get('/appointments', [AppointmentController::class, 'appointment_submission'])->name('appointment.submission');
-    Route::get('/inventory', [AdminController::class, 'inventory'])->name('inventory');
     Route::get('/schedule', [AdminController::class, 'schedule'])->name('schedule');
+    Route::get('/inventory', [AdminController::class, 'inventory'])->name('inventory');
+    Route::get('/procedure', [ProcedureController::class, 'procedure'])->name('procedure');
+
     
     //Patient
     Route::get('/show-patient/{patient}/patient-contract', [PatientController::class, 'patientContract'])->name('patient.contract');
@@ -119,6 +121,11 @@ Route::group(['middleware' => ['auth', 'verified','role:admin,staff,dentist']], 
     Route::get('/edit-patient/{patient}', [PatientController::class, 'editPatient'])->name('edit.patient');
     Route::put('/patients/{patient}', [PatientController::class, 'updatePatient'])->name('update.patient');
     Route::get('/show-patient/{patient}', [PatientController::class, 'showPatient'])->name('show.patient');
+
+    //Procedures
+    Route::get('/procedure/add', [ProcedureController::class, 'addProcedure'])->name('procedure.add');
+    Route::post('/procedure/store', [ProcedureController::class, 'storeProcedure'])->name('procedure.store');
+
 });
 
 // Admin Routes
@@ -186,7 +193,7 @@ Route::group(['middleware' => ['auth','verified', 'role:dentist']], function () 
 Route::group(['middleware' => ['auth', 'verified', 'role:client']], function () {
     Route::get('/client/dashboard', [ClientController::class, 'dashboard'])->name('dashboard'); //for redirection
     Route::get('/client/dashboard/overview/{id}', [ClientController::class, 'profileOverview'])->name('client.overview');
-    Route::get('/client/dashboard/user-profile/{id}', [ClientController::class, 'profileUserProfile'])->name('client.user-profile');
+    Route::get('/client/records/{id}', [ClientController::class, 'clientRecords'])->name('client.records');
 
     Route::get('/client/{appointmentId}/payment', [ClientController::class, 'createClientPayment'])->name('client.form');
     Route::post('/client/{paymentId}/store', [ClientController::class, 'storeClientPartialPayment'])->name('client.store');

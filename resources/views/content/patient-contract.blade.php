@@ -25,6 +25,21 @@
             padding: 20px;
             border-radius: 5px;
         }
+
+        .image-modal {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            overflow-y: auto;
+            background-size: contain;
+            /* Overlay */
+        }
     </style>
     <div class="m-4">
         @include('components.search')
@@ -93,14 +108,21 @@
             <div class="w-full flex justify-center border border-red-100">
                 @if ($image)
                     <div>
-                        <img src="{{ asset('storage/' . $image->image_path) }}" alt="Contract Image" class="img-fluid">
+                        <img src="{{ asset('storage/' . $image->image_path) }}" alt="Contract Image"
+                            class="img-fluid max-h-96" onclick="openModal('{{ asset('storage/' . $image->image_path) }}')">
                     </div>
                 @else
                     <p>No contract image uploaded for this patient.</p>
                 @endif
             </div>
 
-
+            <div id="imageModal" class="image-modal hidden">
+                <div class=" p-4 rounded">
+                    <span id="closeModal"
+                        class="fixed right-5 cursor-pointer text-3xl text-white bg-green-500 rounded-full px-2">&times;</span>
+                    <img id="modalImage" src="" alt="Modal Image" class="img-fluid max-h-screen">
+                </div>
+            </div>
 
         </div>
     </section>
@@ -131,5 +153,25 @@
                 modal.style.display = "none";
             }
         });
+
+        function openModal(imageSrc) {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            modalImage.src = imageSrc;
+            modal.classList.remove('hidden');
+        }
+
+        document.getElementById('closeModal').onclick = function() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.add('hidden');
+        }
+
+        // Close modal when clicking outside of the image
+        window.onclick = function(event) {
+            const modal = document.getElementById('imageModal');
+            if (event.target === modal) {
+                modal.classList.add('hidden');
+            }
+        }
     </script>
 @endsection

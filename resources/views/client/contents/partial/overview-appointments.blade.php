@@ -5,8 +5,8 @@
                 <th class="py-2 px-4 border-b text-left text-gray-600  max-xl:hidden">Procedure</th>
                 <th class="py-2 px-4 border-b text-left text-gray-600  max-lg:text-xs">Dentist</th>
                 <th class="py-2 px-4 border-b text-left text-gray-600  max-xl:hidden">Branch</th>
-                <th class="py-2 px-4 border-b text-left text-gray-600 max-lg:text-xs">Status</th>
-                <th class="py-2 px-4 border-b text-left text-gray-600 max-lg:text-xs max-xl:flex">
+                <th class="py-2 px-4 border-b text-left text-gray-600 max-xl:hidden">Status</th>
+                <th class="py-2 px-4 border-b text-left text-gray-600 max-lg:text-xs">
                     Actions</th>
             </tr>
         </thead>
@@ -27,7 +27,7 @@
 
                     <td class="py-2 px-4 border-b  max-xl:hidden  ">
                         {{ $appointment->branch ? $appointment->branch->branch_loc : 'N/A' }}</td>
-                    <td class="border-b px-4 py-2 min-w-max h-full max-lg:text-xs ">
+                    <td class="border-b px-4 py-2 min-w-max h-full max-lg:text-xs max-xl:hidden">
                         @if ($appointment->pending === 'Approved')
                             <h1 class="text-md text-green-600 font-semibold">Approved</h1>
                         @elseif ($appointment->pending === 'Declined')

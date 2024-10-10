@@ -119,7 +119,7 @@
                             Homepage
                         </button>
                     </a>
-                    <a class="flex justify-center items-center gap-2 active:bg-green-600"
+                    <a class="flex justify-center items-center gap-2"
                         href="{{ route('client.overview', session('patient_id')) }}">
                         <img class="h-8" src="{{ asset('assets/images/dashboard-icon.png') }}" alt="">
                         <button class="hover:font-bold  transition-all">
@@ -127,7 +127,7 @@
                         </button>
                     </a>
                     <a class="flex justify-center items-center gap-2"
-                        href="{{ route('client.user-profile', Auth::user()->patient_id) }}">
+                        href="{{ route('client.records', Auth::user()->patient_id) }}">
                         <img class="h-8" src="{{ asset('assets/images/patient-list-icon.png') }}" alt="">
                         <button class="hover:font-bold transition-all">
                             Records
@@ -190,7 +190,7 @@
                     </li>
                     <hr>
                     <li class="py-3">
-                        <a class="" href=" {{ route('client.user-profile', Auth::user()->patient_id) }} ">
+                        <a class="" href=" {{ route('client.records', Auth::user()->patient_id) }} ">
                             <h1 class="max-lg:text-xs text-left">Records</h1>
                         </a>
                     </li>
@@ -255,7 +255,7 @@
                     </button>
                 </a>
                 <a class="flex justify-center items-center gap-2"
-                    href="{{ route('client.user-profile', Auth::user()->patient_id) }}">
+                    href="{{ route('client.records', Auth::user()->patient_id) }}">
                     <img class="h-8 max-lg:h-5" src="{{ asset('assets/images/patient-list-icon.png') }}"
                         alt="">
                     <button class="hover:font-bold transition-all text-xs">

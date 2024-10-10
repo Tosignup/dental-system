@@ -91,7 +91,13 @@
                             Inventory
                         </button>
                     </a>
-
+                    <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
+                        href="{{ route('procedure') }}">
+                        <img class="h-8" src="{{ asset('assets/images/inventory.png') }}" alt="">
+                        <button class="hover:font-bold transition-all">
+                            Procedure
+                        </button>
+                    </a>
                 </div>
             @endif
 
@@ -113,7 +119,8 @@
                     </a>
                     <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
                         href="{{ route('schedule') }}">
-                        <img class="h-8" src="{{ asset('assets/images/appointment-calendar.png') }}" alt="">
+                        <img class="h-8" src="{{ asset('assets/images/appointment-calendar.png') }}"
+                            alt="">
                         <button class="hover:font-bold transition-all">
                             Schedule
                         </button>
@@ -145,6 +152,14 @@
                             Inventory
                         </button>
                     </a>
+                    <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
+                        href="{{ route('inventory') }}">
+                        <img class="h-8" src="{{ asset('assets/images/inventory.png') }}" alt="">
+                        <button class="hover:font-bold transition-all">
+                            Inventory
+                        </button>
+                    </a>
+
                 </div>
             @endif
             @if (Auth::user()->role === 'dentist')
