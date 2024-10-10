@@ -24,6 +24,9 @@
                         </span> </h1>
                     <h1 class="max-md:text-sm"> Date of next visit: <span class="font-semibold"> {{ $patient->next_visit }}
                         </span> </h1>
+                    <h1 class="max-md:text-sm"> Branch visited: <span class="font-semibold">
+                            {{ $patient->branch->branch_loc }}
+                        </span> </h1>
                 </div>
             </div>
             <div class="hidden flex-col gap-4 max-lg:flex mt-5 border-2 border-gray-700 rounded-md min-w-xl">

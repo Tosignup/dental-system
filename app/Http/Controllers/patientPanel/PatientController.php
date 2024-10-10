@@ -4,6 +4,7 @@ namespace App\Http\Controllers\patientPanel;
 
 use App\Models\User;
 use App\Models\Image;
+use App\Models\Branch;
 use App\Models\Patient;
 use App\Models\Payment;
 use App\Models\AuditLog;
@@ -77,7 +78,9 @@ class PatientController extends Controller
     
     public function addPatient()
     {
-        return view('forms.add-patient');
+        $branches = Branch::all();
+
+        return view('forms.add-patient', compact('branches'));
     }
 
     public function storePatient(Request $request)
@@ -92,6 +95,7 @@ class PatientController extends Controller
             'phone_number' => 'nullable|string|max:15',
             'fb_name' => 'required|string|max:255',
             'next_visit' => 'required|date',
+            'branch_id' => 'required|exists:branches,id',
         ]);
 
         // Create patient
@@ -105,6 +109,7 @@ class PatientController extends Controller
             'phone_number' => $request->phone_number,
             'fb_name' => $request->fb_name,
             'next_visit' => $request->next_visit,
+            'branch_id' => $request->branch_id,
         ]);
 
         // Create login credentials for the patient in users table
@@ -117,6 +122,7 @@ class PatientController extends Controller
 
         return redirect()->route('patient_list')->with('success', 'Patient created successfully');
     }
+
     public function showPatient($id)
     {   
         $patient = Patient::findOrFail($id);
@@ -126,9 +132,11 @@ class PatientController extends Controller
 
     public function editPatient($id)
     {
-        $patient = Patient::findOrFail($id);
 
-        return view('forms.update-patient', compact('patient'));
+        $patient = Patient::findOrFail($id);
+        $branches = Branch::all();
+
+        return view('forms.update-patient', compact('patient', 'branches'));
     }
 
     public function updatePatient(Request $request, $id)
@@ -143,6 +151,7 @@ class PatientController extends Controller
             'fb_name' => 'required|string|max:255',
             'phone_number' => 'required|string|max:20',
             'next_visit' => 'required|date',
+            'branch_id' => 'required|exists:branches,id',
         ]);
 
         $patient->update($validated);

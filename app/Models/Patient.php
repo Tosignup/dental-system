@@ -20,7 +20,8 @@ class Patient extends Model
         'next_visit',
         'fb_name',
         'phone_number',
-        'gender'
+        'gender',
+        'branch_id',
     ];
 
     // Define a scope to get only non-archived patients
@@ -50,19 +51,14 @@ class Patient extends Model
         return $this->hasMany(MedicalRecord::class);
     }
 
-    public function billing()
-    {
-        return $this->hasMany(Billing::class);
-    }
-
-    public function transaction()
-    {
-        return $this->hasMany(Transaction::class);
-    }
-
     public function image()
     {
         return $this->hasMany(Image::class);
+    }
+
+    public function branch() 
+    {
+        return $this->belongsTo(Branch::class);
     }
 
     

@@ -54,11 +54,11 @@
 
         });
     </script>
-    <div class="m-4 mb-8">
+    <div class="m-4">
         @include('components.search')
     </div>
     <section class="bg-white shadow-lg rounded-md max-w-max p-6 my-4 mx-auto  max-lg:mt-14">
-        <h1 class="font-bold text-3xl p-4">Add Dentist Schedule</h1>
+        <h1 class="font-bold text-3xl px-4 max-md:text-2xl">Add Dentist Schedule</h1>
         <form method="POST" action="{{ route('store.schedule') }}">
             @method('POST')
             @csrf

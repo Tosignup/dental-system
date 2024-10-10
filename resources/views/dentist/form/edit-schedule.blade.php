@@ -59,9 +59,18 @@
         <div class="p-4">
             <h1 class="font-bold text-3xl pb-2">Edit dentist schedule of Dr. {{ $schedule->dentist->dentist_last_name }}
                 {{ $schedule->dentist->dentist_first_name }}</h1>
-            <h1>Current date: <span>{{ $schedule->date }}</span></h1>
-            <h1>Current start-time: <span>{{ $schedule->start_time }}</span></h1>
-            <h1>Current end-time: <span>{{ $schedule->end_time }}</span></h1>
+            <div class="flex justify-between">
+                <div class="text-left">
+                    <h1 class="max-md:text-xs mb-1">Current date: </h1>
+                    <h1 class="max-md:text-xs mb-1">Current start-time: </h1>
+                    <h1 class="max-md:text-xs mb-1">Current end-time: </h1>
+                </div>
+                <div class="text-right">
+                    <h2 class="max-md:text-xs mb-1 font-semibold">{{ $schedule->date }}</h2>
+                    <h2 class="max-md:text-xs mb-1 font-semibold">{{ $schedule->start_time }}</h2>
+                    <h2 class="max-md:text-xs mb-1 font-semibold">{{ $schedule->end_time }}</h2>
+                </div>
+            </div>
         </div>
         <form action="{{ route('schedule.update', $schedule->id) }}" method="POST">
             @method('POST')
@@ -79,52 +88,6 @@
                                 class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
                         @enderror
                     </label>
-
-                    {{-- Checkboxes Approach --}}
-                    {{-- <label for="base_date">Select Base Date:</label>
-                    <input type="date" id="base_date" name="base_date" required>
-
-                    <div>
-                        <label><input type="checkbox" name="days_of_week[]" value="Monday"> Monday</label>
-                        <label><input type="checkbox" name="days_of_week[]" value="Tuesday"> Tuesday</label>
-                        <label><input type="checkbox" name="days_of_week[]" value="Wednesday"> Wednesday</label>
-                        <label><input type="checkbox" name="days_of_week[]" value="Thursday"> Thursday</label>
-                        <label><input type="checkbox" name="days_of_week[]" value="Friday"> Friday</label>
-                        <label><input type="checkbox" name="days_of_week[]" value="Saturday"> Saturday</label>
-                        <label><input type="checkbox" name="days_of_week[]" value="Sunday"> Sunday</label>
-                    </div> --}}
-
-                    {{-- JavaScript Approach --}}
-                    {{-- <label for="date">Select Date:</label>
-                    <input type="date" id="date" name="date" required>
-                    <button type="button" id="addDate">Add Date</button>
-
-                    <input type="hidden" name="selected_dates" id="selected_dates">
-
-                    <script>
-                        const selectedDates = [];
-
-                        document.getElementById('addDate').addEventListener('click', function() {
-                            const dateInput = document.getElementById('date');
-                            const dateValue = dateInput.value;
-
-                            if (dateValue && !selectedDates.includes(dateValue)) {
-                                selectedDates.push(dateValue);
-                                document.getElementById('selected_dates').value = JSON.stringify(selectedDates);
-                                alert(`Date ${dateValue} added!`);
-                            } else {
-                                alert('Please select a valid date or avoid duplicates.');
-                            }
-                        });
-                    </script> --}}
-
-                    {{-- Date Range Picker Approach --}}
-                    {{-- <label for="start_date">Start Date:</label>
-                    <input type="date" id="start_date" name="start_date" required>
-
-                    <label for="end_date">End Date:</label>
-                    <input type="date" id="end_date" name="end_date" required> --}}
-
 
                     <div class="flex flex-wrap flex-1 gap-4 pb-4">
                         <label class="flex flex-col flex-1 pb-4" for="start_time">
@@ -161,23 +124,19 @@
                         @enderror
                     </label>
                 </div>
-                <div class="flex gap-4 mt-4 ">
+                <div class="w-full flex gap-2 px-8 mb-3">
                     <button
-                        class="py-2 px-8 max-md:text-xs
-                            max-md:py-2 max-md:px-4
-                        font-semibold rounded-md hover:bg-green-600 hover:border-green-600 hover:text-white text-gray-800 border-2 border-gray-600 transition-all"
+                        class="flex-1 justify-center items-center py-2 px-8 text-center max-md:py-2 max-md:px-2 max-md:text-xs font-semibold rounded-md hover:bg-green-600 hover:border-green-600 hover:text-white text-gray-800 border-2 border-gray-600 transition-all"
                         type="submit">
                         Add
                     </button>
                     <button
-                        class="py-2 max-md:text-xs
-                            max-md:py-2 max-md:px-4 px-8 font-semibold rounded-md hover:bg-gray-600 border-2 border-gray-600 hover:text-white text-gray-800  transition-all"
+                        class="flex-1 justify-center items-center py-2 px-8 text-center max-md:py-2 max-md:px-2 max-md:text-xs font-semibold rounded-md hover:bg-gray-600 border-2 border-gray-600 hover:text-white text-gray-800  transition-all"
                         type="reset">
                         Reset
                     </button>
                     <a href=" {{ route('schedule') }} "
-                        class="py-2 max-md:text-xs
-                            max-md:py-2 max-md:px-4 flex justify-center items-center px-8 font-semibold rounded-md hover:bg-red-600 hover:border-red-600 border-2 border-gray-600 text-gray-800  hover:text-white transition-all"
+                        class="flex-1 justify-center items-center py-2 px-8 text-center max-md:py-2 max-md:px-2 max-md:text-xs font-semibold rounded-md hover:bg-red-600 hover:border-red-600 border-2 border-gray-600 text-gray-800  hover:text-white transition-all"
                         type="reset">
                         Cancel
                     </a>

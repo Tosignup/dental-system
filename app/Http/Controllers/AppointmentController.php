@@ -346,9 +346,9 @@ class AppointmentController extends Controller
 
         $patient = $appointment->patient; // Assuming the relationship is defined in the Appointment model
         $patient->next_visit = $appointment->appointment_date; // Set next visit to the appointment date
+        $patient->branch_id = $appointment->branch_id;
         $patient->save(); // Save the updated patient record
         
-
         Notification::route('mail', $appointment->email)->notify(new AppointmentApproved($appointment));
 
         return redirect()->back()->with('success', 'Appointment approved and email sent.');

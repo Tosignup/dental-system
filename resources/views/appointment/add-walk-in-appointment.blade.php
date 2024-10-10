@@ -1,117 +1,6 @@
 @extends('admin.dashboard')
 @section('content')
     <script>
-        // document.addEventListener('DOMContentLoaded', function() {
-        //     const branchSelect = document.querySelector('#branch_id');
-        //     const dentistSelect = document.querySelector('#dentist_id');
-        //     const scheduleSelect = document.querySelector('#schedule_id'); // Schedule for date selection
-        //     const preferredTimeSelect = document.querySelector('#preferred_time'); // Preferred time slots
-        //     const appointmentDateInput = document.querySelector('#appointment_date');
-
-        //     if (branchSelect) {
-        //         branchSelect.addEventListener('change', function() {
-        //             const branchId = this.value;
-
-        //             // Clear dentist and schedule options
-        //             dentistSelect.innerHTML = '<option value="">Select Dentist</option>';
-        //             scheduleSelect.innerHTML = '<option value="">Select Schedule</option>';
-        //             preferredTimeSelect.innerHTML = '<option value="">Select Time Slot</option>';
-
-        //             if (branchId) {
-        //                 fetch(`/appointments/add-walk-in/dentists/${branchId}`)
-        //                     .then(response => {
-        //                         if (!response.ok) {
-        //                             throw new Error('Network response was not ok');
-        //                         }
-        //                         return response.json();
-        //                     })
-        //                     .then(data => {
-        //                         data.forEach(dentist => {
-        //                             const option = document.createElement('option');
-        //                             option.value = dentist.id;
-        //                             option.textContent =
-        //                                 `Dr. ${dentist.dentist_last_name } ${dentist.dentist_first_name}`;
-        //                             dentistSelect.appendChild(option);
-        //                         });
-        //                     })
-        //                     .catch(error => console.error('Error fetching dentists:', error));
-        //             }
-        //         });
-        //     }
-
-        //     if (dentistSelect) {
-        //         dentistSelect.addEventListener('change', function() {
-        //             const dentistId = this.value;
-
-        //             // Clear schedule and preferred time options
-        //             scheduleSelect.innerHTML = '<option value="">Select Schedule</option>';
-        //             preferredTimeSelect.innerHTML = '<option value="">Select Time Slot</option>';
-
-        //             if (dentistId) {
-        //                 fetch(`/appointments/add-walk-in/schedules/${dentistId}`)
-        //                     .then(response => {
-        //                         if (!response.ok) {
-        //                             throw new Error('Network response was not ok');
-        //                         }
-        //                         return response.json();
-        //                     })
-        //                     .then(data => {
-        //                         data.forEach(schedule => {
-        //                             const option = document.createElement('option');
-        //                             option.value = schedule.id;
-        //                             option.textContent =
-        //                                 `${schedule.date} (${schedule.start_time} - ${schedule.end_time})`;
-        //                             scheduleSelect.appendChild(option);
-        //                         });
-        //                     })
-        //                     .catch(error => console.error('Error fetching schedules:', error));
-        //             }
-        //         });
-        //     }
-
-        //     if (scheduleSelect) {
-        //         scheduleSelect.addEventListener('change', function() {
-        //             const scheduleId = this.value;
-
-        //             // Clear preferred time options
-        //             preferredTimeSelect.innerHTML = '<option value="">Select Time Slot</option>';
-
-        //             if (scheduleId) {
-        //                 // Fetch available time slots for the selected schedule
-        //                 fetch(`/appointments/add-walk-in/timeslots/${scheduleId}`)
-        //                     .then(response => {
-        //                         if (!response.ok) {
-        //                             throw new Error('Network response was not ok');
-        //                         }
-        //                         return response.json();
-        //                     })
-        //                     .then(data => {
-        //                         preferredTimeSelect.innerHTML = ''; // Clear existing options
-
-        //                         data.forEach(timeSlot => {
-        //                             // Extract only the start time (e.g., '08:00' from '08:00 - 08:30')
-        //                             const startTime = timeSlot.split(' - ')[0];
-
-        //                             const option = document.createElement('option');
-        //                             option.value = startTime; // Only store the start time
-        //                             option.textContent =
-        //                                 startTime; // Display the start time in the dropdown
-        //                             preferredTimeSelect.appendChild(option);
-        //                         });
-        //                     })
-        //                     .catch(error => console.error('Error fetching time slots:', error));
-
-        //                 fetch(`/appointments/add-walk-in/schedule/${scheduleId}`)
-        //                     .then(response => response.json())
-        //                     .then(scheduleData => {
-        //                         appointmentDateInput.value = scheduleData.date;
-        //                     })
-        //                     .catch(error => console.error('Error fetching schedule details:', error));
-        //             }
-        //         });
-        //     }
-        // });
-
         document.addEventListener('DOMContentLoaded', function() {
             const branchSelect = document.querySelector('#branch_id');
             const dentistSelect = document.querySelector('#dentist_id');
@@ -312,7 +201,7 @@
             opacity: 0;
         }
     </style>
-    <div class="m-4 mb-8">
+    <div class="m-4">
         @include('components.search')
     </div>
     <section class="bg-white shadow-lg rounded-md max-w-max p-6 my-4 mx-auto  max-lg:mt-14">

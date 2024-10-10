@@ -21,6 +21,11 @@ class Branch extends Model
         return $this->hasMany(Dentist::class, 'branch_id');
     }
 
+    public function patients()
+    {
+        return $this->hasMany(Patient::class, 'branch_id');
+    }
+
     public function inventory()
     {
         return $this->hasOne(Inventory::class);
