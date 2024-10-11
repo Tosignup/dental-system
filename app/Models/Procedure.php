@@ -18,11 +18,6 @@ class Procedure extends Model
         'visit_type'
     ];
 
-    public function billing()
-    {
-        return $this->hasMany(Billing::class);
-    }
-
     public function appointment()
     {
         return $this->hasMany(Appointment::class);

@@ -91,6 +91,61 @@ class AdminController extends Controller
         return view('content.schedule', compact('schedules'));
     }
 
+    public function branch()
+    {
+        $branches = Branch::all();
+        return view('admin.branch.branch', compact('branches'));
+    }
+
+    public function addBranch()
+    {
+        $branches = Branch::all();
+        return view('admin.branch.add-branch', compact('branches'));
+    }
+
+    public function storeBranch(Request $request)
+    {
+        $request->validate([
+            'branch_loc' => 'required|string',
+        ]);
+
+        Branch::create([
+            'branch_loc' => $request->branch_loc,
+        ]);
+        return redirect()->route('branch')->with('success', 'Successfully added branch');
+
+    }
+    public function editBranch($id)
+    {
+        $branch = Branch::findOrFail($id);
+        return view('admin.branch.edit-branch', compact('branch'));
+    }
+
+    public function updateBranch(Request $request, $id)
+    {
+        $branch = Branch::findOrFail($id);
+
+        $request->validate([
+            'branch_loc' => 'required|string',
+        ]);
+
+        $branch->update([
+            'branch_loc' => $request->branch_loc,
+        ]);
+        return redirect()->route('branch')->with('success', 'Successfully updated branch');
+    }
+
+    public function deleteBranch($id)
+    {
+        $branch = Branch::findOrFail($id);
+
+        $branch->delete();
+
+        return redirect()->route('branch')->with('success', 'Successfully deleted branch');
+
+    }
+
+
     //Testing for AuditLog
 
     public function viewAuditLogs()

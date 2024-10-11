@@ -96,7 +96,8 @@
                                                 </form>
                                                 <form method="POST" action="{{ route('schedule.delete', $schedule->id) }}"
                                                     class="border rounded-md bg-red-500 hover:bg-red-700 text-white transition-all py-2 px-4">
-                                                    @csrf @method('DELETE')
+                                                    @csrf
+                                                    @method('DELETE')
                                                     <button class="btn max-md:text-xs">Delete</button>
                                                 </form>
                                             </div>

@@ -43,7 +43,7 @@
                         <td class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs max-md:flex">
                             <div class="flex gap-2 justify-center flex-wrap items-center">
                                 <a class=" border border-slate-600 flex max-md:flex-1 justify-center items-center rounded-md py-2 px-4 max-md:py-1 max-md:px-2 text-white font-semibold hover:bg-gray-300 transition-all"
-                                    href="#">
+                                    href="{{ route('procedure.edit', $procedure->id) }}">
                                     <h1 class=" text-xs text-gray-700 text-center">Edit</h1>
                                 </a>
 
@@ -51,11 +51,12 @@
                                     <div
                                         class=" border border-slate-600 flex max-md:flex-1 justify-center items-center rounded-md py-2 px-4 max-md:py-1 max-md:px-2 text-white font-semibold hover:bg-gray-300 transition-all">
                                         <button class="  text-xs text-gray-700 text-center"
-                                            onclick="my_modal_5.showModal()">Delete</button>
+                                            onclick="document.getElementById('delete_modal_{{ $procedure->id }}').showModal()">Delete</button>
                                     </div>
-                                    <dialog id="my_modal_5" class="modal p-4 rounded-md max-md:text-lg">
+                                    <dialog id="delete_modal_{{ $procedure->id }}"
+                                        class="modal p-4 rounded-md max-md:text-lg">
                                         <div class="modal-box flex flex-col">
-                                            <h3 class="text-lg font-bold max-md:text-sm text-left">Inventory</h3>
+                                            <h3 class="text-lg font-bold max-md:text-sm text-left">Procedure</h3>
                                             <p class="py-4 max-md:text-sm mb-4">Are you sure you want to delete this item?
                                             </p>
                                             <div class="modal-action flex gap-2 self-end">
@@ -63,8 +64,11 @@
                                                     class="border rounded-md hover:bg-gray-300 transition-all py-2 px-4">
                                                     <button class="btn max-md:text-xs">Close</button>
                                                 </form>
-                                                <form method="dialog"
-                                                    class="border rounded-md  hover:bg-gray-300 transition-all py-2 px-4">
+                                                <form method="POST"
+                                                    action="{{ route('procedure.delete', $procedure->id) }}"
+                                                    class="border rounded-md bg-red-500 hover:bg-red-700 text-white transition-all py-2 px-4">
+                                                    @csrf
+                                                    @method('DELETE')
                                                     <button class="btn max-md:text-xs">Delete</button>
                                                 </form>
                                             </div>
@@ -78,4 +82,19 @@
             </tbody>
         </table>
     </section>
+    <script>
+        document.querySelectorAll('[id^="delete_modal_"]').forEach((modal) => {
+            if (modal) {
+                const modalId = modal.id;
+                const button = document.querySelector(
+                    `[onclick="document.getElementById('${modalId}').showModal()"]`);
+
+                if (button) {
+                    button.addEventListener('click', () => {
+                        modal.showModal();
+                    });
+                }
+            }
+        });
+    </script>
 @endsection

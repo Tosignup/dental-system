@@ -85,17 +85,24 @@
                         </div>
                     </div>
                     <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
-                        href="{{ route('inventory') }}">
-                        <img class="h-8" src="{{ asset('assets/images/inventory.png') }}" alt="">
-                        <button class="hover:font-bold transition-all">
-                            Inventory
-                        </button>
-                    </a>
-                    <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
                         href="{{ route('procedure') }}">
                         <img class="h-8" src="{{ asset('assets/images/inventory.png') }}" alt="">
                         <button class="hover:font-bold transition-all">
                             Procedure
+                        </button>
+                    </a>
+                    <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
+                        href="{{ route('branch') }}">
+                        <img class="h-8" src="{{ asset('assets/images/inventory.png') }}" alt="">
+                        <button class="hover:font-bold transition-all">
+                            Branches
+                        </button>
+                    </a>
+                    <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
+                        href="{{ route('inventory') }}">
+                        <img class="h-8" src="{{ asset('assets/images/inventory.png') }}" alt="">
+                        <button class="hover:font-bold transition-all">
+                            Inventory
                         </button>
                     </a>
                 </div>
@@ -390,6 +397,20 @@
                                 Request</a>
                         </div>
                     </div>
+                    <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
+                        href="{{ route('procedure') }}">
+                        <img class="h-5" src="{{ asset('assets/images/inventory.png') }}" alt="">
+                        <button class="hover:font-bold transition-all text-xs">
+                            Procedures
+                        </button>
+                    </a>
+                    <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
+                        href="{{ route('branch') }}">
+                        <img class="h-5" src="{{ asset('assets/images/inventory.png') }}" alt="">
+                        <button class="hover:font-bold transition-all text-xs">
+                            Branches
+                        </button>
+                    </a>
                     <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
                         href="{{ route('inventory') }}">
                         <img class="h-5" src="{{ asset('assets/images/inventory.png') }}" alt="">

@@ -169,8 +169,9 @@ class DentistController extends Controller
     public function editDentist($id){
 
         $dentist = Dentist::findOrFail($id);
+        $branches = Branch::all();
 
-        return view ('forms.update-dentist', compact('dentist'));
+        return view ('forms.update-dentist', compact('dentist', 'branches'));
     }
     public function updateDentist(Request $request, $id)
     {
@@ -182,6 +183,8 @@ class DentistController extends Controller
             'dentist_birth_date' => 'required|date',
             'dentist_phone_number' => 'nullable|string|max:15',
             'dentist_specialization' => 'required|string|max:50',
+            'branch_id' => 'required|exists:branches,id',
+
         ]);
 
         $dentist->update($validated);

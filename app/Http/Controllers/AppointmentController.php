@@ -280,7 +280,7 @@ class AppointmentController extends Controller
         ]);
         $patient = Patient::findOrFail($id);
 
-        return redirect()->route('client.overview', compact('patient'))->with('success', 'Appointment successfully created!');
+        return redirect()->route('client.overview', compact('patient', 'id'))->with('success', 'Appointment successfully created!');
     }
 
 

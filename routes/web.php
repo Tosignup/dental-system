@@ -84,6 +84,7 @@ Route::group(['middleware' => ['auth', 'verified','role:admin,staff']], function
     Route::get('/schedule', [AdminController::class, 'schedule'])->name('schedule');
     Route::get('/inventory', [AdminController::class, 'inventory'])->name('inventory');
     Route::get('/procedure', [ProcedureController::class, 'procedure'])->name('procedure');
+    Route::get('/branch', [AdminController::class, 'branch'])->name('branch');
 
     
     //Patient
@@ -125,6 +126,16 @@ Route::group(['middleware' => ['auth', 'verified','role:admin,staff']], function
     //Procedures
     Route::get('/procedure/add', [ProcedureController::class, 'addProcedure'])->name('procedure.add');
     Route::post('/procedure/store', [ProcedureController::class, 'storeProcedure'])->name('procedure.store');
+    Route::get('/procedure/{id}/edit', [ProcedureController::class, 'editProcedure'])->name('procedure.edit');
+    Route::put('/procedure/{id}/update', [ProcedureController::class, 'updateProcedure'])->name('procedure.update');
+    Route::delete('/procedure/{id}/delete', [ProcedureController::class, 'deleteProcedure'])->name('procedure.delete');
+
+    //Branches
+    Route::get('/branch/add', [AdminController::class, 'addBranch'])->name('branch.add');
+    Route::post('/branch/store', [AdminController::class, 'storeBranch'])->name('branch.store');
+    Route::get('/branch/{id}/edit', [AdminController::class, 'editBranch'])->name('branch.edit');
+    Route::put('/branch/{id}/update', [AdminController::class, 'updateBranch'])->name('branch.update');
+    Route::delete('/branch/{id}/delete', [AdminController::class, 'deleteBranch'])->name('branch.delete');
 
 });
 

@@ -308,7 +308,8 @@
                             class="border max-md:text-xs flex-grow min-w-max border-gray-400 py-2 px-4 rounded-md" required>
                             <option value="">Select Procedure</option>
                             @foreach ($procedures as $procedure)
-                                <option class="max-md:text-xs" value="{{ $procedure->id }}">{{ $procedure->name }}
+                                <option class="max-md:text-xs" value="{{ $procedure->id }}">{{ $procedure->name }} -
+                                    &#8369;{{ number_format($procedure->price, 2) }}
                                 </option>
                             @endforeach
                         </select>

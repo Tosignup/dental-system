@@ -95,6 +95,19 @@
                                 class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
                         @enderror
                     </label>
+                    <label class="flex flex-col flex-1 min-w-[45%] " for="branch_id">
+                        <h1 class="max-md:text-xs">Select Branch</h1>
+                        <select class="border border-gray-400 py-2 px-4 rounded-md max-md:text-xs max-md:py-1 max-md:px-2"
+                            id="branch_id" name="branch_id" required>
+                            <option class="max-md:text-xs" value="">Select your branch</option>
+                            @foreach ($branches as $branch)
+                                <option class="max-md:text-xs" value="{{ $branch->id }}"
+                                    {{ $branch->id == $dentist->branch_id ? 'selected' : '' }}>
+                                    {{ $branch->branch_loc }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </label>
                 </div>
                 <div class="w-full flex gap-2 px-8 mb-3">
                     <button

@@ -52,7 +52,7 @@
                 <h1 class="text-3xl max-md:text-xl font-bold">Appointment Summary</h1>
             </div>
             <div class="flex gap-4 max-md:gap-2 md:flex-col">
-                <a href="{{ route('appointment.submission') }}"
+                <a href="{{ route('appointments.pending', Auth::user()->dentist_id) }}"
                     class="flex-1 flex max-md:flex-col max-md:p-2 py-4 px-8 justify-between bg-white shadow-lg items-center gap-2 rounded-md hover:bg-gray-100 transition-all  ">
                     <img class="h-12 max-md:h-6" src="{{ asset('assets/images/appointment-total.png') }}" alt="">
                     <h1 class="text-md font-semibold max-md:text-xs max-md:text-center">Total of Appointments</h1>
@@ -60,7 +60,7 @@
                         {{ $totalAppointments > 0 ? $totalAppointments : 0 }}
                     </h1>
                 </a>
-                <a href="{{ route('appointment.submission') }}"
+                <a href="{{ route('appointments.pending', Auth::user()->dentist_id) }}"
                     class="flex-1 flex max-md:flex-col max-md:p-2 py-4 px-8 justify-between bg-white shadow-lg items-center gap-2 rounded-md hover:bg-gray-100 transition-all  ">
                     <img class="h-12 max-md:h-6" src="{{ asset('assets/images/appointment-new.png') }}" alt="">
                     <h1 class="text-md font-semibold max-md:text-xs max-md:text-center">New Appointments</h1>
@@ -68,7 +68,7 @@
                         {{ $newAppointments > 0 ? $newAppointments : 0 }}
                     </h1>
                 </a>
-                <a href="{{ route('appointment.submission') }}"
+                <a href="{{ route('appointments.pending', Auth::user()->dentist_id) }}"
                     class="flex-1 flex max-md:flex-col max-md:p-2 py-4 px-8 justify-between bg-white shadow-lg items-center gap-2 rounded-md hover:bg-gray-100 transition-all  ">
                     <img class="h-12 max-md:h-6" src="{{ asset('assets/images/appointment-today.png') }}" alt="">
                     <h1 class="text-md font-semibold max-md:text-xs max-md:text-center">Today's Appointments</h1>
