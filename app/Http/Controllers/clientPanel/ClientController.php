@@ -82,49 +82,59 @@ class ClientController extends Controller
 
     public function storeClientPartialPayment(Request $request) {
         // Validate the incoming request
-        try{
         $request->validate([
             'appointment_id' => 'required|exists:appointments,id',
             'paid_amount' => 'required|numeric|min:0',
             'password' => 'required|string',
-            'payment_method' => 'required|string', // Ensure payment method is included
-            'remarks' => 'nullable|string', // Optional remarks
         ]);
     
         // Retrieve the appointment and related payment record
         $appointment = Appointment::with(['procedure', 'patient'])->find($request->appointment_id);
         $payment = Payment::where('appointment_id', $appointment->id)->first();
-    
+        
         // Check if the password is correct for the patient
         if (!Hash::check($request->password, $appointment->patient->password)) {
             return response()->json(['success' => false, 'message' => 'Incorrect password. Please try again.']);
         }
     
-        // Payment processing logic
-        $totalPaid = $payment ? $payment->total_paid : 0;
-        $balanceRemaining = $payment ? $payment->balance_remaining : $appointment->procedure->price;
+        // Payment processing logic...
+        $totalPaid = 0;
+        $balanceRemaining = $appointment->procedure->price;
         $status = 'pending'; // Initial status
     
-        // Check if the new payment exceeds the remaining balance
-        if ($request->paid_amount > $balanceRemaining) {
-            return response()->json(['success' => false, 'message' => 'Payment exceeds the remaining balance of $' . number_format($balanceRemaining, 2)]);
-        }
-    
-        // Update or create payment record
+        // If a payment record exists, update the values accordingly
         if ($payment) {
-            // Update existing payment record
+            $totalPaid = $payment->total_paid;
+            $balanceRemaining = $payment->balance_remaining;
+    
+            // Check if the new payment exceeds the remaining balance
+            if ($request->paid_amount > $balanceRemaining) {
+                return redirect()->back()->with('error', 'Payment exceeds the remaining balance of $' . number_format($balanceRemaining, 2));
+            }
+    
+            // Update the total paid and balance remaining
             $totalPaid += $request->paid_amount;
             $balanceRemaining -= $request->paid_amount;
     
             // Determine the payment status
-            $status = $balanceRemaining <= 0 ? 'Paid' : 'Pending';
+            if ($balanceRemaining <= 0) {
+                $status = 'Paid'; // Mark as completed if fully paid
+            } else {
+                $status = 'Pending'; // Mark as partially paid
+            }
     
+            // Update the existing payment record
             $payment->update([
                 'total_paid' => $totalPaid,
                 'balance_remaining' => $balanceRemaining,
                 'status' => $status,
             ]);
         } else {
+            // If no payment record exists, create a new payment record
+            if ($request->paid_amount > $balanceRemaining) {
+                return redirect()->back()->with('error', 'Payment exceeds the total amount due of $' . number_format($balanceRemaining, 2));
+            }
+    
             // Create a new payment record
             $payment = Payment::create([
                 'appointment_id' => $request->appointment_id,
@@ -135,19 +145,17 @@ class ClientController extends Controller
             ]);
         }
     
-        // Create a payment history record for tracking
+        // (Optional) Create a payment history record for tracking
         PaymentHistory::create([
             'payment_id' => $payment->id,
             'paid_amount' => $request->paid_amount,
             'payment_method' => $request->payment_method,
             'remarks' => $request->remarks ?? null, // Optional remarks
         ]);
-    
+        // Return a success response
+        // return redirect()->route('show.appointment', $appointment->id)
+        //                  ->with('success', 'Payment processed successfully!');
         return response()->json(['success' => true]);
-        } catch (\Exception $e) {
-            \Log::error('Payment Processing Error: ' . $e->getMessage());
-            return response()->json(['success' => false, 'message' => 'An error occurred while processing the payment.']);
-        }
     }
     
 

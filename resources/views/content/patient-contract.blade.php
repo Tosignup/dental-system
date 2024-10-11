@@ -2,7 +2,7 @@
 
 @section('content')
     <style>
-        .modal {
+        .upload-modal {
             position: fixed;
             left: 0;
             top: 0;
@@ -13,14 +13,14 @@
             /* Overlay */
         }
 
-        .modal-dialog {
+        .upload-modal-dialog {
             position: relative;
             margin: auto;
             top: 20%;
             width: 50%;
         }
 
-        .modal-content {
+        .upload-modal-content {
             background-color: white;
             padding: 20px;
             border-radius: 5px;
@@ -63,9 +63,9 @@
                     </div>
                     {{-- Aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa --}}
                     <!-- Modal Structure -->
-                    <div id="uploadModal" class="modal" style="display:none;">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
+                    <div id="uploadModal" class="upload-modal" style="display:none;">
+                        <div class="upload-modal-dialog">
+                            <div class="upload-modal-content">
                                 <div class="modal-header flex justify-between">
                                     <h5 class="modal-title text-2xl font-bold max-md:text-sm">Upload Image</h5>
                                     <button type="button" class="close text-3xl" id="closeModalBtn">&times;</button>
@@ -105,14 +105,20 @@
                 </div>
             </div>
 
-            <div class="w-full flex justify-center border border-red-100">
-                @if ($image)
-                    <div>
-                        <img src="{{ asset('storage/' . $image->image_path) }}" alt="Contract Image"
-                            class="img-fluid max-h-96" onclick="openModal('{{ asset('storage/' . $image->image_path) }}')">
-                    </div>
+            <div class="w-full flex justify-start">
+                @if ($contractImages->isEmpty())
+                    <p>No background images uploaded for this patient.</p>
                 @else
-                    <p>No contract image uploaded for this patient.</p>
+                    <div class="flex gap-1">
+                        @foreach ($contractImages as $image)
+                            <div class="border-2">
+                                <h1>{{ $image->created_at }}</h1>
+                                <img src="{{ asset('storage/' . $image->image_path) }}" alt="Contract Image"
+                                    class="img-fluid max-h-80"
+                                    onclick="openModal('{{ asset('storage/' . $image->image_path) }}')">
+                            </div>
+                        @endforeach
+                    </div>
                 @endif
             </div>
 

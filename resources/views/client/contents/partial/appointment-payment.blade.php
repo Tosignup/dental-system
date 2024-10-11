@@ -23,12 +23,22 @@
                         <td class="py-1 px-4 border-b max-xl:hidden">{{ ucfirst($payment->balance_remaining) }}</td>
                         <td class="py-1 px-4 border-b max-xl:hidden">{{ $payment->status }}</td>
                         <td class="py-1 px-4 border-b max-lg:text-xs">
-                            <a href="{{ route('client.form', $payment->appointment_id) }}"
-                                class=" flex items-center justify-start py-1 gap-2 px-4 my-2 border border-gray-500 rounded-md hover:border-gray-700 hover:shadow-sm transition-all max-sm:justify-center">
-                                <img class="h-3" src="{{ asset('assets/images/payment.png') }}" alt="">
-                                <h1 class="text-xs">
-                                    Add payment</h1>
-                            </a>
+                            @if ($payment->status === 'Paid')
+                                <a href=" {{ route('client.history', $payment->appointment->id) }} "
+                                    class=" flex items-center justify-start py-1 gap-2 px-4 my-2 border border-gray-500 rounded-md hover:border-gray-700 hover:shadow-sm transition-all max-sm:justify-center"
+                                    type="reset">
+                                    <img class="h-3" src="{{ asset('assets/images/payment.png') }}" alt="">
+                                    <h1 class="text-xs">
+                                        Payment history</h1>
+                                </a>
+                            @else
+                                <a href="{{ route('client.form', $payment->appointment_id) }}"
+                                    class=" flex items-center justify-start py-1 gap-2 px-4 my-2 border border-gray-500 rounded-md hover:border-gray-700 hover:shadow-sm transition-all max-sm:justify-center">
+                                    <img class="h-3" src="{{ asset('assets/images/payment.png') }}" alt="">
+                                    <h1 class="text-xs">
+                                        Add payment</h1>
+                                </a>
+                            @endif
                         </td>
                     </tr>
                 @endforeach

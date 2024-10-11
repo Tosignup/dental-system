@@ -115,7 +115,9 @@
                 </tbody>
             </table>
         @endif
-
+        <div>
+            {{ $approvedAppointments->links() }}
+        </div>
     </section>
 @endsection
 <script>

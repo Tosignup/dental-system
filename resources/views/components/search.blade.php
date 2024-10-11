@@ -195,19 +195,19 @@
                             </a>
                         </li>
                     @endif
-
                     <hr class="bg-gray-700 w-full">
                     <li class="py-3 my-2 px-2 hover:bg-gray-200 transition-all rounded-sm">
                         <div class="flex self-start text-sm max-md:text-xs">
                             <div class="flex  gap-2 items-center justify-center">
-                                <button class="btn" onclick="document.getElementById('my_modal_2').showModal()">
+                                <a class="btn" onclick="document.getElementById('my_modal_2').showModal()">
                                     Log out
-                                </button>
+                                </a>
                             </div>
+                            {{-- Client Logout --}}
                             <dialog id="my_modal_2"
                                 class="modal border-2 shadow-lg border-gray-400 p-8 rounded-md max-md:text-lg">
                                 <div class="modal-box flex flex-col">
-                                    <h3 class="text-2xl font-bold max-md:text-sm">Log out</h3>
+                                    <h3 class="text-2xl font-bold max-md:text-sm">Log out search</h3>
                                     <p class="py-4 max-md:text-sm">Are you sure you want to log out?</p>
                                     <div class="modal-action flex gap-2 self-end">
                                         <form method="dialog" class="border rounded-md w-max py-2 px-4">
@@ -216,8 +216,8 @@
                                         <form action="{{ route('logout') }}" method="POST"
                                             class="border  bg-red-600 text-white rounded-md py-2 px-4">
                                             @csrf
-                                            <button
-                                                class="btn  bg-red-600 text-white max-md:text-xs w-max flex gap-2">Log
+                                            <button class="btn  bg-red-600 text-white max-md:text-xs w-max flex gap-2">
+                                                Log
                                                 out</button>
                                         </form>
                                     </div>
@@ -225,13 +225,12 @@
                             </dialog>
                         </div>
                     </li>
-
             </details>
         </div>
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const modal = document.getElementById('my_modal_4');
+            const modal = document.getElementById('my_modal_2');
             const logoutButton = document.getElementById('logout-button');
             const closeButton = modal.querySelector('button[type="button"]');
 

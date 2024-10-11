@@ -162,21 +162,21 @@ class PatientController extends Controller
     public function patientContract(Request $request, $id)
     {
         $patient = Patient::findOrFail($id);
-        $image = Image::where('patient_id', $id)
+        $contractImages = Image::where('patient_id', $id)
                         ->where('image_type', 'contract')
-                        ->first();
+                        ->get();
         
-        return view('content.patient-contract', compact('patient', 'image'));
+        return view('content.patient-contract', compact('patient', 'contractImages'));
     }
 
     public function patientBackground(Request $request, $id)
     {
         $patient = Patient::findOrFail($id);
-        $image = Image::where('patient_id', $id)
+        $backgroundImages = Image::where('patient_id', $id)
                         ->where('image_type', 'background')
-                        ->first();
+                        ->get();
 
-        return view('content.patient-background', compact('patient', 'image'));
+        return view('content.patient-background', compact('patient', 'backgroundImages'));
     }
     public function patientXray(Request $request, $id)
     {

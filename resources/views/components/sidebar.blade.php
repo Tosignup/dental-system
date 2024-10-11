@@ -210,8 +210,9 @@
         <div class="flex self-start max-md:text-xs m-2.5">
             <div class="flex gap-2 items-center justify-center">
                 <button class="btn flex justify-center items-center gap-2" onclick="my_modal_2.showModal()">
-                    <button class="btn" onclick="my_modal_2 .showModal()"></button>
+                    <button class="btn" onclick="my_modal_2.showModal()"></button>
             </div>
+            {{-- Dentist Logout --}}
             <dialog id="my_modal_2" class="modal border-2 shadow-lg border-gray-400  p-8 rounded-md max-md:text-lg">
                 <div class="modal-box flex flex-col ">
                     <h3 class="text-2xl font-bold max-md:text-sm">Log out</h3>
@@ -224,8 +225,7 @@
                             class="border rounded-md bg-red-600 py-2 px-4 text-white  ">
                             @csrf
                             <button class="btn max-md:text-xs w-max flex gap-2">
-                                Log
-                                out
+                                Log out
                             </button>
                         </form>
                     </div>
@@ -291,6 +291,8 @@
                                 <button class="btn max-lg:text-xs text-right" onclick="my_modal_3.showModal()">Log
                                     out</button>
                             </div>
+
+                            {{-- mobile Admin/Staff Logout --}}
                             <dialog id="my_modal_3" class="modal p-4 rounded-md max-md:text-lg">
                                 <div class="modal-box flex flex-col">
                                     <h3 class="text-lg font-bold max-md:text-sm">Log out</h3>
@@ -482,6 +484,7 @@
                 <img class="max-md:h-4 h-4" src="{{ asset('assets/images/logout.png') }}" alt="">
                 <button class="btn" onclick="my_modal_1.showModal()">Log out</button>
             </div>
+            {{-- sidebar logout --}}
             <dialog id="my_modal_1" class="modal p-4 rounded-md max-md:text-lg">
                 <div class="modal-box flex flex-col">
                     <h3 class="text-lg font-bold max-md:text-sm">Log out</h3>

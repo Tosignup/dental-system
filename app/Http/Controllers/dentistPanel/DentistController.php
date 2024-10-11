@@ -118,7 +118,7 @@ class DentistController extends Controller
         // Fetch payments related to the dentist's appointments
         $payments = Payment::whereIn('appointment_id', $appointmentIds)->paginate(5, ['*'], 'payment'); // Custom pagination query param
     
-        return view('dentist.contents.payment-list', compact('dentist', 'payments'));
+        return view('dentist.contents.dentist-payment-list', compact('dentist', 'payments'));
     }
 
     public function addDentist()

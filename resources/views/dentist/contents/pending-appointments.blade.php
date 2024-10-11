@@ -96,7 +96,7 @@
                                     <div class=" bg-white p-4 rounded-lg shadow-md">
                                         <div class="flex flex-col justify-left">
                                             <h2 class="mt-4 text-xl font-bold">
-                                                {{ $appointment->procedure->name }}
+                                                {{ $appointment->procedure->name ?? 'None' }}
                                             </h2>
                                             <p class="text-gray-500">
                                                 {{ $appointment->appointment_date }} - <span
@@ -122,7 +122,7 @@
                                                 <div class="flex justify-between my-2 py-2 px-4 gap-4 flex-col">
                                                     <h3 class="font-bold text-gray-600">Fees</h3>
                                                     <p> &#8369
-                                                        {{ $appointment->procedure->price }}
+                                                        {{ $appointment->procedure->price ?? 'None' }}
                                                     </p>
                                                 </div>
                                                 <hr class="w-full bg-gray">
