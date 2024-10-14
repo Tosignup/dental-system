@@ -31,7 +31,7 @@ class StaffController extends Controller
         // return view('content.overview');
     }
 
-    
+
 
     public function addStaff()
     {
@@ -71,14 +71,16 @@ class StaffController extends Controller
             'staff_id' => $staff->id, // Link to the patient via foreign key
         ]);
 
-        return redirect()->route('staff')->with('success', 'Patient created successfully');
+        return redirect()->route('staff')->with('success', 'Staff created successfully');
+        session()->flash('success', 'Staff created successfully!');
     }
 
-    public function editStaff($id){
+    public function editStaff($id)
+    {
 
         $staff = Staff::findOrFail($id);
 
-        return view ('forms.update-staff', compact('staff'));
+        return view('forms.update-staff', compact('staff'));
     }
     public function updateStaff(Request $request, $id)
     {
@@ -94,12 +96,12 @@ class StaffController extends Controller
         ]);
 
         $staff->update($validated);
-        return redirect()->route('staff', compact('staff'))->with('success','staff updated');
-
+        return redirect()->route('staff', compact('staff'))->with('success', 'Staff updated successfully!');
+        session()->flash('success', 'Staff updated successfully!');
     }
 
     public function showStaff($id)
-    {   
+    {
         $staff = Staff::findOrFail($id);
         // $schedules = staffSchedule::with('staff_schedules')->get($id);
 

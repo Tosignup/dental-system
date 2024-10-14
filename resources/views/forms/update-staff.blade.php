@@ -35,7 +35,7 @@
                             autocomplete="off" placeholder="Juan" oninput="validateInput('first_name')">
                         @error('first_name')
                             <span id="first_name_error"
-                                class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                                class="validation-message text-red-600 text-xs p-1 rounded-md  show">{{ $message }}</span>
                         @enderror
                     </label>
                     <label class="flex flex-col flex-1 min-w-[45%] max-md:text-sm" for="last_name">
@@ -45,7 +45,7 @@
                             autocomplete="off" placeholder="Dela Cruz" oninput="validateInput('last_name')">
                         @error('last_name')
                             <span id="last_name_error"
-                                class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                                class="validation-message text-red-600 text-xs p-1 rounded-md  show">{{ $message }}</span>
                         @enderror
                     </label>
                     <label class="flex flex-col flex-1 min-w-[45%]" for="fb_name">
@@ -65,7 +65,7 @@
                             value="{{ old('phone_number', $staff->phone_number) }}" id="phone_number">
                         @error('phone_number')
                             <span id="phone_number_error"
-                                class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                                class="validation-message text-red-600 text-xs p-1 rounded-md  show">{{ $message }}</span>
                         @enderror
                     </label>
                     <label class="flex flex-col flex-1 min-w-[45%] pb-4" for="branch_id">

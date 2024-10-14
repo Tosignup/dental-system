@@ -4,8 +4,8 @@
         @include('components.search')
     </div>
     <section class="bg-white max-lg:mt-14 m-4 p-8 shadow-lg rounded-md flex flex-wrap justify-between z-0">
-        <div class="flex border w-full max-lg:flex-col flex-wrap justify-between items-start">
-            <div class="flex w-full flex-wrap justify-between items-start border border-red-600">
+        <div class="flex  w-full max-lg:flex-col flex-wrap justify-between items-start">
+            <div class="flex w-full flex-wrap justify-between items-start">
                 <div class="flex flex-wrap justify-between mb-6 gap-4 items-start ">
                     <div class="flex flex-col">
                         <div>
@@ -21,12 +21,18 @@
                                         {{ $dentist->dentist_birth_date }}
                                     </span>
                                 </h1>
-                                <h1 class=" max-md:text-sm"> Facebook name: <span class="font-semibold">
-                                        {{ $dentist->fb_name }}
+                                <h1 class=" max-md:text-sm"> Dentist specialization: <span class="font-semibold">
+                                        {{ $dentist->dentist_specialization }}
                                     </span>
                                 </h1>
-                                <h1 class=" max-md:text-sm"> Package availed: <span class="font-semibold">
-                                        {{ $dentist->package }}
+                                <h1 class=" max-md:text-sm"> Branch: <span class="font-semibold">
+                                        @if ($dentist->branch_id === 1)
+                                            Dau
+                                        @elseif($dentist->branch_id === 2)
+                                            Angeles
+                                        @elseif($dentist->branch_id === 3)
+                                            Sindalan
+                                        @endif
                                     </span> </h1>
                                 <h1 class=" max-md:text-sm"> Phone number: <span class="font-semibold">
                                         {{ $dentist->dentist_phone_number }}

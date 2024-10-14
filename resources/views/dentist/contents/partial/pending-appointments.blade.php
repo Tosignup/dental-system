@@ -10,9 +10,11 @@
                 <th class="py-2 px-4 border-b text-left text-gray-600  max-xl:hidden">Branch</th>
                 <th class="py-2 px-4 border-b text-left text-gray-600 max-lg:text-xs">
                     Actions</th>
+                <th class="py-2 px-4 border-b text-left text-gray-600 max-lg:text-xs">
+                    View</th>
             </tr>
         </thead>
-        <tbody>
+    <tbody>
             @foreach ($pendingAppointments as $appointment)
                 <tr>
                     <td class="py-2 px-4 border-b   max-lg:text-xs">

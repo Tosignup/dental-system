@@ -33,7 +33,7 @@ class PatientController extends Controller
         // Filter by archived status if provided
         if ($request->has('archived')) {
             $archivedStatus = $request->get('archived');
-        
+
             // Show active patients if "false" is selected
             if ($archivedStatus === 'false') {
                 $patientQuery->where('is_archived', false);
@@ -75,7 +75,7 @@ class PatientController extends Controller
             'sort' => $request->get('sort')
         ]);
     }
-    
+
     public function addPatient()
     {
         $branches = Branch::all();
@@ -121,10 +121,11 @@ class PatientController extends Controller
         ]);
 
         return redirect()->route('patient_list')->with('success', 'Patient created successfully');
+        session()->flash('success', 'Patient added successfully!');
     }
 
     public function showPatient($id)
-    {   
+    {
         $patient = Patient::findOrFail($id);
 
         return view('content.patient-information', compact('patient'));
@@ -155,17 +156,17 @@ class PatientController extends Controller
         ]);
 
         $patient->update($validated);
-        return redirect()->route('show.patient', compact('patient'))->with('success','patient updated');
-
+        return redirect()->route('show.patient', compact('patient'))->with('success', 'Patient updated successfully!');
+        session()->flash('success', 'Patient updated successfully!');
     }
 
     public function patientContract(Request $request, $id)
     {
         $patient = Patient::findOrFail($id);
         $contractImages = Image::where('patient_id', $id)
-                        ->where('image_type', 'contract')
-                        ->get();
-        
+            ->where('image_type', 'contract')
+            ->get();
+
         return view('content.patient-contract', compact('patient', 'contractImages'));
     }
 
@@ -173,8 +174,8 @@ class PatientController extends Controller
     {
         $patient = Patient::findOrFail($id);
         $backgroundImages = Image::where('patient_id', $id)
-                        ->where('image_type', 'background')
-                        ->get();
+            ->where('image_type', 'background')
+            ->get();
 
         return view('content.patient-background', compact('patient', 'backgroundImages'));
     }
@@ -182,8 +183,8 @@ class PatientController extends Controller
     {
         $patient = Patient::findOrFail($id);
         $xrayImages = Image::where('patient_id', $id)
-                ->where('image_type', 'xray')
-                ->get();
+            ->where('image_type', 'xray')
+            ->get();
 
         return view('content.patient-xray', compact('patient', 'xrayImages'));
     }
@@ -198,7 +199,7 @@ class PatientController extends Controller
         $patient->save();
 
         Appointment::where('patient_id', $id)
-        ->update(['is_archived' => 1, 'archived_at' => now()]); // Assuming you have an archived_at field in appointments
+            ->update(['is_archived' => 1, 'archived_at' => now()]); // Assuming you have an archived_at field in appointments
 
         AuditLog::create([
             'action' => 'archive',
@@ -208,19 +209,19 @@ class PatientController extends Controller
             'user_email' => auth()->user()->email,
             'changes' => json_encode($request->all()), // Log the request data
         ]);
-        
+
         return redirect()->back()->with('success', 'Patient has been archived.');
     }
 
     public function restorePatient(Request $request, $id)
     {
         $patient = Patient::find($id);
-        $patient->is_archived = 0;   
+        $patient->is_archived = 0;
         $patient->archived_at = null;  // Restore patient by nullifying the archived_at field
         $patient->save();
 
         Appointment::where('patient_id', $id)
-        ->update(['is_archived' => 0, 'archived_at' => null]);
+            ->update(['is_archived' => 0, 'archived_at' => null]);
 
         AuditLog::create([
             'action' => 'restore',
@@ -230,9 +231,7 @@ class PatientController extends Controller
             'user_email' => auth()->user()->email,
             'changes' => json_encode($request->all()), // Log the request data
         ]);
-        
+
         return redirect()->back()->with('success', 'Patient has been restored.');
     }
-
-
 }

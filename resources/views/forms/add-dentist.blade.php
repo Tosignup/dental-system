@@ -35,7 +35,7 @@
                             oninput="validateInput('dentist_first_name')">
                         @error('dentist_first_name')
                             <span id="dentist_first_name_error"
-                                class="validation-message text-white max-md:text-xs bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                                class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
                         @enderror
                     </label>
                     <label class="flex flex-col flex-1 min-w-[45%]" for="dentist_last_name">
@@ -46,7 +46,7 @@
                             oninput="validateInput('dentist_last_name')">
                         @error('dentist_last_name')
                             <span id="dentist_last_name_error"
-                                class="validation-message text-white max-md:text-xs bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                                class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
                         @enderror
                     </label>
                     <label class="flex flex-col flex-1 min-w-[45%]" for="dentist_email">
@@ -57,7 +57,7 @@
                             oninput="validateInput('dentist_email')">
                         @error('dentist_email')
                             <span id="dentist_email_error"
-                                class="validation-message text-white max-md:text-xs bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                                class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
                         @enderror
                     </label>
                     <label class="flex flex-col flex-1 min-w-[45%]" for="dentist_phone_number">
@@ -67,7 +67,7 @@
                             value="{{ old('dentist_phone_number') }}" oninput="validateInput('dentist_phone_number')">
                         @error('dentist_phone_number')
                             <span id="dentist_phone_number"
-                                class="validation-message text-white max-md:text-xs bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                                class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
                         @enderror
                     </label>
                     <label class="flex flex-col flex-1 min-w-[45%]" for="dentist_gender">
@@ -80,7 +80,7 @@
                         </select>
                         @error('dentist_gender')
                             <span id="dentist_gender_error"
-                                class="validation-message text-white max-md:text-xs bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                                class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
                         @enderror
                     </label>
                     <label class="flex flex-col flex-1 min-w-[45%]" for="dentist_birth_date">
@@ -90,7 +90,7 @@
                             value="{{ old('dentist_birth_date') }}" oninput="validateInput('dentist_birth_date')">
                         @error('dentist_birth_date')
                             <span id="dentist_birth_date_error"
-                                class="validation-message text-white max-md:text-xs bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                                class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
                         @enderror
                     </label>
                     <label class="flex flex-col flex-1 min-w-[45%]" for="dentist_specialization">
@@ -99,7 +99,7 @@
                             type="text" name="dentist_specialization">
                         @error('dentist_specialization')
                             <span id="dentist_specialization_error"
-                                class="validation-message text-white max-md:text-xs bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                                class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
                         @enderror
                     </label>
                     <label class="flex flex-col flex-1 min-w-[45%] " for="branch_id">
@@ -121,7 +121,7 @@
                             oninput="validateInput('password')">
                         @error('password')
                             <span id="password_error"
-                                class="validation-message text-white max-md:text-xs bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                                class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
                         @enderror
                     </label>
                     <label class="flex flex-col flex-1 min-w-[45%]" for="password_confirmation">
@@ -131,7 +131,7 @@
                             oninput="validateInput('password_confirmation')">
                         @error('password_confirmation')
                             <span id="password_confirmation_error"
-                                class="validation-message text-white max-md:text-xs bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                                class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
                         @enderror
                     </label>
 

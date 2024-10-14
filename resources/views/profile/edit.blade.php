@@ -15,8 +15,8 @@
     @vite('resources/css/app.css')
 </head>
 
-<body>
-    <nav class="flex p-4 justify-between align-center shadow-lg">
+<body class="bg-slate-100">
+    <nav class="flex p-4 justify-between align-center shadow-lg bg-slate-100">
         <div class="flex gap-4 text-md justify-center items-center">
             <a href="{{ route('welcome') }}">
                 <img class="h-14 max-lg:h-8" src="{{ asset('assets/images/logo.png') }}" alt="">
@@ -33,7 +33,7 @@
             @if (Auth::user()->role === 'dentist') href=" {{ route('dentist.dashboard', Auth::user()->dentist_id) }} " @endif
             @if (Auth::user()->role === 'client') href=" {{ route('client.overview', Auth::user()->patient_id) }} " @endif>
             <img class="h-8" src="{{ asset('assets/images/arrow-back.png') }}" alt="">
-            <h1>Go back to patient list</h1>
+            <h1>Go back</h1>
         </a>
     </div>
     <div class=" flex flex-col max-w-4xl mx-auto sm:px-6 lg:px-8  ">
@@ -50,7 +50,7 @@
                 </div>
             </div>
 
-            <div class="p-4 my-4 sm:p-8 bg-green-700 shadow sm:rounded-lg">
+            <div class="p-4 my-4 sm:p-8 bg-white text-gray-900 shadow-lg sm:rounded-lg">
                 <div class="w-full">
                     @include('profile.partials.delete-user-form')
                 </div>

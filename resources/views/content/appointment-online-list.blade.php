@@ -32,10 +32,10 @@
         </div>
         <table class="w-full table-auto text-center">
             <thead>
-                <tr class="">
+                <tr class="bg-gray-300 text-gray-500">
                     <th class="max-lg:py-2 max-lg:px-2 border max-lg:text-xs">Patient</th>
-                    <th class="max-lg:py-2 max-lg:px-2 border max-lg:text-xs">Date Submitted</th>
-                    <th class="py-2 px-4 max-lg:py-2 max-lg:px-2 border max-lg:text-xs">Appointment Date</th>
+                    <th class="max-lg:py-2 max-lg:px-2 border max-lg:text-xs max-2xl:hidden">Date Submitted</th>
+                    <th class="py-2 px-4 max-lg:py-2 max-lg:px-2 border max-lg:text-xs max-2xl:hidden">Appointment Date</th>
                     <th class="py-2 px-4 max-lg:py-2 max-lg:px-2 border max-lg:text-xs max-2xl:hidden">Preferred
                         time
                     </th>
@@ -54,10 +54,10 @@
                             <span class="max-lg:hidden">{{ $appointment->patient->first_name }}</span>
                             {{ $appointment->patient->last_name }}
                         </td>
-                        <td class=" max-lg:py-2 max-lg:px-2 border max-lg:text-xs ">
+                        <td class=" max-lg:py-2 max-lg:px-2 border max-lg:text-xs max-2xl:hidden">
                             {{ $appointment->created_at }}
                         </td>
-                        <td class=" max-lg:py-2 max-lg:px-2 border max-lg:text-xs ">
+                        <td class=" max-lg:py-2 max-lg:px-2 border max-lg:text-xs max-2xl:hidden">
                             {{ $appointment->appointment_date }}</td>
                         <td class=" max-lg:py-2 max-lg:px-2 border max-lg:text-xs max-2xl:hidden">
 

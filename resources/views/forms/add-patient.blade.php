@@ -34,7 +34,7 @@
                         value="{{ old('first_name') }}" oninput="validateInput('first_name')">
                     @error('first_name')
                         <span id="first_name_error"
-                            class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                            class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
                     @enderror
                 </label>
                 <label class="flex flex-col flex-1 min-w-[45%]" for="last_name">
@@ -44,7 +44,7 @@
                         value="{{ old('last_name') }}" oninput="validateInput('last_name')">
                     @error('last_name')
                         <span id="last_name_error"
-                            class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                            class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
                     @enderror
                 </label>
                 <label class="flex flex-col flex-1 min-w-[45%]" for="fb_name">
@@ -54,7 +54,7 @@
                         value="{{ old('fb_name') }}" oninput="validateInput('fb_name')">
                     @error('fb_name')
                         <span id="fb_name_error"
-                            class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                            class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
                     @enderror
                 </label>
 
@@ -65,7 +65,7 @@
                         value="{{ old('email') }}" oninput="validateInput('email')">
                     @error('email')
                         <span id="email_error"
-                            class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                            class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
                     @enderror
                 </label>
                 <label class="flex flex-col flex-1 min-w-[45%]" for="password">
@@ -75,7 +75,7 @@
                         oninput="validateInput('password')">
                     @error('password')
                         <span id="password_error"
-                            class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                            class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
                     @enderror
                 </label>
                 <label class="flex flex-col flex-1 min-w-[45%]" for="password_confirmation">
@@ -85,7 +85,7 @@
                         oninput="validateInput('password_confirmation')">
                     @error('password_confirmation')
                         <span id="password_confirmation_error"
-                            class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                            class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
                     @enderror
                 </label>
                 <label class="flex flex-col flex-1 min-w-[45%]" for="gender">
@@ -99,7 +99,7 @@
                     </select>
                     @error('gender')
                         <span id="gender_error"
-                            class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                            class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
                     @enderror
                 </label>
                 <label class="flex flex-col flex-1 min-w-[45%]" for="date_of_birth">
@@ -109,7 +109,7 @@
                         oninput="validateInput('date_of_birth')">
                     @error('date_of_birth')
                         <span id="date_of_birth_error"
-                            class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                            class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
                     @enderror
                 </label>
 
@@ -120,7 +120,7 @@
                         value="{{ old('phone_number') }}" oninput="validateInput('phone_number')">
                     @error('phone_number')
                         <span id="phone_number_error"
-                            class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                            class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
                     @enderror
                 </label>
                 <label class="flex flex-col flex-1 min-w-[45%] " for="branch_id">
@@ -142,7 +142,7 @@
                         value="{{ old('next_visit') }}" oninput="validateInput('next_visit')">
                     @error('next_visit')
                         <span id="next_visit_error"
-                            class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                            class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
                     @enderror
                 </label>
             </div>

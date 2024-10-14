@@ -5,6 +5,12 @@
     <meta charset="utf-8">
     <title>{{ config('app.name') }} | Register </title>
     <link rel="icon" href="{{ asset('assets/images/logo.png') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="//unpkg.com/alpinejs" defer></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @vite('resources/css/app.css')
     <style>
@@ -27,11 +33,11 @@
 </head>
 
 <body>
-    <section class="h-max bg-slate-100 flex justify-center items-center ">
+    <section class="h-svh bg-slate-100 flex justify-center items-center ">
         <div class="bg-white rounded-lg shadow-lg flex max-w-5xl max-lg:flex-col-reverse border border-gray-300">
             <div class="bg-green-600 max-lg:rounded-sm rounded-lg text-white p-8 flex flex-col justify-between">
                 <h1 class="font-bold text-4xl text-white max-w-sm max-lg:text-3xl">Register account</h1>
-                <form method="POST" action="{{ route('register') }}" class="flex flex-col gap-4 mb-8 mt-4">
+                <form method="POST" action="{{ route('register') }}" class="flex flex-wrap max-w-3xl gap-4 mb-8 mt-4">
                     @method('POST')
                     @csrf
 
@@ -43,7 +49,7 @@
                             value="{{ old('first_name') }}" oninput="validateInput('first_name')">
                         @error('first_name')
                             <span id="first_name_error"
-                                class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                                class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
                         @enderror
                     </label>
 
@@ -55,7 +61,7 @@
                             value="{{ old('last_name') }}" oninput="validateInput('last_name')">
                         @error('last_name')
                             <span id="last_name_error"
-                                class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                                class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
                         @enderror
                     </label>
 
@@ -73,7 +79,7 @@
                         </select>
                         @error('gender')
                             <span id="gender_error"
-                                class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                                class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
                         @enderror
                     </label>
 
@@ -85,7 +91,7 @@
                             oninput="validateInput('date_of_birth')">
                         @error('date_of_birth')
                             <span id="date_of_birth_error"
-                                class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                                class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
                         @enderror
                     </label>
 
@@ -97,7 +103,7 @@
                             value="{{ old('email') }}" oninput="validateInput('email')">
                         @error('email')
                             <span id="email_error"
-                                class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                                class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
                         @enderror
                     </label>
 
@@ -109,7 +115,7 @@
                             oninput="validateInput('password')">
                         @error('password')
                             <span id="password_error"
-                                class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                                class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
                         @enderror
                     </label>
 
@@ -121,7 +127,7 @@
                             oninput="validateInput('password_confirmation')">
                         @error('password_confirmation')
                             <span id="password_confirmation_error"
-                                class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                                class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
                         @enderror
                     </label>
 
@@ -133,7 +139,7 @@
                             value="{{ old('fb_name') }}" oninput="validateInput('fb_name')">
                         @error('fb_name')
                             <span id="fb_name_error"
-                                class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                                class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
                         @enderror
                     </label>
 
@@ -145,7 +151,7 @@
                             value="{{ old('phone_number') }}" oninput="validateInput('phone_number')">
                         @error('phone_number')
                             <span id="phone_number_error"
-                                class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                                class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
                         @enderror
                     </label>
 
@@ -155,7 +161,7 @@
                             autocomplete="off" id="next_visit" disabled>
                         @error('next_visit')
                             <span id="next_visit_error"
-                                class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                                class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
                         @enderror
                     </label>
 
@@ -175,7 +181,7 @@
                         homepage</a>
                 </div>
             </div>
-            <div class="p-8 max-lg:px-2 max-lg:py-4 max-lg:flex max-lg:items-center max-lg:justify-center">
+            <div class="p-8 max-lg:px-2 max-lg:py-4 max-lg:flex-row flex-col flex items-center justify-center">
                 <img class="mx-8 max-lg:mx-4 max-lg:h-16" src="{{ asset('assets/images/logo.png') }}"
                     alt="">
                 <div

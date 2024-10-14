@@ -35,7 +35,7 @@
                             placeholder="Juan" oninput="validateInput('first_name')">
                         @error('first_name')
                             <span id="first_name_error"
-                                class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                                class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
                         @enderror
                     </label>
                     <label class="flex flex-col flex-1 min-w-[45%] max-md:text-sm" for="last_name">
@@ -45,7 +45,7 @@
                             placeholder="Dela Cruz" oninput="validateInput('last_name')">
                         @error('last_name')
                             <span id="last_name_error"
-                                class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                                class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
                         @enderror
                     </label>
                     <label class="flex flex-col flex-1 min-w-[45%] max-md:text-sm" for="gender">
@@ -64,7 +64,7 @@
                         </select>
                         @error('gender')
                             <span id="gender_error"
-                                class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                                class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
                         @enderror
                     </label>
                     <label class="flex flex-col flex-1 min-w-[45%] max-md:text-sm" for="date_of_birth">
@@ -74,7 +74,7 @@
                             oninput="validateInput('date_of_birth')">
                         @error('date_of_birth')
                             <span id="date_of_birth_error"
-                                class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                                class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
                         @enderror
                     </label>
                     <label class="flex flex-col flex-1 min-w-[45%] max-md:text-sm" for="fb_name">
@@ -84,7 +84,7 @@
                             placeholder="Dela Cruz" oninput="validateInput('package')">
                         @error('fb_name')
                             <span id="fb_name_error"
-                                class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                                class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
                         @enderror
                     </label>
 
@@ -95,7 +95,7 @@
                             value="{{ old('phone_number', $patient->phone_number) }}" id="phone_number">
                         @error('phone_number')
                             <span id="phone_number_error"
-                                class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                                class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
                         @enderror
                     </label>
                     <label class="flex flex-col flex-1 min-w-[45%] " for="branch_id">
@@ -118,7 +118,7 @@
                             oninput="validateInput('next_visit')">
                         @error('next_visit')
                             <span id="next_visit_error"
-                                class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                                class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
                         @enderror
                     </label>
 

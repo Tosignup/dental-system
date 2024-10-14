@@ -159,14 +159,6 @@
                             Inventory
                         </button>
                     </a>
-                    <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
-                        href="{{ route('inventory') }}">
-                        <img class="h-8" src="{{ asset('assets/images/inventory.png') }}" alt="">
-                        <button class="hover:font-bold transition-all">
-                            Inventory
-                        </button>
-                    </a>
-
                 </div>
             @endif
             @if (Auth::user()->role === 'dentist')
@@ -280,7 +272,7 @@
                         @endif
                     </div>
                     <li class="py-3">
-                        <a class="" href=" {{ route('profile', ['user' => Auth::id()]) }} ">
+                        <a class="" href=" {{ route('profile.edit', ['user' => Auth::id()]) }} ">
                             <h1 class="max-lg:text-xs text-left">Profile</h1>
                         </a>
                     </li>
