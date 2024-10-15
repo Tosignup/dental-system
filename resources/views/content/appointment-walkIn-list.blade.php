@@ -1,14 +1,11 @@
 @extends('admin.dashboard')
 @section('content')
+    @if (session('success'))
+        @include('components.toast-notification')
+    @endif
     <div class="m-4 mb-8">
         @include('components.search')
     </div>
-    @if (session('success'))
-        <div class="alert alert-success fade-out" onclick="fadeOut(this)">
-            {{ session('success') }}
-        </div>
-    @endif
-
     <section class=" m-4 p-4 bg-white shadow-lg rounded-md max-lg:mt-14">
         <div class="flex items-center justify-between pt-3 pb-6 max-lg:flex-wrap gap-4 max-md:gap-2 max-md:pt-1 max-md:pb-3">
             <div class="flex gap-4 max-md:gap-2">
@@ -19,19 +16,20 @@
                     <form method="GET" action="{{ route('appointments.walkIn') }}"
                         class="flex max-lg:text-xs gap-1 items-center max-lg:m-1">
                         <h1 class="font-semibold">Sort by: </h1>
-                        <select name="sortWalkin" id="sortWalkin"
-                            class="border text-sm w-auto border-gray-400 pr-6 mx-2 rounded-md max-lg:text-xs">
-                            <option value="created_at" {{ request()->get('sortWalkin') == 'created_at' ? 'selected' : '' }}>
+                        <select name="sort" id="sortBy"
+                            class="border text-sm w-auto border-gray-400 pr-6 mx-2 rounded-md max-lg:text-xs"
+                            onchange="this.form.submit()">
+                            <option value="created_at" {{ $sort == 'created_at' ? 'selected' : '' }}>
                                 Date Submitted</option>
-                            <option value="preferred_time"
-                                {{ request()->get('sortWalkin') == 'preferred_time' ? 'selected' : '' }}>Appointment Time
+                            <option value="preferred_time" {{ $sort == 'preferred_time' ? 'selected' : '' }}>Appointment
+                                Time
                             </option>
-                            <option value="appointment_date"
-                                {{ request()->get('sortWalkin') == 'appointment_date' ? 'selected' : '' }}>Appointment Date
+                            <option value="appointment_date" {{ $sort == 'appointment_date' ? 'selected' : '' }}>Appointment
+                                Date
                             </option>
-                            <option value="branch" {{ request()->get('sortWalkin') == 'branch' ? 'selected' : '' }}>Branch
+                            <option value="branch" {{ $sort == 'branch' ? 'selected' : '' }}>Branch
                             </option>
-                            <option value="status" {{ request()->get('sortWalkin') == 'status' ? 'selected' : '' }}>Status
+                            <option value="status" {{ $sort == 'status' ? 'selected' : '' }}>Status
                             </option>
                         </select>
                     </form>
@@ -48,9 +46,9 @@
         </div>
         <table class="w-full table-auto text-center">
             <thead>
-                <tr class="">
+                <tr class="bg-green-200 text-green-700">
                     <th class="max-lg:py-2 max-lg:px-2 border max-lg:text-xs">Patient</th>
-                    <th class="max-lg:py-2 max-lg:px-2 border max-lg:text-xs">Date Submitted</th>
+                    <th class="max-lg:py-2 max-lg:px-2 border max-lg:text-xs max-2xl:hidden">Date Submitted</th>
                     <th class="py-2 px-4 max-lg:py-2 max-lg:px-2 border max-lg:text-xs">Appointment Date</th>
                     <th class="py-2 px-4 max-lg:py-2 max-lg:px-2 border max-lg:text-xs max-2xl:hidden">Preferred
                         time
@@ -66,33 +64,39 @@
             <tbody>
 
                 @foreach ($walkin_appointments as $appointment)
-                    <tr class="text-center">
-                        <td class=" max-lg:py-2 max-lg:px-2 border text-black max-lg:text-xs">
+                    <tr class="border-b-2">
+                        <td class=" max-lg:py-2 py-2 max-lg:px-2 text-black text-sm max-lg:text-xs">
                             <span class="max-lg:hidden">{{ $appointment->patient->first_name }}</span>
                             {{ $appointment->patient->last_name }}
                         </td>
-                        <td class=" max-lg:py-2 max-lg:px-2 border max-lg:text-xs ">
+                        <td class=" max-lg:py-2 py-2 max-lg:px-2 text-sm max-lg:text-xs max-2xl:hidden">
                             {{ $appointment->created_at }}
                         </td>
-                        <td class=" max-lg:py-2 max-lg:px-2 border max-lg:text-xs ">
+                        <td class=" max-lg:py-2 py-2 max-lg:px-2 text-sm max-lg:text-xs ">
                             {{ $appointment->appointment_date }}
                         </td>
-                        <td class=" max-lg:py-2 max-lg:px-2 border max-lg:text-xs max-2xl:hidden">
+                        <td class=" max-lg:py-2 py-2 max-lg:px-2 text-sm max-lg:text-xs max-2xl:hidden">
 
                             {{ $appointment->preferred_time }}</td>
-                        <td class=" max-lg:py-2 max-lg:px-2 border max-lg:text-xs max-2xl:hidden">
+                        <td class=" max-lg:py-2 py-2 max-lg:px-2 text-sm max-lg:text-xs max-2xl:hidden">
 
                             {{ $appointment->branch->branch_loc }}</td>
-                        <td class="border px-4 py-2 min-w-max h-full max-lg:text-xs ">
+                        <td class="px-4 py-2 min-w-max h-full text-sm max-lg:text-xs ">
                             @if ($appointment->pending === 'Approved')
-                                <h1 class="text-md text-green-600 font-semibold">Approved</h1>
+                                <h1 class="text-sm text-green-600 font-semibold bg-green-200 rounded-full">
+                                    <span>&#9679;</span> Approved
+                                </h1>
                             @elseif ($appointment->pending === 'Declined')
-                                <h1 class="text-md text-red-600 font-semibold">Declined</h1>
+                                <h1 class="text-sm text-red-600 font-semibold bg-red-200 rounded-full"> <span>&#9679;</span>
+                                    Declined
+                                </h1>
                             @else
-                                <h1 class="text-md text-slate-600 font-semibold">Pending</h1>
+                                <h1 class="text-sm text-slate-600 font-semibold bg-slate-200 rounded-full">
+                                    <span>&#9679;</span> Pending
+                                </h1>
                             @endif
                         </td>
-                        {{-- <td class="py-2 px-2 border flex gap-2 justify-center max-lg:text-xs max-2xl:hidden h-max">
+                        {{-- <td class="py-2 px-2 flex gap-2 justify-center max-lg:text-xs max-2xl:hidden h-max">
                             @if ($appointment->pending === 'Approved')
                                 <form method="POST"
                                     action="{{ route('appointments.approve', $appointment->id) }}">
@@ -138,7 +142,7 @@
                                 </form>
                             @endif
                         </td> --}}
-                        <td class="p-1 justify-center items-center border max-lg:text-xs">
+                        <td class="p-1 justify-center items-center max-lg:text-xs">
                             <a href="{{ route('show.appointment', $appointment->id) }}"
                                 class="flex justify-center items-center border rounded-md py-2 px-4 max-md:py-1 max-md:px-2 text-white font-semibold hover:bg-gray-400 transition-all">
                                 <h1 class="hidden max-2xl:block text-xs font-semibold text-gray-800">View</h1>
@@ -151,15 +155,19 @@
             </tbody>
         </table>
         <div class="mt-3">
-
             {{ $walkin_appointments->links() }}
+
         </div>
 
     </section>
     <script>
-        document.getElementById('sortWalkin').addEventListener('change', function() {
-            this.form.submit();
+        document.getElementById('sortBy').addEventListener('change', function() {
+            const selectedValue = this.value;
+
+            window.location.href = window.location.pathname + '?sort=' + selectedValue;
         });
+
+
 
         function fadeOut(element) {
             element.classList.add('hidden');

@@ -17,7 +17,7 @@
             opacity: 0;
         }
 
-        .modal {
+        .payment-modal {
             position: fixed;
             left: 0;
             top: 0;
@@ -161,7 +161,8 @@
                 </div>
 
                 <!-- Password Confirmation Modal -->
-                <div id="passwordModal" class="modal inset-0 items-center justify-center z-50" style="display: none">
+                <div id="passwordModal" class="payment-modal inset-0 items-center justify-center z-50"
+                    style="display: none">
                     <div class="bg-white rounded-lg shadow-lg p-6 w-96">
                         <h5 class="text-lg font-bold mb-4">Confirm Your Password</h5>
                         <form id="confirmPasswordForm">

@@ -1,5 +1,8 @@
 @extends('admin.dashboard')
 @section('content')
+    @if (session('success'))
+        @include('components.toast-notification')
+    @endif
     <div class="m-4 mb-8">
         @include('components.search')
     </div>
@@ -19,25 +22,25 @@
         </div>
         <table class="w-full table-auto mb-2 overflow-hidden">
             <thead>
-                <tr>
-                    <th class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">ID</th>
-                    <th class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Name</th>
-                    <th class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Branch</th>
-                    <th class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Actions</th>
+                <tr class="bg-green-200 text-green-700">
+                    <th class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">ID</th>
+                    <th class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Name</th>
+                    <th class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Branch</th>
+                    <th class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($staffs as $staff)
-                    <tr class="odd:bg-green-100 even:bg-slate-100">
-                        <td class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">{{ $staff->id }}</td>
-                        <td class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">
+                    <tr class="border-b-2">
+                        <td class=" px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">{{ $staff->id }}</td>
+                        <td class=" px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">
                             {{ $staff->last_name }} {{ $staff->first_name }}
                         </td>
-                        <td class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">{{ $staff->branch->branch_loc }}
+                        <td class=" px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">{{ $staff->branch->branch_loc }}
                         </td>
-                        <td class="border py-2 max-md:py-2">
+                        <td class=" py-2 max-md:py-2">
                             <div class="flex gap-2 justify-center items-center">
-                                <a class="max-md:hidden border border-slate-600 rounded-md py-2 px-4 max-md:py-1 max-md:px-2 text-white font-semibold hover:bg-gray-400 transition-all"
+                                <a class=" border max-md:hidden border-slate-600 rounded-md py-2 px-4 max-md:py-1 max-md:px-2 text-white font-semibold hover:bg-gray-400 transition-all"
                                     href=" {{ route('edit.staff', $staff->id) }} ">
                                     <img class="h-5 sm:h-4 sm:w-4 max-sm:h-4 max-sm:w-5"
                                         src="{{ asset('assets/images/edit-icon.png') }}" alt="">

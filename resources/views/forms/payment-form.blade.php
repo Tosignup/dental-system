@@ -17,7 +17,7 @@
             opacity: 0;
         }
 
-        .modal {
+        .payment-modal {
             position: fixed;
             left: 0;
             top: 0;
@@ -101,8 +101,7 @@
                         {{ number_format($appointment->procedure->price, 2) }}</h2>
                     {{-- <h2 class="max-md:text-xs font-semibold mb-1">&#8369;
                         {{ number_format($balanceRemaining, 2) }}</h2> --}}
-                    <h2 class="max-md:text-xs font-semibold mb-1">
-                        {{ $appointment->id }}</h2>
+
                 </div>
             </div>
             <div class="flex justify-center">
@@ -162,7 +161,8 @@
 
 
                 <!-- Password Confirmation Modal -->
-                <div id="passwordModal" class="modal inset-0 items-center justify-center z-50" style="display: none">
+                <div id="passwordModal" class="payment_modal inset-0 items-center justify-center z-50"
+                    style="display: none">
                     <div class="bg-white rounded-lg shadow-lg p-6 w-96">
                         <h5 class="text-lg font-bold mb-4">Confirm Your Password</h5>
                         <form id="confirmPasswordForm">

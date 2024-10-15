@@ -1,5 +1,8 @@
 @extends('admin.dashboard')
 @section('content')
+    @if (session('success'))
+        @include('components.toast-notification')
+    @endif
     <div class="m-4 mb-8">
         @include('components.search')
     </div>
@@ -20,12 +23,12 @@
 
         <table class="w-full table-auto mb-2 overflow-hidden">
             <thead>
-                <tr class="bg-gray-300 text-gray-500">
-                    <th class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Procedure Code</th>
-                    <th class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Procedure Name</th>
-                    <th class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Price</th>
-                    <th class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Type of visit</th>
-                    <th class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Actions</th>
+                <tr class="bg-green-200 text-green-700">
+                    <th class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Procedure Code</th>
+                    <th class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Procedure Name</th>
+                    <th class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Price</th>
+                    {{-- <th class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Type of visit</th> --}}
+                    <th class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Actions</th>
                 </tr>
             </thead>
             <tbody class="text-center">
@@ -34,12 +37,12 @@
                         <td class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">{{ $procedure->id }}</td>
                         <td class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">{{ $procedure->name }}</td>
                         <td class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">{{ $procedure->price }}</td>
-                        <td class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">
+                        {{-- <td class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">
                             <span
                                 @if ($procedure->visit_type === 'Single') class="bg-slate-200 text-slate-700 py-1 px-3 rounded-full font-semibold">
                                 @elseif ($procedure->visit_type === 'Multiple') class="bg-green-200 text-green-700 py-1 px-3 rounded-full font-semibold"> @endif
                                 {{ $procedure->visit_type }}</span>
-                        </td>
+                        </td> --}}
                         <td class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs max-md:flex">
                             <div class="flex gap-2 justify-center flex-wrap items-center">
                                 <a class=" border border-slate-600 flex max-md:flex-1 justify-center items-center rounded-md py-2 px-4 max-md:py-1 max-md:px-2 text-white font-semibold hover:bg-gray-300 transition-all"

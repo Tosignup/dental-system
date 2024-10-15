@@ -1,5 +1,8 @@
 @extends('dentist.dashboard')
 @section('content')
+    @if (session('success'))
+        @include('components.toast-notification')
+    @endif
     <section class="bg-white shadow-lg rounded-md p-6 my-4 mx-2  max-lg:mt-14">
         <h1 class="font-bold text-3xl p-4">Pending Appointments</h1>
 
@@ -15,6 +18,8 @@
                         <th class="py-2 px-4 border-b text-left text-gray-600  max-xl:hidden">Branch</th>
                         <th class="py-2 px-4 border-b text-left text-gray-600 max-lg:text-xs">
                             Actions</th>
+                        <th class="py-2 px-4 border-b text-left text-gray-600 max-lg:text-xs max-2xl:hidden">
+                            View</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -36,41 +41,44 @@
                                 class="py-2 px-2 border flex gap-2 justify-center items-center max-lg:text-xs max-2xl:hidden h-max">
 
                                 @if ($appointment->pending === 'Approved')
-                                    <div class="tooltip">
+                                    <div class="tooltip flex gap-2 justify-center items-center">
                                         <button type="submit" class="btn btn-success btn-sm " disabled>
                                             <img src="{{ asset('assets/images/accept.png') }}" alt="">
                                             <span class="tooltiptext">Approved</span>
                                         </button>
                                     </div>
                                 @elseif($appointment->pending === 'Declined')
-                                    <div class="tooltip">
+                                    <div class="tooltip flex gap-2 justify-center items-center">
                                         <button type="submit" class="btn btn-danger btn-sm" disabled>
                                             <img src="{{ asset('assets/images/decline.png') }}" alt="">
                                             <span class="tooltiptext">Declined</span>
                                         </button>
                                     </div>
                                 @else
-                                    <form method="POST" action="{{ route('appointments.approve', $appointment->id) }}">
-                                        @csrf
-                                        <div class="tooltip">
-                                            <button type="submit" class="btn btn-success btn-sm">
-                                                <img src="{{ asset('assets/images/accept.png') }}" alt="">
-                                                <span class="tooltiptext">Approve</span>
-                                            </button>
-                                        </div>
-                                    </form>
-                                    <form method="POST" action="{{ route('appointments.decline', $appointment->id) }}">
-                                        @csrf
-                                        <div class="tooltip">
-                                            <button type="submit" class="btn btn-danger btn-sm">
-                                                <img src="{{ asset('assets/images/decline.png') }}" alt="">
-                                                <span class="tooltiptext">Decline</span>
-                                            </button>
-                                        </div>
-                                    </form>
+                                    <div class="flex justify-center m-0 p-0 items-center gap-2 ">
+                                        <form method="POST" action="{{ route('appointments.approve', $appointment->id) }}">
+                                            @csrf
+                                            <div class="tooltip">
+                                                <button type="submit" class="btn btn-success btn-sm">
+                                                    <img src="{{ asset('assets/images/accept.png') }}" alt="">
+                                                    <span class="tooltiptext">Approve</span>
+                                                </button>
+                                            </div>
+                                        </form>
+                                        <form method="POST"
+                                            action="{{ route('appointments.decline', $appointment->id) }}">
+                                            @csrf
+                                            <div class="tooltip">
+                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                    <img src="{{ asset('assets/images/decline.png') }}" alt="">
+                                                    <span class="tooltiptext">Decline</span>
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
                             </td>
                     @endif
-                    <td class="py-2 px-4 max-xl:flex justify-center items-center text-xs">
+                    <td class="py-2 px-4 max-xl:flex border justify-center items-center text-xs">
                         {{-- <button class="text-gray-800 border-2 rounded-md px-4 py-2  transition"
                             onclick="openModal('view_modal_{{ $appointment->id }}')">View</button> --}}
 

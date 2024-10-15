@@ -16,11 +16,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 
 class DentistController extends Controller
-{   
+{
     public function overview($id)
     {
         $dentist = Dentist::find($id);
-        
+
         $today = Carbon::today();
 
 
@@ -29,7 +29,6 @@ class DentistController extends Controller
         $newAppointments = Appointment::whereDate('created_at', $today)->count();
 
         return view('dentist.contents.overview', compact('totalAppointments', 'newAppointments', 'todayAppointment'));
-
     }
 
     public function dentistAppointments($id)
@@ -40,23 +39,23 @@ class DentistController extends Controller
 
         // Fetch pending and approved appointments separately
         $pendingAppointments = Appointment::where('dentist_id', $id)
-                                        ->where('pending', 'Pending')
-                                        ->where('is_archived', 0)
-                                        ->with(['patient', 'procedure', 'branch'])
-                                        ->paginate(5, ['*'], 'pending_page'); // Custom pagination query param
-        
+            ->where('pending', 'Pending')
+            ->where('is_archived', 0)
+            ->with(['patient', 'procedure', 'branch'])
+            ->paginate(5, ['*'], 'pending_page'); // Custom pagination query param
+
         $approvedAppointments = Appointment::where('dentist_id', $id)
-                                        ->where('pending', 'approved')
-                                        ->where('is_archived', 0)
-                                        ->with(['patient', 'procedure', 'branch'])
-                                        ->paginate(5, ['*'], 'approved_page'); // Custom pagination query param
+            ->where('pending', 'approved')
+            ->where('is_archived', 0)
+            ->with(['patient', 'procedure', 'branch'])
+            ->paginate(5, ['*'], 'approved_page'); // Custom pagination query param
 
         $appointmentIds = $pendingAppointments->pluck('id')->merge($approvedAppointments->pluck('id'));
 
         // Fetch payments related to the dentist's appointments
         $payments = Payment::whereIn('appointment_id', $appointmentIds)->paginate(5, ['*'], 'payment'); // Custom pagination query param
-        
-        return view('dentist.contents.overview', compact('dentist','pendingAppointments', 'approvedAppointments', 'payments'));
+
+        return view('dentist.contents.overview', compact('dentist', 'pendingAppointments', 'approvedAppointments', 'payments'));
     }
 
     public function pendingAppointment($id)
@@ -66,14 +65,14 @@ class DentistController extends Controller
 
         // Fetch pending and approved appointments separately
         $pendingAppointments = Appointment::where('dentist_id', $id)
-                                        ->where('pending', 'Pending')
-                                        ->where('is_archived', 0)
-                                        ->with(['patient', 'procedure', 'branch'])
-                                        ->paginate(5, ['*'], 'pending_page'); // Custom pagination query param
+            ->where('pending', 'Pending')
+            ->where('is_archived', 0)
+            ->with(['patient', 'procedure', 'branch'])
+            ->paginate(5, ['*'], 'pending_page'); // Custom pagination query param
 
         // $appointmentIds = $pendingAppointments->pluck('id')->get();
 
-        return view('dentist.contents.pending-appointments', compact('dentist','pendingAppointments'));
+        return view('dentist.contents.pending-appointments', compact('dentist', 'pendingAppointments'));
     }
 
     public function approvedAppointment($id)
@@ -81,43 +80,42 @@ class DentistController extends Controller
         $dentist = Dentist::find($id);
 
         $approvedAppointments = Appointment::where('dentist_id', $id)
-                                        ->where('pending', 'approved')
-                                        ->where('is_archived', 0)
-                                        ->with(['patient', 'procedure', 'branch'])
-                                        ->paginate(5, ['*'], 'approved_page'); // Custom pagination query param
+            ->where('pending', 'approved')
+            ->where('is_archived', 0)
+            ->with(['patient', 'procedure', 'branch'])
+            ->paginate(5, ['*'], 'approved_page'); // Custom pagination query param
 
-        return view('dentist.contents.approved-appointments', compact('dentist','approvedAppointments'));
-
+        return view('dentist.contents.approved-appointments', compact('dentist', 'approvedAppointments'));
     }
-    
+
     public function appointmentPayment($id)
     {
         // Get the logged-in dentist's ID
         $dentist = Dentist::find($id);
-    
+
         // Check if the dentist exists
         if (!$dentist) {
             return redirect()->back()->with('error', 'Dentist not found.');
         }
-    
+
         // Fetch pending appointments
         $pendingAppointments = Appointment::where('dentist_id', $id)
             ->where('pending', 'Pending')
             ->where('is_archived', 0)
             ->pluck('id');
-    
+
         // Fetch approved appointments
         $approvedAppointments = Appointment::where('dentist_id', $id)
             ->where('pending', 'approved')
             ->where('is_archived', 0)
             ->pluck('id');
-    
+
         // Combine appointment IDs for payments
         $appointmentIds = $pendingAppointments->merge($approvedAppointments);
-    
+
         // Fetch payments related to the dentist's appointments
         $payments = Payment::whereIn('appointment_id', $appointmentIds)->paginate(5, ['*'], 'payment'); // Custom pagination query param
-    
+
         return view('dentist.contents.dentist-payment-list', compact('dentist', 'payments'));
     }
 
@@ -162,16 +160,18 @@ class DentistController extends Controller
             'dentist_id' => $dentist->id, // Link to the patient via foreign key
         ]);
 
-        return redirect()->route('dentist')->with('success', 'Patient created successfully');
+        return redirect()->route('dentist')->with('success', 'Dentist created successfully');
+        session()->flash('success', 'Dentist created successfully!');
     }
 
 
-    public function editDentist($id){
+    public function editDentist($id)
+    {
 
         $dentist = Dentist::findOrFail($id);
         $branches = Branch::all();
 
-        return view ('forms.update-dentist', compact('dentist', 'branches'));
+        return view('forms.update-dentist', compact('dentist', 'branches'));
     }
     public function updateDentist(Request $request, $id)
     {
@@ -188,16 +188,16 @@ class DentistController extends Controller
         ]);
 
         $dentist->update($validated);
-        return redirect()->route('dentist', compact('dentist'))->with('success','dentist updated');
-
+        return redirect()->route('dentist', compact('dentist'))->with('success', 'Dentist updated successfully!');
+        session()->flash('success', 'Dentist updated successfully!');
     }
 
     public function showDentist($id)
-    {   
+    {
         // $dentist = Dentist::findOrFail($id);
         // $schedules = DentistSchedule::with('dentist_schedules')->get($id);
 
-        $dentist = Dentist::with('dentistSchedule')->findOrFail($id);
+        $dentist = Dentist::with('branch')->findOrFail($id);
 
         return view('content.dentist-information', compact('dentist'));
     }
@@ -224,7 +224,7 @@ class DentistController extends Controller
 
             // Retrieve only future schedules for the selected dentist
             $schedules = DentistSchedule::where('dentist_id', $dentistId)
-                // ->where('date', '>', $now) 
+                // ->where('date', '>', $now)
                 ->get();
 
             if ($schedules->isEmpty()) {
@@ -289,19 +289,21 @@ class DentistController extends Controller
     //     // Assuming you have a relationship set up in your Dentist model
     //     $dentist = auth()->user()->id; // Get the logged-in dentist's ID
 
-        
+
 
     //     return view('dentist.contents.overview', compact('dentist','payments'));
     // }
 
 
-    public function showDentistAppointmentInfo($id){
+    public function showDentistAppointmentInfo($id)
+    {
         $appointment = Appointment::find($id);
 
         return view('dentist.contents.dentist-appointment-information', compact('appointment'));
     }
 
-    public function createDentistPayment($appointmentId) {
+    public function createDentistPayment($appointmentId)
+    {
         // Retrieve the appointment with related patient and procedure data
         $appointment = Appointment::with(['patient', 'procedure', 'dentist'])->find($appointmentId);
 
@@ -320,49 +322,50 @@ class DentistController extends Controller
         return view('dentist.contents.dentist-payment-form', compact('appointment', 'payment', 'totalPaid'));
     }
 
-    public function storeDentistPartialPayment(Request $request) {
+    public function storeDentistPartialPayment(Request $request)
+    {
         // Validate the incoming request
         $request->validate([
             'appointment_id' => 'required|exists:appointments,id',
             'paid_amount' => 'required|numeric|min:0',
             'password' => 'required|string',
         ]);
-    
+
         // Retrieve the appointment and related payment record
         $appointment = Appointment::with(['procedure', 'patient'])->find($request->appointment_id);
         $payment = Payment::where('appointment_id', $appointment->id)->first();
-        
+
         // Check if the password is correct for the patient
         if (!Hash::check($request->password, $appointment->patient->password)) {
             return response()->json(['success' => false, 'message' => 'Incorrect password. Please try again.']);
         }
-    
+
         // Payment processing logic...
         $totalPaid = 0;
         $balanceRemaining = $appointment->procedure->price;
         $status = 'pending'; // Initial status
-    
+
         // If a payment record exists, update the values accordingly
         if ($payment) {
             $totalPaid = $payment->total_paid;
             $balanceRemaining = $payment->balance_remaining;
-    
+
             // Check if the new payment exceeds the remaining balance
             if ($request->paid_amount > $balanceRemaining) {
                 return redirect()->back()->with('error', 'Payment exceeds the remaining balance of $' . number_format($balanceRemaining, 2));
             }
-    
+
             // Update the total paid and balance remaining
             $totalPaid += $request->paid_amount;
             $balanceRemaining -= $request->paid_amount;
-    
+
             // Determine the payment status
             if ($balanceRemaining <= 0) {
                 $status = 'Paid'; // Mark as completed if fully paid
             } else {
                 $status = 'Pending'; // Mark as partially paid
             }
-    
+
             // Update the existing payment record
             $payment->update([
                 'total_paid' => $totalPaid,
@@ -374,7 +377,7 @@ class DentistController extends Controller
             if ($request->paid_amount > $balanceRemaining) {
                 return redirect()->back()->with('error', 'Payment exceeds the total amount due of $' . number_format($balanceRemaining, 2));
             }
-    
+
             // Create a new payment record
             $payment = Payment::create([
                 'appointment_id' => $request->appointment_id,
@@ -384,7 +387,7 @@ class DentistController extends Controller
                 'status' => 'pending', // Initial status for new payment
             ]);
         }
-    
+
         // (Optional) Create a payment history record for tracking
         PaymentHistory::create([
             'payment_id' => $payment->id,
@@ -398,26 +401,25 @@ class DentistController extends Controller
         return response()->json(['success' => true]);
     }
 
-    public function showDentistPaymentHistory($appointmentId) {
+    public function showDentistPaymentHistory($appointmentId)
+    {
         // Retrieve the appointment with related patient and procedure data
         $appointment = Appointment::with(['patient', 'procedure'])->find($appointmentId);
-    
+
         // Check if the appointment exists
         if (!$appointment) {
             return redirect()->route('appointments.submission')->with('error', 'Appointment not found.');
         }
-    
+
         // Retrieve payment history for the appointment using the appointment_id
-        $paymentHistory = PaymentHistory::whereHas('payment', function($query) use ($appointmentId) {
+        $paymentHistory = PaymentHistory::whereHas('payment', function ($query) use ($appointmentId) {
             $query->where('appointment_id', $appointmentId);
         })->get();
-    
+
         // Calculate total paid and balance remaining
         $totalPaid = $paymentHistory->sum('paid_amount');
         $balanceRemaining = $appointment->procedure->price - $totalPaid;
-    
+
         return view('dentist.contents.dentist-payment-history', compact('appointment', 'paymentHistory', 'totalPaid', 'balanceRemaining'));
     }
-
-    
 }

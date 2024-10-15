@@ -41,6 +41,9 @@
             /* Overlay */
         }
     </style>
+    @if (session('success'))
+        @include('components.toast-notification')
+    @endif
     <div class="m-4">
         @include('components.search')
     </div>
@@ -104,13 +107,16 @@
 
                 </div>
             </div>
+            <h1 class="text-2xl font-bold mb-2">
+                Patient background images:
+            </h1>
             <div class="w-full flex justify-start">
                 @if ($backgroundImages->isEmpty())
                     <p>No background images uploaded for this patient.</p>
                 @else
-                    <div class="flex gap-1">
+                    <div class="flex gap-2">
                         @foreach ($backgroundImages as $image)
-                            <div class="border-2">
+                            <div class="border-2 m-2">
                                 <h1>{{ $image->created_at }}</h1>
                                 <img src="{{ asset('storage/' . $image->image_path) }}" alt="Contract Image"
                                     class="img-fluid max-h-80"

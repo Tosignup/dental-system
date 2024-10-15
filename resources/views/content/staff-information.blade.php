@@ -4,10 +4,15 @@
         @include('components.search')
     </div>
     <section class="bg-white max-lg:mt-14 m-4 p-8 shadow-lg rounded-md flex flex-wrap justify-between z-0">
-        <div class="flex border w-full max-lg:flex-col flex-wrap justify-between items-start">
-            <div class="flex w-full flex-wrap justify-between items-start border border-red-600">
+        <div class="flex w-full max-lg:flex-col flex-wrap justify-between items-start">
+            <div class="flex w-full flex-wrap justify-between items-start">
                 <div class="flex flex-wrap justify-between mb-6 gap-4 items-start ">
                     <div class="flex flex-col">
+                        <div class="pb-4">
+                            <a href="{{ route('schedule') }}"
+                                class="flex justify-start font-semibold max-lg:text-xs border-gray-600 py-1 max-lg:px-2 w-max gap-2"><img
+                                    class="h-6" src="{{ asset('assets/images/arrow-back.png') }}" alt=""> Back</a>
+                        </div>
                         <div>
                             <h1 class="text-5xl mb-4 font-bold max-md:text-3xl">{{ $staff->first_name }}
                                 {{ $staff->last_name }}

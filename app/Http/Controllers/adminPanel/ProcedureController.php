@@ -36,7 +36,7 @@ class ProcedureController extends Controller
         ]);
 
         return redirect()->route('procedure')->with('Procedure successfully added!');
-
+        session()->flash('success', 'Procedure successfully added!');
     }
 
     public function editProcedure($id)
@@ -46,7 +46,7 @@ class ProcedureController extends Controller
         return view('admin.procedure.edit-procedure', compact('procedure'));
     }
 
-    public function updateProcedure(Request $request,$id)
+    public function updateProcedure(Request $request, $id)
     {
         $procedure = Procedure::findOrFail($id);
         $request->validate([
@@ -62,17 +62,17 @@ class ProcedureController extends Controller
             'visit_type' => $request->visit_type,
             'description' => $request->description,
         ]);
-        return redirect()->route('procedure')->with('success', 'Procedure updated successfully.');
-        
+        return redirect()->route('procedure')->with('success', 'Procedure updated successfully!');
+        session()->flash('success', 'Procedure updated added!');
     }
 
-    public function deleteProcedure(Request $request,$id)
+    public function deleteProcedure(Request $request, $id)
     {
         $procedure = Procedure::findOrFail($id);
 
         $procedure->delete();
 
-        return redirect()->route('procedure')->with('success', 'Procedure deleted successfully.');
+        return redirect()->route('procedure')->with('success', 'Procedure deleted successfully!');
+        session()->flash('success', 'Procedure deleted added!');
     }
-
 }

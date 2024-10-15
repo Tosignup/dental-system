@@ -1,15 +1,12 @@
 @extends('admin.dashboard')
 @section('content')
-    @if (session('success'))
-        @include('components.toast-notification')
-    @endif
     <div class="m-4 mb-8">
         @include('components.search')
     </div>
     <section class="m-4 max-lg:mt-14 p-4 bg-white shadow-lg rounded-md">
-        <div class="flex items-start justify-center max-md:items-start max-md:justify-start flex-col flex-wrap">
+        <div class="flex items-start justify-center max-md:items-start max-md:justify-start flex-col max-md:flex-wrap">
             <label class="flex justify-between w-full items-start gap-2" for="time">
-                <h1 class="font-bold text-3xl max-md:text-xl min-w-max">Patient list</h1>
+                <h1 class="font-bold text-3xl max-md:text-xl min-w-max">Active Patient list</h1>
                 <form class="" method="GET" action="{{ route('add.patient') }}">
                     @csrf
                     <button onclick="openModal()"
@@ -19,20 +16,12 @@
                     </button>
                 </form>
             </label>
-            <form method="GET" class="flex flex-wrap justify-start items-start gap-4 my-4"
-                action="{{ route('patient_list') }}">
+            <form method="GET" class="flex flex-wrap justify-start items-start gap-2 my-2"
+                action="{{ route('patient.active') }}">
                 <input class="max-md:text-sm max-md:py-1 max-md:px-2 border border-gray-400 py-2 px-4 rounded-md"
                     type="text" name="search" placeholder="Patient name">
-
-                <select class="max-md:text-sm max-md:py-1 max-md:px-2 border border-gray-400 py-2 px-4 rounded-md"
-                    name="archived">
-                    <option value="">All</option>
-                    <option value="false" {{ request('archived') == 'false' ? 'selected' : '' }}>Active</option>
-                    <option value="true" {{ request('archived') == 'true' ? 'selected' : '' }}>Archived</option>
-                </select>
-
                 <select
-                    class="max-w-[40%] max-md:text-sm max-md:py-1 max-md:px-2 border border-gray-400 py-2 px-4 rounded-md"
+                    class="max-w-[50%] max-md:text-sm max-md:py-1 max-md:px-2 border border-gray-400 py-2 px-4 rounded-md"
                     name="sort">
                     <option value="next_visit" {{ $sort == 'next_visit' ? 'selected' : '' }}>Next Visit</option>
                     <option value="id" {{ $sort == 'id' ? 'selected' : '' }}>ID</option>
@@ -48,47 +37,47 @@
         </div>
 
         <!-- run @/foreach for each field/row  -->
-        <table class="w-full table-auto mb-2 overflow-hidden">
+        <table class="w-full table-auto mt-2 overflow-hidden">
             <thead>
-                <tr>
-                    <th class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">ID</th>
-                    <th class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Name</th>
-                    <th class="px-4 py-2 max-lg:hidden">Date of next visit</th>
-                    <th class="px-4 py-2 max-lg:hidden">Contacts</th>
-                    <th class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Actions</th>
+                <tr class="bg-green-200 text-green-700">
+                    <th class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">ID</th>
+                    <th class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Name</th>
+                    <th class="border px-4 py-2 max-lg:hidden">Date of next visit</th>
+                    <th class="border px-4 py-2 max-lg:hidden">Contacts</th>
+                    <th class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Actions</th>
                 </tr>
             </thead>
             <tbody>
 
-                @foreach ($patients as $patient)
+                @foreach ($activePatients as $patient)
                     {{-- <tr class="odd:bg-green-100 even:bg-slate-100"> --}}
-                    <tr class="{{ $patient->is_archived ? 'bg-slate-100' : 'bg-green-100' }}">
-                        <td class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs ">{{ $patient->id }}</td>
-                        <td class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">{{ $patient->last_name }}
+                    <tr class="border-b-2">
+                        <td class=" px-4 py-2 max-md:py-1 max-md:px-2 text-sm max-md:text-xs ">{{ $patient->id }}</td>
+                        <td class=" px-4 py-2 max-md:py-1 max-md:px-2 text-sm max-md:text-xs">{{ $patient->last_name }}
                             {{ $patient->first_name }}</td>
-                        <td class="border px-4 py-2 max-lg:hidden">{{ $patient->next_visit }}</td>
-                        <td class="border px-4 py-2 max-lg:hidden">
+                        <td class=" px-4 py-2 text-sm max-lg:hidden">{{ $patient->next_visit }}</td>
+                        <td class=" px-4 py-2 text-sm max-lg:hidden">
                             <div class="flex justify-center items-center gap-6">
                                 <div class="tooltip">
-                                    <img class="h-6" src="{{ asset('assets/images/phone-call.png') }}" alt="Call Icon">
+                                    <img class="h-5" src="{{ asset('assets/images/phone-call.png') }}" alt="Call Icon">
                                     <span class="tooltiptext">{{ $patient->phone_number }}</span>
                                 </div>
                                 <div class="tooltip">
-                                    <img class="h-6" src="{{ asset('assets/images/facebook-icon.png') }}"
+                                    <img class="h-5" src="{{ asset('assets/images/facebook-icon.png') }}"
                                         alt="Facebook Icon">
                                     <span class="tooltiptext">{{ $patient->fb_name }}</span>
                                 </div>
                             </div>
                         </td>
-                        <td class="border py-2">
+                        <td class=" py-2">
                             <div class="flex gap-2 justify-center items-center">
-                                <a class=" border border-slate-600 rounded-md py-2 px-4 max-md:py-1 max-md:px-2 text-white font-semibold hover:bg-gray-400 max-d transition-all max-md:hidden"
+                                <a class=" border border-slate-600 rounded-md py-2 px-4 max-md:py-1 max-md:px-2 text-sm text-white font-semibold hover:bg-gray-400 max-d transition-all max-md:hidden"
                                     href=" {{ route('edit.patient', $patient->id) }} ">
                                     <img class="h-5 sm:h-4 sm:w-4 max-md:h-4 max-md:w-4"
                                         src="{{ asset('assets/images/edit-icon.png') }}" alt="">
                                 </a>
                                 <a href="{{ route('show.patient', $patient->id) }}"
-                                    class="border border-slate-600 rounded-md py-2 px-4 max-md:py-1 max-md:px-2 text-white font-semibold hover:bg-gray-400 transition-all">
+                                    class="border border-slate-600 rounded-md py-2 px-4 max-md:py-1 max-md:px-2 text-sm text-white font-semibold hover:bg-gray-400 transition-all">
                                     <h1 class="hidden max-md:block text-xs font-semibold text-gray-800">View</h1>
                                     <img class="h-5 sm:h-4 sm:w-4 max-md:h-4 max-md:w-4 max-md:hidden"
                                         src="{{ asset('assets/images/user-icon.png') }}" alt="">
@@ -136,8 +125,8 @@
                 @endforeach
             </tbody>
         </table>
-        <div class="w-full">
-            {{ $patients->links() }}
+        <div class="w-full m-2">
+            {{ $activePatients->links() }}
         </div>
 
     </section>

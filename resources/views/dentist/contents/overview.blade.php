@@ -1,6 +1,6 @@
 @extends('dentist.dashboard')
 @section('content')
-    <section class="flex flex-col justify-center items-center p-6 border border-blue-600">
+    <section class="flex flex-col justify-center items-center p-6">
 
         <!-- Sidebar -->
         {{-- <div class="w-full bg-white min-w-80 p-4 rounded-lg shadow-md max-xl:w-full border border-red-600">
@@ -40,7 +40,7 @@
         </div> --}}
 
         <div
-            class="flex flex-col items-center justify-center w-full rounded-xl shadow-lg p-7 bg-white my-4 mx-auto gap-4 mt-6 max-lg:mt-14 max-w-5xl border border-green-500">
+            class="flex flex-col items-center justify-center w-full rounded-xl shadow-lg p-7 bg-white my-4 mx-auto gap-4 mt-6 max-lg:mt-14 max-w-5xl">
             <h1 class=" text-5xl max-md:text-3xl font-bold my-2 ">Good day,
                 {{ Auth::user()->username }}!
             </h1>

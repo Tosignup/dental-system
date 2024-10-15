@@ -142,29 +142,6 @@ class AppointmentController extends Controller
         ]);
     }
     
-
-
-    // public function store1(Request $request)
-    // {
-        
-    //     $request->validate([
-    //         'first_name' => 'required|string|max:255',
-    //         'last_name' => 'required|string|max:255',
-    //         'date_of_birth' => 'required|date',
-    //         'phone_number' => 'required|string|max:255',
-    //         'email' => 'required|email|max:255',
-    //         'zip_code' => 'required|integer',
-    //         'appointment_date' => 'required|date',
-    //         'preferred_time' => 'required|string|max:255',
-    //         'notes' => 'nullable|string',
-    //         'branch' => 'required|string',
-
-    //     ]);
-
-    //     Appointment::create($request->all());
-
-    //     return redirect()->route('appointments.request')->with('success', 'Appointment requested successfully.');
-    // }
     //working
     public function storeWalkIn1(Request $request)
     {
@@ -245,6 +222,7 @@ class AppointmentController extends Controller
         ]);
 
         return redirect()->route('appointments.walkIn')->with('success', 'Appointment successfully created!');
+        session()->flash('success', 'Appointment added successfully!');
     }
 
 
@@ -367,18 +345,20 @@ class AppointmentController extends Controller
 
     //Testing sidebar
 
-    public function walkIn_appointment(Request $request)
+    public function walkInAppointment(Request $request)
     {
         $now = Carbon::now();
+        $currentDate = $now->startOfDay();
 
         $walkinAppointmentsQuery = Appointment::with(['patient', 'branch', 'dentistSchedule'])
-            ->where('appointment_date', '>', $now)
+            // ->where('appointment_date', '>=', $currentDate)
+            // ->orderBy('appointment_date','ASC')
             ->where('is_archived', 0)
             ->where('is_online', 0);
 
         // Check for sorting
-        if ($request->has('sortWalkin')) {
-            $sortOption = $request->get('sortWalkin');
+        if ($request->has('sort')) {
+            $sortOption = $request->get('sort');
             if ($sortOption == 'created_at') {
                 $walkinAppointmentsQuery->orderBy('created_at', 'ASC');
             } elseif ($sortOption == 'preferred_time') {
@@ -396,19 +376,27 @@ class AppointmentController extends Controller
 
         $walkin_appointments = $walkinAppointmentsQuery->paginate(10);
 
-        return view('content.appointment-walkIn-list', compact('walkin_appointments'));
+        return view('content.appointment-walkIn-list', [
+            'walkin_appointments' =>  $walkin_appointments,
+            'sort' => $request->get('sort')
+        ]);
     }
 
-
-    public function online_appointment(Request $request)
+    public function onlineAppointment(Request $request)
     {
+
+        $now = Carbon::now();
+        $currentDate = $now->startOfDay();
+
         $onlineAppointmentsQuery = Appointment::with(['patient', 'branch', 'dentistSchedule'])
+            ->where('appointment_date', '>=', $currentDate)
+            // ->orderBy('appointment_date','ASC')
             ->where('is_archived', 0)
             ->where('is_online', 1);
             
 
-            if ($request->has('sortOnline')) {
-                $sortOption = $request->get('sortOnline');
+            if ($request->has('sort')) {
+                $sortOption = $request->get('sort');
                 if ($sortOption == 'created_at') {
                     $onlineAppointmentsQuery->orderBy('created_at', 'ASC');
                 } elseif ($sortOption == 'preferred_time') {
@@ -427,6 +415,9 @@ class AppointmentController extends Controller
 
         $online_appointments = $onlineAppointmentsQuery->paginate(10);
 
-        return view('content.appointment-online-list', compact('online_appointments'));
+        return view('content.appointment-online-list', [
+            'online_appointments' => $online_appointments,
+            'sort' => $request->get('sort'),
+        ]);
     }
 }

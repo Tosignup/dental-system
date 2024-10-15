@@ -1,5 +1,8 @@
 @extends('dentist.dashboard')
 @section('content')
+    @if (session('success'))
+        @include('components.toast-notification')
+    @endif
     <section class="bg-white shadow-lg rounded-md p-6 my-4 mx-2  max-lg:mt-14">
         <h1 class="font-bold text-3xl p-4">Payments</h1>
 

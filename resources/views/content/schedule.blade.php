@@ -1,10 +1,13 @@
 @extends('admin.dashboard')
 @section('content')
+    @if (session('success'))
+        @include('components.toast-notification');
+    @endif
     <div class="m-4 mb-8">
         @include('components.search')
     </div>
     <section class=" m-4 px-4 pb-4 bg-white shadow-lg rounded-md  max-lg:mt-14">
-        <div class="flex items-center justify-between py-4">
+        <div class="flex flex-wrap items-center justify-between py-4">
             <label class="flex items-center gap-4" for="time">
                 <h1 class="font-bold text-3xl max-md:text-xl min-w-max">Schedule list</h1>
                 <form method="GET" action="{{ route('schedule') }}"
@@ -32,49 +35,50 @@
                 </button>
             </form>
         </div>
-        <table class="w-full table-auto mb-2 overflow-hidden">
+        <table class="w-full table-auto text-center overflow-hidden">
             <thead>
-                <tr>
-                    <th class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Dentist</th>
-                    <th class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Date</th>
-                    <th class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Branch</th>
-                    <th class="px-4 py-2 max-xl:hidden">Start Time</th>
-                    <th class="px-4 py-2 max-xl:hidden">End Time</th>
-                    <th class="px-4 py-2 max-xl:hidden">Appointment Duration</th>
-                    <th class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Action</th>
+                <tr class="bg-green-200 text-green-700">
+                    <th class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Dentist</th>
+                    <th class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Date</th>
+                    <th class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Branch</th>
+                    <th class="border px-4 py-2 max-xl:hidden">Start Time</th>
+                    <th class="border px-4 py-2 max-xl:hidden">End Time</th>
+                    <th class="border px-4 py-2 max-xl:hidden">Appointment Duration</th>
+                    <th class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Action</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($schedules as $schedule)
-                    <tr class="odd:bg-green-100 even:bg-slate-100">
-                        <td class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">
+                    <tr class="border-b-2">
+                        <td class=" px-2 py-2 text-sm max-md:py-1 max-md:px-2 max-md:text-xs">
                             @if ($schedule->dentist_id === null)
                                 {{ 'No dentist' }}
                             @else
+                                Dr.
                                 {{ $schedule->dentist->dentist_first_name . ' ' . $schedule->dentist->dentist_last_name }}
                             @endif
                         </td>
-                        <td class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">
+                        <td class=" px-2 py-2 text-sm max-md:py-1 max-md:px-2 max-md:text-xs">
                             {{ $schedule->date }}
                         </td>
-                        <td class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">
+                        <td class=" px-2 py-2 text-sm max-md:py-1 max-md:px-2 max-md:text-xs">
                             @if ($schedule->branch_id === null)
                                 {{ 'No branch' }}
                             @else
                                 {{ $schedule->branch->branch_loc }}
                             @endif
                         </td>
-                        <td class="border px-4 py-2 max-md:py-1 max-md:px-2 max-xl:hidden ">
+                        <td class=" px-2 py-2 text-sm max-md:py-1 max-md:px-2 max-xl:hidden ">
                             {{ $schedule->start_time }}</td>
-                        <td class="border px-4 py-2 max-md:py-1 max-md:px-2 max-xl:hidden">
+                        <td class=" px-2 py-2 text-sm max-md:py-1 max-md:px-2 max-xl:hidden">
                             {{ $schedule->end_time }}</td>
-                        <td class="border px-4 py-2 max-xl:hidden">
+                        <td class=" px-2 py-2 text-sm max-xl:hidden">
                             {{ $schedule->appointment_duration }}</td>
-                        <td class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs max-xl:hidden">
+                        <td class=" px-2 py-2 text-sm max-md:py-1 max-md:px-2 max-md:text-xs max-xl:hidden">
                             <div class="flex gap-2 justify-center flex-wrap items-center">
                                 <a class=" border border-slate-600 flex max-md:flex-1 justify-center items-center rounded-md py-2 px-4 max-md:py-1 max-md:px-2 text-white font-semibold hover:bg-gray-300 transition-all"
                                     href="{{ route('schedule.edit', $schedule->id) }}">
-                                    <h1 class=" text-xs text-gray-700 text-center">Edit</h1>
+                                    <h1 class="text-xs text-gray-700 text-center">Edit</h1>
                                 </a>
 
                                 <div class="flex self-start max-md:text-xs ">

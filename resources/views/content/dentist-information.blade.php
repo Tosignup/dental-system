@@ -4,10 +4,15 @@
         @include('components.search')
     </div>
     <section class="bg-white max-lg:mt-14 m-4 p-8 shadow-lg rounded-md flex flex-wrap justify-between z-0">
-        <div class="flex border w-full max-lg:flex-col flex-wrap justify-between items-start">
-            <div class="flex w-full flex-wrap justify-between items-start border border-red-600">
+        <div class="flex  w-full max-lg:flex-col flex-wrap justify-between items-start">
+            <div class="flex w-full flex-wrap justify-between items-start ">
                 <div class="flex flex-wrap justify-between mb-6 gap-4 items-start ">
                     <div class="flex flex-col">
+                        <div class="pb-4">
+                            <a href="{{ route('dentist') }}"
+                                class="flex justify-start font-semibold max-lg:text-xs border-gray-600 py-1 max-lg:px-2 w-max gap-2"><img
+                                    class="h-6" src="{{ asset('assets/images/arrow-back.png') }}" alt=""> Back</a>
+                        </div>
                         <div>
                             <h1 class="text-5xl mb-4 font-bold max-md:text-3xl">{{ $dentist->dentist_first_name }}
                                 {{ $dentist->dentist_last_name }}
@@ -21,15 +26,15 @@
                                         {{ $dentist->dentist_birth_date }}
                                     </span>
                                 </h1>
-                                <h1 class=" max-md:text-sm"> Facebook name: <span class="font-semibold">
-                                        {{ $dentist->fb_name }}
-                                    </span>
+                                <h1 class=" max-md:text-sm"> Dentist specialization: <span class="font-semibold">
+                                        {{ $dentist->dentist_specialization }} </span>
                                 </h1>
-                                <h1 class=" max-md:text-sm"> Package availed: <span class="font-semibold">
-                                        {{ $dentist->package }}
-                                    </span> </h1>
                                 <h1 class=" max-md:text-sm"> Phone number: <span class="font-semibold">
                                         {{ $dentist->dentist_phone_number }}
+                                    </span> </h1>
+
+                                <h1 class=" max-md:text-sm"> Branch: <span class="font-semibold">
+                                        {{ $dentist->branch->branch_loc }}
                                     </span> </h1>
                             </div>
                             <a class="flex justify-center gap-3 items-center border border-slate-600 rounded-md py-2 px-4 max-md:py-1 max-md:px-2 text-white font-semibold hover:bg-gray-400 transition-all w-max"
@@ -44,5 +49,6 @@
 
                 </div>
             </div>
+        </div>
     </section>
 @endsection

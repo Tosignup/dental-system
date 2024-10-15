@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Hash;
 
 class PatientController extends Controller
 {
-
+    //orig controller
     public function patient_list(Request $request)
     {
         $patients = Patient::all();
@@ -75,6 +75,166 @@ class PatientController extends Controller
             'sort' => $request->get('sort')
         ]);
     }
+
+
+    public function activePatient1(Request $request)
+    {
+        $activePatientQuery = Patient::where('is_archived', '0');
+
+        // Check if the search term exists
+        if ($request->has('search') && !empty($request->get('search'))) {
+            $searchTerm = $request->get('search');
+            $activePatientQuery->where(function ($query) use ($searchTerm) {
+                $query->where('last_name', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('first_name', 'like', '%' . $searchTerm . '%');
+            });
+        }
+
+        // Sorting logic
+        if ($request->has('sort')) {
+            $sortOption = $request->get('sort');
+            if ($sortOption == 'next_visit') {
+                $activePatientQuery->orderBy('next_visit', 'DESC');
+            } elseif ($sortOption == 'id') {
+                $activePatientQuery->orderBy('id', 'ASC');
+            } elseif ($sortOption == 'name') {
+                $activePatientQuery->orderBy('last_name', 'ASC')->orderBy('first_name', 'ASC');
+            } elseif ($sortOption == 'date_added') {
+                $activePatientQuery->orderBy('created_at', 'ASC');
+            }
+        } else {
+            $activePatientQuery->orderBy('created_at', 'ASC');
+        }
+
+        // Execute the query and get the results
+        $ActivePatients = $activePatientQuery->get();
+        $activePatients = $activePatientQuery->paginate(10); //to edit
+
+        return view('client.contents.active-patients', [
+            'activePatients' => $activePatients,
+            'search' => $request->get('search'),
+            'sort' => $request->get('sort')
+        ]);
+    }
+    public function activePatient(Request $request)
+    {
+        $activePatientQuery = Patient::where('is_archived', '0');
+
+        // Check if the search term exists
+        if ($request->has('search') && !empty($request->get('search'))) {
+            $searchTerm = $request->get('search');
+            $activePatientQuery->where(function ($query) use ($searchTerm) {
+                $query->where('last_name', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('first_name', 'like', '%' . $searchTerm . '%');
+            });
+        }
+
+        // Sorting logic
+        if ($request->has('sort')) {
+            $sortOption = $request->get('sort');
+            if ($sortOption == 'next_visit') {
+                $activePatientQuery->orderBy('next_visit', 'DESC');
+            } elseif ($sortOption == 'id') {
+                $activePatientQuery->orderBy('id', 'ASC');
+            } elseif ($sortOption == 'name') {
+                $activePatientQuery->orderBy('last_name', 'ASC')->orderBy('first_name', 'ASC');
+            } elseif ($sortOption == 'date_added') {
+                $activePatientQuery->orderBy('created_at', 'ASC');
+            }
+        } else {
+            $activePatientQuery->orderBy('created_at', 'ASC');
+        }
+
+        // Execute the query and get the results with pagination
+        $activePatients = $activePatientQuery->paginate(10)->appends($request->except('page'));
+
+        return view('client.contents.active-patients', [
+            'activePatients' => $activePatients,
+            'search' => $request->get('search'),
+            'sort' => $request->get('sort')
+        ]);
+    }
+
+
+    public function archivedPatient1(Request $request)
+    {
+        $archivedPatientQuery = Patient::where('is_archived', '1');
+
+        // Check if the search term exists
+        if ($request->has('search') && !empty($request->get('search'))) {
+            $searchTerm = $request->get('search');
+            $archivedPatientQuery->where(function ($query) use ($searchTerm) {
+                $query->where('last_name', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('first_name', 'like', '%' . $searchTerm . '%');
+            });
+        }
+
+        // Sorting logic
+        if ($request->has('sort')) {
+            $sortOption = $request->get('sort');
+            if ($sortOption == 'next_visit') {
+                $archivedPatientQuery->orderBy('next_visit', 'DESC');
+            } elseif ($sortOption == 'id') {
+                $archivedPatientQuery->orderBy('id', 'ASC');
+            } elseif ($sortOption == 'name') {
+                $archivedPatientQuery->orderBy('last_name', 'ASC')->orderBy('first_name', 'ASC');
+            } elseif ($sortOption == 'date_added') {
+                $archivedPatientQuery->orderBy('created_at', 'ASC');
+            }
+        } else {
+            $archivedPatientQuery->orderBy('created_at', 'ASC');
+        }
+
+        // Execute the query and get the results
+        $archivedPatients = $archivedPatientQuery->get();
+        $archivedPatients = $archivedPatientQuery->paginate(10); //to edit
+
+        return view('client.contents.archived-patients', [
+            'archivedPatients' => $archivedPatients,
+            'search' => $request->get('search'),
+            'sort' => $request->get('sort')
+        ]);
+    }
+
+    public function archivedPatient(Request $request)
+    {
+        $archivedPatientQuery = Patient::where('is_archived', '1');
+
+        // Check if the search term exists
+        if ($request->has('search') && !empty($request->get('search'))) {
+            $searchTerm = $request->get('search');
+            $archivedPatientQuery->where(function ($query) use ($searchTerm) {
+                $query->where('last_name', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('first_name', 'like', '%' . $searchTerm . '%');
+            });
+        }
+
+        // Sorting logic
+        if ($request->has('sort')) {
+            $sortOption = $request->get('sort');
+            if ($sortOption == 'next_visit') {
+                $archivedPatientQuery->orderBy('next_visit', 'DESC');
+            } elseif ($sortOption == 'id') {
+                $archivedPatientQuery->orderBy('id', 'ASC');
+            } elseif ($sortOption == 'name') {
+                $archivedPatientQuery->orderBy('last_name', 'ASC')->orderBy('first_name', 'ASC');
+            } elseif ($sortOption == 'date_added') {
+                $archivedPatientQuery->orderBy('created_at', 'ASC');
+            }
+        } else {
+            $archivedPatientQuery->orderBy('created_at', 'ASC');
+        }
+
+        // Execute the query and get the results with pagination
+        $archivedPatients = $archivedPatientQuery->paginate(10)->appends($request->except('page'));
+
+        return view('client.contents.archived-patients', [
+            'archivedPatients' => $archivedPatients,
+            'search' => $request->get('search'),
+            'sort' => $request->get('sort')
+        ]);
+    }
+
     
     public function addPatient()
     {
@@ -92,7 +252,7 @@ class PatientController extends Controller
             'date_of_birth' => 'required|date',
             'email' => 'required|string|email|max:255|unique:patients,email|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
-            'phone_number' => 'nullable|string|max:15',
+            'phone_number' => 'nullable|string|max:12',
             'fb_name' => 'required|string|max:255',
             'next_visit' => 'required|date',
             'branch_id' => 'required|exists:branches,id',
@@ -121,6 +281,7 @@ class PatientController extends Controller
         ]);
 
         return redirect()->route('patient_list')->with('success', 'Patient created successfully');
+        session()->flash('success', 'Patient added successfully!');
     }
 
     public function showPatient($id)
@@ -156,6 +317,8 @@ class PatientController extends Controller
 
         $patient->update($validated);
         return redirect()->route('show.patient', compact('patient'))->with('success','patient updated');
+        session()->flash('success', 'Patient updated successfully!');
+
 
     }
 

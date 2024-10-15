@@ -29,9 +29,8 @@ class AdminController extends Controller
         $newAppointments = Appointment::whereDate('created_at', $today)->count();
 
         return view('content.overview', compact('totalPatients', 'newPatients', 'todayPatients', 'totalAppointments', 'newAppointments', 'todayAppointment'));
-
     }
-    
+
 
     public function staff()
     {
@@ -41,15 +40,9 @@ class AdminController extends Controller
     }
     public function dentist()
     {
-        
+
         $dentists = Dentist::with('branch')->get();
         return view('content.dentist-overview', compact('dentists'));
-
-    }
-
-    public function inventory()
-    {
-        return view('content.inventory');
     }
 
     public function schedule1()
@@ -59,7 +52,7 @@ class AdminController extends Controller
 
         // Retrieve schedules that are in the future
         $schedules = DentistSchedule::with('dentist')
-            ->where('date', '>', $now) 
+            ->where('date', '>', $now)
             ->get();
 
         return view('content.schedule', compact('schedules'));
@@ -70,24 +63,24 @@ class AdminController extends Controller
         $now = Carbon::now();
 
         $scheduleQuery = DentistSchedule::with(['dentist']);
-                        // ->where('date', '>', $now);
-                        
-            if ($request->has('sortSchedule')) {
-                $sortOption = $request->get('sortSchedule');
-                if ($sortOption == 'date') {
-                    $scheduleQuery->orderBy('date', 'ASC');
-                } elseif ($sortOption == 'start_time') {
-                    $scheduleQuery->orderBy('start_time', 'ASC');
-                } elseif ($sortOption == 'end_time') {
-                    $scheduleQuery->orderBy('end_time', 'ASC');
-                }
-            } else {
+        // ->where('date', '>', $now);
+
+        if ($request->has('sortSchedule')) {
+            $sortOption = $request->get('sortSchedule');
+            if ($sortOption == 'date') {
                 $scheduleQuery->orderBy('date', 'ASC');
+            } elseif ($sortOption == 'start_time') {
+                $scheduleQuery->orderBy('start_time', 'ASC');
+            } elseif ($sortOption == 'end_time') {
+                $scheduleQuery->orderBy('end_time', 'ASC');
             }
-            
+        } else {
+            $scheduleQuery->orderBy('date', 'ASC');
+        }
+
 
         $schedules = $scheduleQuery->paginate(10);
-    
+
         return view('content.schedule', compact('schedules'));
     }
 
@@ -112,8 +105,8 @@ class AdminController extends Controller
         Branch::create([
             'branch_loc' => $request->branch_loc,
         ]);
-        return redirect()->route('branch')->with('success', 'Successfully added branch');
-
+        return redirect()->route('branch')->with('success', 'Successfully added branch!');
+        session()->flash('success', 'Successfully added branch!');
     }
     public function editBranch($id)
     {
@@ -132,7 +125,8 @@ class AdminController extends Controller
         $branch->update([
             'branch_loc' => $request->branch_loc,
         ]);
-        return redirect()->route('branch')->with('success', 'Successfully updated branch');
+        return redirect()->route('branch')->with('success', 'Successfully updated branch!');
+        session()->flash('success', 'Successfully updated branch!');
     }
 
     public function deleteBranch($id)
@@ -141,8 +135,8 @@ class AdminController extends Controller
 
         $branch->delete();
 
-        return redirect()->route('branch')->with('success', 'Successfully deleted branch');
-
+        return redirect()->route('branch')->with('success', 'Successfully deleted branch!');
+        session()->flash('success', 'Successfully deleted branch!');
     }
 
 
@@ -152,18 +146,17 @@ class AdminController extends Controller
     {
         $auditLogs = AuditLog::orderBy('created_at', 'desc')->get();
 
-        foreach($auditLogs as $auditLog) {
+        foreach ($auditLogs as $auditLog) {
             $decodedChanges = json_decode($auditLog->changes, true); // Decode JSON to associative array
-        
-        // Check if decoding was successful and is an array
+
+            // Check if decoding was successful and is an array
             if (is_array($decodedChanges)) {
                 $auditLog->changes = $decodedChanges; // Assign decoded changes back to the audit log
             } else {
                 $auditLog->changes = []; // Assign an empty array if decoding failed
             }
         }
-        
+
         return view('audit.logs', compact('auditLogs'));
     }
-
 }

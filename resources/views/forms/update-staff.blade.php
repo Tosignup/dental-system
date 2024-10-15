@@ -61,7 +61,7 @@
                     <label class="flex flex-col flex-1 min-w-[45%] max-md:text-sm" for="phone_number">
                         <h1>Phone number</h1>
                         <input class="border border-gray-400 py-2 px-4 rounded-md max-md:text-sm" name="phone_number"
-                            type="text" autocomplete="off" oninput="validateInput('phone_number')"
+                            type="number" autocomplete="off" oninput="validateInput('phone_number')"
                             value="{{ old('phone_number', $staff->phone_number) }}" id="phone_number">
                         @error('phone_number')
                             <span id="phone_number_error"

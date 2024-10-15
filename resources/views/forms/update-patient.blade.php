@@ -90,7 +90,7 @@
 
                     <label class="flex flex-col flex-1 min-w-[45%] max-md:text-sm" for="phone_number">
                         <h1>Phone number</h1>
-                        <input class="border border-gray-400 py-2 px-4 rounded-md" name="phone_number" type="text"
+                        <input class="border border-gray-400 py-2 px-4 rounded-md" name="phone_number" type="number"
                             autocomplete="off" oninput="validateInput('phone_number')"
                             value="{{ old('phone_number', $patient->phone_number) }}" id="phone_number">
                         @error('phone_number')
@@ -135,7 +135,8 @@
                         Reset
                     </button>
                     <a class="flex-1 justify-center items-center py-2 px-8 text-center max-md:py-2 max-md:px-2 max-md:text-xs font-semibold rounded-md hover:bg-red-600 hover:border-red-600 border-2 border-gray-600 text-gray-800  hover:text-white transition-all"
-                        href=" {{ route('patient_list') }} ">
+                        @if ($patient->is_archived == '0') href=" {{ route('patient.active') }}"
+                    @elseif ($patient->is_archived == '1') href=" {{ route('patient.archived') }} " @endif>
                         Cancel
                     </a>
                 </div>

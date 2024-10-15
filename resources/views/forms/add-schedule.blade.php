@@ -16,6 +16,22 @@
         .validation-message.hide {
             opacity: 0;
         }
+
+        ul {
+            display: flex;
+            justify-content: start;
+            justify-items: center;
+            gap: 8;
+            max-width: 50svw;
+            flex-wrap: wrap;
+        }
+
+        li {
+            border: 1px solid gray;
+            margin: 2px;
+            padding: 4px 8px;
+            border-radius: 6px;
+        }
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -76,18 +92,6 @@
                             @endforeach
                         </select>
                     </label>
-                    {{-- <label class="flex flex-col flex-1 pb-4" for="dentist_id">
-                        <h1>Select Dentist</h1>
-                        <select class="border max-md:text-xs flex-grow min-w-max border-gray-400 py-2 px-4 rounded-md"
-                            id="dentist_id" name="dentist_id" required>
-                            <option class="max-md:text-xs" value="">Select your dentist</option>
-                            @foreach ($dentists as $dentist)
-                                <option class="max-md:text-xs" value="{{ $dentist->id }}">
-                                    {{ $dentist->dentist_first_name . ' ' . $dentist->dentist_last_name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </label> --}}
                     <label class="flex flex-col flex-1 pb-4" for="dentist_id">
                         <h1>Select Dentist</h1>
                         <select class="border max-md:text-xs flex-grow min-w-max border-gray-400 py-2 px-4 rounded-md"
@@ -95,27 +99,16 @@
                             <option class="max-md:text-xs" value="">Select Dentist</option>
                         </select>
                     </label>
-                    {{-- Original Approach --}}
-                    {{-- <label class="flex flex-col flex-1 pb-4" for="date">
-                        <h1>Date</h1>
-                        <input class="border max-md:text-xs flex-grow min-w-max border-gray-400 py-2 px-4 rounded-md"
-                            name="date" type="date" id="date" autocomplete="off" placeholder="Juan"
-                            value="{{ old('date') }}" oninput="validateInput('date')">
-                        @error('date')
-                            <span id="date_error"
-                                class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
-                        @enderror
-                    </label> --}}
-
                     {{-- JavaScript Approach --}}
                     <label class="flex flex-col flex-1 pb-4" for="date">Select Date:
                         <input type="date" id="date" name="date"
                             class="border max-md:text-xs flex-grow min-w-max border-gray-400 py-2 px-4 rounded-md" required>
                         <button type="button" id="addDate"
-                            class="mt-1 px-8 max-md:text-xs max-md:py-2 max-md:px-4 font-medium rounded-md hover:bg-green-600 hover:border-green-600 hover:text-white text-gray-800 border border-gray-600 transition-all">Add
+                            class="mt-4 py-2 max-md:text-xs max-md:py-2 max-md:px-4 font-medium rounded-md hover:bg-green-600 hover:border-green-600 hover:text-white text-gray-800 border border-gray-600 transition-all">Add
                             Date</button>
                         <input type="hidden" name="selected_dates" id="selected_dates">
-                        <div id="selected_dates_display" class="mt-2 text-gray-800">
+                        <div id="selected_dates_display" class="my-4 text-gray-800 rounded-md">
+                            Selected dates:
                         </div>
 
                     </label>
@@ -151,15 +144,6 @@
                             }
                         }
                     </script>
-
-                    {{-- Date Range Picker Approach --}}
-                    {{-- <label for="start_date">Start Date:</label>
-                    <input type="date" id="start_date" name="start_date" required>
-
-                    <label for="end_date">End Date:</label>
-                    <input type="date" id="end_date" name="end_date" required> --}}
-
-
                     <div class="flex flex-wrap flex-1 gap-4 pb-4">
                         <label class="flex flex-col flex-1" for="start_time">
                             <h1>Start Time</h1>
@@ -167,7 +151,7 @@
                                 name="start_time" type="time" id="start_time" step="600">
                             @error('start_time')
                                 <span id="start_time_error"
-                                    class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                                    class="validation-message text-red-600 text-xs p-1 rounded-md my-1 show">{{ $message }}</span>
                             @enderror
                         </label>
                         <label class="flex flex-col flex-1" for="end_time">
@@ -176,7 +160,7 @@
                                 name="end_time" type="time" id="end_time" step="600">
                             @error('end_time')
                                 <span id="end_time_error"
-                                    class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                                    class="validation-message text-red-600 text-xs p-1 rounded-md my-1 show">{{ $message }}</span>
                             @enderror
                         </label>
                     </div>
@@ -189,11 +173,6 @@
                             <option value="45"> 45 Minutes</option>
                             <option value="60"> 60 Minutes</option>
                         </select>
-                        @error('appointment_duration')
-                            <span id="appointment_duration_error"
-                                class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
-                        @enderror
-                    </label>
                 </div>
                 <div class="flex gap-4 ">
                     <button

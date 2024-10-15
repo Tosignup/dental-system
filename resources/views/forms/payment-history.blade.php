@@ -20,7 +20,7 @@
     <div class="m-4 mb-8">
         @include('components.search')
     </div>
-    <section class="bg-white shadow-lg rounded-md max-w-max p-6 my-4 mx-auto  max-lg:mt-14">
+    <section class="bg-white shadow-lg rounded-md max-w-max p-6 my-4 mx-auto max-lg:text-xs max-lg:mt-14">
         <div class="m-2">
 
             <h2 class=" font-bold text-2xl mb-2 max-md:text-lg">Payment History for <br> Dr.
@@ -49,8 +49,6 @@
                         {{ number_format($totalPaid, 2) }}</h2>
                     <h2 class="max-md:text-xs font-semibold mb-1">&#8369;
                         {{ number_format($balanceRemaining, 2) }}</h2>
-                    <h2 class="max-md:text-xs font-semibold mb-1">
-                        {{ $appointment->id }}</h2>
                 </div>
             </div>
 
@@ -66,11 +64,11 @@
                 <tbody>
                     @forelse($paymentHistory as $payment)
                         <tr>
-                            <td class="border-b pb-2 px-2">{{ $payment->created_at->format('Y-m-d') }}</td>
-                            <td class="border-b pb-2 px-2">&#8369; {{ number_format($payment->paid_amount, 2) }}</td>
-                            <td class="border-b pb-2 px-2">{{ ucfirst($payment->payment_method) }}</td>
-                            <td class="border-b pb-2 px-2">{{ $payment->remarks ?? 'N/A' }}</td>
-                            <td class="border-b pb-2 px-2">{{ $payment->id }}</td>
+                            <td class="border-b p-2">{{ $payment->created_at->format('Y-m-d') }}</td>
+                            <td class="border-b p-2">&#8369; {{ number_format($payment->paid_amount, 2) }}</td>
+                            <td class="border-b p-2">{{ ucfirst($payment->payment_method) }}</td>
+                            <td class="border-b p-2">{{ $payment->remarks ?? 'N/A' }}</td>
+                            <td class="border-b p-2">{{ $payment->id }}</td>
                         </tr>
                     @empty
                         <tr>
@@ -81,9 +79,7 @@
             </table>
 
             <div class="w-full flex gap-2 mt-4">
-                <a @if (Auth::user()->role === 'admin' || Auth::user()->role === 'staff') href=" {{ route('show.appointment', $appointment->id) }} "
-                             @elseif (Auth::user()->role === 'dentist') 
-                            href=" {{ route('appointments.payment', $appointment->dentist_id) }} " @endif
+                <a href=" {{ route('show.appointment', $appointment->id) }} "
                     class="flex w-full justify-center items-center py-2 px-16 text-center max-md:py-2 max-md:px-12 max-md:text-xs font-semibold rounded-md hover:bg-red-600 hover:border-red-600 border-2 border-gray-600 text-gray-800  hover:text-white transition-all"
                     type="reset">
                     Return

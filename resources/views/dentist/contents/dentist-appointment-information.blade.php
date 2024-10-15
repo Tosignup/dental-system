@@ -1,5 +1,8 @@
 @extends('admin.dashboard')
 @section('content')
+    @if (session('success'))
+        @include('components.toast-notification')
+    @endif
     <div class="m-4">
         @include('components.search')
     </div>
@@ -10,8 +13,8 @@
                 class="flex justify-start font-semibold max-lg:text-xs border-gray-600 py-1 max-lg:px-2 w-max gap-2"><img
                     class="h-6" src="{{ asset('assets/images/arrow-back.png') }}" alt=""> Back</a>
         </div>
-        <div class="flex justify-around border border-green-500 p-2 max-sm:flex-col">
-            <div class="flex flex-col max-2xl:flex-wrap border border-red-500 p-2 max-md:mb-4">
+        <div class="flex justify-around p-2 max-sm:flex-col">
+            <div class="flex flex-col max-2xl:flex-wrap p-2 max-md:mb-4">
                 <h1 class="text-2xl font-bold max-md:text-3xl mb-4 max-lg:mb-2">
                     Appointment Information
                 </h1>
@@ -79,18 +82,18 @@
                     @endif
                 </div>
             </div>
-            <div class="flex flex-col justify-between max-2xl:flex-wrap border border-red-500 p-2 max-md:mb-4">
+            <div class="flex flex-col justify-between max-2xl:flex-wrap p-2 max-md:mb-4">
 
                 <h1 class="text-2xl font-bold max-md:text-3xl mb-4 max-lg:mb-2">
                     Payment Information
                 </h1>
                 <div class="flex flex-col gap-2 max-md:gap-1 text-md max-md:text-xs">
                     <h4 class="max-md:text-xs"> Procedure: <span class="font-semibold">
-                            {{ $appointment->procedure->name }}</span> </h4>
+                            {{ $appointment->procedure->name ?? 'None' }}</span> </h4>
                     <h4 class="max-md:text-xs"> Appointment Date: <span class="font-semibold">
                             {{ $appointment->appointment_date }}</span> </h4>
-                    <h4 class="max-md:text-xs"> Total Amount Due: <span class="font-semibold">&#8369
-                            {{ number_format($appointment->procedure->price, 2) }}</span></h4>
+                    <h4 class="max-md:text-xs"> Total Amount Due: <span class="font-semibold">&#8369;
+                            {{ $appointment->procedure->price ?? '0' }}</span></h4>
                     <h4 class="max-md:text-xs">
                         Status:
                         <span class="font-semibold">

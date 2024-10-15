@@ -36,7 +36,7 @@
                             value="{{ old('branch_loc') }}" oninput="validateInput('branch_loc')">
                         @error('branch_loc')
                             <span id="branch_loc_error"
-                                class="validation-message text-white max-md:text-sm bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                                class="validation-message text-red-600 text-xs p-1 rounded-md my-1 show">{{ $message }}</span>
                         @enderror
                     </label>
                 </div>

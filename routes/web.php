@@ -10,6 +10,7 @@ use App\Http\Controllers\adminPanel\AdminController;
 use App\Http\Controllers\adminPanel\ImageController;
 use App\Http\Controllers\staffPanel\StaffController;
 use App\Http\Controllers\clientPanel\ClientController;
+use App\Http\Controllers\adminPanel\InventoryController;
 use App\Http\Controllers\adminPanel\ProcedureController;
 use App\Http\Controllers\dentistPanel\DentistController;
 use App\Http\Controllers\patientPanel\PatientController;
@@ -82,16 +83,10 @@ Route::get('/send-test-email', function () {
 Route::group(['middleware' => ['auth', 'verified','role:admin,staff']], function () {
     Route::get('/patient-list', [PatientController::class, 'patient_list'])->name('patient_list');
     Route::get('/schedule', [AdminController::class, 'schedule'])->name('schedule');
-    Route::get('/inventory', [AdminController::class, 'inventory'])->name('inventory');
+    Route::get('/inventory', [InventoryController::class, 'inventory'])->name('inventory');
     Route::get('/procedure', [ProcedureController::class, 'procedure'])->name('procedure');
     Route::get('/branch', [AdminController::class, 'branch'])->name('branch');
 
-    
-    //Patient
-    Route::get('/show-patient/{patient}/patient-contract', [PatientController::class, 'patientContract'])->name('patient.contract');
-    Route::get('/show-patient/{patient}/patient-background', [PatientController::class, 'patientBackground'])->name('patient.background');
-    Route::get('/show-patient/{patient}/patient-xray', [PatientController::class, 'patientXray'])->name('patient.xray');
-    
     //Image Upload
     Route::post('/upload-image', [ImageController::class, 'uploadImage'])->name('upload.image');
     
@@ -101,6 +96,7 @@ Route::group(['middleware' => ['auth', 'verified','role:admin,staff']], function
     Route::get('/schedule/{scheduleId}/edit', [ScheduleController::class, 'editSchedule'])->name('schedule.edit');
     Route::post('/schedule/{scheduleId}/edit', [ScheduleController::class, 'updateSchedule'])->name('schedule.update');
     Route::delete('/schedule/{id}/delete', [ScheduleController::class, 'deleteSchedule'])->name('schedule.delete');
+    Route::get('/show-schedule/{schedule}', [ScheduleController::class, 'show'])->name('show.schedule');
     
     //Payment TEsting
     Route::get('/appointments/{appointmentId}/payment', [PaymentController::class, 'create'])->name('payments.form');
@@ -109,8 +105,8 @@ Route::group(['middleware' => ['auth', 'verified','role:admin,staff']], function
     
     //Testing
     Route::get('/appointments/show-appointment/{appointment}', [AppointmentController::class, 'show'])->name('show.appointment');
-    Route::get('/appointments/walk-in-request', [AppointmentController::class, 'walkIn_appointment'])->name('appointments.walkIn');
-    Route::get('/appointments/online-request', [AppointmentController::class, 'online_appointment'])->name('appointments.online');
+    Route::get('/appointments/walk-in-request', [AppointmentController::class, 'walkInAppointment'])->name('appointments.walkIn');
+    Route::get('/appointments/online-request', [AppointmentController::class, 'onlineAppointment'])->name('appointments.online');
 
     //Archiving Patients
     Route::post('/archive-patient/{patient}', [PatientController::class, 'archivePatient'])->name('archive.patient');
@@ -122,6 +118,13 @@ Route::group(['middleware' => ['auth', 'verified','role:admin,staff']], function
     Route::get('/edit-patient/{patient}', [PatientController::class, 'editPatient'])->name('edit.patient');
     Route::put('/patients/{patient}', [PatientController::class, 'updatePatient'])->name('update.patient');
     Route::get('/show-patient/{patient}', [PatientController::class, 'showPatient'])->name('show.patient');
+    Route::get('/show-patient/{patient}/patient-contract', [PatientController::class, 'patientContract'])->name('patient.contract');
+    Route::get('/show-patient/{patient}/patient-background', [PatientController::class, 'patientBackground'])->name('patient.background');
+    Route::get('/show-patient/{patient}/patient-xray', [PatientController::class, 'patientXray'])->name('patient.xray');
+
+    //Testing Patient
+    Route::get('/active-patient-list', [PatientController::class, 'activePatient'])->name('patient.active');
+    Route::get('/archived-patient-list', [PatientController::class, 'archivedPatient'])->name('patient.archived');
 
     //Procedures
     Route::get('/procedure/add', [ProcedureController::class, 'addProcedure'])->name('procedure.add');
@@ -136,6 +139,14 @@ Route::group(['middleware' => ['auth', 'verified','role:admin,staff']], function
     Route::get('/branch/{id}/edit', [AdminController::class, 'editBranch'])->name('branch.edit');
     Route::put('/branch/{id}/update', [AdminController::class, 'updateBranch'])->name('branch.update');
     Route::delete('/branch/{id}/delete', [AdminController::class, 'deleteBranch'])->name('branch.delete');
+
+    //Inventories
+    Route::get('/inventory/add/item', [InventoryController::class, 'addItem'])->name('item.add');
+    Route::post('/inventory/store', [InventoryController::class, 'storeItem'])->name('item.store');
+    Route::get('/inventory/edit/{id}', [InventoryController::class, 'editItem'])->name('item.edit');
+    Route::put('/inventory/update/{id}', [InventoryController::class, 'updateItem'])->name('item.update');
+    Route::delete('/inventory/delete/{id}', [InventoryController::class, 'deleteItem'])->name('item.delete');
+
 
 });
 

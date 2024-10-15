@@ -74,7 +74,7 @@
                     <label class="flex flex-col flex-1 min-w-[45%] max-md:text-sm" for="dentist_phone_number">
                         <h1>Phone number</h1>
                         <input class="border border-gray-400 py-2 px-4 rounded-md max-md:text-sm"
-                            name="dentist_phone_number" type="text" autocomplete="off"
+                            name="dentist_phone_number" type="number" autocomplete="off"
                             oninput="validateInput('dentist_phone_number')"
                             value="{{ old('dentist_phone_number', $dentist->dentist_phone_number) }}"
                             id="dentist_phone_number">

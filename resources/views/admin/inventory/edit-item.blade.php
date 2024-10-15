@@ -21,105 +21,113 @@
         @include('components.search')
     </div>
     <section class="bg-white shadow-lg rounded-md max-w-max p-6 my-4 mx-auto max-lg:p-3 max-lg:m-3  max-lg:mt-14">
-        <h1 class="font-bold text-5xl px-4 max-md:text-3xl w-max">Add new patient</h1>
-        <form method="POST" action="{{ route('store.patient') }}">
-            @method('POST')
+        <h1 class="font-bold text-5xl px-4 max-md:text-3xl w-max">Edit item</h1>
+        <form method="POST" action="{{ route('item.update', $item->id) }}">
+            @method('PUT')
             @csrf
             <div class="flex flex-wrap items-start justify-start gap-4 max-md:gap-2 max-w-4xl p-8 max-md:p-2">
-                <label class="flex flex-col flex-1 min-w-[45%]" for="first_name">
-                    <h1 class="pb-2 max-md:text-sm">First name</h1>
+                <label class="flex flex-col flex-1 min-w-[45%]" for="item_name">
+                    <h1 class="pb-2 max-md:text-sm">Item name</h1>
                     <input
                         class="max-md:text-sm max-md:py-1 max-md:px-2 border flex-grow min-w-max border-gray-400 py-2 px-4 rounded-md"
-                        name="first_name" type="text" id="first_name" autocomplete="off" placeholder="Juan"
-                        value="{{ old('first_name') }}" oninput="validateInput('first_name')">
-                    @error('first_name')
-                        <span id="first_name_error"
-                            class="validation-message text-red-600 text-xs p-1 rounded-md my-1 show">{{ $message }}</span>
-                    @enderror
-                </label>
-                <label class="flex flex-col flex-1 min-w-[45%]" for="last_name">
-                    <h1 class="pb-2 max-md:text-sm">Last name</h1>
-                    <input class="max-md:text-sm max-md:py-1 max-md:px-2 border border-gray-400 py-2 px-4 rounded-md"
-                        name="last_name" type="text" id="last_name" autocomplete="off" placeholder="Dela Cruz"
-                        value="{{ old('last_name') }}" oninput="validateInput('last_name')">
-                    @error('last_name')
-                        <span id="last_name_error"
-                            class="validation-message text-red-600 text-xs p-1 rounded-md my-1 show">{{ $message }}</span>
-                    @enderror
-                </label>
-                <label class="flex flex-col flex-1 min-w-[45%]" for="fb_name">
-                    <h1 class="pb-2 max-md:text-sm">Facebook name</h1>
-                    <input class="max-md:text-sm max-md:py-1 max-md:px-2 border border-gray-400 py-2 px-4 rounded-md"
-                        name="fb_name" type="text" autocomplete="off" id="fb_name" placeholder="Dela Cruz"
-                        value="{{ old('fb_name') }}" oninput="validateInput('fb_name')">
-                    @error('fb_name')
-                        <span id="fb_name_error"
+                        name="item_name" type="text" id="item_name" autocomplete="off" placeholder="Item name"
+                        value="{{ $item->item_name }}" oninput="validateInput('item_name')">
+                    @error('item_name')
+                        <span id="item_name_error"
                             class="validation-message text-red-600 text-xs p-1 rounded-md my-1 show">{{ $message }}</span>
                     @enderror
                 </label>
 
-                <label class="flex flex-col flex-1 min-w-[45%]" for="email">
-                    <h1 class="pb-2 max-md:text-sm">Email</h1>
+                <label class="flex flex-col flex-1 min-w-[45%]" for="quantity">
+                    <h1 class="pb-2 max-md:text-sm">Quantity</h1>
                     <input class="max-md:text-sm max-md:py-1 max-md:px-2 border border-gray-400 py-2 px-4 rounded-md"
-                        name="email" type="email" id="email" autocomplete="off" placeholder="juan@gmail.com"
-                        value="{{ old('email') }}" oninput="validateInput('email')">
-                    @error('email')
-                        <span id="email_error"
-                            class="validation-message text-red-600 text-xs p-1 rounded-md my-1 show">{{ $message }}</span>
-                    @enderror
-                </label>
-                <label class="flex flex-col flex-1 min-w-[45%]" for="password">
-                    <h1 class="pb-2 max-md:text-sm">Password</h1>
-                    <input class="max-md:text-sm max-md:py-1 max-md:px-2 border border-gray-400 py-2 px-4 rounded-md"
-                        name="password" type="password" id="password" autocomplete="off""
-                        oninput="validateInput('password')">
-                    @error('password')
-                        <span id="password_error"
-                            class="validation-message text-red-600 text-xs p-1 rounded-md my-1 show">{{ $message }}</span>
-                    @enderror
-                </label>
-                <label class="flex flex-col flex-1 min-w-[45%]" for="password_confirmation">
-                    <h1 class="pb-2 max-md:text-sm">Confirm Password</h1>
-                    <input class="max-md:text-sm max-md:py-1 max-md:px-2 border border-gray-400 py-2 px-4 rounded-md"
-                        type="password" name="password_confirmation" id="password_confirmation"
-                        oninput="validateInput('password_confirmation')">
-                    @error('password_confirmation')
-                        <span id="password_confirmation_error"
-                            class="validation-message text-red-600 text-xs p-1 rounded-md my-1 show">{{ $message }}</span>
-                    @enderror
-                </label>
-                <label class="flex flex-col flex-1 min-w-[45%]" for="gender">
-                    <h1 class="pb-2 max-md:text-sm">Gender</h1>
-                    <select class="border max-md:text-sm max-md:py-1 max-md:px-2 border-gray-400 py-2 px-4 rounded-md"
-                        name="gender" id="gender" oninput="validateInput('gender')">
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                        <option value="others">Others</option>
-                        <option value="prefer not to say">Prefer not to say</option>
-                    </select>
-                    @error('gender')
-                        <span id="gender_error"
-                            class="validation-message text-red-600 text-xs p-1 rounded-md my-1 show">{{ $message }}</span>
-                    @enderror
-                </label>
-                <label class="flex flex-col flex-1 min-w-[45%]" for="date_of_birth">
-                    <h1 class="pb-2 max-md:text-sm">Date of birth</h1>
-                    <input class="max-md:text-sm max-md:py-1 max-md:px-2 border border-gray-400 py-2 px-4 rounded-md"
-                        name="date_of_birth" type="date" id="date_of_birth" value="{{ old('date_of_birth') }}"
-                        oninput="validateInput('date_of_birth')">
-                    @error('date_of_birth')
-                        <span id="date_of_birth_error"
+                        name="quantity" type="number" autocomplete="off" id="quantity" placeholder="Dela Cruz"
+                        value="{{ $item->quantity }}" oninput="validateInput('quantity')">
+                    @error('quantity')
+                        <span id="quantity_error"
                             class="validation-message text-red-600 text-xs p-1 rounded-md my-1 show">{{ $message }}</span>
                     @enderror
                 </label>
 
-                <label class="flex flex-col flex-1 min-w-[45%]" for="phone_number">
-                    <h1 class="pb-2 max-md:text-sm">Phone number</h1>
+                <label class="flex flex-col flex-1 min-w-[45%]" for="minimum_stock">
+                    <h1 class="pb-2 max-md:text-sm">Minimum stock</h1>
                     <input class="max-md:text-sm max-md:py-1 max-md:px-2 border border-gray-400 py-2 px-4 rounded-md"
-                        name="phone_number" type="number" autocomplete="off" id="phone_number"
-                        value="{{ old('phone_number') }}" oninput="validateInput('phone_number')">
-                    @error('phone_number')
-                        <span id="phone_number_error"
+                        name="minimum_stock" type="number" id="minimum_stock" autocomplete="off"
+                        value="{{ $item->minimum_stock }}" oninput="validateInput('minimum_stock')">
+                    @error('minimum_stock')
+                        <span id="minimum_stock_error"
+                            class="validation-message text-red-600 text-xs p-1 rounded-md my-1 show">{{ $message }}</span>
+                    @enderror
+                </label>
+                <label class="flex flex-col flex-1 min-w-[45%]" for="maximum_stock">
+                    <h1 class="pb-2 max-md:text-sm">Maximum stock</h1>
+                    <input class="max-md:text-sm max-md:py-1 max-md:px-2 border border-gray-400 py-2 px-4 rounded-md"
+                        name="maximum_stock" type="number" id="maximum_stock" autocomplete="off"
+                        value="{{ $item->maximum_stock }}" oninput="validateInput('maximum_stock')">
+                    @error('maximum_stock')
+                        <span id="maximum_stock_error"
+                            class="validation-message text-red-600 text-xs p-1 rounded-md my-1 show">{{ $message }}</span>
+                    @enderror
+                </label>
+                <label class="flex flex-col flex-1 min-w-[45%]" for="purchase_price">
+                    <h1 class="pb-2 max-md:text-sm">Purchase price</h1>
+                    <input class="max-md:text-sm max-md:py-1 max-md:px-2 border border-gray-400 py-2 px-4 rounded-md"
+                        type="number" name="purchase_price" id="purchase_price" value="{{ $item->purchase_price }}"
+                        oninput="validateInput('purchase_price')">
+                    @error('purchase_price')
+                        <span id="purchase_price_error"
+                            class="validation-message text-red-600 text-xs p-1 rounded-md my-1 show">{{ $message }}</span>
+                    @enderror
+                </label>
+                <label class="flex flex-col flex-1 min-w-[45%]" for="selling_price">
+                    <h1 class="pb-2 max-md:text-sm">Selling price</h1>
+                    <input class="max-md:text-sm max-md:py-1 max-md:px-2 border border-gray-400 py-2 px-4 rounded-md"
+                        type="number" name="selling_price" id="selling_price" value="{{ $item->selling_price }}"
+                        oninput="validateInput('selling_price')">
+                    @error('selling_price')
+                        <span id="purchase_price_error"
+                            class="validation-message text-red-600 text-xs p-1 rounded-md my-1 show">{{ $message }}</span>
+                    @enderror
+                </label>
+                <label class="flex flex-col flex-1 min-w-[45%]" for="discount">
+                    <h1 class="pb-2 max-md:text-sm">Discount</h1>
+                    <input class="max-md:text-sm max-md:py-1 max-md:px-2 border border-gray-400 py-2 px-4 rounded-md"
+                        name="discount" type="number" id="discount" autocomplete="off" value="{{ $item->discount }}"
+                        oninput="validateInput('discount')">
+                    @error('discount')
+                        <span id="discount_error"
+                            class="validation-message text-red-600 text-xs p-1 rounded-md my-1 show">{{ $message }}</span>
+                    @enderror
+                </label>
+                <label class="flex flex-col flex-1 min-w-[45%]" for="category">
+                    <h1 class="pb-2 max-md:text-sm">Category</h1>
+                    <input class="max-md:text-sm max-md:py-1 max-md:px-2 border border-gray-400 py-2 px-4 rounded-md"
+                        name="category" type="text" id="category" autocomplete="off" value="{{ $item->category }}"
+                        oninput="validateInput('category')">
+                    @error('category')
+                        <span id="category_error"
+                            class="validation-message text-red-600 text-xs p-1 rounded-md my-1 show">{{ $message }}</span>
+                    @enderror
+                </label>
+
+                <label class="flex flex-col flex-1 min-w-[45%]" for="availability">
+                    <h1 class="pb-2 max-md:text-sm">Availability</h1>
+                    <input class="max-md:text-sm max-md:py-1 max-md:px-2 border border-gray-400 py-2 px-4 rounded-md"
+                        name="availability" type="text" id="availability" value="{{ $item->availability }}"
+                        oninput="validateInput('availability')">
+                    @error('availability')
+                        <span id="availability_error"
+                            class="validation-message text-red-600 text-xs p-1 rounded-md my-1 show">{{ $message }}</span>
+                    @enderror
+                </label>
+
+                <label class="flex flex-col flex-1 min-w-[45%]" for="condition">
+                    <h1 class="pb-2 max-md:text-sm">Condition</h1>
+                    <input class="max-md:text-sm max-md:py-1 max-md:px-2 border border-gray-400 py-2 px-4 rounded-md"
+                        name="condition" type="text" autocomplete="off" id="condition"
+                        value="{{ $item->condition }}" oninput="validateInput('condition')">
+                    @error('condition')
+                        <span id="condition_error"
                             class="validation-message text-red-600 text-xs p-1 rounded-md my-1 show">{{ $message }}</span>
                     @enderror
                 </label>
@@ -129,35 +137,31 @@
                         id="branch_id" name="branch_id" required>
                         <option class="max-md:text-xs" value="">Select your branch</option>
                         @foreach ($branches as $branch)
-                            <option class="max-md:text-xs" value="{{ $branch->id }}">
+                            <option class="max-md:text-xs" value="{{ $branch->id }}"
+                                {{ $branch->id == $item->branch_id ? 'selected' : '' }}>
                                 {{ $branch->branch_loc }}
                             </option>
                         @endforeach
                     </select>
                 </label>
-                <label class="flex flex-col flex-1 min-w-[45%]" for="next_visit">
-                    <h1 class="pb-2 max-md:text-sm">Date of visit</h1>
-                    <input class="max-md:text-sm max-md:py-1 max-md:px-2 border border-gray-400 py-2 px-4 rounded-md"
-                        name="next_visit" type="date" autocomplete="off" id="next_visit"
-                        value="{{ old('next_visit') }}" oninput="validateInput('next_visit')">
-                    @error('next_visit')
-                        <span id="next_visit_error"
-                            class="validation-message text-red-600 text-xs p-1 rounded-md my-1 show">{{ $message }}</span>
-                    @enderror
+                <label class="flex flex-col flex-1 min-w-[45%] pb-3" for="notes">
+                    <h1>Notes</h1>
+                    <textarea class="border max-md:text-xs flex-grow min-w-max border-gray-400 py-2 px-4 rounded-md" id="notes"
+                        name="notes" required>{{ $item->notes }}</textarea>
                 </label>
             </div>
             <div class="w-full flex gap-2 px-8 mb-3">
                 <button
                     class="flex-1 justify-center items-center py-2 px-8 text-center max-md:py-2 max-md:px-2 max-md:text-xs font-semibold rounded-md hover:bg-green-600 hover:border-green-600 hover:text-white text-gray-800 border-2 border-gray-600 transition-all"
                     type="submit">
-                    Add patient
+                    Update
                 </button>
                 <button
                     class="flex-1 justify-center items-center py-2 px-8 text-center max-md:py-2 max-md:px-2 max-md:text-xs font-semibold rounded-md hover:bg-gray-600 border-2 border-gray-600 hover:text-white text-gray-800  transition-all"
                     type="reset">
                     Reset
                 </button>
-                <a href=" {{ route('patient_list') }} "
+                <a href=" {{ route('inventory') }} "
                     class="flex-1 justify-center items-center py-2 px-8 text-center max-md:py-2 max-md:px-2 max-md:text-xs font-semibold rounded-md hover:bg-red-600 hover:border-red-600 border-2 border-gray-600 text-gray-800  hover:text-white transition-all"
                     type="reset">
                     Cancel

@@ -85,7 +85,7 @@
                             value="{{ old('date') }}" oninput="validateInput('date')">
                         @error('date')
                             <span id="date_error"
-                                class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                                class="validation-message text-red-600 text-xs p-1 rounded-md my-1 show">{{ $message }}</span>
                         @enderror
                     </label>
 
@@ -96,7 +96,7 @@
                                 name="start_time" type="time" id="start_time" step="600">
                             @error('start_time')
                                 <span id="start_time_error"
-                                    class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                                    class="validation-message text-red-600 text-xs p-1 rounded-md my-1 show">{{ $message }}</span>
                             @enderror
                         </label>
                         <label class="flex flex-col flex-1 pb-4" for="end_time">
@@ -105,7 +105,7 @@
                                 name="end_time" type="time" id="end_time" step="600">
                             @error('end_time')
                                 <span id="end_time_error"
-                                    class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                                    class="validation-message text-red-600 text-xs p-1 rounded-md my-1 show">{{ $message }}</span>
                             @enderror
                         </label>
                     </div>
@@ -120,7 +120,7 @@
                         </select>
                         @error('appointment_duration')
                             <span id="appointment_duration_error"
-                                class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                                class="validation-message text-red-600 text-xs p-1 rounded-md my-1 show">{{ $message }}</span>
                         @enderror
                     </label>
                 </div>

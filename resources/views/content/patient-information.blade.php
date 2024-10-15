@@ -1,6 +1,9 @@
 @extends('admin.dashboard')
 
 @section('content')
+    @if (session('success'))
+        @include('components.toast-notification')
+    @endif
     <div class="m-4">
         @include('components.search')
     </div>
@@ -36,7 +39,7 @@
                     <hr>
                     <ul class="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow flex flex-col gap-2">
                         <li><a class=" hidden items-center justify-start gap-2 py-2 px-4 border border-gray-500 rounded-md hover:border-gray-700 hover:shadow-sm transition-all"
-                                href=" {{ route('patient_list') }} ">
+                                href=" {{ route('patient.active') }} ">
                                 <img class="h-8 max-lg:h-4" src="{{ asset('assets/images/back-icon.png') }}" alt="">
                                 <h1 class="max-lg:text-xs">Go back to patient list</h1>
                             </a></li>
@@ -125,17 +128,21 @@
             </div>
             <div class="flex flex-col gap-4 max-lg:hidden">
                 <a class=" flex items-center justify-start gap-2 py-2 px-4 border border-gray-500 rounded-md hover:border-gray-700 hover:shadow-sm transition-all"
-                    href=" {{ route('patient_list') }} ">
+                    @if ($patient->is_archived == '0') href=" {{ route('patient.active') }}"
+                @elseif ($patient->is_archived == '1') href=" {{ route('patient.archived') }} " @endif>
                     <img class="h-8" src="{{ asset('assets/images/arrow-back.png') }}" alt="">
                     <h1>
                         Go back to patient list</h1>
                 </a>
-                <a href="{{ route('edit.patient', $patient->id) }}"
-                    class=" flex items-center justify-start gap-2 py-2 px-4 border border-gray-500 rounded-md hover:border-gray-700 hover:shadow-sm transition-all">
-                    <img class="h-8 " src="{{ asset('assets/images/edit-icon.png') }}" alt="Edit icon">
-                    <h1>
-                        Edit information</h1>
-                </a>
+                @if ($patient->is_archived == '0')
+                    <a href="{{ route('edit.patient', $patient->id) }}"
+                        class=" flex items-center justify-start gap-2 py-2 px-4 border border-gray-500 rounded-md hover:border-gray-700 hover:shadow-sm transition-all">
+                        <img class="h-8 " src="{{ asset('assets/images/edit-icon.png') }}" alt="Edit icon">
+                        <h1>
+                            Edit information</h1>
+                    </a>
+                @elseif ($patient->is_archived == '1')
+                @endif
                 <a href="{{ route('patient.contract', $patient->id) }}"
                     class="flex items-center justify-start gap-2 py-2 px-4 border border-gray-500 rounded-md hover:border-gray-700 hover:shadow-sm transition-all">
                     <img class="h-8" src="{{ asset('assets/images/contract.png') }}" alt="">
