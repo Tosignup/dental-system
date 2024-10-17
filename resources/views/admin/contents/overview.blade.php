@@ -1,12 +1,11 @@
 @extends('admin.dashboard')
 @section('content')
     <div class="m-4">
-
         @include('components.search')
     </div>
-    <section class="flex flex-col justify-start p-6">
+    <section class="flex flex-col justify-start py-2 px-6">
         <div
-            class="flex flex-col items-center justify-center w-full rounded-xl shadow-lg p-7 bg-white my-4 mx-auto gap-4 mt-6 max-lg:mt-14 max-w-5xl">
+            class="flex flex-col items-center justify-center w-full rounded-xl shadow-lg p-7 bg-white my-4 mx-auto gap-4 mt-6 max-lg:mt-14">
             <h1 class=" text-5xl max-md:text-3xl font-bold my-2 ">Good day,
                 {{ Auth::user()->username }}!
             </h1>

@@ -1,7 +1,7 @@
 @extends('admin.dashboard')
 @section('content')
     @if (session('success'))
-        @include('components.toast-notification');
+        @include('components.toast-notification')
     @endif
     <div class="m-4 mb-8">
         @include('components.search')
@@ -43,7 +43,6 @@
                     <th class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Branch</th>
                     <th class="border px-4 py-2 max-xl:hidden">Start Time</th>
                     <th class="border px-4 py-2 max-xl:hidden">End Time</th>
-                    <th class="border px-4 py-2 max-xl:hidden">Appointment Duration</th>
                     <th class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Action</th>
                 </tr>
             </thead>
@@ -72,8 +71,6 @@
                             {{ $schedule->start_time }}</td>
                         <td class=" px-2 py-2 text-sm max-md:py-1 max-md:px-2 max-xl:hidden">
                             {{ $schedule->end_time }}</td>
-                        <td class=" px-2 py-2 text-sm max-xl:hidden">
-                            {{ $schedule->appointment_duration }}</td>
                         <td class=" px-2 py-2 text-sm max-md:py-1 max-md:px-2 max-md:text-xs max-xl:hidden">
                             <div class="flex gap-2 justify-center flex-wrap items-center">
                                 <a class=" border border-slate-600 flex max-md:flex-1 justify-center items-center rounded-md py-2 px-4 max-md:py-1 max-md:px-2 text-white font-semibold hover:bg-gray-300 transition-all"

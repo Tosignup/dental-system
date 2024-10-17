@@ -79,7 +79,7 @@
             </table>
 
             <div class="w-full flex gap-2 mt-4">
-                <a href=" {{ route('show.appointment', $appointment->id) }} "
+                <a href=" {{ route('payments.list', $appointment->patient_id) }} "
                     class="flex w-full justify-center items-center py-2 px-16 text-center max-md:py-2 max-md:px-12 max-md:text-xs font-semibold rounded-md hover:bg-red-600 hover:border-red-600 border-2 border-gray-600 text-gray-800  hover:text-white transition-all"
                     type="reset">
                     Return

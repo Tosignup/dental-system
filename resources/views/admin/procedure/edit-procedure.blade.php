@@ -87,23 +87,7 @@
                                 class="validation-message text-white max-md:text-sm bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
                         @enderror
                     </label>
-                    <label class="flex flex-col flex-1 min-w-[45%] max-md:text-sm" for="visit_type">
-                        <h1>Type of visit</h1>
-                        <select class="border max-md:text-xs flex-grow min-w-max border-gray-400 py-2 px-4 rounded-md"
-                            name="visit_type" id="visit_type" oninput="validateInput('visit_type')">
-                            <option class="max-md:text-xs" value="Single"
-                                {{ old('visit_type', $procedure->visit_type) == 'Single' ? 'selected' : '' }}>Single
-                            </option>
-                            <option class="max-md:text-xs" value="Multiple"
-                                {{ old('visit_type', $procedure->visit_type) == 'Multiple' ? 'selected' : '' }}>
-                                Multiple</option>
 
-                        </select>
-                        @error('visit_type')
-                            <span id="visit_type_error"
-                                class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
-                        @enderror
-                    </label>
                     <label class="flex flex-col flex-1 min-w-[45%] pb-3" for="description">
                         <h1>Description</h1>
                         <textarea class="border max-md:text-xs flex-grow min-w-max border-gray-400 py-2 px-4 rounded-md" id="description"

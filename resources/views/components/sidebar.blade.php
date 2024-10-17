@@ -28,7 +28,7 @@
                 <h1 class="text-sm">Tooth Impressions Dental Clinic</h1>
             </div>
             @if (Auth::user()->role === 'admin')
-                <div class="flex flex-col items-start gap-2">
+                <div class="flex flex-col items-start justify-between gap-2">
                     <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
                         href="{{ route('admin.dashboard') }}">
                         <img class="h-8" src="{{ asset('assets/images/dashboard-icon.png') }}" alt="">
@@ -50,13 +50,27 @@
                             Staff
                         </button>
                     </a>
-                    <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
-                        href="{{ route('patient_list') }}">
-                        <img class="h-8" src="{{ asset('assets/images/patient-list-icon.png') }}" alt="">
-                        <button class="hover:font-bold transition-all">
-                            Patient list
+                    <div x-data="{ open: false }" class="w-full">
+                        <button @click="open = !open"
+                            class="flex justify-start items-center gap-2 hover:bg-gray-300 transition-all w-full p-2 rounded-md">
+                            <img class="h-8" src="{{ asset('assets/images/patient-list-icon.png') }}"
+                                alt="">
+                            <span class="hover:font-bold transition-all">Patients</span>
+                            <svg class="w-4 h-4 ml-auto" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
                         </button>
-                    </a>
+                        <div x-show="open" @click.away="open = false" class="ml-6 mt-1 space-y-1">
+                            <a href="{{ route('patient.active') }}"
+                                class="block px-4 py-2 text-md text-gray-700 hover:bg-gray-200 rounded-md">Active
+                                Patient</a>
+                            <a href="{{ route('patient.archived') }}"
+                                class="block px-4 py-2 text-md text-gray-700 hover:bg-gray-200 rounded-md">Archived
+                                Patient</a>
+                        </div>
+                    </div>
                     <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
                         href="{{ route('schedule') }}">
                         <img class="h-8" src="{{ asset('assets/images/appointment-calendar.png') }}" alt="">
@@ -105,6 +119,20 @@
                             Inventory
                         </button>
                     </a>
+                    <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
+                        href="{{ route('sales') }}">
+                        <img class="h-8" src="{{ asset('assets/images/inventory.png') }}" alt="">
+                        <button class="hover:font-bold transition-all">
+                            Sales Report
+                        </button>
+                    </a>
+                    <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
+                        href="{{ route('audit.logs') }}">
+                        <img class="h-8" src="{{ asset('assets/images/inventory.png') }}" alt="">
+                        <button class="hover:font-bold transition-all">
+                            Audit Logs
+                        </button>
+                    </a>
                 </div>
             @endif
 
@@ -117,13 +145,27 @@
                             Dashboard
                         </button>
                     </a>
-                    <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
-                        href="{{ route('patient_list') }}">
-                        <img class="h-8" src="{{ asset('assets/images/patient-list-icon.png') }}" alt="">
-                        <button class="hover:font-bold transition-all">
-                            Patient List
+                    <div x-data="{ open: false }" class="w-full">
+                        <button @click="open = !open"
+                            class="flex justify-start items-center gap-2 hover:bg-gray-300 transition-all w-full p-2 rounded-md">
+                            <img class="h-8" src="{{ asset('assets/images/patient-list-icon.png') }}"
+                                alt="">
+                            <span class="hover:font-bold transition-all">Patients</span>
+                            <svg class="w-4 h-4 ml-auto" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
                         </button>
-                    </a>
+                        <div x-show="open" @click.away="open = false" class="ml-6 mt-1 space-y-1">
+                            <a href="{{ route('patient.active') }}"
+                                class="block px-4 py-2 text-md text-gray-700 hover:bg-gray-200 rounded-md">Active
+                                Patient</a>
+                            <a href="{{ route('patient.archived') }}"
+                                class="block px-4 py-2 text-md text-gray-700 hover:bg-gray-200 rounded-md">Archived
+                                Patient</a>
+                        </div>
+                    </div>
                     <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
                         href="{{ route('schedule') }}">
                         <img class="h-8" src="{{ asset('assets/images/appointment-calendar.png') }}"
@@ -152,13 +194,6 @@
                                 Request</a>
                         </div>
                     </div>
-                    <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
-                        href="{{ route('inventory') }}">
-                        <img class="h-8" src="{{ asset('assets/images/inventory.png') }}" alt="">
-                        <button class="hover:font-bold transition-all">
-                            Inventory
-                        </button>
-                    </a>
                     <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
                         href="{{ route('inventory') }}">
                         <img class="h-8" src="{{ asset('assets/images/inventory.png') }}" alt="">
@@ -233,6 +268,7 @@
             </dialog>
 
         </div>
+        <h1><Strong>Role: </Strong>{{ Auth::user()->role }}</h1>
     </nav>
 
     {{-- - AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA - --}}
@@ -365,12 +401,33 @@
                         </button>
                     </a>
                     <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
-                        href="{{ route('patient_list') }}">
+                        href="{{ route('staff') }}">
                         <img class="h-5" src="{{ asset('assets/images/patient-list-icon.png') }}" alt="">
                         <button class="hover:font-bold transition-all text-xs">
-                            Patient list
+                            Staff
                         </button>
                     </a>
+                    <div x-data="{ open: false }" class="w-full">
+                        <button @click="open = !open"
+                            class="flex justify-start items-center gap-2 hover:bg-gray-300 transition-all w-full p-2 rounded-md">
+                            <img class="h-5" src="{{ asset('assets/images/patient-list-icon.png') }}"
+                                alt="">
+                            <span class="hover:font-bold transition-all text-xs">Patients</span>
+                            <svg class="w-3 h-3 ml-auto" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div x-show="open" @click.away="open = false" class="ml-6 mt-1 space-y-1">
+                            <a href="{{ route('patient.active') }}"
+                                class="block px-4 py-2 text-xs text-gray-700 hover:bg-gray-200 rounded-md">Active
+                                Patient</a>
+                            <a href="{{ route('patient.archived') }}"
+                                class="block px-4 py-2 text-xs text-gray-700 hover:bg-gray-200 rounded-md">Archived
+                                Patient</a>
+                        </div>
+                    </div>
                     <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
                         href="{{ route('schedule') }}">
                         <img class="h-5" src="{{ asset('assets/images/appointment-calendar.png') }}"
@@ -420,6 +477,20 @@
                             Inventory
                         </button>
                     </a>
+                    <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
+                        href="{{ route('inventory') }}">
+                        <img class="h-5" src="{{ asset('assets/images/inventory.png') }}" alt="">
+                        <button class="hover:font-bold transition-all text-xs">
+                            Sales Report
+                        </button>
+                    </a>
+                    <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
+                        href="{{ route('inventory') }}">
+                        <img class="h-5" src="{{ asset('assets/images/inventory.png') }}" alt="">
+                        <button class="hover:font-bold transition-all text-xs">
+                            Audit Logs
+                        </button>
+                    </a>
                 </div>
             @endif
             @if (Auth::user()->role === 'staff')
@@ -431,13 +502,6 @@
                         <img class="h-5" src="{{ asset('assets/images/dashboard-icon.png') }}" alt="">
                         <button class="hover:font-bold transition-all text-xs">
                             Dashboard
-                        </button>
-                    </a>
-                    <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
-                        href="{{ route('patient_list') }}">
-                        <img class="h-5" src="{{ asset('assets/images/patient-list-icon.png') }}" alt="">
-                        <button class="hover:font-bold transition-all text-xs">
-                            Patient list
                         </button>
                     </a>
                     <div x-data="{ open: false }" class="w-full">
@@ -480,6 +544,7 @@
         </div>
         <div id="overlay"></div>
         <div class="flex self-start max-md:text-xs m-2.5">
+            {{-- <h1><Strong>Role: </Strong>{{ Auth::user()->role }}</h1> --}}
             <div class="flex gap-2 items-center justify-center">
                 <img class="max-md:h-4 h-4" src="{{ asset('assets/images/logout.png') }}" alt="">
                 <button class="btn" onclick="my_modal_1.showModal()">Log out</button>
@@ -504,6 +569,7 @@
                 </div>
             </dialog>
         </div>
+
     </nav>
 
     <script>

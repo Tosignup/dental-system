@@ -21,6 +21,7 @@ return new class extends Migration
             $table->enum('status', ['active', 'inactive'])->default('inactive');
             $table->foreignId('patient_id')->nullable()->constrained('patients')->onDelete('cascade');
             $table->foreignId('dentist_id')->nullable()->constrained('dentists')->onDelete('cascade');
+            $table->foreignId('staff_id')->nullable()->constrained('staff')->onDelete('cascade');
             $table->rememberToken();
             $table->timestamps();
 

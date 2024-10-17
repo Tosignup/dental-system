@@ -55,7 +55,7 @@
             {{-- testing --}}
             <tbody>
                 @foreach ($online_appointments as $appointment)
-                    <tr class="text-center">
+                    <tr class="border-b-2">
                         <td class=" max-lg:py-2 max-lg:px-2 text-black max-lg:text-xs text-sm">
                             <span class="max-lg:hidden">{{ $appointment->patient->first_name }}</span>
                             {{ $appointment->patient->last_name }}

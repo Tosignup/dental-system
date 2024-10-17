@@ -26,7 +26,7 @@ class StaffController extends Controller
         $todayAppointment = Appointment::whereDate('appointment_date', $today)->count();
         $newAppointments = Appointment::whereDate('created_at', $today)->count();
 
-        return view('content.overview', compact('totalPatients', 'newPatients', 'todayPatients', 'totalAppointments', 'newAppointments', 'todayAppointment'));
+        return view('admin.contents.overview', compact('totalPatients', 'newPatients', 'todayPatients', 'totalAppointments', 'newAppointments', 'todayAppointment'));
 
         // return view('content.overview');
     }
@@ -36,7 +36,7 @@ class StaffController extends Controller
     public function addStaff()
     {
         $branches = Branch::all();
-        return view('forms.add-staff', compact('branches'));
+        return view('admin.forms.add-staff', compact('branches'));
     }
 
     public function storeStaff(Request $request)
@@ -80,7 +80,7 @@ class StaffController extends Controller
 
         $staff = Staff::findOrFail($id);
 
-        return view('forms.update-staff', compact('staff'));
+        return view('admin.forms.update-staff', compact('staff'));
     }
     public function updateStaff(Request $request, $id)
     {
@@ -107,6 +107,6 @@ class StaffController extends Controller
 
         // $staff = staff::with('staffSchedule')->findOrFail($id);
 
-        return view('content.staff-information', compact('staff'));
+        return view('staff.contents.staff-information', compact('staff'));
     }
 }

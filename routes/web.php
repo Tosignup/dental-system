@@ -97,9 +97,13 @@ Route::group(['middleware' => ['auth', 'verified','role:admin,staff']], function
     Route::post('/schedule/{scheduleId}/edit', [ScheduleController::class, 'updateSchedule'])->name('schedule.update');
     Route::delete('/schedule/{id}/delete', [ScheduleController::class, 'deleteSchedule'])->name('schedule.delete');
     Route::get('/show-schedule/{schedule}', [ScheduleController::class, 'show'])->name('show.schedule');
+
+    // Route::get('/admin/scheduled-dates/{dentistId}', [ScheduleController::class, 'fetchScheduledDates']);
+    Route::get('/scheduled-dates/{dentistId}', [ScheduleController::class, 'fetchScheduledDates']);
     
     //Payment TEsting
-    Route::get('/appointments/{appointmentId}/payment', [PaymentController::class, 'create'])->name('payments.form');
+    Route::get('{id}/payment-list', [PaymentController::class, 'paymentList'])->name('payments.list');
+    Route::get('/appointments/{id}/payment', [PaymentController::class, 'create'])->name('payments.form');
     Route::post('/payments/{paymentId}/store', [PaymentController::class, 'storePartialPayment'])->name('payments.store');
     Route::get('/payments/{paymentId}/history', [PaymentController::class, 'showPaymentHistory'])->name('payments.history');
     
@@ -146,6 +150,9 @@ Route::group(['middleware' => ['auth', 'verified','role:admin,staff']], function
     Route::get('/inventory/edit/{id}', [InventoryController::class, 'editItem'])->name('item.edit');
     Route::put('/inventory/update/{id}', [InventoryController::class, 'updateItem'])->name('item.update');
     Route::delete('/inventory/delete/{id}', [InventoryController::class, 'deleteItem'])->name('item.delete');
+
+    //Sale report
+    Route::get('/sales-report', [AdminController::class, 'salesReport'])->name('sales');
 
 
 });

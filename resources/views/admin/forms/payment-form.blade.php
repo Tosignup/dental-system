@@ -89,6 +89,7 @@
                     <h4 class="max-md:text-xs mb-1"> Procedure: </h4>
                     <h4 class="max-md:text-xs mb-1"> Appointment Date: </h4>
                     <h4 class="max-md:text-xs mb-1"> Total Amount Due: </h4>
+                    <h4 class="max-md:text-xs mb-1"> Balance Remaining: </h4>
                 </div>
                 <div class=" w-1/2 text-right">
                     <h2 class="max-md:text-xs font-semibold mb-1">
@@ -99,8 +100,8 @@
                         {{ $appointment->appointment_date }}</h2>
                     <h2 class="max-md:text-xs font-semibold mb-1">&#8369;
                         {{ number_format($appointment->procedure->price, 2) }}</h2>
-                    {{-- <h2 class="max-md:text-xs font-semibold mb-1">&#8369;
-                        {{ number_format($balanceRemaining, 2) }}</h2> --}}
+                    <h2 class="max-md:text-xs font-semibold mb-1">&#8369;
+                        {{ number_format($balanceRemaining, 2) }}</h2>
 
                 </div>
             </div>
@@ -144,9 +145,7 @@
                             History
                         </a>
 
-                        <a @if (Auth::user()->role === 'admin' || Auth::user()->role === 'staff') href=" {{ route('show.appointment', $appointment->id) }} "
-                             @elseif (Auth::user()->role === 'dentist')href=" {{ route('appointments.payment', $appointment->dentist_id) }} "  
-                             @elseif (Auth::user()->role === 'client') href=" {{ route('client.overview', $appointment->patient_id) }} " @endif
+                        <a href=" {{ route('payments.list', $appointment->patient_id) }} "
                             class="flex justify-center items-center py-2 px-8 text-center max-md:py-2 max-md:text-xs font-semibold rounded-md hover:bg-red-600 hover:border-red-600 border-2 border-gray-600 text-gray-800  hover:text-white transition-all"
                             type="reset">
                             Cancel
@@ -161,7 +160,7 @@
 
 
                 <!-- Password Confirmation Modal -->
-                <div id="passwordModal" class="payment_modal inset-0 items-center justify-center z-50"
+                <div id="passwordModal" class="payment-modal inset-0 items-center justify-center z-50"
                     style="display: none">
                     <div class="bg-white rounded-lg shadow-lg p-6 w-96">
                         <h5 class="text-lg font-bold mb-4">Confirm Your Password</h5>
@@ -243,16 +242,14 @@
                         document.getElementById('password').value = ''; // Clear the password field
                         document.getElementById('passwordModal').style.display = "none"; // Hide the modal
                         // Handle success (e.g., redirect or show a success message)
-                        const userRole = '{{ Auth::user()->role }}';
-                        if (userRole === 'admin') {
-                            window.location.href = '{{ route('show.appointment', $appointment->id) }}';
-                        } else if (userRole === 'staff') {
-                            window.location.href =
-                                '{{ route('show.appointment', $appointment->id) }}';
-                        }
+
+                        window.location.href = '{{ route('payments.list', $appointment->patient_id) }}';
+
                     } else {
                         // Handle error (e.g., show an error message)
                         alert(data.message);
+                        document.getElementById('password').value = ''; // Clear the password field
+                        loadingIndicator.style.display = "none"; // Hide loading indicator
                     }
                 })
                 .catch(error => console.error('Error:', error));

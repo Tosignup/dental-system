@@ -228,13 +228,6 @@
                     method: 'POST',
                     body: formData
                 })
-                // .then(response => {
-                //     loadingIndicator.style.display = 'none'; // Hide loading indicator
-                //     if (!response.ok) {
-                //         throw new Error('Network response was not ok ' + response.statusText);
-                //     }
-                //     return response.json();
-                // })
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
@@ -249,6 +242,8 @@
                     } else {
                         // Handle error (e.g., show an error message)
                         alert(data.message);
+                        document.getElementById('password').value = ''; // Clear the password field
+                        loadingIndicator.style.display = "none"; // Hide loading indicator
                     }
                 })
                 .catch(error => console.error('Error:', error));

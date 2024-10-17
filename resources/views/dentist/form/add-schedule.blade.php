@@ -96,10 +96,9 @@
                         <h1>Select Dentist</h1>
                         <select class="border max-md:text-xs flex-grow min-w-max border-gray-400 py-2 px-4 rounded-md"
                             id="dentist_id" name="dentist_id" required>
-                            <option class="max-md:text-xs" value="">Select Dentist</option>
+                            <option class="max-md:text-xs" value="">Select branch first</option>
                         </select>
                     </label>
-                    {{-- JavaScript Approach --}}
                     <label class="flex flex-col flex-1 pb-4" for="date">Select Date:
                         <input type="date" id="date" name="date"
                             class="border max-md:text-xs flex-grow min-w-max border-gray-400 py-2 px-4 rounded-md" required>
@@ -107,43 +106,12 @@
                             class="mt-4 py-2 max-md:text-xs max-md:py-2 max-md:px-4 font-medium rounded-md hover:bg-green-600 hover:border-green-600 hover:text-white text-gray-800 border border-gray-600 transition-all">Add
                             Date</button>
                         <input type="hidden" name="selected_dates" id="selected_dates">
-                        <div id="selected_dates_display" class="my-4 text-gray-800 rounded-md">
+                        <div id="selected_dates_display" class="flex flex-wrap my-4 text-gray-800 rounded-md">
                             Selected dates:
                         </div>
 
                     </label>
-                    <script>
-                        const selectedDates = [];
 
-                        document.getElementById('addDate').addEventListener('click', function() {
-                            const dateInput = document.getElementById('date');
-                            const dateValue = dateInput.value;
-
-                            if (dateValue && !selectedDates.includes(dateValue)) {
-                                selectedDates.push(dateValue);
-                                document.getElementById('selected_dates').value = JSON.stringify(selectedDates);
-                                updateSelectedDatesDisplay();
-                            } else {
-                                alert('Please select a valid date or avoid duplicates.');
-                            }
-                        });
-
-                        function updateSelectedDatesDisplay() {
-                            const displayElement = document.getElementById('selected_dates_display');
-                            displayElement.innerHTML = '';
-                            if (selectedDates.length > 0) {
-                                const list = document.createElement('ul');
-                                selectedDates.forEach(date => {
-                                    const listItem = document.createElement('li');
-                                    listItem.textContent = date;
-                                    list.appendChild(listItem);
-                                });
-                                displayElement.appendChild(list);
-                            } else {
-                                displayElement.textContent = 'No dates selected.';
-                            }
-                        }
-                    </script>
                     <div class="flex flex-wrap flex-1 gap-4 pb-4">
                         <label class="flex flex-col flex-1" for="start_time">
                             <h1>Start Time</h1>
@@ -157,14 +125,15 @@
                         <label class="flex flex-col flex-1" for="end_time">
                             <h1>End Time</h1>
                             <input class="border max-md:text-xs flex-grow min-w-max border-gray-400 py-2 px-4 rounded-md"
-                                name="end_time" type="time" id="end_time" step="600">
+                                name="end_time" type="time" id="end_time" step="1800">
                             @error('end_time')
                                 <span id="end_time_error"
                                     class="validation-message text-red-600 text-xs p-1 rounded-md my-1 show">{{ $message }}</span>
                             @enderror
                         </label>
                     </div>
-                    <label class="flex flex-col flex-1" for="appointment_duration">
+                    <input type="hidden" id="appointment_duration" name="appointment_duration" value="60">
+                    {{-- <label class="flex flex-col flex-1" for="appointment_duration">
                         <h1>Appointment Duration</h1>
                         <select class="border max-md:text-xs flex-grow min-w-max border-gray-400 py-2 px-4 rounded-md"
                             id="appointment_duration" name="appointment_duration" required>
@@ -172,7 +141,7 @@
                             <option value="30"> 30 Minutes</option>
                             <option value="45"> 45 Minutes</option>
                             <option value="60"> 60 Minutes</option>
-                        </select>
+                        </select> --}}
                 </div>
                 <div class="flex gap-4 ">
                     <button
@@ -221,6 +190,38 @@
                     errorElement.classList.remove('hide');
                     errorElement.classList.add('show');
                 }
+            }
+        }
+
+
+        const selectedDates = [];
+
+        document.getElementById('addDate').addEventListener('click', function() {
+            const dateInput = document.getElementById('date');
+            const dateValue = dateInput.value;
+
+            if (dateValue && !selectedDates.includes(dateValue)) {
+                selectedDates.push(dateValue);
+                document.getElementById('selected_dates').value = JSON.stringify(selectedDates);
+                updateSelectedDatesDisplay();
+            } else {
+                alert('Please select a valid date or avoid duplicates.');
+            }
+        });
+
+        function updateSelectedDatesDisplay() {
+            const displayElement = document.getElementById('selected_dates_display');
+            displayElement.innerHTML = '';
+            if (selectedDates.length > 0) {
+                const list = document.createElement('ul');
+                selectedDates.forEach(date => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = date;
+                    list.appendChild(listItem);
+                });
+                displayElement.appendChild(list);
+            } else {
+                displayElement.textContent = 'No dates selected.';
             }
         }
     </script>

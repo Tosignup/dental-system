@@ -37,12 +37,6 @@
                         <td class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">{{ $procedure->id }}</td>
                         <td class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">{{ $procedure->name }}</td>
                         <td class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">{{ $procedure->price }}</td>
-                        {{-- <td class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">
-                            <span
-                                @if ($procedure->visit_type === 'Single') class="bg-slate-200 text-slate-700 py-1 px-3 rounded-full font-semibold">
-                                @elseif ($procedure->visit_type === 'Multiple') class="bg-green-200 text-green-700 py-1 px-3 rounded-full font-semibold"> @endif
-                                {{ $procedure->visit_type }}</span>
-                        </td> --}}
                         <td class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs max-md:flex">
                             <div class="flex gap-2 justify-center flex-wrap items-center">
                                 <a class=" border border-slate-600 flex max-md:flex-1 justify-center items-center rounded-md py-2 px-4 max-md:py-1 max-md:px-2 text-white font-semibold hover:bg-gray-300 transition-all"

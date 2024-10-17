@@ -157,7 +157,7 @@
                     type="reset">
                     Reset
                 </button>
-                <a href=" {{ route('patient_list') }} "
+                <a href=" {{ route('patient.active') }} "
                     class="flex-1 justify-center items-center py-2 px-8 text-center max-md:py-2 max-md:px-2 max-md:text-xs font-semibold rounded-md hover:bg-red-600 hover:border-red-600 border-2 border-gray-600 text-gray-800  hover:text-white transition-all"
                     type="reset">
                     Cancel

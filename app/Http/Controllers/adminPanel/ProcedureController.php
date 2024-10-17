@@ -24,18 +24,16 @@ class ProcedureController extends Controller
         $request->validate([
             'name' => 'required|string',
             'price' => 'required|numeric|min:0',
-            'visit_type' => 'required',
             'description' => 'required',
         ]);
 
         Procedure::create([
             'name' => $request->name,
             'price' => $request->price,
-            'visit_type' => $request->visit_type,
             'description' => $request->description,
         ]);
 
-        return redirect()->route('procedure')->with('Procedure successfully added!');
+        return redirect()->route('procedure')->with('success', 'Procedure successfully added!');
         session()->flash('success', 'Procedure successfully added!');
     }
 
@@ -52,14 +50,12 @@ class ProcedureController extends Controller
         $request->validate([
             'name' => 'required|string',
             'price' => 'required|numeric|min:0',
-            'visit_type' => 'required',
             'description' => 'required',
         ]);
 
         $procedure->update([
             'name' => $request->name,
             'price' => $request->price,
-            'visit_type' => $request->visit_type,
             'description' => $request->description,
         ]);
         return redirect()->route('procedure')->with('success', 'Procedure updated successfully!');

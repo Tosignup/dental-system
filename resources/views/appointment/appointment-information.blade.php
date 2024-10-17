@@ -13,7 +13,7 @@
                 class="flex justify-start font-semibold max-lg:text-xs border-gray-600 py-1 max-lg:px-2 w-max gap-2"><img
                     class="h-6" src="{{ asset('assets/images/arrow-back.png') }}" alt=""> Back</a>
         </div>
-        <div class="flex justify-around p-2 max-sm:flex-col">
+        <div class="flex justify-start p-2 max-sm:flex-col">
             <div class="flex flex-col max-2xl:flex-wrap p-2 max-md:mb-4">
                 <h1 class="text-2xl font-bold max-md:text-3xl mb-4 max-lg:mb-2">
                     Appointment Information
@@ -82,7 +82,7 @@
                     @endif
                 </div>
             </div>
-            <div class="flex flex-col justify-between max-2xl:flex-wrap p-2 max-md:mb-4">
+            {{-- <div class="flex flex-col justify-between max-2xl:flex-wrap p-2 max-md:mb-4">
 
                 <h1 class="text-2xl font-bold max-md:text-3xl mb-4 max-lg:mb-2">
                     Payment Information
@@ -139,8 +139,8 @@
                             <p>Payment has been declined</p>
                         @endif
                     @endif
-                </div>
-            </div>
+                </div> --}}
+        </div>
         </div>
     </section>
 @endsection

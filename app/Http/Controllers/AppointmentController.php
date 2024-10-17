@@ -36,86 +36,6 @@ class AppointmentController extends Controller
         return view('appointment.appointment-information', compact('appointment'));
     }
 
-
-    public function appointment_submission(Request $request)
-    {
-        $walkinAppointmentsQuery = Appointment::with(['patient', 'branch', 'dentistSchedule'])
-            ->where('is_online', 0);
-
-        $onlineAppointmentsQuery = Appointment::with(['patient', 'branch', 'dentistSchedule'])
-            ->where('is_online', 1);
-            
-
-            if ($request->has('sort')) {
-                $sortOption = $request->get('sort');
-    
-                if ($sortOption == 'created_at') {
-                    $walkinAppointmentsQuery->orderBy('created_at', 'ASC');
-                    $onlineAppointmentsQuery->orderBy('created_at', 'ASC');
-                } elseif ($sortOption == 'appointment_date') {
-                    $walkinAppointmentsQuery->orderBy('appointment_date', 'ASC');
-                    $onlineAppointmentsQuery->orderBy('appointment_date', 'ASC');
-                } elseif ($sortOption == 'status') {
-                    $walkinAppointmentsQuery->orderBy('pending', 'ASC');
-                    $onlineAppointmentsQuery->orderBy('pending', 'ASC');
-                } elseif ($sortOption == 'branch') {
-                    $walkinAppointmentsQuery->orderBy('branch_id', 'ASC');
-                    $onlineAppointmentsQuery->orderBy('branch_id', 'ASC');
-                }
-            } else {
-                $walkinAppointmentsQuery->orderBy('created_at', 'ASC');
-                $onlineAppointmentsQuery->orderBy('created_at', 'ASC');
-            }
-
-        $walkin_appointments = $walkinAppointmentsQuery->paginate(10);
-        $online_appointments = $onlineAppointmentsQuery->paginate(10);
-
-        return view('content.appointment-submissions', compact('walkin_appointments', 'online_appointments'));
-    }
-
-
-    public function appointment_submission1(Request $request)
-    {
-        $walkinAppointmentsQuery = Appointment::with(['patient', 'branch', 'dentistSchedule'])
-            ->where('is_online', 0);
-
-        $onlineAppointmentsQuery = Appointment::with(['patient', 'branch', 'dentistSchedule'])
-            ->where('is_online', 1);
-            
-
-            if ($request->has('sort')) {
-                $sortOption = $request->get('sort');
-                $walkinAppointmentsQuery = $this->applySorting($walkinAppointmentsQuery, $sortOption);
-                $onlineAppointmentsQuery = $this->applySorting($onlineAppointmentsQuery, $sortOption);
-            } else {
-                $walkinAppointmentsQuery->orderBy('created_at', 'ASC');
-                $onlineAppointmentsQuery->orderBy('created_at', 'ASC');
-            }
-            
-
-        $walkin_appointments = $walkinAppointmentsQuery->paginate(10);
-        $online_appointments = $onlineAppointmentsQuery->paginate(10);
-
-        return view('content.appointment-submissions', compact('walkin_appointments', 'online_appointments'));
-    }
-
-    private function applySorting($query, $sortOption)
-    {
-        switch ($sortOption) {
-            case 'created_at':
-                return $query->orderBy('created_at', 'ASC');
-            case 'appointment_date':
-                return $query->orderBy('appointment_date', 'ASC');
-            case 'status':
-                return $query->orderBy('pending', 'ASC');
-            case 'branch':
-                return $query->orderBy('branch_id', 'ASC');
-            default:
-                return $query->orderBy('created_at', 'ASC');
-        }
-    }
-
-
     public function addWalkIn()
     {
         $branches = Branch::all();
@@ -207,6 +127,14 @@ class AppointmentController extends Controller
             return redirect()->back()->withErrors(['error' => 'This appointment slot is already taken for this patient.']);
         }
 
+        $patientAppointment = Appointment::where('patient_id', $validatedData['patient_id'])
+        ->where('appointment_date', $validatedData['appointment_date'])
+        ->first();
+
+        if ($patientAppointment) {
+            return redirect()->back()->withErrors(['error' => 'This patient already has an appointment on this date.']);
+        }
+
         // Create the new appointment record
         $appointment = Appointment::create([
             'patient_id' => $validatedData['patient_id'],
@@ -241,6 +169,32 @@ class AppointmentController extends Controller
             'pending' => 'pending',
             'is_online' => 'boolean',
         ]);
+
+        // Check for existing appointments to prevent duplicates
+        $existingAppointment = Appointment::where('appointment_date', $validatedData['appointment_date'])
+                ->where('preferred_time', $validatedData['preferred_time'])
+                ->first();
+
+        if ($existingAppointment) {
+            return redirect()->back()->withErrors(['error' => 'This appointment slot is already taken.']);
+        }
+
+        $existingAppointment = Appointment::where('patient_id', $validatedData['patient_id'])
+        ->where('appointment_date', $validatedData['appointment_date'])
+        ->where('preferred_time', $validatedData['preferred_time'])
+        ->first();
+
+        if ($existingAppointment) {
+            return redirect()->back()->withErrors(['error' => 'This appointment slot is already taken for this patient.']);
+        }
+
+        $patientAppointment = Appointment::where('patient_id', $validatedData['patient_id'])
+        ->where('appointment_date', $validatedData['appointment_date'])
+        ->first();
+
+        if ($patientAppointment) {
+            return redirect()->back()->withErrors(['error' => 'This patient already has an appointment on this date.']);
+        }
 
 
         // Create the new appointment record
@@ -376,7 +330,7 @@ class AppointmentController extends Controller
 
         $walkin_appointments = $walkinAppointmentsQuery->paginate(10);
 
-        return view('content.appointment-walkIn-list', [
+        return view('appointment.appointment-walkIn-list', [
             'walkin_appointments' =>  $walkin_appointments,
             'sort' => $request->get('sort')
         ]);
@@ -415,7 +369,7 @@ class AppointmentController extends Controller
 
         $online_appointments = $onlineAppointmentsQuery->paginate(10);
 
-        return view('content.appointment-online-list', [
+        return view('appointment.appointment-online-list', [
             'online_appointments' => $online_appointments,
             'sort' => $request->get('sort'),
         ]);

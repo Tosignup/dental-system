@@ -50,15 +50,6 @@
                                 class="validation-message text-white max-md:text-sm bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
                         @enderror
                     </label>
-                    <label class="flex flex-col flex-1 min-w-[45%] pb-3" for="visit_type">
-                        <h1>Type of visit</h1>
-                        <select class="border max-md:text-xs flex-grow min-w-max border-gray-400 py-2 px-4 rounded-md"
-                            id="visit_type" name="visit_type" required>
-                            <option class="max-md:text-xs" value="Single">Single</option>
-                            <option class="max-md:text-xs" value="Multiple">Multiple</option>
-                        </select>
-                    </label>
-
                     <label class="flex flex-col flex-1 min-w-[45%] pb-3" for="description">
                         <h1>Description</h1>
                         <textarea class="border max-md:text-xs flex-grow min-w-max border-gray-400 py-2 px-4 rounded-md" id="description"

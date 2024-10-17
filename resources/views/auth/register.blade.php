@@ -107,6 +107,17 @@
                         @enderror
                     </label>
 
+                    <label class="flex flex-col flex-1" for="fb_name">
+                        <h1 class=" max-lg:text-sm">Facebook name</h1>
+                        <input
+                            class="border border-gray-400 py-2 px-4 rounded-md max-lg:py-1 max-lg:text-sm max-lg:px-2 text-gray-900"
+                            name="fb_name" type="text" autocomplete="off" id="fb_name" placeholder="Dela Cruz"
+                            value="{{ old('fb_name') }}" oninput="validateInput('fb_name')">
+                        @error('fb_name')
+                            <span id="fb_name_error"
+                                class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
+                        @enderror
+                    </label>
                     <label class="flex flex-col flex-1 " for="password">
                         <h1 class=" max-lg:text-sm">Password</h1>
                         <input
@@ -127,18 +138,6 @@
                             oninput="validateInput('password_confirmation')">
                         @error('password_confirmation')
                             <span id="password_confirmation_error"
-                                class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
-                        @enderror
-                    </label>
-
-                    <label class="flex flex-col flex-1" for="fb_name">
-                        <h1 class=" max-lg:text-sm">Facebook name</h1>
-                        <input
-                            class="border border-gray-400 py-2 px-4 rounded-md max-lg:py-1 max-lg:text-sm max-lg:px-2 text-gray-900"
-                            name="fb_name" type="text" autocomplete="off" id="fb_name" placeholder="Dela Cruz"
-                            value="{{ old('fb_name') }}" oninput="validateInput('fb_name')">
-                        @error('fb_name')
-                            <span id="fb_name_error"
                                 class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
                         @enderror
                     </label>

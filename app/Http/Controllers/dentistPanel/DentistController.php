@@ -122,7 +122,7 @@ class DentistController extends Controller
     public function addDentist()
     {
         $branches = Branch::all();
-        return view('forms.add-dentist', compact('branches'));
+        return view('admin.forms.add-dentist', compact('branches'));
     }
 
     public function storeDentist(Request $request)
@@ -161,7 +161,6 @@ class DentistController extends Controller
         ]);
 
         return redirect()->route('dentist')->with('success', 'Dentist created successfully');
-        session()->flash('success', 'Dentist created successfully!');
     }
 
 
@@ -171,7 +170,7 @@ class DentistController extends Controller
         $dentist = Dentist::findOrFail($id);
         $branches = Branch::all();
 
-        return view('forms.update-dentist', compact('dentist', 'branches'));
+        return view('admin.forms.update-dentist', compact('dentist', 'branches'));
     }
     public function updateDentist(Request $request, $id)
     {
@@ -199,7 +198,7 @@ class DentistController extends Controller
 
         $dentist = Dentist::with('branch')->findOrFail($id);
 
-        return view('content.dentist-information', compact('dentist'));
+        return view('dentist.contents.dentist-information', compact('dentist'));
     }
 
     public function getDentists($branchId) //w
@@ -220,11 +219,12 @@ class DentistController extends Controller
     {
         try {
             // Get the current date and time
-            $now = Carbon::now();
+            $tom = Carbon::tomorrow();
 
             // Retrieve only future schedules for the selected dentist
             $schedules = DentistSchedule::where('dentist_id', $dentistId)
-                // ->where('date', '>', $now)
+                ->where('date', '>=', $tom)
+                ->orderBy('date', 'ASC')
                 ->get();
 
             if ($schedules->isEmpty()) {
@@ -252,7 +252,8 @@ class DentistController extends Controller
         // Start and end times from the schedule
         $startTime = new \DateTime($schedule->start_time);
         $endTime = new \DateTime($schedule->end_time);
-        $appointmentDuration = $schedule->appointment_duration; // Duration in minutes
+        // $appointmentDuration = $schedule->appointment_duration; 
+        $appointmentDuration = 60; // Duration in minutes
 
         // Array to store time slots
         $timeSlots = [];
@@ -283,16 +284,6 @@ class DentistController extends Controller
             'date' => $schedule->date
         ]);
     }
-
-    // public function viewPayments(Request $request)
-    // {
-    //     // Assuming you have a relationship set up in your Dentist model
-    //     $dentist = auth()->user()->id; // Get the logged-in dentist's ID
-
-
-
-    //     return view('dentist.contents.overview', compact('dentist','payments'));
-    // }
 
 
     public function showDentistAppointmentInfo($id)
@@ -395,9 +386,6 @@ class DentistController extends Controller
             'payment_method' => $request->payment_method,
             'remarks' => $request->remarks ?? null, // Optional remarks
         ]);
-        // Return a success response
-        // return redirect()->route('show.appointment', $appointment->id)
-        //                  ->with('success', 'Payment processed successfully!');
         return response()->json(['success' => true]);
     }
 

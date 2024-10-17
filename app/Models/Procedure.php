@@ -15,7 +15,6 @@ class Procedure extends Model
         'name',
         'description',
         'price',
-        'visit_type'
     ];
 
     public function appointment()

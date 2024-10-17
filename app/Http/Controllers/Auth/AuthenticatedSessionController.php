@@ -39,41 +39,84 @@ class AuthenticatedSessionController extends Controller
     //     return redirect()->intended(RouteServiceProvider::HOME);
     // }
 
-    public function store(LoginRequest $request): RedirectResponse
-    {
+    // public function store(LoginRequest $request): RedirectResponse
+    // {
    
-        $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string',
-        ]);
+    //     $request->validate([
+    //         'email' => 'required|string|email',
+    //         'password' => 'required|string',
+    //     ]);
 
-        if (Auth::attempt($request->only('email', 'password'))) {
-            $request->session()->regenerate();
+    //     if (Auth::attempt($request->only('email', 'password'))) {
+    //         $request->session()->regenerate();
 
-            $user = User::where('email', $request->email)->first();
+    //         $user = User::where('email', $request->email)->first();
 
-            if ($user && $user->patient_id) {
-                session(['patient_id' => $user->patient_id]);
-            }
+    //         if ($user && $user->patient_id) {
+    //             session(['patient_id' => $user->patient_id]);
+    //         }
 
-            if($request->user()->role === 'admin'){
-                return redirect()->route('admin.dashboard');
-            } elseif($request->user()->role === 'staff'){
-                return redirect()->route('staff.dashboard');
-            } elseif($request->user()->role === 'dentist'){
-                return redirect()->route('dentist.dashboard', Auth::user()->dentist_id);
-            }   else {
-                return redirect()->intended(RouteServiceProvider::HOME);
+    //         if($request->user()->role === 'admin'){
+    //             return redirect()->route('admin.dashboard');
+    //         } elseif($request->user()->role === 'staff'){
+    //             return redirect()->route('staff.dashboard');
+    //         } elseif($request->user()->role === 'dentist'){
+    //             return redirect()->route('dentist.dashboard', Auth::user()->dentist_id);
+    //         }   else {
+    //             return redirect()->intended(RouteServiceProvider::HOME);
 
-            }
+    //         }
     
+    //     }
+
+    //     return back()->withErrors([
+    //         'email' => 'The provided credentials do not match our records.',
+    //     ]);
+
+    // }
+
+    public function store(LoginRequest $request): RedirectResponse
+{
+    $request->validate([
+        'email' => 'required|string|email',
+        'password' => 'required|string',
+    ]);
+
+    if (Auth::attempt($request->only('email', 'password'))) {
+        $request->session()->regenerate();
+
+        $user = Auth::user(); // Get the authenticated user
+
+        // Check if the user's email is verified
+        if (!$user->hasVerifiedEmail()) {
+            // Send a verification link
+            $user->sendEmailVerificationNotification();
+
+            // Optionally, you can redirect to a specific route with a message
+            return redirect()->route('verification.notice')->with('status', 'Verification link sent! Please check your email.');
         }
 
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ]);
+        // Store patient_id in session if it exists
+        if ($user->patient_id) {
+            session(['patient_id' => $user->patient_id]);
+        }
 
+        // Redirect based on user role
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.dashboard');
+        } elseif ($user->role === 'staff') {
+            return redirect()->route('staff.dashboard');
+        } elseif ($user->role === 'dentist') {
+            return redirect()->route('dentist.dashboard', $user->dentist_id);
+        } else {
+            return redirect()->intended(RouteServiceProvider::HOME);
+        }
     }
+
+    return back()->withErrors([
+        'email' => 'The provided credentials do not match our records.',
+    ]);
+}
 
     /**
      * Destroy an authenticated session.

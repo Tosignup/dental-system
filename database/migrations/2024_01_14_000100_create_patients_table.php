@@ -24,7 +24,7 @@ return new class extends Migration
             $table->date('next_visit')->nullable();
             $table->boolean('is_archived')->default(false);
             $table->timestamp('archived_at')->nullable();
-
+            $table->foreignId('branch_id')->nullable()->constrained('branches')->onDelete('cascade');
             $table->timestamps();
         });
 

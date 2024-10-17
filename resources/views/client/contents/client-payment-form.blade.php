@@ -236,6 +236,8 @@
                         window.location.href = '{{ route('client.overview', $appointment->patient_id) }}';
                     } else {
                         alert(data.message);
+                        document.getElementById('password').value = ''; // Clear the password field
+                        loadingIndicator.style.display = "none"; // Hide loading indicator
                     }
                 })
                 .catch(error => console.error('Error:', error));

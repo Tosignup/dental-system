@@ -8,9 +8,11 @@ use App\Models\Staff;
 use App\Models\Branch;
 use App\Models\Dentist;
 use App\Models\Patient;
+use App\Models\Payment;
 use App\Models\AuditLog;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
+use App\Models\PaymentHistory;
 use App\Models\DentistSchedule;
 use App\Http\Controllers\Controller;
 
@@ -18,6 +20,10 @@ class AdminController extends Controller
 {
     public function overview()
     {
+        $payments = Payment::with('appointment')->get();
+
+        $totalRevenue = $payments->sum('amount_due');
+
         $today = Carbon::today();
 
         $totalPatients = Patient::count();
@@ -28,7 +34,7 @@ class AdminController extends Controller
         $todayAppointment = Appointment::whereDate('appointment_date', $today)->count();
         $newAppointments = Appointment::whereDate('created_at', $today)->count();
 
-        return view('content.overview', compact('totalPatients', 'newPatients', 'todayPatients', 'totalAppointments', 'newAppointments', 'todayAppointment'));
+        return view('admin.contents.overview', compact('payments', 'totalPatients', 'newPatients', 'todayPatients', 'totalAppointments', 'newAppointments', 'todayAppointment', 'totalRevenue'));
     }
 
 
@@ -36,13 +42,13 @@ class AdminController extends Controller
     {
         $staffs = Staff::with('branch')->get();
 
-        return view('content.staff-overview', compact('staffs'));
+        return view('admin.contents.staff-overview', compact('staffs'));
     }
     public function dentist()
     {
 
         $dentists = Dentist::with('branch')->get();
-        return view('content.dentist-overview', compact('dentists'));
+        return view('admin.contents.dentist-overview', compact('dentists'));
     }
 
     public function schedule1()
@@ -139,6 +145,45 @@ class AdminController extends Controller
         session()->flash('success', 'Successfully deleted branch!');
     }
 
+   
+
+    public function salesReport()
+    {
+        $paymentHistories = PaymentHistory::with('payment')->orderBy('created_at','Desc')->get();
+        
+        $totalRevenue = $paymentHistories->sum('paid_amount');
+        $transactionCount = $paymentHistories->count();
+        $averageRevenue = $transactionCount > 0 ? $totalRevenue / $transactionCount : 0;
+        $comparisonData = [
+            'Total' => $totalRevenue,
+            'Average' => $averageRevenue
+        ];
+
+        $todayRevenue = $paymentHistories->where('created_at', '>=', Carbon::today())->sum('paid_amount');
+        $yesterdayRevenue = $paymentHistories->where('created_at', '>=', Carbon::yesterday())->where('created_at', '<', Carbon::today())->sum('paid_amount');
+        $dailyComparisonData = [
+            'Today' => $todayRevenue,
+            'Yesterday' => $yesterdayRevenue
+        ];
+        
+        foreach ($paymentHistories as $history) {
+            $month = Carbon::parse($history->created_at)->format('Y-m'); 
+            $monthlyRevenueData[$month] = ($monthlyRevenueData[$month] ?? 0) + $history->paid_amount;
+        }
+
+        
+        $frequentlyPerformedProcedures = $paymentHistories->groupBy('payment_id')->map(function ($group) {
+            $payment = $group->first();
+            return [
+                'procedure' => $payment->payment->appointment->procedure->name,
+                'count' => $group->count(),
+                'total_amount' => $group->sum('paid_amount'),
+            ];
+        })->sortByDesc('count')->take(3); // Get top 5 procedures
+
+        return view('admin.contents.sales-report', compact('paymentHistories', 'totalRevenue', 'averageRevenue', 'dailyComparisonData', 'comparisonData', 'monthlyRevenueData', 'frequentlyPerformedProcedures'));
+    }
+
 
     //Testing for AuditLog
 
@@ -159,4 +204,7 @@ class AdminController extends Controller
 
         return view('audit.logs', compact('auditLogs'));
     }
+
+
+    
 }

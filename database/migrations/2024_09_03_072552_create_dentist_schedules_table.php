@@ -20,6 +20,7 @@ return new class extends Migration
             $table->time('end_time');
             $table->integer('appointment_duration');
             $table->timestamps();
+            $table->softDeletes(); 
         });
     }
 
