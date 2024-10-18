@@ -5,7 +5,7 @@
             <div class="max-w-xs bg-green-600 text-sm text-white rounded-md shadow-lg dark:bg-gray-900 mb-3 ml-3"
                 role="alert">
                 <div class="flex p-4">
-                    {{ session('success') }} <!-- Display the success message -->
+                    {{ session('success') }}
 
                     <div class="ml-auto px-1">
                         <button type="button"

@@ -59,7 +59,6 @@ class PaymentController extends Controller
         session()->flash('success', 'Payment added successfully!');
     }
 
-
     //testing payment_form
     public function storePartialPayment(Request $request)
     {

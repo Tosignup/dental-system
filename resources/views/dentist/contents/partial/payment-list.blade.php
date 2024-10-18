@@ -6,7 +6,6 @@
 
             <thead>
                 <tr class="w-full bg-gray-100">
-
                     <th class="py-1 px-4 border-b text-gray-600 max-lg:text-xs">Date</th>
                     <th class="py-1 px-4 border-b text-gray-600 max-lg:text-xs">Amount</th>
                     <th class="py-1 px-4 border-b text-gray-600 max-lg:text-xs">Balance Remaining</th>

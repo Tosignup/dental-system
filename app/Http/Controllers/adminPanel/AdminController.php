@@ -28,7 +28,10 @@ class AdminController extends Controller
         $todayAppointment = Appointment::whereDate('appointment_date', $today)->count();
         $newAppointments = Appointment::whereDate('created_at', $today)->count();
 
-        return view('content.overview', compact('totalPatients', 'newPatients', 'todayPatients', 'totalAppointments', 'newAppointments', 'todayAppointment'));
+        $recentPatients = Patient::orderBy('created_at', 'desc')->take(3)->get();
+        $recentPatients = Appointment::orderBy('created_at', 'desc')->take(3)->get();
+
+        return view('content.overview', compact('recentPatients', 'totalPatients', 'newPatients', 'todayPatients', 'totalAppointments', 'newAppointments', 'todayAppointment'));
     }
 
 

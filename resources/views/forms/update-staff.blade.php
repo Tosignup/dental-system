@@ -26,7 +26,6 @@
             @method('PUT')
             @csrf
             <div class="flex flex-col items-center">
-
                 <div class="flex flex-wrap items-start justify-start gap-8 max-md:gap-4 max-w-4xl p-8 max-md:p-2 flex-row">
                     <label class="flex flex-col flex-1 min-w-[45%] max-md:text-sm" for="first_name">
                         <h1>First name</h1>

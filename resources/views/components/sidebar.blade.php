@@ -19,7 +19,7 @@
     <div id="overlay"></div>
     <div id="dropdown-overlay"></div>
     <nav
-        class="max-w-max min-w-max self-start h-screen bg-white z-0 flex flex-col justify-between items-center py-4 px-8 max-lg:hidden">
+        class="max-w-max min-w-max self-start h-screen bg-white z-0 flex flex-col justify-between items-center py-4 px-8 max-lg:hidden border-r">
         <div class="flex flex-col gap-4">
             <div class="flex justify-start items-center gap-2 mb-4">
                 <a href="{{ route('welcome') }}">

@@ -103,10 +103,11 @@ class StaffController extends Controller
     public function showStaff($id)
     {
         $staff = Staff::findOrFail($id);
+        $branches = Branch::all();
         // $schedules = staffSchedule::with('staff_schedules')->get($id);
 
         // $staff = staff::with('staffSchedule')->findOrFail($id);
 
-        return view('content.staff-information', compact('staff'));
+        return view('content.staff-information', compact('staff', 'branches'));
     }
 }

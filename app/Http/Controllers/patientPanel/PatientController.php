@@ -234,4 +234,12 @@ class PatientController extends Controller
 
         return redirect()->back()->with('success', 'Patient has been restored.');
     }
+    public function dashboard()
+    {
+        // Get the latest 3 patients ordered by created_at
+        $recentPatients = Patient::orderBy('created_at', 'desc')->take(3)->get();
+        $recentPatients = Appointment::orderBy('created_at', 'desc')->take(3)->get();
+        // Pass the patients to the view
+        return view('dashboard', compact('recentPatients'));
+    }
 }

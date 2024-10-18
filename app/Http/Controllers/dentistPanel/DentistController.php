@@ -100,7 +100,7 @@ class DentistController extends Controller
 
         // Fetch pending appointments
         $pendingAppointments = Appointment::where('dentist_id', $id)
-            ->where('pending', 'Pending')
+        ->where('pending', 'Pending')
             ->where('is_archived', 0)
             ->pluck('id');
 
@@ -116,6 +116,7 @@ class DentistController extends Controller
         // Fetch payments related to the dentist's appointments
         $payments = Payment::whereIn('appointment_id', $appointmentIds)->paginate(5, ['*'], 'payment'); // Custom pagination query param
 
+
         return view('dentist.contents.dentist-payment-list', compact('dentist', 'payments'));
     }
 
@@ -124,6 +125,7 @@ class DentistController extends Controller
         $branches = Branch::all();
         return view('forms.add-dentist', compact('branches'));
     }
+
 
     public function storeDentist(Request $request)
     {
@@ -171,8 +173,11 @@ class DentistController extends Controller
         $dentist = Dentist::findOrFail($id);
         $branches = Branch::all();
 
+
         return view('forms.update-dentist', compact('dentist', 'branches'));
     }
+
+
     public function updateDentist(Request $request, $id)
     {
         $dentist = Dentist::findOrFail($id);
@@ -198,9 +203,11 @@ class DentistController extends Controller
         // $schedules = DentistSchedule::with('dentist_schedules')->get($id);
 
         $dentist = Dentist::with('dentistSchedule')->findOrFail($id);
+        $branches = Branch::all();
 
-        return view('content.dentist-information', compact('dentist'));
+        return view('content.dentist-information', compact('dentist', 'branches'));
     }
+
 
     public function getDentists($branchId) //w
     {
