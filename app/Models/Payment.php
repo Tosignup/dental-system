@@ -26,4 +26,9 @@ class Payment extends Model
     {
         return $this->hasMany(PaymentHistory::class);
     }
+
+    public function temporaryPayment()
+    {
+        return $this->hasMany(TemporaryPayment::class);
+    }
 }

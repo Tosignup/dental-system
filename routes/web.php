@@ -106,6 +106,10 @@ Route::group(['middleware' => ['auth', 'verified','role:admin,staff']], function
     Route::get('/patient/{id}/payment', [PaymentController::class, 'create'])->name('payments.form');
     Route::post('/payments/{paymentId}/store', [PaymentController::class, 'storePartialPayment'])->name('payments.store');
     Route::get('/payments/{paymentId}/history', [PaymentController::class, 'showPaymentHistory'])->name('payments.history');
+
+    Route::get('{id}/payment-list/pending', [PaymentController::class, 'pendingPayment'])->name('payments.pending');
+    Route::post('/payments/{id}/approve', [PaymentController::class, 'approvePayment'])->name('payments.approve');
+
     
     //Testing
     Route::get('/appointments/show-appointment/{appointment}', [AppointmentController::class, 'show'])->name('show.appointment');
