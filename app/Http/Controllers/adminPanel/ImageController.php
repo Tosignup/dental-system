@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\adminPanel;
 
 use App\Models\Image;
+use App\Models\AuditLog;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -24,8 +25,25 @@ class ImageController extends Controller
             'image_path' => $path,
         ]);
 
+        $imageTypes = [
+            'xray' => 'Patient x-ray uploaded',
+            'background' => 'Patient background uploaded',
+            'contract' => 'Patient contract uploaded',
+        ];
+        
+        $imageType = $request->input('image_type');
+        
+        if (array_key_exists($imageType, $imageTypes)) {
+            AuditLog::create([
+                'action' => 'Upload',
+                'model_type' => $imageTypes[$imageType],
+                'model_id' => $request->input('patient_id'),
+                'user_id' => auth()->id(),
+                'user_email' => auth()->user()->email,
+                'changes' => json_encode($request->all()), // Log the request data
+            ]);
+        }
 
         return redirect()->back()->with('success', 'Image uploaded successfully!');
-        session()->flash('success', 'Image uploaded successfully!');
     }
 }

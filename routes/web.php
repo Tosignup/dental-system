@@ -94,7 +94,7 @@ Route::group(['middleware' => ['auth', 'verified','role:admin,staff']], function
     Route::get('/admin/add-dentist-schedule', [ScheduleController::class, 'addSchedule'])->name('add.schedule');
     Route::post('/dentist-schedule', [ScheduleController::class, 'storeSchedule'])->name('store.schedule');
     Route::get('/schedule/{scheduleId}/edit', [ScheduleController::class, 'editSchedule'])->name('schedule.edit');
-    Route::post('/schedule/{scheduleId}/edit', [ScheduleController::class, 'updateSchedule'])->name('schedule.update');
+    Route::put('/schedule/{scheduleId}/update', [ScheduleController::class, 'updateSchedule'])->name('schedule.update');
     Route::delete('/schedule/{id}/delete', [ScheduleController::class, 'deleteSchedule'])->name('schedule.delete');
     Route::get('/show-schedule/{schedule}', [ScheduleController::class, 'show'])->name('show.schedule');
 
@@ -103,7 +103,7 @@ Route::group(['middleware' => ['auth', 'verified','role:admin,staff']], function
     
     //Payment TEsting
     Route::get('{id}/payment-list', [PaymentController::class, 'paymentList'])->name('payments.list');
-    Route::get('/appointments/{id}/payment', [PaymentController::class, 'create'])->name('payments.form');
+    Route::get('/patient/{id}/payment', [PaymentController::class, 'create'])->name('payments.form');
     Route::post('/payments/{paymentId}/store', [PaymentController::class, 'storePartialPayment'])->name('payments.store');
     Route::get('/payments/{paymentId}/history', [PaymentController::class, 'showPaymentHistory'])->name('payments.history');
     
@@ -227,6 +227,9 @@ Route::group(['middleware' => ['auth', 'verified', 'role:client']], function () 
     Route::get('/client/{appointmentId}/payment', [ClientController::class, 'createClientPayment'])->name('client.form');
     Route::post('/client/{paymentId}/store', [ClientController::class, 'storeClientPartialPayment'])->name('client.store');
     Route::get('/client/{paymentId}/history', [ClientController::class, 'showClientPaymentHistory'])->name('client.history');
+
+
+    Route::post('client/upload-proof', [ClientController::class, 'uploadProof'])->name('client.proof');
 
     // Route::get('/appointment/request', [AppointmentController::class, 'create'])->name('appointments.request');
     // Route::post('/appointment/store', [AppointmentController::class, 'store'])->name('appointments.store');

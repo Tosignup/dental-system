@@ -73,7 +73,7 @@
             </div>
         </div>
         <form action="{{ route('schedule.update', $schedule->id) }}" method="POST">
-            @method('POST')
+            @method('PUT')
             @csrf
             <div class="flex flex-col items-start justify-start gap-8 max-w-4xl p-4">
                 <div class="w-full ">
@@ -109,20 +109,8 @@
                             @enderror
                         </label>
                     </div>
-                    <label class="flex flex-col flex-1 pb-4" for="appointment_duration">
-                        <h1>Appointment Duration</h1>
-                        <select class="border max-md:text-xs flex-grow min-w-max border-gray-400 py-2 px-4 rounded-md"
-                            id="appointment_duration" name="appointment_duration" required>
-                            <option value="15"> 15 Minutes</option>
-                            <option value="30"> 30 Minutes</option>
-                            <option value="45"> 45 Minutes</option>
-                            <option value="60"> 60 Minutes</option>
-                        </select>
-                        @error('appointment_duration')
-                            <span id="appointment_duration_error"
-                                class="validation-message text-red-600 text-xs p-1 rounded-md my-1 show">{{ $message }}</span>
-                        @enderror
-                    </label>
+                    <input type="hidden" id="appointment_duration" name="appointment_duration" value="60">
+
                 </div>
                 <div class="w-full flex gap-2 px-8 mb-3">
                     <button

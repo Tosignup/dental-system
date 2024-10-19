@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\adminPanel;
 
 use App\Models\Branch;
+use App\Models\AuditLog;
 use App\Models\Inventory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -40,7 +41,7 @@ class InventoryController extends Controller
             'branch_id' => 'required|exists:branches,id',
         ]);
 
-        Inventory::create([
+        $item = Inventory::create([
             'item_name' => $request->item_name,
             'category' => $request->category,
             'quantity' => $request->quantity,
@@ -55,8 +56,16 @@ class InventoryController extends Controller
             'branch_id' => $request->branch_id,
         ]);
 
+        AuditLog::create([
+            'action' => 'Create',
+            'model_type' => 'New item added',
+            'model_id' => $item->id,
+            'user_id' => auth()->id(),
+            'user_email' => auth()->user()->email,
+            'changes' => json_encode($request->all()), // Log the request data
+        ]);
+
         return redirect()->route('inventory')->with('success', 'Item added successfully!');
-        session()->flash('success', 'Item added successfully!');
     }
 
     public function editItem($id)
@@ -88,6 +97,15 @@ class InventoryController extends Controller
 
         $item->update($validated);
 
+        AuditLog::create([
+            'action' => 'Update',
+            'model_type' => 'Item information updated',
+            'model_id' => $item->id,
+            'user_id' => auth()->id(),
+            'user_email' => auth()->user()->email,
+            'changes' => json_encode($request->all()), // Log the request data
+        ]);
+
         return redirect()->route('inventory')->with('success', 'Item updated successfully!');
         session()->flash('success', 'Item updated successfully!');
     }
@@ -97,6 +115,15 @@ class InventoryController extends Controller
         $item = Inventory::findOrFail($id);
 
         $item->delete();
+
+        AuditLog::create([
+            'action' => 'Delete',
+            'model_type' => 'Item deleted',
+            'model_id' => $inventory->id,
+            'user_id' => auth()->id(),
+            'user_email' => auth()->user()->email,
+            'changes' => json_encode($request->all()), // Log the request data
+        ]);
 
         return redirect()->route('inventory')->with('success', 'Item deleted successfully!');
         session()->flash('success', 'Item deleted successfully!');

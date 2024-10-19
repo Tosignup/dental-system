@@ -51,19 +51,6 @@ class AdminController extends Controller
         return view('admin.contents.dentist-overview', compact('dentists'));
     }
 
-    public function schedule1()
-    {
-        // Get the current date and time
-        $now = Carbon::now();
-
-        // Retrieve schedules that are in the future
-        $schedules = DentistSchedule::with('dentist')
-            ->where('date', '>', $now)
-            ->get();
-
-        return view('content.schedule', compact('schedules'));
-    }
-
     public function schedule(Request $request)
     {
         $now = Carbon::now();
@@ -108,11 +95,19 @@ class AdminController extends Controller
             'branch_loc' => 'required|string',
         ]);
 
-        Branch::create([
+        $branch = Branch::create([
             'branch_loc' => $request->branch_loc,
         ]);
+
+        AuditLog::create([
+            'action' => 'Update',
+            'model_type' => 'New branch added',
+            'model_id' => $branch->id,
+            'user_id' => auth()->id(),
+            'user_email' => auth()->user()->email,
+            'changes' => json_encode($request->all()), // Log the request data
+        ]);
         return redirect()->route('branch')->with('success', 'Successfully added branch!');
-        session()->flash('success', 'Successfully added branch!');
     }
     public function editBranch($id)
     {
@@ -131,8 +126,16 @@ class AdminController extends Controller
         $branch->update([
             'branch_loc' => $request->branch_loc,
         ]);
+
+        AuditLog::create([
+            'action' => 'Update',
+            'model_type' => 'Branch information updated',
+            'model_id' => $branch->id,
+            'user_id' => auth()->id(),
+            'user_email' => auth()->user()->email,
+            'changes' => json_encode($request->all()), // Log the request data
+        ]);
         return redirect()->route('branch')->with('success', 'Successfully updated branch!');
-        session()->flash('success', 'Successfully updated branch!');
     }
 
     public function deleteBranch($id)
@@ -141,8 +144,16 @@ class AdminController extends Controller
 
         $branch->delete();
 
+        AuditLog::create([
+            'action' => 'Delete',
+            'model_type' => 'Branch deleted',
+            'model_id' => $branch->id,
+            'user_id' => auth()->id(),
+            'user_email' => auth()->user()->email,
+            'changes' => null, // Log the request data
+        ]);
+
         return redirect()->route('branch')->with('success', 'Successfully deleted branch!');
-        session()->flash('success', 'Successfully deleted branch!');
     }
 
    
@@ -166,6 +177,7 @@ class AdminController extends Controller
             'Yesterday' => $yesterdayRevenue
         ];
         
+        $monthlyRevenueData = [];
         foreach ($paymentHistories as $history) {
             $month = Carbon::parse($history->created_at)->format('Y-m'); 
             $monthlyRevenueData[$month] = ($monthlyRevenueData[$month] ?? 0) + $history->paid_amount;
@@ -189,7 +201,7 @@ class AdminController extends Controller
 
     public function viewAuditLogs()
     {
-        $auditLogs = AuditLog::orderBy('created_at', 'desc')->get();
+        $auditLogs = AuditLog::orderBy('created_at', 'desc')->paginate(20);
 
         foreach ($auditLogs as $auditLog) {
             $decodedChanges = json_decode($auditLog->changes, true); // Decode JSON to associative array

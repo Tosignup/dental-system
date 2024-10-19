@@ -140,7 +140,16 @@ class PatientController extends Controller
             'patient_id' => $patient->id, // Link to the patient via foreign key
         ]);
 
-        return redirect()->route('patient_list')->with('success', 'Patient created successfully');
+        AuditLog::create([
+            'action' => 'Create',
+            'model_type' => 'New patient added',
+            'model_id' => $patient->id,
+            'user_id' => auth()->id(),
+            'user_email' => auth()->user()->email,
+            'changes' => json_encode($request->all()), // Log the request data
+        ]);
+
+        return redirect()->route('patient.active')->with('success', 'Patient created successfully');
         session()->flash('success', 'Patient added successfully!');
     }
 
@@ -175,11 +184,17 @@ class PatientController extends Controller
             'branch_id' => 'required|exists:branches,id',
         ]);
 
+        AuditLog::create([
+            'action' => 'Update',
+            'model_type' => 'Patient information updated',
+            'model_id' => $patient->id,
+            'user_id' => auth()->id(),
+            'user_email' => auth()->user()->email,
+            'changes' => json_encode($request->all()), // Log the request data
+        ]);
+
         $patient->update($validated);
-        return redirect()->route('show.patient', compact('patient'))->with('success','patient updated');
-        session()->flash('success', 'Patient updated successfully!');
-
-
+        return redirect()->route('show.patient', compact('patient'))->with('success','Patient updated successfully!');
     }
 
     public function patientContract(Request $request, $id)
@@ -189,7 +204,7 @@ class PatientController extends Controller
                         ->where('image_type', 'contract')
                         ->get();
         
-        return view('content.patient-contract', compact('patient', 'contractImages'));
+        return view('client.patients.patient-contract', compact('patient', 'contractImages'));
     }
 
     public function patientBackground(Request $request, $id)
@@ -199,7 +214,8 @@ class PatientController extends Controller
                         ->where('image_type', 'background')
                         ->get();
 
-        return view('content.patient-background', compact('patient', 'backgroundImages'));
+
+        return view('client.patients.patient-background', compact('patient', 'backgroundImages'));
     }
     public function patientXray(Request $request, $id)
     {
@@ -208,7 +224,8 @@ class PatientController extends Controller
                 ->where('image_type', 'xray')
                 ->get();
 
-        return view('content.patient-xray', compact('patient', 'xrayImages'));
+
+        return view('client.patients.patient-xray', compact('patient', 'xrayImages'));
     }
 
 
@@ -224,8 +241,8 @@ class PatientController extends Controller
         ->update(['is_archived' => 1, 'archived_at' => now()]); // Assuming you have an archived_at field in appointments
 
         AuditLog::create([
-            'action' => 'archive',
-            'model_type' => 'DentistSchedule',
+            'action' => 'Update',
+            'model_type' => 'Archiving patient',
             'model_id' => $patient->id,
             'user_id' => auth()->id(),
             'user_email' => auth()->user()->email,
@@ -246,8 +263,8 @@ class PatientController extends Controller
         ->update(['is_archived' => 0, 'archived_at' => null]);
 
         AuditLog::create([
-            'action' => 'restore',
-            'model_type' => 'DentistSchedule',
+            'action' => 'Update',
+            'model_type' => 'Restoring patient',
             'model_id' => $patient->id,
             'user_id' => auth()->id(),
             'user_email' => auth()->user()->email,

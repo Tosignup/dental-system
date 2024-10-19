@@ -114,7 +114,7 @@
         @if (Auth::user()->role === 'Admin')
             <div class="flex gap-4 items-center justify-center">
                 <form method="GET" class="flex justify-center items-center gap-2"
-                    action="{{ route('patient_list') }} ">
+                    action="{{ route('patient.active') }} ">
                     @csrf
                     <img class="h-12" src="{{ asset('assets/images/search-icon.png') }}" alt="">
                     <input placeholder="Search..." autocomplete="off" name="search" type="search"

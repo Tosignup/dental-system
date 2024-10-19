@@ -120,7 +120,7 @@
                         </button>
                     </a>
                     <a class="flex justify-center items-center gap-2"
-                        href="{{ route('client.overview', session('patient_id')) }}">
+                        href="{{ route('client.overview', Auth::user()->patient_id) }}">
                         <img class="h-8" src="{{ asset('assets/images/dashboard-icon.png') }}" alt="">
                         <button class="hover:font-bold  transition-all">
                             Profile
@@ -247,7 +247,7 @@
                     </button>
                 </a>
                 <a class="flex justify-center items-center gap-2 active:bg-green-600"
-                    href="{{ route('client.overview', session('patient_id')) }}">
+                    href="{{ route('client.overview', Auth::user()->patient_id) }}">
                     <img class="h-8 max-lg:h-5" src="{{ asset('assets/images/dashboard-icon.png') }}"
                         alt="">
                     <button class="hover:font-bold transition-all text-xs">

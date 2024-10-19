@@ -5,6 +5,7 @@ namespace App\Http\Controllers\patientPanel;
 use Carbon\Carbon;
 use App\Models\Patient;
 use App\Models\Payment;
+use App\Models\AuditLog;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
 use Illuminate\Http\Validate;
@@ -49,7 +50,6 @@ class PaymentController extends Controller
         $balanceRemaining = $appointment->procedure->price - $totalPaid;
 
         return view('admin.forms.payment-history', compact('appointment', 'paymentHistory', 'totalPaid', 'balanceRemaining'));
-        session()->flash('success', 'Payment added successfully!');
     }
 
     public function storePartialPayment(Request $request)
@@ -119,6 +119,15 @@ class PaymentController extends Controller
             'paid_amount' => $request->paid_amount,
             'payment_method' => $request->payment_method,
             'remarks' => $request->remarks ?? null, // Optional remarks
+        ]);
+
+        AuditLog::create([
+            'action' => 'Payment',
+            'model_type' => 'New payment added',
+            'model_id' => $payment->id,
+            'user_id' => auth()->id(),
+            'user_email' => auth()->user()->email,
+            'changes' => json_encode($request->all()),
         ]);
         // Return a success response
         // return redirect()->route('show.appointment', $appointment->id)

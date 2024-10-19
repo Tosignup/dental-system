@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Staff;
 use App\Models\Branch;
 use App\Models\Patient;
+use App\Models\AuditLog;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -71,8 +72,15 @@ class StaffController extends Controller
             'staff_id' => $staff->id, // Link to the patient via foreign key
         ]);
 
+        AuditLog::create([
+            'action' => 'Create',
+            'model_type' => 'New staff added',
+            'model_id' => $staff->id,
+            'user_id' => auth()->id(),
+            'user_email' => auth()->user()->email,
+            'changes' => json_encode($request->all()), // Log the request data
+        ]);
         return redirect()->route('staff')->with('success', 'Staff created successfully');
-        session()->flash('success', 'Staff created successfully!');
     }
 
     public function editStaff($id)
@@ -96,8 +104,16 @@ class StaffController extends Controller
         ]);
 
         $staff->update($validated);
+
+        AuditLog::create([
+            'action' => 'Update',
+            'model_type' => 'Staff information updated',
+            'model_id' => $staff->id,
+            'user_id' => auth()->id(),
+            'user_email' => auth()->user()->email,
+            'changes' => json_encode($request->all()), // Log the request data
+        ]);
         return redirect()->route('staff', compact('staff'))->with('success', 'Staff updated successfully!');
-        session()->flash('success', 'Staff updated successfully!');
     }
 
     public function showStaff($id)

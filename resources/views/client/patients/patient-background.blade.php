@@ -81,16 +81,8 @@
                                         <label for="image">Choose Image:</label>
                                         <input type="file" id="image" name="image" accept="image/*" required>
                                     </div>
-                                    <div>
-                                        <label for="image_type">Image Type:</label>
-                                        <select id="image_type" name="image_type" required>
-                                            <option value="xray">X-ray</option>
-                                            <option value="background">Background</option>
-                                            <option value="contract">Contract</option>
-                                            <option value="profile_picture">Profile Picture</option>
-                                            <option value="proof_of_payment">Proof of Payment</option>
-                                        </select>
-                                    </div>
+                                    <input type="hidden" id="image_type" name="image_type" value="background">
+
                                     <div class="modal-footer flex justify-end">
                                         <button type="button"
                                             class="btn border bg-gray-600 text-white rounded-md py-2 px-4"

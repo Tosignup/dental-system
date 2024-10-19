@@ -58,17 +58,12 @@
                             DASHBOARD
                         </a>
                     @elseif (Auth::user()->role === 'client')
-                        @if (session('patient_id'))
-                            <a class="flex gap-6 justify-center items-center"
-                                href="{{ route('client.overview', session('patient_id')) }}">
-                                <h1
-                                    class="py-2 px-4 rounded-md text-white font-semibold bg-green-600 hover:bg-green-700 transition-all cursor-pointer max-lg:py-1 max-lg:px-2 max-lg:text-xs ">
-                                    Profile</h1>
-                            </a>
-                        @else
-                            <p>No Patient ID found in session.</p>
-                            <p>{{ Auth::user()->patient_id }}</p>
-                        @endif
+                        <a class="flex gap-6 justify-center items-center"
+                            href="{{ route('client.overview', Auth::user()->patient_id) }}">
+                            <h1
+                                class="py-2 px-4 rounded-md text-white font-semibold bg-green-600 hover:bg-green-700 transition-all cursor-pointer max-lg:py-1 max-lg:px-2 max-lg:text-xs ">
+                                Profile</h1>
+                        </a>
                         <form action="{{ route('logout') }}" method="POST" class="m-auto">
                             @csrf
                             <button type="submit" class="font-bold max-lg:text-sm">

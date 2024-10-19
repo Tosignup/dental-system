@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Image;
 use App\Models\Patient;
 use App\Models\Payment;
+use App\Models\AuditLog;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
 use App\Models\PaymentHistory;
@@ -28,14 +29,13 @@ class ClientController extends Controller
     }
     
    
-    public function profileOverview()
+    public function profileOverview($id)
     {
         // Retrieve patient ID from session
-        $patientId = session('patient_id');
         // Fetch the patient's details from the database
-        $patient = Patient::find($patientId);
+        $patient = Patient::find($id);
         
-        $appointments = Appointment::where('patient_id', $patientId)
+        $appointments = Appointment::where('patient_id', $id)
                                     ->with('procedure')
                                     ->paginate(5);
         
@@ -152,6 +152,15 @@ class ClientController extends Controller
             'payment_method' => $request->payment_method,
             'remarks' => $request->remarks ?? null, // Optional remarks
         ]);
+
+        AuditLog::create([
+            'action' => 'Payment',
+            'model_type' => 'New payment added by client',
+            'model_id' => $payment->id,
+            'user_id' => auth()->id(),
+            'user_email' => auth()->user()->email,
+            'changes' => json_encode($request->all()), // Log the request data
+        ]);
         // Return a success response
         // return redirect()->route('show.appointment', $appointment->id)
         //                  ->with('success', 'Payment processed successfully!');
@@ -178,5 +187,34 @@ class ClientController extends Controller
         $balanceRemaining = $appointment->procedure->price - $totalPaid;
     
         return view('client.contents.client-payment-history', compact('appointment', 'paymentHistory', 'totalPaid', 'balanceRemaining'));
+    }
+
+    public function uploadProof(Request $request)
+    {
+        $request->validate([
+            'patient_id' => 'required|exists:patients,id',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image_type' => 'required|in:xray,background,contract,profile_picture,proof_of_payment',
+        ]);
+
+        $path = $request->file('image')->store('images', 'public');
+
+        Image::create([
+            'patient_id' => $request->input('patient_id'),
+            'image_type' => $request->input('image_type'),
+            'image_path' => $path,
+        ]);
+
+        // AuditLog::create([
+        //     'action' => 'Upload',
+        //     'model_type' => 'Client uploaded a proof of payment',
+        //     'model_id' => $request->input('patient_id'),
+        //     'user_id' => auth()->id(),
+        //     'user_email' => auth()->user()->email,
+        //     'changes' => json_encode($request->all()), // Log the request data
+        // ]);
+        
+
+        return redirect()->back()->with('success', 'Image uploaded successfully!');
     }
 }

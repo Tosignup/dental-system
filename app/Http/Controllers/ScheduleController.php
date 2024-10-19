@@ -77,8 +77,8 @@ class ScheduleController extends Controller
         }
 
         AuditLog::create([
-            'action' => 'create',
-            'model_type' => 'DentistSchedule',
+            'action' => 'Create',
+            'model_type' => 'New dentist schedule added',
             'model_id' => $schedule->id,
             'user_id' => auth()->id(),
             'user_email' => auth()->user()->email,
@@ -163,8 +163,8 @@ class ScheduleController extends Controller
 
         // Log the action
         AuditLog::create([
-            'action' => 'update',
-            'model_type' => 'DentistSchedule',
+            'action' => 'Update',
+            'model_type' => 'Dentist Schedule updated',
             'model_id' => $schedule->id,
             'user_id' => auth()->id(),
             'user_email' => auth()->user()->email,
@@ -181,8 +181,8 @@ class ScheduleController extends Controller
 
         // Log the action
         AuditLog::create([
-            'action' => 'delete',
-            'model_type' => 'DentistSchedule',
+            'action' => 'Delete',
+            'model_type' => 'Dentist schedule deleted',
             'model_id' => $schedule->id,
             'user_id' => auth()->id(),
             'user_email' => auth()->user()->email,

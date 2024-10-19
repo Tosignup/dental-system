@@ -17,6 +17,7 @@ return new class extends Migration
             $table->decimal('paid_amount', 10, 2);
             $table->string('payment_method');
             $table->string('remarks')->nullable();
+            $table->string('payment_proof')->nullable();
             $table->timestamps();
         });
     }

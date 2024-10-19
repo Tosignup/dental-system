@@ -8,6 +8,7 @@ use App\Models\Branch;
 use App\Models\Dentist;
 use App\Models\Patient;
 use App\Models\Payment;
+use App\Models\AuditLog;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
 use App\Models\PaymentHistory;
@@ -160,6 +161,15 @@ class DentistController extends Controller
             'dentist_id' => $dentist->id, // Link to the patient via foreign key
         ]);
 
+        AuditLog::create([
+            'action' => 'Create',
+            'model_type' => 'New dentist added',
+            'model_id' => $dentist->id,
+            'user_id' => auth()->id(),
+            'user_email' => auth()->user()->email,
+            'changes' => json_encode($request->all()), // Log the request data
+        ]);
+
         return redirect()->route('dentist')->with('success', 'Dentist created successfully');
     }
 
@@ -187,6 +197,16 @@ class DentistController extends Controller
         ]);
 
         $dentist->update($validated);
+
+        AuditLog::create([
+            'action' => 'Update',
+            'model_type' => 'New dentist information added',
+            'model_id' => $dentist->id,
+            'user_id' => auth()->id(),
+            'user_email' => auth()->user()->email,
+            'changes' => json_encode($request->all()), // Log the request data
+        ]);
+
         return redirect()->route('dentist', compact('dentist'))->with('success', 'Dentist updated successfully!');
         session()->flash('success', 'Dentist updated successfully!');
     }
@@ -385,6 +405,15 @@ class DentistController extends Controller
             'paid_amount' => $request->paid_amount,
             'payment_method' => $request->payment_method,
             'remarks' => $request->remarks ?? null, // Optional remarks
+        ]);
+
+        AuditLog::create([
+            'action' => 'Payment',
+            'model_type' => 'New payment added by dentist',
+            'model_id' => $payment->id,
+            'user_id' => auth()->id(),
+            'user_email' => auth()->user()->email,
+            'changes' => json_encode($request->all()), // Log the request data
         ]);
         return response()->json(['success' => true]);
     }

@@ -75,6 +75,45 @@
                 transform: rotate(360deg);
             }
         }
+
+        .upload-modal {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            /* Overlay */
+        }
+
+        .upload-modal-dialog {
+            position: relative;
+            margin: auto;
+            top: 20%;
+            width: 50%;
+        }
+
+        .upload-modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        .image-modal {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            overflow-y: auto;
+            background-size: contain;
+            /* Overlay */
+        }
     </style>
     <div class="m-4 mb-8">
         @include('components.search')
@@ -106,34 +145,42 @@
                         {{ $appointment->id }}</h2>
                 </div>
             </div>
-            <div class="flex justify-center">
+            <div class="flex flex-col justify-center border">
                 <form id="paymentForm" method="POST">
                     @method('POST')
                     @csrf
-                    <input type="hidden" name="appointment_id" value="{{ $appointment->id }}">
+                    <div class="border">
+                        <input type="hidden" name="appointment_id" value="{{ $appointment->id }}">
 
-                    <div class="mt-4">
-                        <label for="paid_amount" class="block text-sm font-medium">Amount to Pay:</label>
-                        <input type="number" name="paid_amount" id="paid_amount"
-                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500"
-                            required>
-                    </div>
+                        <div class="mt-4">
+                            <label for="paid_amount" class="block text-sm font-medium">Amount to Pay:</label>
+                            <input type="number" name="paid_amount" id="paid_amount"
+                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500"
+                                required>
+                        </div>
 
-                    <div class="mt-4">
-                        <label for="payment_method" class="block text-sm font-medium">Payment Method:</label>
-                        <select name="payment_method" id="payment_method"
-                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500"
-                            required>
-                            <option value="cash">Cash</option>
-                            <option value="credit card">Credit Card</option>
-                            <option value="bank transfer">Bank Transfer</option>
-                        </select>
-                    </div>
+                        <div class="mt-4">
+                            <label for="payment_method" class="block text-sm font-medium">Payment Method:</label>
+                            <select name="payment_method" id="payment_method"
+                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500"
+                                required>
+                                <option value="cash">Cash</option>
+                                <option value="credit card">Credit Card</option>
+                                <option value="bank transfer">Bank Transfer</option>
+                            </select>
+                        </div>
 
-                    <div class="mt-4">
-                        <label for="remarks" class="block text-sm font-medium">Remarks:</label>
-                        <textarea name="remarks" id="remarks"
-                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500"></textarea>
+                        <div class="mt-4">
+                            <label for="remarks" class="block text-sm font-medium">Remarks:</label>
+                            <textarea name="remarks" id="remarks"
+                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500"></textarea>
+                        </div>
+                        <div class="mb-4">
+                            <label for="payment_proof" class="block text-sm font-medium">Upload Proof of Payment:</label>
+                            <input type="file" name="payment_proof" id="payment_proof"
+                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500"
+                                required>
+                        </div>
                     </div>
                     <div class="w-full flex justify-between gap-2 mt-4">
                         <button
@@ -186,6 +233,33 @@
         </div>
     </section>
     <script>
+        // Get modal and buttons
+        const modal = document.getElementById("proofModal");
+        const openModalBtn = document.getElementById("openModalBtn");
+        const closeModalBtn = document.getElementById("closeModalBtn");
+        const closeModalFooterBtn = document.getElementById("closeModalFooterBtn");
+
+        // Function to open the modal
+        openModalBtn.addEventListener("click", function() {
+            modal.style.display = "block";
+        });
+
+        // Function to close the modal
+        closeModalBtn.addEventListener("click", function() {
+            modal.style.display = "none";
+        });
+
+        closeModalFooterBtn.addEventListener("click", function() {
+            modal.style.display = "none";
+        });
+
+        // Close the modal if the user clicks outside of it
+        window.addEventListener("click", function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        });
+
         document.getElementById('submitPaymentBtnClient').addEventListener('click', function() {
             document.getElementById('passwordModal').style.display = "flex";
         });
