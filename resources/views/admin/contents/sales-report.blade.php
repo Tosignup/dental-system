@@ -63,7 +63,7 @@
             </div>
 
             <div
-                class="w-[25%] flex-2 max-lg:w-full max-xl:w-[50%] border max-sm:border-red-500 max-md:border-blue-600 max-lg:border-green-500 max-xl:border-violet-500">
+                class="w-[25%] flex-2 max-lg:w-full max-xl:w-[50%]  max-md:border-blue-600 max-lg:border-green-500 max-xl:border-violet-500">
                 <h2 class="font-bold text-center text-lg max-md:text-md py-2 pl-1">Top Procedures</h2>
                 <table class="min-w-full table-auto text-center">
                     <thead>

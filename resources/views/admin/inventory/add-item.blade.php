@@ -41,7 +41,7 @@
                 <label class="flex flex-col flex-1 min-w-[45%]" for="quantity">
                     <h1 class="pb-2 max-md:text-sm">Quantity</h1>
                     <input class="max-md:text-sm max-md:py-1 max-md:px-2 border border-gray-400 py-2 px-4 rounded-md"
-                        name="quantity" type="number" autocomplete="off" id="quantity" placeholder="Dela Cruz"
+                        name="quantity" type="number" autocomplete="off" id="quantity" placeholder=""
                         value="{{ old('quantity') }}" oninput="validateInput('quantity')">
                     @error('quantity')
                         <span id="quantity_error"

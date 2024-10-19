@@ -145,11 +145,11 @@
                         {{ $appointment->id }}</h2>
                 </div>
             </div>
-            <div class="flex flex-col justify-center border">
+            <div class="flex flex-col justify-center">
                 <form id="paymentForm" method="POST">
                     @method('POST')
                     @csrf
-                    <div class="border">
+                    <div class="">
                         <input type="hidden" name="appointment_id" value="{{ $appointment->id }}">
 
                         <div class="mt-4">
@@ -177,9 +177,8 @@
                         </div>
                         <div class="mb-4">
                             <label for="payment_proof" class="block text-sm font-medium">Upload Proof of Payment:</label>
-                            <input type="file" name="payment_proof" id="payment_proof"
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500"
-                                required>
+                            <input type="file" name="payment_proof" id="payment_proof" accept="image/*"
+                                class="mt-1 block w-full rounded-md shadow-sm focus:ring focus:ring-green-500" required>
                         </div>
                     </div>
                     <div class="w-full flex justify-between gap-2 mt-4">
@@ -234,31 +233,6 @@
     </section>
     <script>
         // Get modal and buttons
-        const modal = document.getElementById("proofModal");
-        const openModalBtn = document.getElementById("openModalBtn");
-        const closeModalBtn = document.getElementById("closeModalBtn");
-        const closeModalFooterBtn = document.getElementById("closeModalFooterBtn");
-
-        // Function to open the modal
-        openModalBtn.addEventListener("click", function() {
-            modal.style.display = "block";
-        });
-
-        // Function to close the modal
-        closeModalBtn.addEventListener("click", function() {
-            modal.style.display = "none";
-        });
-
-        closeModalFooterBtn.addEventListener("click", function() {
-            modal.style.display = "none";
-        });
-
-        // Close the modal if the user clicks outside of it
-        window.addEventListener("click", function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        });
 
         document.getElementById('submitPaymentBtnClient').addEventListener('click', function() {
             document.getElementById('passwordModal').style.display = "flex";
@@ -276,6 +250,7 @@
             const paidAmount = document.getElementById('paid_amount').value;
             const paymentMethod = document.getElementById('payment_method').value;
             const remarks = document.getElementById('remarks').value;
+            const paymentProof = document.getElementById('payment_proof').files[0];
             const appointmentId = document.querySelector('input[name="appointment_id"]').value;
 
             if (!paidAmount || paidAmount <= 0) {
@@ -290,6 +265,7 @@
             formData.append('paid_amount', paidAmount);
             formData.append('payment_method', paymentMethod);
             formData.append('remarks', remarks);
+            formData.append('payment_proof', paymentProof);
             formData.append('appointment_id', appointmentId);
             formData.append('_token', '{{ csrf_token() }}');
 

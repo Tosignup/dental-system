@@ -217,8 +217,8 @@ class DentistController extends Controller
         // $schedules = DentistSchedule::with('dentist_schedules')->get($id);
 
         $dentist = Dentist::with('branch')->findOrFail($id);
-
-        return view('dentist.contents.dentist-information', compact('dentist'));
+        $branches = Branch::all();
+        return view('dentist.contents.dentist-information', compact('dentist', 'branches'));
     }
 
     public function getDentists($branchId) //w
@@ -272,7 +272,7 @@ class DentistController extends Controller
         // Start and end times from the schedule
         $startTime = new \DateTime($schedule->start_time);
         $endTime = new \DateTime($schedule->end_time);
-        // $appointmentDuration = $schedule->appointment_duration; 
+        // $appointmentDuration = $schedule->appointment_duration;
         $appointmentDuration = 60; // Duration in minutes
 
         // Array to store time slots

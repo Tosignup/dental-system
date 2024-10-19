@@ -18,14 +18,15 @@
             <tbody>
                 @foreach ($auditLogs as $log)
                     <tr class="hover:bg-gray-100 border-b-2 last:border-b-0 ">
-
-                        <td class="px-4 py-2 text-xs">{{ $log->user_email }}</td>
+                        <td class="px-2 py-2 text-xs
+                         max-w-16 break-words">
+                            {{ $log->user_email }}</td>
                         <td class="px-4 py-2 text-xs">
                             <span
-                                @if ($log->action === 'Create') class="bg-green-200 text-green-700 px-4 rounded-full" 
+                                @if ($log->action === 'Create') class="bg-green-200 text-green-700 px-4 rounded-full"
                                 @elseif($log->action === 'Update') class="bg-blue-200 text-blue-700 px-4 rounded-full"
-                                @elseif($log->action === 'Delete') class="bg-red-200 text-red-700 px-4 rounded-full" 
-                                @elseif($log->action === 'Upload') class="bg-violet-200 text-violet-700 px-4 rounded-full" 
+                                @elseif($log->action === 'Delete') class="bg-red-200 text-red-700 px-4 rounded-full"
+                                @elseif($log->action === 'Upload') class="bg-violet-200 text-violet-700 px-4 rounded-full"
                                 @elseif($log->action === 'Payment') class="bg-slate-200 text-slate-700 px-4 rounded-full" @endif>
                                 <span class="max-md:hidden">&#9679;</span> {{ $log->action }} </span>
                             <span>
@@ -41,7 +42,7 @@
                             </span>
                         </td>
                         <td class="px-4 py-2 text-xs max-md:hidden">{{ $log->created_at }}</td>
-                        <td class="px-4 py-2 text-xs">{{ $log->model_type }}</td>
+                        <td class="px-4 py-2 text-xs max-w-min ">{{ $log->model_type }}</td>
                     </tr>
                 @endforeach
             </tbody>

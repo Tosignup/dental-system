@@ -6,7 +6,77 @@
     <div class="m-4">
         @include('components.search')
     </div>
-    <section class="bg-white p-8 m-2 shadow-lg rounded-md flex flex-col justify-center z-0  max-lg:mt-14">
+    <section class="flex flex-col justify-center items-center bg-white border">
+        <section class="p-6  flex flex-1 justify-center items-center max-xl:mt-12">
+            @if ($appointment->pending === 'Approved')
+                <div class="flex flex-col justify-center items-center gap-3">
+                    <img class="h-10" src="{{ asset('assets/images/check-icon.png') }}" alt="">
+                    <h1 class="font-bold text-xl text-green-600 max-xl:text-md">Appointment Approved!</h1>
+                    <h1 class="text-sm text-green-600">This appointment for {{ $appointment->patient->last_name }}
+                        {{ $appointment->patient->first_name }} has been approved by Dr.
+                        {{ $appointment->dentist->dentist_last_name }}
+                        {{ $appointment->dentist->dentist_first_name }}</h1>
+
+                </div>
+            @elseif($appointment->pending === 'Declined')
+                <div class="flex flex-col  justify-center items-center gap-3">
+                    <img class="h-10" src="{{ asset('assets/images/decline-icon.png') }}" alt="">
+
+                    <h1 class="font-bold text-xl text-red-600 max-xl:text-md"> Appointment Declined!</h1>
+                    <h1 class="text-sm text-red-600">This appointment for {{ $appointment->patient->last_name }}
+                        {{ $appointment->patient->first_name }} has been declined by Dr.
+                        {{ $appointment->dentist->dentist_last_name }}
+                        {{ $appointment->dentist->dentist_first_name }}</h1>
+                </div>
+            @else
+                <div class="flex flex-col  justify-center items-center gap-3">
+                    <img class="h-10" src="{{ asset('assets/images/pending.png') }}" alt="">
+                    <h1 class="font-bold text-xl  max-xl:text-md"> Appointment Pending</h1>
+                    <h1 class="text-sm text-center">This appointment for {{ $appointment->patient->last_name }}
+                        {{ $appointment->patient->first_name }} is waiting for its response.</h1>
+                </div>
+            @endif
+        </section>
+        <section class="flex flex-wrap justify-center w-full">
+            <section
+                class="p-8 max-xl:p-3 border-2 m-3 max-xl:m-1 rounded-md w-full max-w-3xl flex flex-col flex-1 justify-center items-start">
+                <h1 class="font-semibold text-gray-400 text-sm pb-3">Appointment</h1>
+                <h1 class="font-semibold text-2xl max-lg:text-lg mb-10 text-left max-w-1xl min-w-2xl ">Appointment Details
+                    for
+                    <span class="font-bold text-2xl max-lg:text-lg">
+                        {{ $appointment->patient->last_name }}
+                        {{ $appointment->patient->first_name }}</span>
+                </h1>
+                <div class="flex justify-between items-between w-full ">
+                    <div
+                        class="flex gap-4 flex-col justify-start items-start text-gray-500 font max-xl:text-xs max-xl:gap-8">
+                        <h1 class="border-b w-full max-lg:border-none">Dentist:</h1>
+                        <h1 class="border-b w-full max-lg:border-none">Birth date:</h1>
+                        <h1 class="border-b w-full max-lg:border-none">Email:</h1>
+                        <h1 class="border-b w-full max-lg:border-none">Branch:</h1>
+                        <h1 class="border-b w-full max-lg:border-none">Appointment Date:</h1>
+                        <h1 class="border-b w-full max-lg:border-none">Preferred Time:</h1>
+                        <h1 class="border-b w-full max-lg:border-none">Phone number:</h1>
+                    </div>
+                    <div
+                        class="flex gap-4  flex-col text-right justify-start items-end font-semibold max-xl:text-xs max-xl:gap-8">
+                        <h1 class="border-b w-full max-lg:border-none"> Dr. {{ $appointment->dentist->dentist_last_name }}
+                            {{ $appointment->dentist->dentist_first_name }}</h1>
+                        <h1 class="border-b w-full max-lg:border-none"> {{ $appointment->patient->date_of_birth }}</h1>
+                        <h1 class="border-b w-full max-lg:border-none">{{ $appointment->patient->email }}</h1>
+                        <h1 class="border-b w-full max-lg:border-none"> {{ $appointment->branch->branch_loc }}</h1>
+                        <h1 class="border-b w-full max-lg:border-none">{{ $appointment->appointment_date }}</h1>
+                        <h1 class="border-b w-full max-lg:border-none">{{ $appointment->preferred_time }}</h1>
+                        <h1 class="border-b w-full max-lg:border-none">{{ $appointment->patient->phone_number }}</h1>
+                    </div>
+                </div>
+            </section>
+
+        </section>
+
+        {{-- asdadasddddddddddddddddddddddddasdasddssdasdasdasdasd --}}
+    </section>
+    {{-- <section class="bg-white p-8 m-2 shadow-lg rounded-md flex flex-col justify-center z-0  max-lg:mt-14">
         <div class="pb-4">
             <a @if ($appointment->is_online === 0) href=" {{ route('appointments.walkIn') }} "
             @elseif ($appointment->is_online === 1) href=" {{ route('appointments.online') }}" @endif
@@ -52,9 +122,7 @@
                     <h1 class="max-md:text-xs"> Notes: <span class="font-semibold"> Wala pa
                             {{ $appointment->notes }}
                         </span> </h1>
-                    {{-- <h1 class="max-md:text-xs"> Status: <span class="font-semibold">
-                                {{ $appointment->pending }}
-                            </span> </h1> --}}
+
                 </div>
 
                 <div class="flex flex-col max-2xl:flex-wrap text-lg mt-5 max-md:mt-2">
@@ -81,8 +149,8 @@
                         </div>
                     @endif
                 </div>
-            </div>
-            {{-- <div class="flex flex-col justify-between max-2xl:flex-wrap p-2 max-md:mb-4">
+            </div> --}}
+    {{-- <div class="flex flex-col justify-between max-2xl:flex-wrap p-2 max-md:mb-4">
 
                 <h1 class="text-2xl font-bold max-md:text-3xl mb-4 max-lg:mb-2">
                     Payment Information
@@ -140,7 +208,7 @@
                         @endif
                     @endif
                 </div> --}}
-        </div>
-        </div>
+    </div>
+    </div>
     </section>
 @endsection

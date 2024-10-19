@@ -7,18 +7,16 @@
         @include('components.search')
     </div>
     <section class=" m-4 p-4 bg-white shadow-lg rounded-md max-lg:mt-14">
-        <div class="flex items-center justify-between py-2  max-lg:flex-wrap">
+        <div class="flex flex-col items-start gap-3 py-2  max-lg:flex-wrap">
+            <div class="">
+                <a href="{{ route('show.patient', $patient->id) }}"
+                    class="flex justify-start font-semibold max-lg:text-xs border-gray-600 py-1 max-lg:px-2 w-max gap-2"><img
+                        class="h-6" src="{{ asset('assets/images/arrow-back.png') }}" alt=""> Back</a>
+            </div>
             <label class="flex items-center gap-2" for="time">
                 <h1 class="font-bold text-3xl mr-4 max-md:mr-0 max-md:text-2xl">Payment List</h1>
             </label>
-            <form method="GET" action="{{ route('procedure.add') }}">
-                @csrf
-                <button
-                    class="flex justify-center items-center gap-2  rounded-md py-2 px-4 min-w-max border-2 border-gray-600 hover:shadow-md hover:border-green-700 font-semibold text-gray-800 transition-all max-md:px-2">
-                    <span class="max-md:text-xs"> Add Payments</span>
-                    <img class="h-8 max-md:h-4" src="{{ asset('assets/images/add.png') }}" alt="">
-                </button>
-            </form>
+
         </div>
 
         <table class="w-full table-auto mb-2 overflow-hidden">
@@ -86,6 +84,21 @@
                 @endif
             </tbody>
         </table>
+        <div>
+            <form method="GET" action="{{ route('payments.pending', $payment->patient->id) }}">
+                @csrf
+                <button
+                    class="flex justify-center items-center gap-2  rounded-md py-2 px-4 min-w-max border-2 border-gray-600 hover:shadow-md hover:border-green-700 font-semibold text-gray-800 transition-all max-md:px-2">
+                    <span class="max-md:text-xs">
+                        <span
+                            class=" bg-green-200 text-green-700 rounded-full py-1 px-3">{{ $pendingPayments > 0 ? $pendingPayments : '' }}
+                        </span>
+                        Pending payment
+                    </span>
+                </button>
+            </form>
+        </div>
+
     </section>
     <script>
         document.querySelectorAll('[id^="delete_modal_"]').forEach((modal) => {

@@ -61,7 +61,7 @@ Route::get('/send-test-email', function () {
 
     Mail::raw($details['body'], function ($message) use ($details) {
         $message->to('recipient@example.com')
-                ->subject($details['subject']);
+            ->subject($details['subject']);
     });
 
     return 'Test email has been sent!';
@@ -80,7 +80,7 @@ Route::get('/send-test-email', function () {
 
 
 //remove dentist here
-Route::group(['middleware' => ['auth', 'verified','role:admin,staff']], function () {
+Route::group(['middleware' => ['auth', 'verified', 'role:admin,staff']], function () {
     Route::get('/patient-list', [PatientController::class, 'patient_list'])->name('patient_list');
     Route::get('/schedule', [AdminController::class, 'schedule'])->name('schedule');
     Route::get('/inventory', [InventoryController::class, 'inventory'])->name('inventory');
@@ -89,7 +89,7 @@ Route::group(['middleware' => ['auth', 'verified','role:admin,staff']], function
 
     //Image Upload
     Route::post('/upload-image', [ImageController::class, 'uploadImage'])->name('upload.image');
-    
+
     //Schedule
     Route::get('/admin/add-dentist-schedule', [ScheduleController::class, 'addSchedule'])->name('add.schedule');
     Route::post('/dentist-schedule', [ScheduleController::class, 'storeSchedule'])->name('store.schedule');
@@ -100,13 +100,17 @@ Route::group(['middleware' => ['auth', 'verified','role:admin,staff']], function
 
     // Route::get('/admin/scheduled-dates/{dentistId}', [ScheduleController::class, 'fetchScheduledDates']);
     Route::get('/scheduled-dates/{dentistId}', [ScheduleController::class, 'fetchScheduledDates']);
-    
+
     //Payment TEsting
     Route::get('{id}/payment-list', [PaymentController::class, 'paymentList'])->name('payments.list');
     Route::get('/patient/{id}/payment', [PaymentController::class, 'create'])->name('payments.form');
     Route::post('/payments/{paymentId}/store', [PaymentController::class, 'storePartialPayment'])->name('payments.store');
     Route::get('/payments/{paymentId}/history', [PaymentController::class, 'showPaymentHistory'])->name('payments.history');
-    
+
+    Route::get('{id}/payment-list/pending', [PaymentController::class, 'pendingPayment'])->name('payments.pending');
+    Route::post('/payments/{id}/approve', [PaymentController::class, 'approvePayment'])->name('payments.approve');
+
+
     //Testing
     Route::get('/appointments/show-appointment/{appointment}', [AppointmentController::class, 'show'])->name('show.appointment');
     Route::get('/appointments/walk-in-request', [AppointmentController::class, 'walkInAppointment'])->name('appointments.walkIn');
@@ -153,8 +157,6 @@ Route::group(['middleware' => ['auth', 'verified','role:admin,staff']], function
 
     //Sale report
     Route::get('/sales-report', [AdminController::class, 'salesReport'])->name('sales');
-
-
 });
 
 // Admin Routes
@@ -182,9 +184,6 @@ Route::group(['middleware' => ['auth', 'verified', 'role:admin']], function () {
 
     //Audit Log
     Route::get('/audit-logs', [AdminController::class, 'viewAuditLogs'])->name('audit.logs');
-    
-
-    
 });
 
 // Staff Routes
@@ -194,7 +193,7 @@ Route::group(['middleware' => ['auth', 'verified', 'role:staff']], function () {
 
 });
 // Dentist Routes
-Route::group(['middleware' => ['auth','verified', 'role:dentist']], function () {
+Route::group(['middleware' => ['auth', 'verified', 'role:dentist']], function () {
     Route::get('/dentist/{dentist}/dashboard', [DentistController::class, 'overview'])->name('dentist.dashboard');
     // Route::get('/staff/patient-list', [StaffController::class, 'patient_list'])->name('patient_list');
 
@@ -213,8 +212,6 @@ Route::group(['middleware' => ['auth','verified', 'role:dentist']], function () 
     Route::get('/dentist/payment/{id}', [DentistController::class, 'createDentistPayment'])->name('dentist.paymentForm');
     Route::post('dentist/payment/{id}/store', [DentistController::class, 'storeDentistPartialPayment'])->name('dentist.paymentStore');
     Route::get('/dentist/{paymentId}/history', [DentistController::class, 'showDentistPaymentHistory'])->name('dentist.paymentHistory');
-
-
 });
 
 
