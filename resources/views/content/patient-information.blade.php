@@ -46,10 +46,21 @@
                     </h1>
                     <h1 class="max-md:text-sm"> Phone number: <span class="font-semibold"> {{ $patient->phone_number }}
                         </span> </h1>
-                    <h1 class="max-md:text-sm"> Date of next visit: <span class="font-semibold"> {{ $patient->next_visit }}
-                        </span> </h1>
+                    <h1 class="max-md:text-sm"> Date of next visit:
+                        <span class="font-semibold">
+                            @if (isset($patient->next_visit))
+                                {{ $patient->next_visit }}
+                            @else
+                                No date of visit set yet.
+                            @endif
+                        </span>
+                    </h1>
                     <h1 class="max-md:text-sm"> Branch visited: <span class="font-semibold">
-                            {{ $patient->branch->branch_loc }}
+                            @if (isset($patient->branch->branch_loc))
+                                <p>{{ $patient->branch->branch_loc }}</p>
+                            @else
+                                <p>Branch location is missing.</p>
+                            @endif
                         </span> </h1>
                 </div>
             </div>
