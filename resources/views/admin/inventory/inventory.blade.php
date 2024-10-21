@@ -38,11 +38,10 @@
                         <td class=" px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">{{ $item->item_name }}</td>
                         <td class=" px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">{{ $item->quantity }}</td>
                         <td class=" px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs"><span
-                                @if ($item->availability === 'available') class="bg-green-200 text-green-700 rounded-full px-2"
-                                @elseif ($item->availability === 'out-of-stock') class="bg-red-200 text-red-700 rounded-full px-2"
-                                @elseif ($item->availability === 'to-order') class="bg-blue-200 text-blue-700 rounded-full px-2" @endif>
-                                {{ $item->availability }}</span>
-                        </td>
+                                @if ($item->availability === 'available') class="bg-green-200 text-green-700 rounded-full px-2">Available</span>
+                                @elseif ($item->availability === 'out-of-stock') class="bg-red-200 text-red-700 rounded-full px-2">Out of stock</span>
+                                @elseif ($item->availability === 'to-order') class="bg-blue-200 text-blue-700 rounded-full px-2" >To order</span> @endif
+                                </td>
                         <td class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs max-md:flex">
                             <div class="flex gap-2 justify-center flex-wrap items-center">
                                 <a class=" border border-slate-600 flex max-md:flex-1 justify-center items-center rounded-md py-2 px-4 max-md:py-1 max-md:px-2 text-white font-semibold hover:bg-gray-300 transition-all"

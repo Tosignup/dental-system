@@ -86,7 +86,7 @@ class InventoryController extends Controller
     {
         $item = Inventory::findOrFail($id);
 
-        $validated = $request->validate([
+        $validatedData = $request->validate([
             'item_name' => 'required|string',
             'branch_id' => 'required|exists:branches,id',
             'quantity' => 'required|integer|min:0',
@@ -95,7 +95,22 @@ class InventoryController extends Controller
             'notes' => 'nullable|string',
         ]);
 
-        $item->update($validated);
+
+        $minimumQuantity = $item->minimum_quantity; 
+        $availability = $this->determineAvailability($validatedData['quantity'], $minimumQuantity);
+        $totalValue = $validatedData['quantity'] * $validatedData['cost_per_item'];
+
+        $item->update([
+            'item_name' => $validatedData['item_name'],
+            'branch_id' => $validatedData['branch_id'],
+            'quantity' => $validatedData['quantity'],
+            'minimum_quantity' => $minimumQuantity,
+            'serial_number' => $validatedData['serial_number'],
+            'cost_per_item' => $validatedData['cost_per_item'],
+            'availability' => $availability,
+            'total_value' => $totalValue,
+            'notes' => $validatedData['notes'],
+        ]);
 
         AuditLog::create([
             'action' => 'Update',
