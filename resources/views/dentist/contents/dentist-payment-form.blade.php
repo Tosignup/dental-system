@@ -89,6 +89,7 @@
                     <h4 class="max-md:text-xs mb-1"> Procedure: </h4>
                     <h4 class="max-md:text-xs mb-1"> Appointment Date: </h4>
                     <h4 class="max-md:text-xs mb-1"> Total Amount Due: </h4>
+                    <h4 class="max-md:text-xs mb-1"> Balance remaining : </h4>
                 </div>
                 <div class=" w-1/2 text-right">
                     <h2 class="max-md:text-xs font-semibold mb-1">
@@ -99,10 +100,8 @@
                         {{ $appointment->appointment_date }}</h2>
                     <h2 class="max-md:text-xs font-semibold mb-1">&#8369;
                         {{ number_format($appointment->procedure->price, 2) }}</h2>
-                    {{-- <h2 class="max-md:text-xs font-semibold mb-1">&#8369;
-                        {{ number_format($balanceRemaining, 2) }}</h2> --}}
-                    <h2 class="max-md:text-xs font-semibold mb-1">
-                        {{ $appointment->id }}</h2>
+                    <h2 class="max-md:text-xs font-semibold mb-1">&#8369;
+                        {{ number_format($balanceRemaining, 2) }}</h2>
                 </div>
             </div>
             <div class="flex justify-center">

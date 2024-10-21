@@ -231,6 +231,9 @@
                                 </option>
                             @endforeach
                         </select>
+                        @if ($branches->isEmpty())
+                            <h1 class="text-red-600 text-xs">There are currently no registered branches yet.</h1>
+                        @endif
                     </label>
 
                     <label class="flex flex-col flex-1 pb-4" for="dentist_id">
@@ -239,6 +242,7 @@
                             id="dentist_id" name="dentist_id" required>
                             <option class="max-md:text-xs" value="">Select Dentist</option>
                         </select>
+
                     </label>
 
                     <label class="flex flex-col flex-1 pb-4" for="patient_id">

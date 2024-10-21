@@ -22,11 +22,12 @@
     </div>
     <section class="bg-white shadow-lg rounded-md max-w-max p-6 my-4 mx-auto max-lg:p-3 max-lg:m-3  max-lg:mt-14">
         <h1 class="font-bold text-4xl px-4 max-md:text-2xl w-max">Add new patient</h1>
-        <form method="POST" action="{{ route('store.patient') }}">
+        <form method="POST" action="{{ route('store.patient') }}" class="">
             @method('POST')
             @csrf
-            <div class="flex flex-wrap items-start justify-start gap-4 max-md:gap-2 max-w-4xl p-8 max-md:p-2">
-                <label class="flex flex-col flex-1 min-w-[30%]" for="first_name">
+            <div
+                class="flex max-lg:flex-col flex-wrap items-start justify-start  gap-4 max-md:gap-4 max-w-4xl p-8 max-md:p-2">
+                <label class="flex flex-col flex-1 min-w-[30%] max-lg:w-full" for="first_name">
                     <h1 class="max-md:text-sm">First name</h1>
                     <input
                         class="max-md:text-sm max-md:py-1 max-md:px-2 border flex-grow min-w-max border-gray-400 py-2 px-4 rounded-md"
@@ -37,7 +38,7 @@
                             class="validation-message text-red-600 text-xs p-1 rounded-md my-1 show">{{ $message }}</span>
                     @enderror
                 </label>
-                <label class="flex flex-col flex-1 min-w-[30%]" for="last_name">
+                <label class="flex flex-col flex-1 min-w-[30%] max-lg:w-full" for="last_name">
                     <h1 class="max-md:text-sm">Last name</h1>
                     <input class="max-md:text-sm max-md:py-1 max-md:px-2 border border-gray-400 py-2 px-4 rounded-md"
                         name="last_name" type="text" id="last_name" autocomplete="off" placeholder="Dela Cruz"
@@ -47,7 +48,7 @@
                             class="validation-message text-red-600 text-xs p-1 rounded-md my-1 show">{{ $message }}</span>
                     @enderror
                 </label>
-                <label class="flex flex-col flex-1 min-w-[30%]" for="fb_name">
+                <label class="flex flex-col flex-1 min-w-[30%] max-lg:w-full" for="fb_name">
                     <h1 class="max-md:text-sm">Facebook name</h1>
                     <input class="max-md:text-sm max-md:py-1 max-md:px-2 border border-gray-400 py-2 px-4 rounded-md"
                         name="fb_name" type="text" autocomplete="off" id="fb_name" placeholder="Dela Cruz"
@@ -58,7 +59,7 @@
                     @enderror
                 </label>
 
-                <label class="flex flex-col flex-1 min-w-[30%]" for="email">
+                <label class="flex flex-col flex-1 min-w-[30%] max-lg:w-full" for="email">
                     <h1 class="max-md:text-sm">Email</h1>
                     <input class="max-md:text-sm max-md:py-1 max-md:px-2 border border-gray-400 py-2 px-4 rounded-md"
                         name="email" type="email" id="email" autocomplete="off" placeholder="juan@gmail.com"
@@ -68,7 +69,7 @@
                             class="validation-message text-red-600 text-xs p-1 rounded-md my-1 show">{{ $message }}</span>
                     @enderror
                 </label>
-                <label class="flex flex-col flex-1 min-w-[30%]" for="gender">
+                <label class="flex flex-col flex-1 min-w-[30%] max-lg:w-full" for="gender">
                     <h1 class="max-md:text-sm">Gender</h1>
                     <select class="border max-md:text-sm max-md:py-1 max-md:px-2 border-gray-400 py-2 px-4 rounded-md"
                         name="gender" id="gender" oninput="validateInput('gender')">
@@ -82,7 +83,7 @@
                             class="validation-message text-red-600 text-xs p-1 rounded-md my-1 show">{{ $message }}</span>
                     @enderror
                 </label>
-                <label class="flex flex-col flex-1 min-w-[30%]" for="date_of_birth">
+                <label class="flex flex-col flex-1 min-w-[30%] max-lg:w-full" for="date_of_birth">
                     <h1 class="max-md:text-sm">Date of birth</h1>
                     <input class="max-md:text-sm max-md:py-1 max-md:px-2 border border-gray-400 py-2 px-4 rounded-md"
                         name="date_of_birth" type="date" id="date_of_birth" value="{{ old('date_of_birth') }}"
@@ -92,7 +93,7 @@
                             class="validation-message text-red-600 text-xs p-1 rounded-md my-1 show">{{ $message }}</span>
                     @enderror
                 </label>
-                <label class="flex flex-col flex-1 min-w-[30%]" for="password">
+                <label class="flex flex-col flex-1 min-w-[30%] max-lg:w-full" for="password">
                     <h1 class="max-md:text-sm">Password</h1>
                     <input class="max-md:text-sm max-md:py-1 max-md:px-2 border border-gray-400 py-2 px-4 rounded-md"
                         name="password" type="password" id="password" autocomplete="off""
@@ -102,7 +103,7 @@
                             class="validation-message text-red-600 text-xs p-1 rounded-md my-1 show">{{ $message }}</span>
                     @enderror
                 </label>
-                <label class="flex flex-col flex-1 min-w-[30%]" for="password_confirmation">
+                <label class="flex flex-col flex-1 min-w-[30%] max-lg:w-full" for="password_confirmation">
                     <h1 class="max-md:text-sm">Confirm Password</h1>
                     <input class="max-md:text-sm max-md:py-1 max-md:px-2 border border-gray-400 py-2 px-4 rounded-md"
                         type="password" name="password_confirmation" id="password_confirmation"
@@ -113,7 +114,7 @@
                     @enderror
                 </label>
 
-                <label class="flex flex-col flex-1 min-w-[30%]" for="phone_number">
+                <label class="flex flex-col flex-1 min-w-[30%] max-lg:w-full" for="phone_number">
                     <h1 class="max-md:text-sm">Phone number</h1>
                     <input class="max-md:text-sm max-md:py-1 max-md:px-2 border border-gray-400 py-2 px-4 rounded-md"
                         name="phone_number" type="number" autocomplete="off" id="phone_number"
@@ -123,7 +124,7 @@
                             class="validation-message text-red-600 text-xs p-1 rounded-md my-1 show">{{ $message }}</span>
                     @enderror
                 </label>
-                <label class="flex flex-col flex-1 min-w-[30%] " for="branch_id">
+                <label class="flex flex-col flex-1 min-w-[30%] max-lg:w-full " for="branch_id">
                     <h1 class="max-md:text-xs">Select branch</h1>
                     <select class="border border-gray-400 py-2 px-4 rounded-md max-md:text-xs max-md:py-1 max-md:px-2"
                         id="branch_id" name="branch_id" required>
@@ -134,8 +135,11 @@
                             </option>
                         @endforeach
                     </select>
+                    @if ($branches->isEmpty())
+                        <h1 class="text-red-600 text-xs">There are currently no registered branches yet.</h1>
+                    @endif
                 </label>
-                <label class="flex flex-col flex-1 min-w-[30%] " for="patient_type">
+                <label class="flex flex-col flex-1 min-w-[30%] max-lg:w-full " for="patient_type">
                     <h1 class="max-md:text-xs">Type of patients</h1>
                     <select class="border max-md:text-sm max-md:py-1 max-md:px-2 border-gray-400 py-2 px-4 rounded-md"
                         name="patient_type" id="patient_type" oninput="validateInput('patient_type')">
@@ -145,7 +149,7 @@
                         <option value="Insurance">Insurance</option>
                     </select>
                 </label>
-                <label class="flex flex-col flex-1 min-w-[30%]" for="next_visit">
+                <label class="flex flex-col flex-1 min-w-[30%] max-lg:w-full" for="next_visit">
                     <h1 class="max-md:text-sm">Date of next visit</h1>
                     <input class="max-md:text-sm max-md:py-1 max-md:px-2 border border-gray-400 py-2 px-4 rounded-md"
                         name="next_visit" type="date" autocomplete="off" id="next_visit"

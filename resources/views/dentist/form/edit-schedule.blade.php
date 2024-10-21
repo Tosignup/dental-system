@@ -93,7 +93,8 @@
                         <label class="flex flex-col flex-1 pb-4" for="start_time">
                             <h1>Start Time</h1>
                             <input class="border max-md:text-xs flex-grow min-w-max border-gray-400 py-2 px-4 rounded-md"
-                                name="start_time" type="time" id="start_time" step="600">
+                                name="start_time" type="time" id="start_time" step="600"
+                                value="{{ old('start_time') }}" oninput="validateInput('start_time')">
                             @error('start_time')
                                 <span id="start_time_error"
                                     class="validation-message text-red-600 text-xs p-1 rounded-md my-1 show">{{ $message }}</span>
@@ -102,7 +103,8 @@
                         <label class="flex flex-col flex-1 pb-4" for="end_time">
                             <h1>End Time</h1>
                             <input class="border max-md:text-xs flex-grow min-w-max border-gray-400 py-2 px-4 rounded-md"
-                                name="end_time" type="time" id="end_time" step="600">
+                                name="end_time" type="time" id="end_time" step="600" value="{{ old('end_time') }}"
+                                oninput="validateInput('end_time')">
                             @error('end_time')
                                 <span id="end_time_error"
                                     class="validation-message text-red-600 text-xs p-1 rounded-md my-1 show">{{ $message }}</span>

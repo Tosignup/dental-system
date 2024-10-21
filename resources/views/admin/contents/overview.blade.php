@@ -76,13 +76,13 @@
                                         <h1 class="font-semibold text-lg">{{ $patient->last_name }}
                                             {{ $patient->first_name }}
                                         </h1>
-                                        <h1 class="text-xs">{{ $patient->branch->branch_loc }}</h1>
+                                        {{-- <h1 class="text-xs">{{ $patient->branch->branch_loc }}</h1> --}}
                                         <h1 class="text-xs">{{ $patient->phone_number }}</h1>
                                     </div>
                                 </div>
                                 <div>
                                     <li
-                                        @if ($patient->patient_type === 'Walk-in') class="border py-2 px-4 rounded-md bg-yellow-100 text-xs" 
+                                        @if ($patient->patient_type === 'Walk-in') class="border py-2 px-4 rounded-md bg-yellow-100 text-xs"
                                     @elseif ($patient->patient_type === 'Orthodontics') class="border py-2 px-4 rounded-md bg-violet-100 text-xs"
                                     @elseif ($patient->patient_type === 'Insurance') class="border py-2 px-4 rounded-md bg-green-100 text-xs" @endif>
                                         {{ $patient->patient_type }}

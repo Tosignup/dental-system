@@ -36,7 +36,7 @@
                             value="{{ old('name') }}" oninput="validateInput('name')">
                         @error('name')
                             <span id="name_error"
-                                class="validation-message text-white max-md:text-sm bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                                class="validation-message text-red-600 text-xs  rounded-md show">{{ $message }}</span>
                         @enderror
                     </label>
                     <label class="flex flex-col flex-1 min-w-[45%] pb-3" for="price">
@@ -47,7 +47,7 @@
                             value="{{ old('price') }}" oninput="validateInput('price')">
                         @error('price')
                             <span id="price_error"
-                                class="validation-message text-white max-md:text-sm bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
+                                class="validation-message text-red-600 text-xs  rounded-md show">{{ $message }}</span>
                         @enderror
                     </label>
                     <label class="flex flex-col flex-1 min-w-[45%] pb-3" for="description">

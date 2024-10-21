@@ -231,6 +231,14 @@
                     </a>
 
                     <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
+                        href="{{ route('appointments.declined', Auth::user()->dentist_id) }}">
+                        <img class="h-8" src="{{ asset('assets/images/declined.png') }}" alt="">
+                        <button class="hover:font-bold  transition-all">
+                            Declined Appointments
+                        </button>
+                    </a>
+
+                    <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
                         href="{{ route('appointments.payment', Auth::user()->dentist_id) }}">
                         <img class="h-8" src="{{ asset('assets/images/payment.png') }}" alt="">
                         <button class="hover:font-bold  transition-all">
@@ -570,8 +578,14 @@
                             Approved appointments
                         </button>
                     </a>
+                    <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
+                        href="{{ route('appointments.declined', Auth::user()->dentist_id) }}">
 
-
+                        <img class="h-5" src="{{ asset('assets/images/declined.png') }}" alt="">
+                        <button class="hover:font-bold transition-all text-xs">
+                            Declined appointments
+                        </button>
+                    </a>
                     <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
                         href="{{ route('appointments.payment', Auth::user()->dentist_id) }}">
 

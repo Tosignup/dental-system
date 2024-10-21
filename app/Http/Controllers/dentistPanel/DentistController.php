@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\dentistPanel;
 
+use Auth;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Branch;
@@ -21,15 +22,98 @@ class DentistController extends Controller
     public function overview($id)
     {
         $dentist = Dentist::find($id);
+        $dentistId = Auth::user()->dentist->id; // Assuming you have a dentist relationship in your User model
+        $appointmentId = Appointment::find($id);
 
-        $today = Carbon::today();
+        $today = Carbon::today()->toDateString();
 
 
         $totalAppointments = Appointment::count();
         $todayAppointment = Appointment::whereDate('appointment_date', $today)->count();
         $newAppointments = Appointment::whereDate('created_at', $today)->count();
+        $onlineAppointments = Appointment::where('is_online', '1')->orderBy('created_at', 'desc')->take(3)->count();
 
-        return view('dentist.contents.overview', compact('totalAppointments', 'newAppointments', 'todayAppointment'));
+
+
+        $approvedAppointments = Appointment::where('dentist_id', $dentistId)
+            ->where('pending', 'approved')
+            ->count();
+
+        $declinedAppointments = Appointment::where('dentist_id', $dentistId)
+            ->where('pending', 'declined')
+            ->count();
+
+
+        $todaysSchedules = DentistSchedule::where('dentist_id', $dentistId)
+            ->where('date', $today)
+            ->orderBy('start_time', 'desc') // Order by start time to get the most recent
+            ->with('branch') // Eager load branch if needed
+            ->take(3) // Limit to 3 results
+            ->get();
+
+
+        $pendingAppointmentsDashboard = Appointment::where('dentist_id', $dentistId)
+            ->where('pending', 'pending')
+            ->with(['patient', 'procedure', 'branch'])
+            ->count();
+
+        $pendingAppointments = Appointment::where('dentist_id', $id)
+            ->where('pending', 'Pending')
+            ->where('is_archived', 0)
+            ->with(['patient', 'procedure', 'branch'])
+            ->paginate(5, ['*'], 'pending_page');
+
+        $appointmentPaymentInformation = Appointment::with(['patient', 'procedure', 'dentist'])->find($appointmentId);
+
+        $pendingAppointmentsInformation = Appointment::where('dentist_id', $id)
+            ->where('pending', 'Pending')
+            ->where('is_archived', 0)
+            ->orderBy('created_at', 'desc') // Order by created_at (or appointment_date if that's preferred)
+            ->take(3) // Limit to 3 recent appointments
+            ->with(['patient', 'procedure']) // Include relationships if needed
+            ->get();
+
+        // Fetch approved appointments for the dentist, limited to the most recent 3
+        $approvedAppointmentsInformation = Appointment::where('dentist_id', $id)
+            ->where('pending', 'approved')
+            ->where('is_archived', 0)
+            ->orderBy('created_at', 'desc') // Order by created_at (or appointment_date)
+            ->take(3) // Limit to 3 recent appointments
+            ->with(['patient', 'procedure']) // Include relationships if needed
+            ->get();
+        $recentPayments = Payment::with(['appointment.patient', 'appointment.procedure', 'appointment.dentist'])
+            ->orderBy('created_at', 'desc') // Order by creation date
+            ->take(3) // Limit to 3 recent payments
+            ->get();
+        // Combine both collections
+        $appointmentIds = $pendingAppointmentsInformation->merge($approvedAppointmentsInformation);
+        return view(
+            'dentist.contents.overview',
+            compact(
+                'totalAppointments',
+                'newAppointments',
+                'todayAppointment',
+                'todaysSchedules',
+                'pendingAppointments',
+                'pendingAppointmentsDashboard',
+                'onlineAppointments',
+                'approvedAppointments',
+                'declinedAppointments',
+                'appointmentPaymentInformation',
+                'pendingAppointmentsInformation',
+                'approvedAppointmentsInformation',
+                'appointmentIds',
+                'recentPayments'
+            )
+        );
+    }
+
+    public function showRecentPayments()
+    {
+        // Retrieve the three most recent payments with related appointment and patient data
+
+
+        return view('dentist.contents.overview', compact(''));
     }
 
     public function dentistAppointments($id)
@@ -88,6 +172,21 @@ class DentistController extends Controller
 
         return view('dentist.contents.approved-appointments', compact('dentist', 'approvedAppointments'));
     }
+
+
+    public function declinedAppointment($id)
+    {
+        $dentist = Dentist::find($id);
+
+        $declinedAppointments = Appointment::where('dentist_id', $id)
+            ->where('pending', 'declined')
+            ->where('is_archived', 0)
+            ->with(['patient', 'procedure', 'branch'])
+            ->paginate(5, ['*'], 'declined_page'); // Custom pagination query param
+
+        return view('dentist.contents.declined-appointments', compact('dentist', 'declinedAppointments'));
+    }
+
 
     public function appointmentPayment($id)
     {
@@ -273,7 +372,7 @@ class DentistController extends Controller
         // Start and end times from the schedule
         $startTime = new \DateTime($schedule->start_time);
         $endTime = new \DateTime($schedule->end_time);
-        // $appointmentDuration = $schedule->appointment_duration; 
+        // $appointmentDuration = $schedule->appointment_duration;
         $appointmentDuration = 60; // Duration in minutes
 
         // Array to store time slots
@@ -331,7 +430,7 @@ class DentistController extends Controller
         $totalPaid = $payment ? $payment->total_paid : 0;
         $balanceRemaining = $appointment->procedure->price - $totalPaid;
 
-        return view('dentist.contents.dentist-payment-form', compact('appointment', 'payment', 'totalPaid'));
+        return view('dentist.contents.dentist-payment-form', compact('appointment', 'payment', 'totalPaid', 'balanceRemaining'));
     }
 
     public function storeDentistPartialPayment(Request $request)

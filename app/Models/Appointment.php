@@ -47,7 +47,12 @@ class Appointment extends Model
         return $this->belongsTo(Procedure::class, 'proc_id');
     }
 
-    public function payment() {
+    public function payment()
+    {
         return $this->hasOne(Payment::class);
+    }
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class, 'schedule_id'); // Make sure this matches the foreign key
     }
 }

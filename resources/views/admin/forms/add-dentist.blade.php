@@ -113,6 +113,9 @@
                                 </option>
                             @endforeach
                         </select>
+                        @if ($branches->isEmpty())
+                            <h1 class="text-red-600 text-xs">There are currently no registered branches yet.</h1>
+                        @endif
                     </label>
                     <label class="flex flex-col flex-1 min-w-[45%]" for="password">
                         <h1 class="max-md:text-xs">Password</h1>
