@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\patientPanel;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Image;
 use App\Models\Branch;
@@ -105,6 +106,8 @@ class PatientController extends Controller
 
     public function storePatient(Request $request)
     {
+        $today = Carbon::now();
+
         $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -114,9 +117,14 @@ class PatientController extends Controller
             'password' => 'required|string|min:8|confirmed',
             'phone_number' => 'nullable|string|max:12',
             'fb_name' => 'required|string|max:255',
-            'next_visit' => 'required|date',
             'branch_id' => 'required|exists:branches,id',
+            'hmo_company' => 'nullable|string|max:255',
+            'hmo_number' => 'nullable|string|max:255',
+            'hmo_type' => 'nullable|string|max:255',
+            'patient_type' => 'required|in:Walk-in,Orthodontics,Insurance',
         ]);
+
+        $hmoCompany = $request->hmo_company === 'other' ? $request->other_hmo_name : $request->hmo_company;
 
         // Create patient
         $patient = Patient::create([
@@ -128,8 +136,13 @@ class PatientController extends Controller
             'password' => Hash::make($request->password),
             'phone_number' => $request->phone_number,
             'fb_name' => $request->fb_name,
-            'next_visit' => $request->next_visit,
+            'next_visit' => $today,
             'branch_id' => $request->branch_id,
+            'has_hmo' => $request->has_hmo ? 1 : 0,
+            'hmo_company' => $hmoCompany,
+            'hmo_number' => $request->hmo_number,
+            'hmo_type' => $request->hmo_type,  
+            'patient_type' => $request->patient_type,  
         ]);
 
         // Create login credentials for the patient in users table
@@ -150,14 +163,14 @@ class PatientController extends Controller
         ]);
 
         return redirect()->route('patient.active')->with('success', 'Patient created successfully');
-        session()->flash('success', 'Patient added successfully!');
     }
 
     public function showPatient($id)
     {   
         $patient = Patient::findOrFail($id);
+        $branches = Branch::all();
 
-        return view('client.patients.patient-information', compact('patient'));
+        return view('client.patients.patient-information', compact('patient', 'branches'));
     }
 
     public function editPatient($id)

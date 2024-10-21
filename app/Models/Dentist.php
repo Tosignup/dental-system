@@ -25,7 +25,7 @@ class Dentist extends Model
 
     public function user()
     {
-        return $this->hasOne(LoggedUser::class);
+        return $this->hasOne(User::class);
     }
 
     public function branch()

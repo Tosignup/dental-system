@@ -136,7 +136,7 @@ class PaymentController extends Controller
 
     public function paymentList($id)
     {
-        $patient = Appointment::find($id);
+        $patient = Patient::findOrFail($id);
         $payments = Appointment::where('patient_id', $id)
                                     ->where('pending', 'Approved')
                                     ->with(['procedure', 'dentist', 'payment'])
@@ -152,8 +152,7 @@ class PaymentController extends Controller
 
     public function pendingPayment($id)
     {
-        $patient = Appointment::find($id);
-
+        $patient = Patient::findOrFail($id);
 
         $pendingPayments = TemporaryPayment::where('status', 'pending')
                                             ->with('payment')

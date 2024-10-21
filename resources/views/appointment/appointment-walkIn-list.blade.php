@@ -83,15 +83,16 @@
                             {{ $appointment->branch->branch_loc }}</td>
                         <td class="px-4 py-2 min-w-max h-full text-sm max-lg:text-xs ">
                             @if ($appointment->pending === 'Approved')
-                                <h1 class="text-sm text-green-600 font-semibold bg-green-200 rounded-full">
+                                <h1 class="text-xs  text-green-600 font-semibold bg-green-200 rounded-full">
                                     <span>&#9679;</span> Approved
                                 </h1>
                             @elseif ($appointment->pending === 'Declined')
-                                <h1 class="text-sm text-red-600 font-semibold bg-red-200 rounded-full"> <span>&#9679;</span>
+                                <h1 class="text-xs  text-red-600 font-semibold bg-red-200 rounded-full">
+                                    <span>&#9679;</span>
                                     Declined
                                 </h1>
                             @else
-                                <h1 class="text-sm text-slate-600 font-semibold bg-slate-200 rounded-full">
+                                <h1 class="text-xs  text-slate-600 font-semibold bg-slate-200 rounded-full">
                                     <span>&#9679;</span> Pending
                                 </h1>
                             @endif

@@ -7,7 +7,13 @@
         <h1 class="font-bold text-3xl p-4">Pending Appointments</h1>
 
         @if ($pendingAppointments->isEmpty())
-            <p>No pending appointments.</p>
+            <div class="flex gap-4 flex-col justify-center items-center py-12 ">
+                <img class="h-56" src="{{ asset('assets/images/relax.png') }}" alt="">
+                <div class="flex flex-col justify-center items-center gap-2  ">
+                    <h1 class="font-bold text-3xl text-center">No pending appointments right now.</h1>
+                    <h1 class="text-sm text-center"> All caught up! There are no pending appointments at the moment.</h1>
+                </div>
+            </div>
         @else
             <table class="min-w-full bg-white border">
                 <thead>

@@ -14,17 +14,14 @@ class Inventory extends Model
 
     protected $fillable = [
         'item_name',
-        'category',
+        'branch_id',
         'quantity',
-        'minimum_stock',
-        'maximum_stock',
-        'purchase_price',
-        'selling_price',
-        'discount',
+        'minimum_quantity',
+        'serial_number',
+        'cost_per_item',
         'availability',
-        'condition',
+        'total_value',
         'notes',
-        'branch_id'
     ];
 
     public function branch()

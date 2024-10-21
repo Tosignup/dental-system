@@ -196,12 +196,13 @@
                         </li>
                     @endif
                     <hr class="bg-gray-700 w-full">
-                    <li class="py-3 my-2 px-2 hover:bg-gray-200 transition-all rounded-sm">
+                    <a onclick="document.getElementById('my_modal_2').showModal()"
+                        class="py-3  flex my-2 px-2 hover:bg-gray-200 transition-all rounded-sm">
                         <div class="flex self-start text-sm max-md:text-xs">
                             <div class="flex  gap-2 items-center justify-center">
-                                <a class="btn" onclick="document.getElementById('my_modal_2').showModal()">
-                                    Log out
-                                </a>
+
+                                Log out
+
                             </div>
                             {{-- Client Logout --}}
                             <dialog id="my_modal_2"
@@ -224,7 +225,7 @@
                                 </div>
                             </dialog>
                         </div>
-                    </li>
+                    </a>
             </details>
         </div>
     </div>

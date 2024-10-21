@@ -14,7 +14,6 @@
                 </tr>
             </thead>
             <tbody>
-
                 @foreach ($payments as $payment)
                     <tr class="border-b-2">
                         {{-- <td class="border px-4 py-2 max-md:py-1 max-md"> {{ $payment->id }}</td> --}}

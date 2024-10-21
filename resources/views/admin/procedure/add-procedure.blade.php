@@ -21,7 +21,7 @@
         @include('components.search')
     </div>
     <section class="bg-white shadow-lg rounded-md max-w-max p-6 my-4 mx-auto  max-lg:mt-14">
-        <h1 class="font-bold text-3xl px-4 max-md:text-2xl">Add Procedure</h1>
+        <h1 class="font-bold text-4xl px-4 max-md:text-2xl w-max">Add Procedure</h1>
         <form method="POST" action="{{ route('procedure.store') }}">
             @method('POST')
             @csrf

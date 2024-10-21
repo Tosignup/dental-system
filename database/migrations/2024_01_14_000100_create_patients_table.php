@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('patients', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('branch_id')->nullable()->constrained('branches')->onDelete('cascade');
             $table->string('first_name');
             $table->string('last_name');
             $table->date('date_of_birth');
@@ -24,7 +25,11 @@ return new class extends Migration
             $table->date('next_visit')->nullable();
             $table->boolean('is_archived')->default(false);
             $table->timestamp('archived_at')->nullable();
-            $table->foreignId('branch_id')->nullable()->constrained('branches')->onDelete('cascade');
+            $table->boolean('has_hmo')->default(false);
+            $table->string('hmo_company')->nullable();
+            $table->string('hmo_number')->nullable();
+            $table->string('hmo_type')->nullable();
+            $table->enum('patient_type', ['Walk-in', 'Orthodontics', 'Insurance'])->default('Walk-in');
             $table->timestamps();
         });
 

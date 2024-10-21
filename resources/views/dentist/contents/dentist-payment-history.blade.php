@@ -66,11 +66,12 @@
                 <tbody>
                     @forelse($paymentHistory as $payment)
                         <tr>
-                            <td class="border-b pb-2 px-2">{{ $payment->created_at->format('Y-m-d') }}</td>
-                            <td class="border-b pb-2 px-2">&#8369; {{ number_format($payment->paid_amount, 2) }}</td>
-                            <td class="border-b pb-2 px-2">{{ ucfirst($payment->payment_method) }}</td>
-                            <td class="border-b pb-2 px-2">{{ $payment->remarks ?? 'N/A' }}</td>
-                            <td class="border-b pb-2 px-2">{{ $payment->id }}</td>
+                            <td class="border-b pb-2 px-2 max-lg:text-xs">{{ $payment->created_at->format('Y-m-d') }}</td>
+                            <td class="border-b pb-2 px-2 max-lg:text-xs">&#8369;
+                                {{ number_format($payment->paid_amount, 2) }}</td>
+                            <td class="border-b pb-2 px-2 max-lg:text-xs">{{ ucfirst($payment->payment_method) }}</td>
+                            <td class="border-b pb-2 px-2 max-lg:text-xs">{{ $payment->remarks ?? 'N/A' }}</td>
+                            <td class="border-b pb-2 px-2 max-lg:text-xs">{{ $payment->id }}</td>
                         </tr>
                     @empty
                         <tr>

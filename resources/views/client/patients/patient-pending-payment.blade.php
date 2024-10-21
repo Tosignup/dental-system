@@ -32,7 +32,6 @@
             <label class="flex items-center gap-2" for="time">
                 <h1 class="font-bold text-3xl mr-4 max-md:mr-0 max-md:text-2xl">Pending payment list</h1>
             </label>
-
         </div>
         @if ($pendingPayments->isEmpty())
             <p>No pending payments to review.</p>
@@ -40,7 +39,6 @@
             <table class="w-full table-auto text-center mb-2 overflow-hidden">
                 <thead>
                     <tr class="bg-green-200 text-green-700">
-
                         <th class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Procedure name</th>
                         <th class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Appointment to</th>
                         <th class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Paid Amount</th>
@@ -53,7 +51,6 @@
                 <tbody>
                     @foreach ($pendingPayments as $pending)
                         <tr class="border-b-2 last:border-b-0">
-
                             <td class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">
                                 {{ $pending->payment->appointment->procedure->name }}</td>
                             <td class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs"> Dr.
@@ -109,7 +106,6 @@
                             </td>
                             <td class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">{{ $pending->payment_proof }}
                             </td>
-
                         </tr>
                     @endforeach
                 @endif
@@ -122,7 +118,6 @@
                 <img id="modalImage" src="" alt="Modal Image" class="max-h-screen img-fluid">
             </div>
         </div>
-
     </section>
     <script>
         function openModal(imageSrc) {
@@ -131,12 +126,10 @@
             modalImage.src = imageSrc;
             modal.classList.remove('hidden');
         }
-
         document.getElementById('closeModal').onclick = function() {
             const modal = document.getElementById('imageModal');
             modal.classList.add('hidden');
         }
-
         // Close modal when clicking outside of the image
         window.onclick = function(event) {
             const modal = document.getElementById('imageModal');

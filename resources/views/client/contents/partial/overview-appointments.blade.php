@@ -10,7 +10,7 @@
             <th class="py-2 px-4 border-b text-left text-gray-600 max-lg:text-xs">Appointment Date</th>
             <th class="py-2 px-4 border-b text-left text-gray-600  max-xl:hidden">Procedure</th>
             <th class="py-2 px-4 border-b text-left text-gray-600  max-lg:text-xs">Dentist</th>
-            <th class="py-2 px-4 border-b text-left text-gray-600  max-xl:hidden">Branch</th>
+
             <th class="py-2 px-4 border-b text-left text-gray-600 max-xl:hidden">Status</th>
             <th class="py-2 px-4 border-b text-left text-gray-600 max-lg:text-xs">
                 Actions</th>
@@ -31,8 +31,7 @@
                     {{ $appointment->dentist->dentist_last_name }} {{ $appointment->dentist->dentist_first_name }}
                 </td>
 
-                <td class="py-2 px-4 border-b  max-xl:hidden  ">
-                    {{ $appointment->branch ? $appointment->branch->branch_loc : 'N/A' }}</td>
+
                 <td class="border-b px-4 py-2 min-w-max h-full max-lg:text-xs max-xl:hidden">
                     @if ($appointment->pending === 'Approved')
                         <h1 class="text-md text-green-600 font-semibold">Approved</h1>
@@ -71,19 +70,16 @@
                                     <div class="mt-6 max-lg:text-sm">
                                         <hr class="w-full bg-gray">
                                         <div class="flex flex-col justify-center items-between">
-                                            <div class="flex flex-col justify-between my-2 py-2 px-4 gap-4">
-                                                <h3 class="font-bold text-gray-600">Teeth No.</h3>
-                                                <p>{{-- {{ $appointment->teeth_number }} --}}26</p>
-                                            </div>
+
                                             <hr class="w-full bg-gray">
                                             <div class="flex justify-between my-2 py-2 px-4 gap-4 flex-col">
                                                 <h3 class="font-bold text-gray-600">Description</h3>
-                                                <p>{{-- {{ $appointment->description }} --}}
-                                                    There are three missing teeth, 26 has been extracted due
-                                                    to
-                                                    extensive caries, 18 and 28 unerupted
+                                                <p>
+                                                    {{ $appointment->procedure->description }}
                                                 </p>
                                             </div>
+
+
                                             <hr class="w-full bg-gray">
                                             <div class="flex justify-between my-2 py-2 px-4 gap-4 flex-col">
                                                 <h3 class="font-bold text-gray-600">Fees</h3>
@@ -92,12 +88,15 @@
                                                 </p>
                                             </div>
                                             <hr class="w-full bg-gray">
+
                                             <div class="flex justify-between my-2 py-2 px-4 gap-4 flex-col">
-                                                <h3 class="font-bold text-gray-600">Remarks</h3>
-                                                <p>{{-- {{ $appointment->remarks }} --}}
-                                                    hahahaha remarks
+                                                <h3 class="font-bold text-gray-600">Branch</h3>
+                                                <p>
+                                                    {{ $appointment->branch ? $appointment->branch->branch_loc : 'N/A' }}
                                                 </p>
                                             </div>
+                                            <hr class="w-full bg-gray">
+
                                         </div>
                                     </div>
                                 </div>

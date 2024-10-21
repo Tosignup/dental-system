@@ -30,11 +30,15 @@ class AdminController extends Controller
         $newPatients = Patient::whereDate('created_at', $today)->count();
         $todayPatients = Patient::whereDate('next_visit', $today)->count();
 
-        $totalAppointments = Appointment::count();
-        $todayAppointment = Appointment::whereDate('appointment_date', $today)->count();
+        $todayAppointments = Appointment::whereDate('appointment_date', $today)->count();
         $newAppointments = Appointment::whereDate('created_at', $today)->count();
 
-        return view('admin.contents.overview', compact('payments', 'totalPatients', 'newPatients', 'todayPatients', 'totalAppointments', 'newAppointments', 'todayAppointment', 'totalRevenue'));
+        $todaySchedule = DentistSchedule::whereDate('date', $today)->count();
+
+        $recentPatients = Patient::orderBy('created_at', 'desc')->take(3)->get();
+        $pendingAppointments = Appointment::where('pending', 'Pending')->orderBy('created_at', 'desc')->take(3)->get();
+        $onlineAppointments = Appointment::where('is_online', '1')->orderBy('created_at', 'desc')->take(3)->get();
+        return view('admin.contents.overview', compact('payments', 'todayPatients', 'newAppointments', 'todayAppointments', 'totalRevenue', 'todaySchedule', 'recentPatients', 'pendingAppointments', 'onlineAppointments'));
     }
 
 
@@ -191,7 +195,7 @@ class AdminController extends Controller
                 'count' => $group->count(),
                 'total_amount' => $group->sum('paid_amount'),
             ];
-        })->sortByDesc('count')->take(3); // Get top 5 procedures
+        })->sortByDesc('count')->take(3);
 
         return view('admin.contents.sales-report', compact('paymentHistories', 'totalRevenue', 'averageRevenue', 'dailyComparisonData', 'comparisonData', 'monthlyRevenueData', 'frequentlyPerformedProcedures'));
     }

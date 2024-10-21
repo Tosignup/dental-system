@@ -26,34 +26,29 @@ class InventoryController extends Controller
 
     public function storeItem(Request $request)
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'item_name' => 'required|string',
-            'category' => 'required|string',
-            'quantity' => 'required|numeric',
-            'minimum_stock' => 'required|numeric',
-            'maximum_stock' => 'required|numeric',
-            'purchase_price' => 'required|numeric|min:0',
-            'selling_price' => 'required|numeric|min:0',
-            'discount' => 'required|numeric|min:0',
-            'availability' => 'required|string',
-            'condition' => 'required|string',
-            'notes' => 'required|string',
             'branch_id' => 'required|exists:branches,id',
+            'quantity' => 'required|integer|min:0',
+            'serial_number' => 'required|string|max:10',
+            'cost_per_item' => 'required|numeric|min:0',
+            'notes' => 'nullable|string',
         ]);
+        
+        $minimumQuantity = $validatedData['quantity'] * 0.30; 
+        $availability = $this->determineAvailability($validatedData['quantity'], $minimumQuantity);
+        $totalValue = $validatedData['quantity'] * $validatedData['cost_per_item'];
 
         $item = Inventory::create([
-            'item_name' => $request->item_name,
-            'category' => $request->category,
-            'quantity' => $request->quantity,
-            'minimum_stock' => $request->minimum_stock,
-            'maximum_stock' => $request->maximum_stock,
-            'purchase_price' => $request->purchase_price,
-            'selling_price' => $request->selling_price,
-            'discount' => $request->discount,
-            'availability' => $request->availability,
-            'condition' => $request->condition,
-            'notes' => $request->notes,
-            'branch_id' => $request->branch_id,
+            'item_name' => $validatedData['item_name'],
+            'branch_id' => $validatedData['branch_id'],
+            'quantity' => $validatedData['quantity'],
+            'minimum_quantity' => $minimumQuantity,
+            'serial_number' => $validatedData['serial_number'],
+            'cost_per_item' => $validatedData['cost_per_item'],
+            'availability' => $availability,
+            'total_value' => $totalValue,
+            'notes' => $validatedData['notes'],
         ]);
 
         AuditLog::create([
@@ -66,6 +61,17 @@ class InventoryController extends Controller
         ]);
 
         return redirect()->route('inventory')->with('success', 'Item added successfully!');
+    }
+
+    private function determineAvailability($quantity, $minimumQuantity)
+    {
+        if ($quantity <= 0) {
+            return 'out-of-stock';
+        } elseif ($quantity < $minimumQuantity) {
+            return 'to-order';
+        } else {
+            return 'available';
+        }
     }
 
     public function editItem($id)
@@ -82,17 +88,11 @@ class InventoryController extends Controller
 
         $validated = $request->validate([
             'item_name' => 'required|string',
-            'category' => 'required|string',
-            'quantity' => 'required|numeric',
-            'minimum_stock' => 'required|numeric',
-            'maximum_stock' => 'required|numeric',
-            'purchase_price' => 'required|numeric|min:0',
-            'selling_price' => 'required|numeric|min:0',
-            'discount' => 'required|numeric|min:0',
-            'availability' => 'required|string',
-            'condition' => 'required|string',
-            'notes' => 'required|string',
             'branch_id' => 'required|exists:branches,id',
+            'quantity' => 'required|integer|min:0',
+            'serial_number' => 'required|string|max:10',
+            'cost_per_item' => 'required|numeric|min:0',
+            'notes' => 'nullable|string',
         ]);
 
         $item->update($validated);

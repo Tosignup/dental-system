@@ -22,6 +22,11 @@ class Patient extends Model
         'phone_number',
         'gender',
         'branch_id',
+        'has_hmo',
+        'hmo_company',
+        'hmo_number',
+        'hmo_type',
+        'patient_type',
     ];
 
     // Define a scope to get only non-archived patients

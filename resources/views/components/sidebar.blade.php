@@ -100,35 +100,35 @@
                     </div>
                     <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
                         href="{{ route('procedure') }}">
-                        <img class="h-8" src="{{ asset('assets/images/inventory.png') }}" alt="">
+                        <img class="h-8" src="{{ asset('assets/images/procedure-icon.png') }}" alt="">
                         <button class="hover:font-bold transition-all">
                             Procedure
                         </button>
                     </a>
                     <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
                         href="{{ route('branch') }}">
-                        <img class="h-8" src="{{ asset('assets/images/inventory.png') }}" alt="">
+                        <img class="h-8" src="{{ asset('assets/images/branches-icon.png') }}" alt="">
                         <button class="hover:font-bold transition-all">
                             Branches
                         </button>
                     </a>
                     <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
                         href="{{ route('inventory') }}">
-                        <img class="h-8" src="{{ asset('assets/images/inventory.png') }}" alt="">
+                        <img class="h-8" src="{{ asset('assets/images/inventory-icon.png') }}" alt="">
                         <button class="hover:font-bold transition-all">
                             Inventory
                         </button>
                     </a>
                     <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
                         href="{{ route('sales') }}">
-                        <img class="h-8" src="{{ asset('assets/images/inventory.png') }}" alt="">
+                        <img class="h-8" src="{{ asset('assets/images/sales-icon.png') }}" alt="">
                         <button class="hover:font-bold transition-all">
                             Sales Report
                         </button>
                     </a>
                     <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
                         href="{{ route('audit.logs') }}">
-                        <img class="h-8" src="{{ asset('assets/images/inventory.png') }}" alt="">
+                        <img class="h-8" src="{{ asset('assets/images/audit-icon.png') }}" alt="">
                         <button class="hover:font-bold transition-all">
                             Audit Logs
                         </button>
@@ -224,7 +224,7 @@
 
                     <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
                         href="{{ route('appointments.approved', Auth::user()->dentist_id) }}">
-                        <img class="h-8" src="{{ asset('assets/images/appointment.png') }}" alt="">
+                        <img class="h-8" src="{{ asset('assets/images/quality.png') }}" alt="">
                         <button class="hover:font-bold  transition-all">
                             Approved Appointments
                         </button>
@@ -323,11 +323,11 @@
                     <hr class="bg-gray-700 w-full">
                     <li class="py-3">
                         <div class="">
-                            <div class="text-left">
-                                <button class="btn max-lg:text-xs text-right" onclick="my_modal_3.showModal()">Log
-                                    out</button>
-                            </div>
-
+                            <button onclick="my_modal_3.showModal()" class="text-left">
+                                <h1 class="btn max-lg:text-xs text-right">Log
+                                    out
+                            </button>
+                            </button>
                             {{-- mobile Admin/Staff Logout --}}
                             <dialog id="my_modal_3" class="modal p-4 rounded-md max-md:text-lg">
                                 <div class="modal-box flex flex-col">
@@ -458,35 +458,35 @@
                     </div>
                     <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
                         href="{{ route('procedure') }}">
-                        <img class="h-5" src="{{ asset('assets/images/inventory.png') }}" alt="">
+                        <img class="h-5" src="{{ asset('assets/images/procedure-icon.png') }}" alt="">
                         <button class="hover:font-bold transition-all text-xs">
                             Procedures
                         </button>
                     </a>
                     <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
                         href="{{ route('branch') }}">
-                        <img class="h-5" src="{{ asset('assets/images/inventory.png') }}" alt="">
+                        <img class="h-5" src="{{ asset('assets/images/branches-icon.png') }}" alt="">
                         <button class="hover:font-bold transition-all text-xs">
                             Branches
                         </button>
                     </a>
                     <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
                         href="{{ route('inventory') }}">
-                        <img class="h-5" src="{{ asset('assets/images/inventory.png') }}" alt="">
+                        <img class="h-5" src="{{ asset('assets/images/inventory-icon.png') }}" alt="">
                         <button class="hover:font-bold transition-all text-xs">
                             Inventory
                         </button>
                     </a>
                     <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
-                        href="{{ route('inventory') }}">
-                        <img class="h-5" src="{{ asset('assets/images/inventory.png') }}" alt="">
+                        href="{{ route('sales') }}">
+                        <img class="h-5" src="{{ asset('assets/images/sales-icon.png') }}" alt="">
                         <button class="hover:font-bold transition-all text-xs">
                             Sales Report
                         </button>
                     </a>
                     <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
-                        href="{{ route('inventory') }}">
-                        <img class="h-5" src="{{ asset('assets/images/inventory.png') }}" alt="">
+                        href="{{ route('audit.logs') }}">
+                        <img class="h-5" src="{{ asset('assets/images/audit-icon.png') }}" alt="">
                         <button class="hover:font-bold transition-all text-xs">
                             Audit Logs
                         </button>
@@ -537,6 +537,47 @@
                         <img class="h-5" src="{{ asset('assets/images/inventory.png') }}" alt="">
                         <button class="hover:font-bold transition-all text-xs">
                             Inventory
+                        </button>
+                    </a>
+                </div>
+            @endif
+            @if (Auth::user()->role === 'dentist')
+                <div class="flex flex-col items-start gap-2">
+
+                    <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
+                        href="{{ route('dentist.dashboard', Auth::user()->dentist_id) }}">
+
+                        <img class="h-5" src="{{ asset('assets/images/dashboard-icon.png') }}" alt="">
+                        <button class="hover:font-bold transition-all text-xs">
+                            Dashboard
+                        </button>
+                    </a>
+
+                    <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
+                        href="{{ route('appointments.pending', Auth::user()->dentist_id) }}">
+
+                        <img class="h-5" src="{{ asset('assets/images/appointment.png') }}" alt="">
+                        <button class="hover:font-bold transition-all text-xs">
+                            Pending appointments
+                        </button>
+                    </a>
+
+                    <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
+                        href="{{ route('appointments.approved', Auth::user()->dentist_id) }}">
+
+                        <img class="h-5" src="{{ asset('assets/images/quality.png') }}" alt="">
+                        <button class="hover:font-bold transition-all text-xs">
+                            Approved appointments
+                        </button>
+                    </a>
+
+
+                    <a class="flex justify-start items-center gap-2  hover:bg-gray-300 transition-all w-full p-2 rounded-md"
+                        href="{{ route('appointments.payment', Auth::user()->dentist_id) }}">
+
+                        <img class="h-4" src="{{ asset('assets/images/payment.png') }}" alt="">
+                        <button class="hover:font-bold transition-all text-xs">
+                            Payments
                         </button>
                     </a>
                 </div>

@@ -233,31 +233,6 @@
     </section>
     <script>
         // Get modal and buttons
-        // const modal = document.getElementById("proofModal");
-        // const openModalBtn = document.getElementById("openModalBtn");
-        // const closeModalBtn = document.getElementById("closeModalBtn");
-        // const closeModalFooterBtn = document.getElementById("closeModalFooterBtn");
-
-        // // Function to open the modal
-        // openModalBtn.addEventListener("click", function() {
-        //     modal.style.display = "block";
-        // });
-
-        // // Function to close the modal
-        // closeModalBtn.addEventListener("click", function() {
-        //     modal.style.display = "none";
-        // });
-
-        // closeModalFooterBtn.addEventListener("click", function() {
-        //     modal.style.display = "none";
-        // });
-
-        // // Close the modal if the user clicks outside of it
-        // window.addEventListener("click", function(event) {
-        //     if (event.target == modal) {
-        //         modal.style.display = "none";
-        //     }
-        // });
 
         document.getElementById('submitPaymentBtnClient').addEventListener('click', function() {
             document.getElementById('passwordModal').style.display = "flex";

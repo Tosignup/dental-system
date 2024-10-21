@@ -64,11 +64,12 @@
                 <tbody>
                     @forelse($paymentHistory as $payment)
                         <tr>
-                            <td class="border-b p-2">{{ $payment->created_at->format('Y-m-d') }}</td>
-                            <td class="border-b p-2">&#8369; {{ number_format($payment->paid_amount, 2) }}</td>
-                            <td class="border-b p-2">{{ ucfirst($payment->payment_method) }}</td>
-                            <td class="border-b p-2">{{ $payment->remarks ?? 'N/A' }}</td>
-                            <td class="border-b p-2">{{ $payment->id }}</td>
+                            <td class="border-b p-2 max-lg:text-xs ">{{ $payment->created_at->format('Y-m-d') }}</td>
+                            <td class="border-b p-2 max-lg:text-xs">&#8369; {{ number_format($payment->paid_amount, 2) }}
+                            </td>
+                            <td class="border-b p-2 max-lg:text-xs">{{ ucfirst($payment->payment_method) }}</td>
+                            <td class="border-b p-2 max-lg:text-xs">{{ $payment->remarks ?? 'N/A' }}</td>
+                            <td class="border-b p-2 max-lg:text-xs">{{ $payment->id }}</td>
                         </tr>
                     @empty
                         <tr>
@@ -78,13 +79,16 @@
                 </tbody>
             </table>
 
+
+            @if(Auth::user()->role === 'staff')
             <div class="w-full flex gap-2 mt-4">
-                <a href=" {{ route('payments.list', $appointment->patient_id) }} "
+                <a href=" {{ route('appointments.online') }} "
                     class="flex w-full justify-center items-center py-2 px-16 text-center max-md:py-2 max-md:px-12 max-md:text-xs font-semibold rounded-md hover:bg-red-600 hover:border-red-600 border-2 border-gray-600 text-gray-800  hover:text-white transition-all"
                     type="reset">
                     Return
                 </a>
             </div>
+            @endif
         </div>
     </section>
 @endsection

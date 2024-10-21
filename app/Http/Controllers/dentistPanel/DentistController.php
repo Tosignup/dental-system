@@ -216,9 +216,10 @@ class DentistController extends Controller
         // $dentist = Dentist::findOrFail($id);
         // $schedules = DentistSchedule::with('dentist_schedules')->get($id);
 
-        $dentist = Dentist::with('branch')->findOrFail($id);
+        $dentist = Dentist::findOrFail($id);
+        $branches = Branch::all();
 
-        return view('dentist.contents.dentist-information', compact('dentist'));
+        return view('dentist.contents.dentist-information', compact('dentist', 'branches'));
     }
 
     public function getDentists($branchId) //w

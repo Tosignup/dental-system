@@ -21,7 +21,7 @@
         @include('components.search')
     </div>
     <section class="max-w-max bg-white shadow-lg rounded-md p-6 my-4 mx-auto  max-lg:mt-14">
-        <h1 class="font-bold text-5xl px-4 max-md:text-3xl">Add Dentist</h1>
+        <h1 class="font-bold text-4xl px-4 max-md:text-2xl w-max">Add Dentist</h1>
         <form method="POST" action="{{ route('store.dentist') }}">
             @method('POST')
             @csrf

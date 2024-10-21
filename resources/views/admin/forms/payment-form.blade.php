@@ -144,12 +144,14 @@
                             type="reset">
                             History
                         </a>
-
-                        <a href=" {{ route('payments.list', $appointment->patient_id) }} "
+                        @if(Auth::user()->role === 'staff')
+                        <a href=" {{ route('staff.dashboard') }} "
                             class="flex justify-center items-center py-2 px-8 text-center max-md:py-2 max-md:text-xs font-semibold rounded-md hover:bg-red-600 hover:border-red-600 border-2 border-gray-600 text-gray-800  hover:text-white transition-all"
                             type="reset">
                             Cancel
                         </a>
+
+                        @endif
                     </div>
                 </form>
 
@@ -194,6 +196,66 @@
         document.getElementById('cancelModalBtn').addEventListener('click', function() {
             document.getElementById('passwordModal').style.display = "none";
         });
+
+        // Confirm payment
+        // document.getElementById('confirmPayment').addEventListener('click', function() {
+        //     const loadingIndicator = document.getElementById('loadingIndicator');
+        //     loadingIndicator.style.display = 'flex';
+
+        //     const password = document.getElementById('password').value;
+        //     const paidAmount = document.getElementById('paid_amount').value;
+        //     const paymentMethod = document.getElementById('payment_method').value;
+        //     const remarks = document.getElementById('remarks').value;
+        //     const appointmentId = document.querySelector('input[name="appointment_id"]').value;
+
+        //     if (!paidAmount || paidAmount <= 0) {
+        //         alert('Please enter a valid amount.');
+        //         loadingIndicator.style.display = "none"; // Hide loading indicator
+        //         return;
+        //     }
+
+        //     // Create a FormData object to send the data
+        //     const formData = new FormData();
+        //     formData.append('password', password);
+        //     formData.append('paid_amount', paidAmount);
+        //     formData.append('payment_method', paymentMethod);
+        //     formData.append('remarks', remarks);
+        //     formData.append('appointment_id', appointmentId);
+        //     formData.append('_token', '{{ csrf_token() }}');
+
+
+        //     // Send the data using Fetch API
+        //     fetch('{{ route('payments.store', $appointment->id) }}', {
+        //             method: 'POST',
+        //             body: formData
+        //         })
+        //         // .then(response => {
+        //         //     loadingIndicator.style.display = 'none'; // Hide loading indicator
+        //         //     if (!response.ok) {
+        //         //         throw new Error('Network response was not ok ' + response.statusText);
+        //         //     }
+        //         //     return response.json();
+        //         // })
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             if (data.success) {
+        //                 // Clear all fields after successful payment
+        //                 document.getElementById('paymentForm').reset(); // Reset the form fields
+        //                 document.getElementById('password').value = ''; // Clear the password field
+        //                 document.getElementById('passwordModal').style.display = "none"; // Hide the modal
+        //                 // Handle success (e.g., redirect or show a success message)
+
+        //                 window.location.href = '{{ route('payments.list', $appointment->patient_id) }}';
+
+        //             } else {
+        //                 // Handle error (e.g., show an error message)
+        //                 alert(data.message);
+        //                 document.getElementById('password').value = ''; // Clear the password field
+        //                 loadingIndicator.style.display = "none"; // Hide loading indicator
+        //             }
+        //         })
+        //         .catch(error => console.error('Error:', error));
+        // });
 
         document.getElementById('confirmPayment').addEventListener('click', function() {
             const loadingIndicator = document.getElementById('loadingIndicator');

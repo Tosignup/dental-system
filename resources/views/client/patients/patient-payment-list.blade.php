@@ -16,23 +16,30 @@
             <label class="flex items-center gap-2" for="time">
                 <h1 class="font-bold text-3xl mr-4 max-md:mr-0 max-md:text-2xl">Payment List</h1>
             </label>
-
         </div>
-
         <table class="w-full table-auto mb-2 overflow-hidden">
-            <thead>
-                <tr class="bg-green-200 text-green-700">
-                    <th class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Procedure name</th>
-                    <th class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Appointment to</th>
-                    <th class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Amount due</th>
-                    <th class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Status</th>
-                    <th class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Actions</th>
-                </tr>
-            </thead>
-            <tbody class="text-center">
-                @if ($payments->isEmpty())
-                    <h1>no payments</h1>
-                @else
+            @if ($payments->isEmpty())
+                <div class=" rounded-md my-3 flex flex-1 justify-center items-center flex-col gap-8 py-4">
+
+                    <img class="h-56" src="{{ asset('assets/images/payment.png') }}" alt="">
+                    <div class="text-center flex flex-col justify-center items-center gap-2 ">
+                        <h1 class="text-4xl font-semibold">No payments currently. </h1>
+                        <h1 class="text-sm">There are no payments currently. </h1>
+                    </div>
+                </div>
+            @else
+                <thead>
+                    <tr class="bg-green-200 text-green-700">
+                        <th class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Procedure name</th>
+                        <th class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Appointment to</th>
+                        <th class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Amount due</th>
+                        <th class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Status</th>
+                        <th class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody class="text-center">
+
                     @foreach ($payments as $payment)
                         <tr class="border-b-2">
                             {{-- <td class="border px-4 py-2 max-md:py-1 max-md"> {{ $payment->id }}</td> --}}
@@ -81,11 +88,10 @@
                             </td>
                         </tr>
                     @endforeach
-                @endif
-            </tbody>
+                </tbody>
         </table>
         <div>
-            <form method="GET" action="{{ route('payments.pending', $payment->patient->id) }}">
+            <form method="GET" action="{{ route('payments.pending', $patient->id) }}">
                 @csrf
                 <button
                     class="flex justify-center items-center gap-2  rounded-md py-2 px-4 min-w-max border-2 border-gray-600 hover:shadow-md hover:border-green-700 font-semibold text-gray-800 transition-all max-md:px-2">
@@ -98,6 +104,7 @@
                 </button>
             </form>
         </div>
+        @endif
 
     </section>
     <script>

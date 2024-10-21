@@ -16,7 +16,7 @@
     @vite('resources/css/app.css')
 </head>
 
-<body>
+<body class="">
     <div id="overlay"></div>
     <div id="dropdown-overlay"></div>
     <section class="w-full max-md:h-max md:h-full bg-slate-100 flex justify-start">

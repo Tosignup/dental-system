@@ -13,11 +13,10 @@
             <div class="w-1/2 py-2 flex flex-col justify-center items-start gap-4">
                 {{-- <a class="max-w-sm text-center mt-4" href="{{ route('appointments.request') }}"> --}}
                 {{-- <a class="max-w-sm text-center mt-4" href="{{ route('welcome') }}"> --}}
-                <h1
-                    class="min-w-max  bg-green-600 rounded-md py-4 max-md:text-sm px-8 font-bold text-white hover:bg-green-700 transition-all">
-                    BOOK NOW</h1>
-                </a>
-                <h1 class="text-sm min-w-max">
+                    <a class="min-w-max  bg-green-600 rounded-md py-4 max-md:text-sm px-8 font-bold text-white hover:bg-green-700 transition-all">
+                        BOOK NOW
+                    </a>
+                        <h1 class="text-sm min-w-max">
                     OR CALL: <span class="font-bold">212-2345-5918</span>
                 </h1>
             </div>

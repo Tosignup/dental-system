@@ -8,7 +8,13 @@
 
         <div class="container">
             @if ($payments->isEmpty())
-                <p>No payments found for your appointments.</p>
+    <div class="flex gap-4 flex-col justify-center items-center py-12 ">
+                    <img class="h-56" src="{{ asset('assets/images/relax.png') }}" alt="">
+                    <div class="flex flex-col justify-center items-center gap-2  ">
+                        <h1 class="font-bold text-3xl text-center">No appointment payments right now.</h1>
+                        <h1 class="text-sm "> All caught up! There are no appointment payments at the moment.</h1>
+                    </div>
+                </div>
             @else
                 <table class="min-w-full bg-white border text-center">
 
@@ -16,9 +22,9 @@
                         <tr class="w-full bg-gray-100">
 
                             <th class="py-1 px-4 border-b text-gray-600 max-lg:text-xs">Date</th>
-                            <th class="py-1 px-4 border-b text-gray-600 max-lg:text-xs">Amount</th>
-                            <th class="py-1 px-4 border-b text-gray-600 max-lg:text-xs">Balance Remaining</th>
-                            <th class="py-1 px-4 border-b text-gray-600 max-lg:text-xs">Status</th>
+                            <th class="py-1 px-4 border-b text-gray-600 max-lg:text-xs max-xl:hidden">Amount</th>
+                            <th class="py-1 px-4 border-b text-gray-600 max-lg:text-xs max-xl:hidden">Balance Remaining</th>
+                            <th class="py-1 px-4 border-b text-gray-600 max-lg:text-xs ">Status</th>
                             <th class="py-1 px-4 border-b text-gray-600 max-lg:text-xs">Action</th>
                         </tr>
                     </thead>
@@ -27,10 +33,11 @@
                             <tr>
                                 <td class="py-1 px-4 border-b max-lg:text-xs">{{ $payment->created_at->format('Y-m-d') }}
                                 </td>
-                                <td class="py-1 px-4 border-b max-lg:text-xs">
+                                <td class="py-1 px-4 border-b max-lg:text-xs max-xl:hidden">
                                     &#8369;{{ number_format($payment->amount_due, 2) }}
                                 </td>
-                                <td class="py-1 px-4 border-b max-lg:text-xs">{{ ucfirst($payment->balance_remaining) }}
+                                <td class="py-1 px-4 border-b max-lg:text-xs max-xl:hidden">
+                                    {{ ucfirst($payment->balance_remaining) }}
                                 </td>
                                 <td class="py-1 px-4 border-b max-lg:text-xs">{{ $payment->status }}</td>
                                 <td class="py-1 px-4 border-b max-lg:text-xs">

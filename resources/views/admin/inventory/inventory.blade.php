@@ -24,20 +24,25 @@
         <table class="w-full table-auto mb-2 overflow-hidden">
             <thead>
                 <tr class="bg-green-200 text-green-700">
-                    <th class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Item Code</th>
+                    <th class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Item Serial#</th>
                     <th class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Item Name</th>
                     <th class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Quantity</th>
-                    <th class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Category</th>
+                    <th class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Availability</th>
                     <th class="border px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">Actions</th>
                 </tr>
             </thead>
             <tbody class="text-center">
                 @foreach ($items as $item)
                     <tr class="border-b-2">
-                        <td class=" px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">{{ $item->id }}</td>
+                        <td class=" px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">{{ $item->serial_number }}</td>
                         <td class=" px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">{{ $item->item_name }}</td>
                         <td class=" px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">{{ $item->quantity }}</td>
-                        <td class=" px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">{{ $item->category }}</td>
+                        <td class=" px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs"><span
+                                @if ($item->availability === 'available') class="bg-green-200 text-green-700 rounded-full px-2"
+                                @elseif ($item->availability === 'out-of-stock') class="bg-red-200 text-red-700 rounded-full px-2"
+                                @elseif ($item->availability === 'to-order') class="bg-blue-200 text-blue-700 rounded-full px-2" @endif>
+                                {{ $item->availability }}</span>
+                        </td>
                         <td class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs max-md:flex">
                             <div class="flex gap-2 justify-center flex-wrap items-center">
                                 <a class=" border border-slate-600 flex max-md:flex-1 justify-center items-center rounded-md py-2 px-4 max-md:py-1 max-md:px-2 text-white font-semibold hover:bg-gray-300 transition-all"

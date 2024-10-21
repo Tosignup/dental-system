@@ -12,11 +12,17 @@
             <h1 class="text-lg max-lg:text-sm">Top-rated clinicians</h1>
             <div class="w-1/2 py-2 flex flex-col justify-center items-start gap-4">
                 {{-- <a class="max-w-sm text-center mt-4" href="{{ route('appointments.request') }}"> --}}
-                {{-- <a class="max-w-sm text-center mt-4" href="{{ route('welcome') }}"> --}}
-                <h1
+                {{-- < class="max-w-sm text-center mt-4" href="{{ route('welcome') }}"> --}}
+                @if(Auth::check())
+
+                    <a href="{{ route('client.overview', Auth::user()->patient_id) }}"
                     class="min-w-max  bg-green-600 rounded-md py-4 max-md:text-sm px-8 font-bold text-white hover:bg-green-700 transition-all">
-                    BOOK NOW</h1>
-                </a>
+                    BOOK NOW</a>
+                    @else
+                    <a href="{{route('login')}}" class="min-w-max  bg-green-600 rounded-md py-4 max-md:text-sm px-8 font-bold text-white hover:bg-green-700 transition-all">
+                        BOOK NOW
+                    </a>
+                    @endif
                 <h1 class="text-sm min-w-max">
                     OR CALL: <span class="font-bold">212-2345-5918</span>
                 </h1>
