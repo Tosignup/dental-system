@@ -60,7 +60,7 @@
                             <div class="mt-4 flex flex-1 w-full justify-between items-center gap-4 border-b py-4 ">
                                 <div class="flex justify-center items-center w-full flex-col">
                                     <img class="h-20" src="{{ asset('assets/images/relax.png') }}" alt="">
-                                    <h1 class="text-sm">There are currently no pending appointments.</h1>
+                                    <h1 class="text-sm"> There are currently no pending appointments. </h1>
                                 </div>
                             </div>
                         @else
