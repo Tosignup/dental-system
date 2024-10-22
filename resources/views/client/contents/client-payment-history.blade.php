@@ -1,5 +1,4 @@
-@extends('admin.dashboard')
-
+@extends('client.profile')
 @section('content')
     <style>
         .validation-message {
@@ -17,9 +16,7 @@
             opacity: 0;
         }
     </style>
-    <div class="m-4 mb-8">
-        @include('components.search')
-    </div>
+
     <section class="bg-white shadow-lg rounded-md max-w-max p-6 my-4 mx-auto  max-lg:mt-14">
         <div class="m-2">
 
@@ -79,14 +76,8 @@
             </table>
 
             <div class="w-full flex justify-between gap-2 mt-4">
-                <a href="{{ route('client.form', $appointment->id) }}"
-                    class="flex justify-center items-center  py-2 px-6 text-center max-md:py-2 max-md:px-2 max-md:text-xs font-semibold rounded-md hover:bg-green-600 hover:border-green-600 hover:text-white text-gray-800 border-2 border-gray-600 transition-all"
-                    type="submit">
-                    Make a New Payment
-                </a>
-
-                <a href=" {{ route('client.overview', $appointment->id) }} "
-                    class="flex justify-center items-center py-2 px-16 text-center max-md:py-2 max-md:px-12 max-md:text-xs font-semibold rounded-md hover:bg-red-600 hover:border-red-600 border-2 border-gray-600 text-gray-800  hover:text-white transition-all"
+                <a href=" {{ route('client.overview', $appointment->patient_id) }} "
+                    class="flex w-full justify-center items-center py-2 px-16 text-center max-md:py-2 max-md:px-12 max-md:text-xs font-semibold rounded-md hover:bg-red-600 hover:border-red-600 border-2 border-gray-600 text-gray-800  hover:text-white transition-all"
                     type="reset">
                     Return
                 </a>

@@ -10,6 +10,7 @@ use App\Models\Patient;
 use App\Models\AuditLog;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
+use App\Models\DentistSchedule;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 
@@ -23,13 +24,15 @@ class StaffController extends Controller
         $newPatients = Patient::whereDate('created_at', $today)->count();
         $todayPatients = Patient::whereDate('next_visit', $today)->count();
 
-        $totalAppointments = Appointment::count();
-        $todayAppointment = Appointment::whereDate('appointment_date', $today)->count();
+        $todayAppointments = Appointment::whereDate('appointment_date', $today)->count();
         $newAppointments = Appointment::whereDate('created_at', $today)->count();
 
-        return view('admin.contents.overview', compact('totalPatients', 'newPatients', 'todayPatients', 'totalAppointments', 'newAppointments', 'todayAppointment'));
+        $todaySchedule = DentistSchedule::whereDate('date', $today)->count();
 
-        // return view('content.overview');
+        $recentPatients = Patient::orderBy('created_at', 'desc')->take(3)->get();
+        $pendingAppointments = Appointment::where('pending', 'Pending')->orderBy('created_at', 'desc')->take(3)->get();
+        $onlineAppointments = Appointment::where('is_online', '1')->orderBy('created_at', 'desc')->take(3)->get();
+        return view('admin.contents.overview', compact( 'todayPatients', 'newAppointments', 'todayAppointments', 'todaySchedule', 'recentPatients', 'pendingAppointments', 'onlineAppointments'));
     }
 
 
@@ -100,7 +103,6 @@ class StaffController extends Controller
             'phone_number' => 'nullable|string|max:15',
             'fb_name' => 'required|string|max:255',
             'branch_id' => 'required|exists:branches,id',
-
         ]);
 
         $staff->update($validated);

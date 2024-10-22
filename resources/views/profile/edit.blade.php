@@ -50,11 +50,14 @@
                 </div>
             </div>
 
-            <div class="p-4 my-4 sm:p-8 bg-green-700 shadow sm:rounded-lg">
-                <div class="w-full">
-                    @include('profile.partials.delete-user-form')
+            @if (Auth::user()->role === 'client')
+            @else
+                <div class="p-4 my-4 sm:p-8 bg-green-700 shadow sm:rounded-lg">
+                    <div class="w-full">
+                        @include('profile.partials.delete-user-form')
+                    </div>
                 </div>
-            </div>
+            @endif
         </div>
     </div>
 </body>

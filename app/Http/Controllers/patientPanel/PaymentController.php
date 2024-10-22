@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\patientPanel;
 
 use Carbon\Carbon;
+use App\Models\Image;
 use App\Models\Patient;
 use App\Models\Payment;
 use App\Models\AuditLog;
@@ -218,6 +219,12 @@ class PaymentController extends Controller
             'payment_method' => $pendingPayment->payment_method,
             'remarks' => $pendingPayment->remarks,
             'payment_proof' => $pendingPayment->payment_proof, // Use the updated path
+        ]);
+
+        Image::create([
+            'patient_id' => $appointment->patient_id,
+            'image_type' => 'proof_of_payment',
+            'image_path' => $pendingPayment->payment_proof,
         ]);
 
         // Delete the temporary payment record after approval

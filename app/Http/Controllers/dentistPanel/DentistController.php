@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use App\Models\PaymentHistory;
 use App\Models\DentistSchedule;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class DentistController extends Controller
@@ -21,13 +22,81 @@ class DentistController extends Controller
     public function overview($id)
     {
         $dentist = Dentist::find($id);
+        $dentistId = Auth::user()->dentist_id; // Assuming you have a dentist relationship in your User model
+        $appointmentId = Appointment::find($id);
 
-        $today = Carbon::today();
+        $today = Carbon::today()->toDateString();
 
 
         $totalAppointments = Appointment::count();
         $todayAppointment = Appointment::whereDate('appointment_date', $today)->count();
         $newAppointments = Appointment::whereDate('created_at', $today)->count();
+
+        $onlineAppointments = Appointment::where('is_online', '1')->orderBy('created_at', 'desc')->take(3)->count();
+
+        $approvedAppointments = Appointment::where('dentist_id', $dentistId)
+        ->where('pending', 'approved')
+        ->count();
+    $declinedAppointments = Appointment::where('dentist_id', $dentistId)
+        ->where('pending', 'declined')
+        ->count();
+    $todaysSchedules = DentistSchedule::where('dentist_id', $dentistId)
+        ->where('date', $today)
+        ->orderBy('start_time', 'desc') // Order by start time to get the most recent
+        ->with('branch') // Eager load branch if needed
+        ->take(3) // Limit to 3 results
+        ->get();
+    $pendingAppointmentsDashboard = Appointment::where('dentist_id', $dentistId)
+        ->where('pending', 'pending')
+        ->with(['patient', 'procedure', 'branch'])
+        ->count();
+    $pendingAppointments = Appointment::where('dentist_id', $id)
+        ->where('pending', 'Pending')
+        ->where('is_archived', 0)
+        ->with(['patient', 'procedure', 'branch'])
+        ->paginate(5, ['*'], 'pending_page');
+    $appointmentPaymentInformation = Appointment::with(['patient', 'procedure', 'dentist'])->find($appointmentId);
+    $pendingAppointmentsInformation = Appointment::where('dentist_id', $id)
+        ->where('pending', 'Pending')
+        ->where('is_archived', 0)
+        ->orderBy('created_at', 'desc') // Order by created_at (or appointment_date if that's preferred)
+        ->take(3) // Limit to 3 recent appointments
+        ->with(['patient', 'procedure']) // Include relationships if needed
+        ->get();
+    // Fetch approved appointments for the dentist, limited to the most recent 3
+    $approvedAppointmentsInformation = Appointment::where('dentist_id', $id)
+        ->where('pending', 'approved')
+        ->where('is_archived', 0)
+        ->orderBy('created_at', 'desc') // Order by created_at (or appointment_date)
+        ->take(3) // Limit to 3 recent appointments
+        ->with(['patient', 'procedure']) // Include relationships if needed
+        ->get();
+    $recentPayments = Payment::with(['appointment.patient', 'appointment.procedure', 'appointment.dentist'])
+        ->orderBy('created_at', 'desc') // Order by creation date
+        ->take(3) // Limit to 3 recent payments
+        ->get();
+    // Combine both collections
+    $appointmentIds = $pendingAppointmentsInformation->merge($approvedAppointmentsInformation);
+    return view(
+        'dentist.contents.overview',
+        compact(
+            'totalAppointments',
+            'newAppointments',
+            'todayAppointment',
+            'todaysSchedules',
+            'pendingAppointments',
+            'pendingAppointmentsDashboard',
+            'onlineAppointments',
+            'approvedAppointments',
+            'declinedAppointments',
+            'appointmentPaymentInformation',
+            'pendingAppointmentsInformation',
+            'approvedAppointmentsInformation',
+            'appointmentIds',
+            'recentPayments'
+        )
+    );
+
 
         return view('dentist.contents.overview', compact('totalAppointments', 'newAppointments', 'todayAppointment'));
     }
@@ -87,6 +156,17 @@ class DentistController extends Controller
             ->paginate(5, ['*'], 'approved_page'); // Custom pagination query param
 
         return view('dentist.contents.approved-appointments', compact('dentist', 'approvedAppointments'));
+    }
+
+    public function declinedAppointment($id)
+    {
+        $dentist = Dentist::find($id);
+        $declinedAppointments = Appointment::where('dentist_id', $id)
+            ->where('pending', 'declined')
+            ->where('is_archived', 0)
+            ->with(['patient', 'procedure', 'branch'])
+            ->paginate(5, ['*'], 'declined_page'); // Custom pagination query param
+        return view('dentist.contents.declined-appointments', compact('dentist', 'declinedAppointments'));
     }
 
     public function appointmentPayment($id)
@@ -193,7 +273,6 @@ class DentistController extends Controller
             'dentist_phone_number' => 'nullable|string|max:15',
             'dentist_specialization' => 'required|string|max:50',
             'branch_id' => 'required|exists:branches,id',
-
         ]);
 
         $dentist->update($validated);

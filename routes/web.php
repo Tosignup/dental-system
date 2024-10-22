@@ -28,7 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile-overview', [ProfileController::class, 'profileOverview'])->name('profile');
     // Route::patch('/profile/{user}', [ProfileController::class, 'profileUpdate'])->name('profile.update');
     Route::patch('/profile', [ProfileController::class, 'editProfile'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/appointments/add-walk-in', [AppointmentController::class, 'addWalkIn'])->name('add.walkIn');
     Route::get('/appointments/add-online/{patient}', [AppointmentController::class, 'addOnline'])->name('add.online');
@@ -77,6 +77,10 @@ Route::get('/send-test-email', function () {
 
 //     return 'Test email sent!';
 // });
+Route::group(['middleware' => ['auth', 'verified','role:admin,staff,dentist']], function () {
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+});
 
 
 //remove dentist here
@@ -207,6 +211,7 @@ Route::group(['middleware' => ['auth','verified', 'role:dentist']], function () 
     //
     Route::get('/dentist/{id}/appointments/pending', [DentistController::class, 'pendingAppointment'])->name('appointments.pending');
     Route::get('/dentist/{id}/appointments/approved', [DentistController::class, 'approvedAppointment'])->name('appointments.approved');
+    Route::get('/dentist/{id}/appointments/declined', [DentistController::class, 'declinedAppointment'])->name('appointments.declined');
     Route::get('/dentist/{id}/payments-list', [DentistController::class, 'appointmentPayment'])->name('appointments.payment');
     Route::get('/dentist/appointments/show/{id}', [DentistController::class, 'showDentistAppointmentInfo'])->name('appointments.show');
 

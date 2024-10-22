@@ -144,14 +144,13 @@
                             type="reset">
                             History
                         </a>
-                        @if(Auth::user()->role === 'staff')
-                        <a href=" {{ route('staff.dashboard') }} "
+
+
+                        <a @if (Auth::user()->role === 'admin') href="{{ route('show.appointment', $appointment->id) }}" @else href=" {{ route('staff.dashboard') }} " @endif
                             class="flex justify-center items-center py-2 px-8 text-center max-md:py-2 max-md:text-xs font-semibold rounded-md hover:bg-red-600 hover:border-red-600 border-2 border-gray-600 text-gray-800  hover:text-white transition-all"
                             type="reset">
                             Cancel
                         </a>
-
-                        @endif
                     </div>
                 </form>
 

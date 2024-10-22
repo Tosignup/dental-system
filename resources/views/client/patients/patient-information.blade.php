@@ -129,7 +129,7 @@
                             <h1>Email</h1>
                             <input class="border border-gray-400 py-2 px-4 rounded-md max-md:text-sm" name="patient_email"
                                 type="text" autocomplete="off" oninput="validateInput('patient_email')"
-                                id="patient_email" placeholder="{{ $patient->email }}">
+                                id="patient_email" value="{{ $patient->email }}" readonly>
                             @error('patient_email')
                                 <span id="patient_email_error"
                                     class="validation-message text-red-600 text-xs p-1 rounded-md  show">{{ $message }}</span>
@@ -185,7 +185,7 @@
                                     </option>
                                     <option value="HMO2"
                                         {{ old('hmo_company', $patient->hmo_company) == 'HMO2' ? 'selected' : '' }}>
-                                        HMO1
+                                        HMO2
                                     </option>
                                     <option value="other"
                                         {{ old('hmo_company', $patient->hmo_company) == 'other' ? 'selected' : '' }}>

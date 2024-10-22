@@ -23,7 +23,7 @@
                     class="flex flex-1 gap-4 p-4 border-r max-lg:border max-lg:bg-white max-lg:shadow-lg max-lg:p-3 max-lg:rounded-md my-4 max-lg:max-w-min max-xl:p-1 max-xl:my-2 justify-start items-start max-xl:items-center max-xl:justify-center min-w-max">
                     <img class="h-12 max-xl:h-6" src="{{ asset('assets/images/appointment-today.png') }}" alt="">
                     <div class="font-semibold text-xl">
-                        <h1>50</h1>
+                        {{ $pendingAppointmentsDashboard > 0 ? $pendingAppointmentsDashboard : '0' }}
                         <h1>Pending Appointments</h1>
                     </div>
                 </div>
@@ -31,7 +31,7 @@
                     class="flex flex-1 gap-4 p-4 border-r max-lg:border max-lg:bg-white max-lg:shadow-lg max-lg:p-3 max-lg:rounded-md max-lg:max-w-min my-4 max-xl:p-1 max-xl:my-2 justify-start items-start max-xl:items-center max-xl:justify-center min-w-max">
                     <img class="h-12 max-xl:h-6" src="{{ asset('assets/images/appointment-new.png') }}" alt="">
                     <div class="font-semibold text-xl">
-                        <h1>50</h1>
+                        {{ $approvedAppointments > 0 ? $approvedAppointments : '0' }}
                         <h1>Approved Appointments</h1>
                     </div>
                 </div>
@@ -39,7 +39,8 @@
                     class="flex flex-1 gap-4 p-4 border-r max-lg:border max-lg:bg-white max-lg:shadow-lg max-lg:p-3 max-lg:rounded-md  max-lg:max-w-min my-4 max-xl:p-1 max-xl:my-2 justify-start items-start max-xl:items-center max-xl:justify-center min-w-max">
                     <img class="h-12 max-xl:h-6" src="{{ asset('assets/images/appointment-total.png') }}" alt="">
                     <div class="font-semibold text-xl">
-                        <h1>50</h1>
+                        {{ $declinedAppointments > 0 ? $declinedAppointments : '0' }}
+
                         <h1>Declined Appointments</h1>
                     </div>
                 </div>
@@ -50,101 +51,80 @@
                 <div
                     class="flex flex-1 flex-col justify-center items-center bg-white rounded-md shadow-lg p-6 max-xl:p-2 min-w-xl border h-full min-w-max max-xl:max-w-min ">
                     <div class="flex justify-between items-center border-b w-full gap-12 mb-4">
-                        <h1 class="text-xl font-semibold text-left">Schedules today</h1>
-                        <a class="text-sm text-blue-400" href="">See all</a>
+                        <h1 class="text-xl font-semibold text-left">Pending appointments</h1>
+                        <a class="text-sm text-blue-400"
+                            href="{{ route('appointments.pending', Auth::user()->dentist_id) }}">See all</a>
                     </div>
-                    <div class="mt-4 flex justify-between items-center gap-4 border-b py-4 w-full">
-                        <div class="flex justify-center items-center gap-4">
-                            <img class="h-7 rounded-full p-1 border border-black"
-                                src="{{ asset('assets/images/user-icon.png') }}" alt="">
-                            <div>
-                                <h1 class="font-semibold text-lg">Africa Wengmir</h1>
-                                <h1 class="text-xs">Dau</h1>
-                                <h1 class="text-xs">12:00 PM</h1>
+                    <div class="flex  flex-col justify-start items-start gap-4 w-full">
+                        @if ($pendingAppointments->isEmpty())
+                            <div class="mt-4 flex flex-1 w-full justify-between items-center gap-4 border-b py-4 ">
+                                <div class="flex justify-center items-center w-full flex-col">
+                                    <img class="h-20" src="{{ asset('assets/images/relax.png') }}" alt="">
+                                    <h1 class="text-sm"> There are currently no pending appointments. </h1>
+                                </div>
                             </div>
-                        </div>
-                        <h1 class="border py-2 px-4 rounded-md bg-blue-100 text-xs">
-                            01-01-2024
-                        </h1>
+                        @else
+                            @foreach ($pendingAppointments as $appointment)
+                                <div class="mt-4 flex flex-1 justify-between items-center gap-4 border-b py-4 w-full">
+                                    <div class="flex justify-center items-center gap-4">
+                                        <img class="h-7 rounded-full p-1 border border-black"
+                                            src="{{ asset('assets/images/user-icon.png') }}" alt="">
+                                        <div>
+                                            <h1 class="font-semibold text-lg">{{ $appointment->patient->last_name }},
+                                                {{ $appointment->patient->first_name }}</h1>
+                                            <h1 class="text-xs">{{ $appointment->procedure->name ?? 'None' }}</h1>
+                                            <h1 class="text-xs">{{ $appointment->preferred_time }}</h1>
+                                        </div>
+                                    </div>
+                                    <h1 class="border py-2 px-4 rounded-md bg-green-100 text-xs">
+                                        {{ $appointment->appointment_date }}
+                                    </h1>
+                                </div>
+                            @endforeach
+                        @endif
                     </div>
-                    <div class="mt-4 flex justify-between items-center gap-4 border-b py-4 w-full">
-                        <div class="flex justify-center items-center gap-4">
-                            <img class="h-7 rounded-full p-1 border border-black"
-                                src="{{ asset('assets/images/user-icon.png') }}" alt="">
-                            <div>
-                                <h1 class="font-semibold text-lg">Africa Wengmir</h1>
-                                <h1 class="text-xs">Dau</h1>
-                                <h1 class="text-xs">12:00 PM</h1>
-                            </div>
-                        </div>
-                        <h1 class="border py-2 px-4 rounded-md bg-blue-100 text-xs">
-                            01-01-2024
-                        </h1>
-                    </div>
-                    <div class="mt-4 flex justify-between items-center gap-4 border-b py-4 w-full">
-                        <div class="flex justify-center items-center gap-4">
-                            <img class="h-7 rounded-full p-1 border border-black"
-                                src="{{ asset('assets/images/user-icon.png') }}" alt="">
-                            <div>
-                                <h1 class="font-semibold text-lg">Africa Wengmir</h1>
-                                <h1 class="text-xs">Dau</h1>
-                                <h1 class="text-xs">12:00 PM</h1>
-                            </div>
-                        </div>
-                        <h1 class="border py-2 px-4 rounded-md bg-blue-100 text-xs">
-                            01-01-2024
-                        </h1>
-                    </div>
-                </div>
 
+                </div>
                 <div
                     class="flex flex-1 flex-col justify-center items-center bg-white rounded-md shadow-lg p-6 max-xl:p-2 max-lg:m-0 min-w-max border max-xl:max-w-min ">
                     <div class="flex flex-wrap justify-between items-center border-b w-full gap-12 max-xl:gap-2 mb-4">
-                        <h1 class="text-xl font-semibold text-left">Recent online appointments</h1>
-                        <a class="text-sm text-blue-400" href="">See all</a>
+                        <h1 class="text-xl font-semibold text-left">Recent on going payments</h1>
+                        <a class="text-sm text-blue-400"
+                            href="{{ route('appointments.payment', Auth::user()->dentist_id) }}">See all</a>
                     </div>
-                    <div class="mt-4 flex justify-between items-center gap-4 border-b py-4 w-full">
-                        <div class="flex justify-center items-center gap-4">
-                            <img class="h-7 rounded-full p-1 border border-black"
-                                src="{{ asset('assets/images/user-icon.png') }}" alt="">
-                            <div>
-                                <h1 class="font-semibold text-lg">Africa Wengmir</h1>
-                                <h1 class="text-xs">Dentist trillio</h1>
-                                <h1 class="text-xs">2:00 PM</h1>
+                    @if ($recentPayments->isEmpty())
+                        <div class="mt-4 flex flex-1 w-full justify-between items-center gap-4 border-b py-4 ">
+                            <div class="flex justify-center items-center w-full flex-col">
+                                <img class="h-20" src="{{ asset('assets/images/relax.png') }}" alt="">
+                                <h1 class="text-sm">There are currently no pending appointments.</h1>
                             </div>
                         </div>
-                        <h1 class="border py-2 px-4 rounded-md bg-orange-100 text-xs">
-                            01-01-2024
-                        </h1>
-                    </div>
-                    <div class="mt-4 flex justify-between items-center gap-4 border-b py-4 w-full">
-                        <div class="flex justify-center items-center gap-4">
-                            <img class="h-7 rounded-full p-1 border border-black"
-                                src="{{ asset('assets/images/user-icon.png') }}" alt="">
-                            <div>
-                                <h1 class="font-semibold text-lg">Africa Wengmir</h1>
-                                <h1 class="text-xs">Dentist trillio</h1>
-                                <h1 class="text-xs">2:00 PM</h1>
+                    @else
+                        @foreach ($recentPayments as $recentPayment)
+                            <div class="mt-4 flex justify-between items-center gap-4 border-b py-4 w-full">
+                                <div class="flex justify-center items-center gap-4">
+                                    <img class="h-7 rounded-full p-1 border border-black"
+                                        src="{{ asset('assets/images/user-icon.png') }}" alt="">
+                                    <div>
+                                        <h1 class="font-semibold text-lg">
+                                            {{ $recentPayment->appointment->patient->first_name }}
+                                            {{ $recentPayment->appointment->patient->last_name }}</h1>
+                                        <h1 class="text-xs">{{ $recentPayment->appointment->procedure->name }}</h1>
+                                        <h1 class="text-xs">{{ $recentPayment->created_at->format('d-m-Y') }}</h1>
+                                    </div>
+                                </div>
+                                @if ($recentPayment->status === 'Paid')
+                                    <h1 class="border py-2 px-4 rounded-md bg-green-100 text-xs">
+                                        Paid
+                                    </h1>
+                                @else
+                                    <h1 class="border py-2 px-4 rounded-md bg-orange-100 text-xs">
+                                        On going
+                                    </h1>
+                                @endif
                             </div>
-                        </div>
-                        <h1 class="border py-2 px-4 rounded-md bg-orange-100 text-xs">
-                            01-01-2024
-                        </h1>
-                    </div>
-                    <div class="mt-4 flex justify-between items-center gap-4 border-b py-4 w-full">
-                        <div class="flex justify-center items-center gap-4">
-                            <img class="h-7 rounded-full p-1 border border-black"
-                                src="{{ asset('assets/images/user-icon.png') }}" alt="">
-                            <div>
-                                <h1 class="font-semibold text-lg">Africa Wengmir</h1>
-                                <h1 class="text-xs">Dentist trillio</h1>
-                                <h1 class="text-xs">2:00 PM</h1>
-                            </div>
-                        </div>
-                        <h1 class="border py-2 px-4 rounded-md bg-orange-100 text-xs">
-                            01-01-2024
-                        </h1>
-                    </div>
+                        @endforeach
+                    @endif
                 </div>
             </section>
         </section>

@@ -60,16 +60,6 @@
                                 class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
                         @enderror
                     </label>
-                    <label class="flex flex-col flex-1 min-w-[45%] max-md:text-sm" for="dentist_email">
-                        <h1>Email</h1>
-                        <input class="border border-gray-400 py-2 px-4 rounded-md max-md:text-sm" name="dentist_email"
-                            type="text" autocomplete="off" oninput="validateInput('dentist_email')" id="dentist_email"
-                            placeholder="{{ $dentist->dentist_email }}">
-                        @error('dentist_email')
-                            <span id="dentist_email_error"
-                                class="validation-message text-white bg-red-600 p-1 rounded-md my-1 show">{{ $message }}</span>
-                        @enderror
-                    </label>
 
                     <label class="flex flex-col flex-1 min-w-[45%] max-md:text-sm" for="dentist_phone_number">
                         <h1>Phone number</h1>

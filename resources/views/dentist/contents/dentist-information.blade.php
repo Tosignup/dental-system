@@ -81,7 +81,7 @@
                             <h1>Email</h1>
                             <input class="border border-gray-400 py-2 px-4 rounded-md max-md:text-sm" name="dentist_email"
                                 type="text" autocomplete="off" oninput="validateInput('dentist_email')"
-                                id="dentist_email" placeholder="{{ $dentist->dentist_email }}">
+                                id="dentist_email" value="{{ $dentist->dentist_email }}" readonly>
                             @error('dentist_email')
                                 <span id="dentist_email_error"
                                     class="validation-message text-red-600 text-xs p-1 rounded-md  show">{{ $message }}</span>

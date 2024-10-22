@@ -8,7 +8,7 @@
 
         <div class="container">
             @if ($payments->isEmpty())
-    <div class="flex gap-4 flex-col justify-center items-center py-12 ">
+                <div class="flex gap-4 flex-col justify-center items-center py-12 ">
                     <img class="h-56" src="{{ asset('assets/images/relax.png') }}" alt="">
                     <div class="flex flex-col justify-center items-center gap-2  ">
                         <h1 class="font-bold text-3xl text-center">No appointment payments right now.</h1>
@@ -21,7 +21,7 @@
                     <thead>
                         <tr class="w-full bg-gray-100">
 
-                            <th class="py-1 px-4 border-b text-gray-600 max-lg:text-xs">Date</th>
+                            <th class="py-1 px-4 border-b text-gray-600 max-lg:text-xs">Patient</th>
                             <th class="py-1 px-4 border-b text-gray-600 max-lg:text-xs max-xl:hidden">Amount</th>
                             <th class="py-1 px-4 border-b text-gray-600 max-lg:text-xs max-xl:hidden">Balance Remaining</th>
                             <th class="py-1 px-4 border-b text-gray-600 max-lg:text-xs ">Status</th>
@@ -31,7 +31,9 @@
                     <tbody>
                         @foreach ($payments as $payment)
                             <tr>
-                                <td class="py-1 px-4 border-b max-lg:text-xs">{{ $payment->created_at->format('Y-m-d') }}
+                                <td class="py-1 px-4 border-b max-lg:text-xs">
+                                    {{ $payment->appointment->patient->last_name }}
+                                    {{ $payment->appointment->patient->first_name }}
                                 </td>
                                 <td class="py-1 px-4 border-b max-lg:text-xs max-xl:hidden">
                                     &#8369;{{ number_format($payment->amount_due, 2) }}
@@ -39,7 +41,17 @@
                                 <td class="py-1 px-4 border-b max-lg:text-xs max-xl:hidden">
                                     {{ ucfirst($payment->balance_remaining) }}
                                 </td>
-                                <td class="py-1 px-4 border-b max-lg:text-xs">{{ $payment->status }}</td>
+                                <td class="py-1 px-4 border-b max-lg:text-xs">
+                                    @if ($payment->status === 'Paid')
+                                        <h1 class="text-green-600 font-bold bg-green-300 rounded-lg text-sm max-lg:text-xs">
+                                            Paid
+                                        </h1>
+                                    @else
+                                        <h1 class="text-gray-600 font-bold bg-gray-300 rounded-lg text-sm max-lg:text-xs">
+                                            Pending
+                                        </h1>
+                                    @endif
+                                </td>
                                 <td class="py-1 px-4 border-b max-lg:text-xs">
                                     @if ($payment->status === 'Paid')
                                         <a href=" {{ route('dentist.paymentHistory', $payment->appointment->id) }} "
@@ -48,7 +60,7 @@
                                             <img class="h-3" src="{{ asset('assets/images/payment.png') }}"
                                                 alt="">
                                             <h1 class="text-xs">
-                                                Payment history</h1>
+                                                Payment record</h1>
                                         </a>
                                     @else
                                         <a href="{{ route('dentist.paymentForm', $payment->appointment_id) }}"

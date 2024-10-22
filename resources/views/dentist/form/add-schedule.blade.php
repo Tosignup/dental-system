@@ -98,6 +98,7 @@
                             id="dentist_id" name="dentist_id" required>
                             <option class="max-md:text-xs" value="">Select branch first</option>
                         </select>
+
                     </label>
                     <label class="flex flex-col flex-1 pb-4" for="date">Select Date:
                         <input type="date" id="date" name="date"
@@ -109,9 +110,7 @@
                         <div id="selected_dates_display" class="flex flex-wrap my-4 text-gray-800 rounded-md">
                             Selected dates:
                         </div>
-
                     </label>
-
                     <div class="flex flex-wrap flex-1 gap-4 pb-4">
                         <label class="flex flex-col flex-1" for="start_time">
                             <h1>Start Time</h1>

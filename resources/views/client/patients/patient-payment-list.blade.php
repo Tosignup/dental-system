@@ -81,7 +81,7 @@
                                     <div class=" flex gap-2 justify-center flex-wrap items-center">
                                         <a class=" border border-slate-600 flex max-md:flex-1 justify-center items-center rounded-md py-2 px-4 max-md:py-1 max-md:px-2 text-white font-semibold hover:bg-gray-300 transition-all"
                                             href="{{ route('payments.history', $payment->id) }}">
-                                            <h1 class=" text-xs text-gray-700 text-center">Payment History</h1>
+                                            <h1 class=" text-xs text-gray-700 text-center">Payment Record</h1>
                                         </a>
                                     </div>
                                 @endif

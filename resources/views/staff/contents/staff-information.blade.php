@@ -64,7 +64,7 @@
                             <h1>Email</h1>
                             <input class="border border-gray-400 py-2 px-4 rounded-md max-md:text-sm" name="email"
                                 type="text" autocomplete="off" oninput="validateInput('email')" id="email"
-                                placeholder="{{ $staff->email }}">
+                                value="{{ $staff->email }}" readonly>
                             @error('email')
                                 <span id="email_error"
                                     class="validation-message text-red-600 text-xs p-1 rounded-md  show">{{ $message }}</span>

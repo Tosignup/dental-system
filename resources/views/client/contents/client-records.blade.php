@@ -35,6 +35,10 @@
                         class="text-gray-500 pb-2 border-b-2 border-transparent focus:outline-none hover:border-b-green-300 transition-all"
                         data-tab-target="#tab3">Contract
                     </button>
+                    <button
+                        class="text-gray-500 pb-2 border-b-2 border-transparent focus:outline-none hover:border-b-green-300 transition-all"
+                        data-tab-target="#tab4">Proof of payments
+                    </button>
                 </nav>
             </div>
             <!-- Table -->
@@ -45,7 +49,7 @@
                     <span id="closeModal"
                         class="fixed right-5 cursor-pointer text-3xl text-white bg-green-500 rounded-full px-2">&times;</span>
 
-                    <img id="modalImage" src="" alt="Modal Image" class="img-fluid">
+                    <img id="modalImage" src="" alt="Modal Image" class="max-h-screen img-fluid">
                 </div>
             </div>
 
@@ -86,6 +90,20 @@
                         </div>
                     @else
                         <p>No contract image uploaded for this patient.</p>
+                    @endif
+                </div>
+                <div id="tab4" class="tab-content text-gray-700 hidden max-h-max">
+                    {{-- <h1 class="font-bold mt-9 mb-4 text-2xl">Contract</h1> --}}
+                    @if ($paymentProof->isEmpty())
+                        <p>No proof of payment uploaded for this patient.</p>
+                    @else
+                        @foreach ($paymentProof as $proof)
+                            <div class="flex justify-center">
+                                <img src="{{ asset('storage/' . $proof->image_path) }}" alt="Contract Image"
+                                    class="img-fluid max-h-96"
+                                    onclick="openModal('{{ asset('storage/' . $proof->image_path) }}')">
+                            </div>
+                        @endforeach
                     @endif
                 </div>
             </div>

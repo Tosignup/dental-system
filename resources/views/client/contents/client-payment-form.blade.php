@@ -1,5 +1,4 @@
-@extends('admin.dashboard')
-
+@extends('client.profile')
 @section('content')
     <style>
         .validation-message {
@@ -115,9 +114,7 @@
             /* Overlay */
         }
     </style>
-    <div class="m-4 mb-8">
-        @include('components.search')
-    </div>
+
     <section class="bg-white shadow-lg rounded-md max-w-max p-6 my-4 mx-auto  max-lg:mt-14">
         <div class="m-2">
             <h2 class=" font-bold text-2xl mb-2 max-md:text-lg">Appointment Payment for Dr.
@@ -175,10 +172,11 @@
                             <textarea name="remarks" id="remarks"
                                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500"></textarea>
                         </div>
-                        <div class="mb-4">
+                        <div class="my-4">
                             <label for="payment_proof" class="block text-sm font-medium">Upload Proof of Payment:</label>
                             <input type="file" name="payment_proof" id="payment_proof" accept="image/*"
-                                class="mt-1 block w-full rounded-md shadow-sm focus:ring focus:ring-green-500" required>
+                                class="mt-1 block  border p-2 text-sm w-full rounded-md shadow-sm focus:ring focus:ring-green-500"
+                                required>
                         </div>
                     </div>
                     <div class="w-full flex justify-between gap-2 mt-4">
@@ -232,6 +230,24 @@
         </div>
     </section>
     <script>
+        const paidAmountInput = document.getElementById('paid_amount');
+        const paymentProofInput = document.getElementById('payment_proof');
+        const submitButton = document.getElementById('submitPaymentBtnClient');
+
+        function toggleSubmitButton() {
+            const isPaidAmountValid = paidAmountInput.value > 0; // Check if paid amount is greater than 0
+            const isPaymentProofValid = paymentProofInput.files.length > 0; // Check if a file is selected
+
+            // Enable the button only if both conditions are met
+            submitButton.disabled = !(isPaidAmountValid && isPaymentProofValid);
+        }
+
+        // Add event listeners to the inputs
+        paidAmountInput.addEventListener('input', toggleSubmitButton);
+        paymentProofInput.addEventListener('change', toggleSubmitButton);
+
+        // Initial check to set the button state on page load
+        toggleSubmitButton();
         // Get modal and buttons
 
         document.getElementById('submitPaymentBtnClient').addEventListener('click', function() {
@@ -255,6 +271,12 @@
 
             if (!paidAmount || paidAmount <= 0) {
                 alert('Please enter a valid amount.');
+                loadingIndicator.style.display = "none"; // Hide loading indicator
+                return;
+            }
+
+            if (!paymentProof) {
+                alert('Please upload proof of payment.');
                 loadingIndicator.style.display = "none"; // Hide loading indicator
                 return;
             }
