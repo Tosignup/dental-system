@@ -285,6 +285,24 @@
         const today = new Date().toISOString().split('T')[0];
         document.getElementById('appointment_date').setAttribute('min', today);
 
+        function fadeOut(element) {
+            element.classList.add('hidden');
+            setTimeout(() => {
+                element.style.display = 'none'; // Optionally hide the element after fading out
+            }, 5000); // Match this duration with the CSS transition duration
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const messages = document.querySelectorAll('.fade-out');
+            messages.forEach(message => {
+                setTimeout(() => {
+                        fadeOut(message);
+                    },
+                    5000
+                ); // Change this duration to how long you want the message to be visible (in milliseconds)
+            });
+        });
+
         function validateInput(field) {
             const input = document.getElementById(field);
             const errorElement = document.getElementById(`${field}_error`);

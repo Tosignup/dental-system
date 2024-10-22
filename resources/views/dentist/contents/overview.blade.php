@@ -56,7 +56,7 @@
                             href="{{ route('appointments.pending', Auth::user()->dentist_id) }}">See all</a>
                     </div>
                     <div class="flex  flex-col justify-start items-start gap-4 w-full">
-                        @if ($pendingAppointments->isEmpty())
+                        @if ($pendingAppointmentsInformation->isEmpty())
                             <div class="mt-4 flex flex-1 w-full justify-between items-center gap-4 border-b py-4 ">
                                 <div class="flex justify-center items-center w-full flex-col">
                                     <img class="h-20" src="{{ asset('assets/images/relax.png') }}" alt="">
@@ -64,7 +64,7 @@
                                 </div>
                             </div>
                         @else
-                            @foreach ($pendingAppointments as $appointment)
+                            @foreach ($pendingAppointmentsInformation as $appointment)
                                 <div class="mt-4 flex flex-1 justify-between items-center gap-4 border-b py-4 w-full">
                                     <div class="flex justify-center items-center gap-4">
                                         <img class="h-7 rounded-full p-1 border border-black"

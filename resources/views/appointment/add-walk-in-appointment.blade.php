@@ -326,7 +326,7 @@
             element.classList.add('hidden');
             setTimeout(() => {
                 element.style.display = 'none'; // Optionally hide the element after fading out
-            }, 1000); // Match this duration with the CSS transition duration
+            }, 5000); // Match this duration with the CSS transition duration
         }
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -335,7 +335,7 @@
                 setTimeout(() => {
                         fadeOut(message);
                     },
-                    1000
+                    5000
                 ); // Change this duration to how long you want the message to be visible (in milliseconds)
             });
         });

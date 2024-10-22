@@ -50,6 +50,7 @@
                         <h1>
                             Payment</h1>
                     </a>
+
                     <a
                         class=" flex text-sm items-center justify-start gap-2 py-1 px-4 font-semibold border border-gray-500 rounded-md hover:border-gray-700 hover:shadow-sm transition-all">
                         @if (is_null($patient->archived_at))

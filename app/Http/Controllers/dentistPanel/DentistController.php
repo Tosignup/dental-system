@@ -55,7 +55,9 @@ class DentistController extends Controller
         ->where('is_archived', 0)
         ->with(['patient', 'procedure', 'branch'])
         ->paginate(5, ['*'], 'pending_page');
+        
     $appointmentPaymentInformation = Appointment::with(['patient', 'procedure', 'dentist'])->find($appointmentId);
+
     $pendingAppointmentsInformation = Appointment::where('dentist_id', $id)
         ->where('pending', 'Pending')
         ->where('is_archived', 0)

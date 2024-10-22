@@ -63,38 +63,6 @@ class AppointmentController extends Controller
     }
     
     //working
-    public function storeWalkIn1(Request $request)
-    {
-        // Validate the request data
-        $validatedData = $request->validate([
-            'patient_id' => 'required',
-            'dentist_id' => 'required',
-            'branch_id' => 'required',
-            'schedule_id' => 'required',
-            'proc_id' => 'required',
-            'appointment_date' => 'required|date',
-            'preferred_time' => 'required',
-            'is_online' => 'boolean',
-        ]);
-
-
-        // Create the new appointment record
-        $appointment = Appointment::create([
-            'patient_id' => $validatedData['patient_id'],
-            'dentist_id' => $validatedData['dentist_id'],
-            'branch_id' => $validatedData['branch_id'],
-            'schedule_id' => $validatedData['schedule_id'],
-            'proc_id' => $validatedData['proc_id'],
-            'appointment_date' => $validatedData['appointment_date'],
-            'preferred_time' => $validatedData['preferred_time'],
-            'status' => 'scheduled',
-            'pending' => 'pending',
-            'is_online' => $validatedData['is_online'],
-        ]);
-
-        return redirect()->route('appointments.walkIn')->with('success', 'Appointment successfully created!');
-    }
-
     public function storeWalkIn(Request $request)
     {
         // Validate the request data
@@ -135,6 +103,15 @@ class AppointmentController extends Controller
             return redirect()->back()->withErrors(['error' => 'This patient already has an appointment on this date.']);
         }
 
+        // Check if the patient already has a pending appointment
+        $pendingAppointment = Appointment::where('patient_id', $validatedData['patient_id'])
+        ->where('pending', 'Pending') // Check for pending status
+        ->first();
+
+        if ($pendingAppointment) {
+        return redirect()->back()->withErrors(['error' => 'This patient already has a pending appointment. Please resolve it before scheduling a new one.']);
+        }
+
         // Create the new appointment record
         $appointment = Appointment::create([
             'patient_id' => $validatedData['patient_id'],
@@ -172,20 +149,12 @@ class AppointmentController extends Controller
 
         // Check for existing appointments to prevent duplicates
         $existingAppointment = Appointment::where('appointment_date', $validatedData['appointment_date'])
-                ->where('preferred_time', $validatedData['preferred_time'])
-                ->first();
-
-        if ($existingAppointment) {
-            return redirect()->back()->withErrors(['error' => 'This appointment slot is already taken.']);
-        }
-
-        $existingAppointment = Appointment::where('patient_id', $validatedData['patient_id'])
-        ->where('appointment_date', $validatedData['appointment_date'])
         ->where('preferred_time', $validatedData['preferred_time'])
+        ->where('dentist_id', $validatedData['dentist_id']) // Check for the same dentist
         ->first();
 
         if ($existingAppointment) {
-            return redirect()->back()->withErrors(['error' => 'This appointment slot is already taken for this patient.']);
+            return redirect()->back()->withErrors(['error' => 'This appointment slot is already taken for this dentist.']);
         }
 
         $patientAppointment = Appointment::where('patient_id', $validatedData['patient_id'])
@@ -196,6 +165,14 @@ class AppointmentController extends Controller
             return redirect()->back()->withErrors(['error' => 'This patient already has an appointment on this date.']);
         }
 
+        // Check if the patient already has a pending appointment
+        $pendingAppointment = Appointment::where('patient_id', $validatedData['patient_id'])
+        ->where('pending', 'Pending') // Check for pending status
+        ->first();
+
+        if ($pendingAppointment) {
+        return redirect()->back()->withErrors(['error' => 'This patient already has a pending appointment. Please resolve it before scheduling a new one.']);
+        }
 
         // Create the new appointment record
         $appointment = Appointment::create([

@@ -142,23 +142,20 @@
                             <option value="60"> 60 Minutes</option>
                         </select> --}}
                 </div>
-                <div class="flex gap-4 ">
+                <div class="w-full flex gap-2 mb-3 border">
+
                     <button
-                        class="py-2 px-8 max-md:text-xs
-                            max-md:py-2 max-md:px-4
-                        font-semibold rounded-md hover:bg-green-600 hover:border-green-600 hover:text-white text-gray-800 border-2 border-gray-600 transition-all"
+                        class="flex-1 justify-center items-center py-2 px-8 text-center max-md:py-2 max-md:px-2 max-md:text-xs font-semibold rounded-md hover:bg-green-600 hover:border-green-600 hover:text-white text-gray-800 border-2 border-gray-600 transition-all"
                         type="submit">
                         Add
                     </button>
                     <button
-                        class="py-2 max-md:text-xs
-                            max-md:py-2 max-md:px-4 px-8 font-semibold rounded-md hover:bg-gray-600 border-2 border-gray-600 hover:text-white text-gray-800  transition-all"
+                        class="flex-1 justify-center items-center py-2 px-8 text-center max-md:py-2 max-md:px-2 max-md:text-xs font-semibold rounded-md hover:bg-gray-600 border-2 border-gray-600 hover:text-white text-gray-800  transition-all"
                         type="reset">
                         Reset
                     </button>
                     <a href=" {{ route('schedule') }} "
-                        class="py-2 max-md:text-xs
-                            max-md:py-2 max-md:px-4 flex justify-center items-center px-8 font-semibold rounded-md hover:bg-red-600 hover:border-red-600 border-2 border-gray-600 text-gray-800  hover:text-white transition-all"
+                        class="flex-1 justify-center items-center py-2 px-8 text-center max-md:py-2 max-md:px-2 max-md:text-xs font-semibold rounded-md hover:bg-red-600 hover:border-red-600 border-2 border-gray-600 text-gray-800  hover:text-white transition-all"
                         type="reset">
                         Cancel
                     </a>

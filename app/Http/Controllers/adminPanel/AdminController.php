@@ -58,9 +58,11 @@ class AdminController extends Controller
     public function schedule(Request $request)
     {
         $now = Carbon::now();
+        $currentDate = $now->startOfDay();
 
-        $scheduleQuery = DentistSchedule::with(['dentist']);
-        // ->where('date', '>', $now);
+
+        $scheduleQuery = DentistSchedule::with(['dentist'])
+        ->where('date', '>=', $currentDate);
 
         if ($request->has('sortSchedule')) {
             $sortOption = $request->get('sortSchedule');
