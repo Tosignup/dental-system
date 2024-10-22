@@ -1,5 +1,4 @@
-@extends('admin.dashboard')
-
+@extends('client.profile')
 @section('content')
     <style>
         .validation-message {
@@ -115,9 +114,7 @@
             /* Overlay */
         }
     </style>
-    <div class="m-4 mb-8">
-        @include('components.search')
-    </div>
+
     <section class="bg-white shadow-lg rounded-md max-w-max p-6 my-4 mx-auto  max-lg:mt-14">
         <div class="m-2">
             <h2 class=" font-bold text-2xl mb-2 max-md:text-lg">Appointment Payment for Dr.

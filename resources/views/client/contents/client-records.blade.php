@@ -35,6 +35,10 @@
                         class="text-gray-500 pb-2 border-b-2 border-transparent focus:outline-none hover:border-b-green-300 transition-all"
                         data-tab-target="#tab3">Contract
                     </button>
+                    <button
+                        class="text-gray-500 pb-2 border-b-2 border-transparent focus:outline-none hover:border-b-green-300 transition-all"
+                        data-tab-target="#tab4">Proof of payments
+                    </button>
                 </nav>
             </div>
             <!-- Table -->
@@ -83,6 +87,18 @@
                             <img src="{{ asset('storage/' . $contractImage->image_path) }}" alt="Contract Image"
                                 class="img-fluid max-h-96"
                                 onclick="openModal('{{ asset('storage/' . $contractImage->image_path) }}')">
+                        </div>
+                    @else
+                        <p>No contract image uploaded for this patient.</p>
+                    @endif
+                </div>
+                <div id="tab3" class="tab-content text-gray-700 hidden max-h-max">
+                    {{-- <h1 class="font-bold mt-9 mb-4 text-2xl">Contract</h1> --}}
+                    @if ($paymentProof)
+                        <div class="flex justify-center">
+                            <img src="{{ asset('storage/' . $paymentProof->image_path) }}" alt="Contract Image"
+                                class="img-fluid max-h-96"
+                                onclick="openModal('{{ asset('storage/' . $paymentProof->image_path) }}')">
                         </div>
                     @else
                         <p>No contract image uploaded for this patient.</p>
