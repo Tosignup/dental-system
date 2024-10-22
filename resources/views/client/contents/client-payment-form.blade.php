@@ -175,10 +175,11 @@
                             <textarea name="remarks" id="remarks"
                                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-green-500"></textarea>
                         </div>
-                        <div class="mb-4">
+                        <div class="my-4">
                             <label for="payment_proof" class="block text-sm font-medium">Upload Proof of Payment:</label>
                             <input type="file" name="payment_proof" id="payment_proof" accept="image/*"
-                                class="mt-1 block w-full rounded-md shadow-sm focus:ring focus:ring-green-500" required>
+                                class="mt-1 block  border p-2 text-sm w-full rounded-md shadow-sm focus:ring focus:ring-green-500"
+                                required>
                         </div>
                     </div>
                     <div class="w-full flex justify-between gap-2 mt-4">

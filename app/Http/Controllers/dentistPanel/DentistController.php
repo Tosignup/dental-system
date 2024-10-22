@@ -192,6 +192,7 @@ class DentistController extends Controller
     {
         // Get the logged-in dentist's ID
         $dentist = Dentist::find($id);
+        $appointmentId = Appointment::find($id);
 
         // Check if the dentist exists
         if (!$dentist) {
@@ -215,8 +216,8 @@ class DentistController extends Controller
 
         // Fetch payments related to the dentist's appointments
         $payments = Payment::whereIn('appointment_id', $appointmentIds)->paginate(5, ['*'], 'payment'); // Custom pagination query param
-
-        return view('dentist.contents.dentist-payment-list', compact('dentist', 'payments'));
+        $appointment = Appointment::with(['patient', 'procedure', 'dentist'])->find($appointmentId);
+        return view('dentist.contents.dentist-payment-list', compact('dentist', 'payments', 'appointment'));
     }
 
     public function addDentist()
