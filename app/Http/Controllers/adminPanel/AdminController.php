@@ -36,8 +36,9 @@ class AdminController extends Controller
         $todaySchedule = DentistSchedule::whereDate('date', $today)->count();
 
         $recentPatients = Patient::orderBy('created_at', 'desc')->take(3)->get();
-        $pendingAppointments = Appointment::where('pending', 'Pending')->orderBy('created_at', 'desc')->take(3)->get();
-        $onlineAppointments = Appointment::where('is_online', '1')->orderBy('created_at', 'desc')->take(3)->get();
+        $pendingAppointments = Appointment::where('pending', 'Pending')->where('status', '!=', 'Cancelled')
+        ->orderBy('created_at', 'desc')->take(3)->get();
+        $onlineAppointments = Appointment::where('is_online', '1')->where('status', '!=', 'Cancelled')->orderBy('created_at', 'desc')->take(3)->get();
         return view('admin.contents.overview', compact('payments', 'todayPatients', 'newAppointments', 'todayAppointments', 'totalRevenue', 'todaySchedule', 'recentPatients', 'pendingAppointments', 'onlineAppointments'));
     }
 

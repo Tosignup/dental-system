@@ -238,6 +238,9 @@ Route::group(['middleware' => ['auth', 'verified', 'role:client']], function () 
     Route::get('/client/{paymentId}/history', [ClientController::class, 'showClientPaymentHistory'])->name('client.history');
 
 
+    Route::put('/client/{appointmentId}/cancel', [ClientController::class, 'cancelAppointment'])->name('client.cancel');
+
+
     Route::post('client/upload-proof', [ClientController::class, 'uploadProof'])->name('client.proof');
 
     // Route::get('/appointment/request', [AppointmentController::class, 'create'])->name('appointments.request');

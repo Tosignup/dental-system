@@ -37,6 +37,7 @@ class ClientController extends Controller
         $patient = Patient::find($id);
         
         $appointments = Appointment::where('patient_id', $id)
+                                    ->where('status', '!=', 'cancelled')
                                     ->with('procedure')
                                     ->paginate(5);
         
@@ -152,6 +153,16 @@ class ClientController extends Controller
         $balanceRemaining = $appointment->procedure->price - $totalPaid;
     
         return view('client.contents.client-payment-history', compact('appointment', 'paymentHistory', 'totalPaid', 'balanceRemaining'));
+    }
+
+    public function cancelAppointment($appointmentId){
+        $appointment = Appointment::with(['patient', 'procedure'])->find($appointmentId);
+
+        $appointment->status = 'Cancelled';
+
+        $appointment->save();
+
+        return redirect()->route('client.overview', $appointment->patient_id)->with('success', 'Appointment cancelled');
     }
 
 }

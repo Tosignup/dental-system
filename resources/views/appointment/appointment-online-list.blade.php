@@ -72,70 +72,39 @@
 
                             {{ $appointment->branch->branch_loc }}</td>
                         <td class="px-4 py-2 min-w-max h-full max-lg:text-xs text-sm ">
-                            @if ($appointment->pending === 'Approved')
-                                <h1 class="text-sm text-green-600 font-semibold bg-green-200 rounded-full max-lg:text-xs">
-                                    Approved</h1>
-                            @elseif ($appointment->pending === 'Declined')
-                                <h1 class="text-sm text-red-600 font-semibold bg-red-200 rounded-full max-lg:text-xs">
-                                    Declined</h1>
+                            @if ($appointment->status != 'Cancelled')
+                                @if ($appointment->pending === 'Approved')
+                                    <h1 class="text-xs  text-green-600 font-semibold bg-green-200 rounded-full">
+
+                                        <span>&#9679;</span> {{ $appointment->pending }}
+                                    </h1>
+                                @elseif ($appointment->pending === 'Declined')
+                                    <h1 class="text-xs  text-red-600 font-semibold bg-red-200 rounded-full">
+
+                                        <span>&#9679;</span> {{ $appointment->pending }}
+                                    </h1>
+                                @else
+                                    <h1 class="text-xs  text-slate-600 font-semibold bg-slate-200 rounded-full">
+
+                                        <span>&#9679;</span> {{ $appointment->pending }}
+                                    </h1>
+                                @endif
                             @else
-                                <h1 class="text-sm text-slate-600 font-semibold bg-slate-200 rounded-full max-lg:text-xs">
-                                    Pending</h1>
+                                <h1 class="text-xs  text-blue-600 font-semibold bg-blue-200 rounded-full">
+
+                                    <span>&#9679;</span> {{ $appointment->status }}
+                                </h1>
                             @endif
                         </td>
-                        {{-- <td class="py-2 px-2 flex gap-2 justify-center max-lg:text-xs max-2xl:hidden h-max">
-                            @if ($appointment->status === 'approved')
-                                <form method="POST"
-                                    action="{{ route('appointments.approve', $appointment->id) }}">
-                                    @csrf
-                                    <div class="tooltip">
-                                        <button type="submit" class="btn btn-success btn-sm " disabled>
-                                            <img src="{{ asset('assets/images/accept.png') }}" alt="">
-                                            <span class="tooltiptext">Approved</span>
-                                        </button>
-                                    </div>
-                                </form>
-                            @elseif($appointment->status === 'declined')
-                                <form method="POST"
-                                    action="{{ route('appointments.decline', $appointment->id) }}">
-                                    @csrf
-                                    <div class="tooltip">
-                                        <button type="submit" class="btn btn-danger btn-sm" disabled>
-                                            <img src="{{ asset('assets/images/decline.png') }}" alt="">
-                                            <span class="tooltiptext">Declined</span>
-                                        </button>
-                                    </div>
-                                </form>
-                            @else
-                                <form method="POST"
-                                    action="{{ route('appointments.approve', $appointment->id) }}">
-                                    @csrf
-                                    <div class="tooltip">
-                                        <button type="submit" class="btn btn-success btn-sm">
-                                            <img src="{{ asset('assets/images/accept.png') }}" alt="">
-                                            <span class="tooltiptext">Approve</span>
-                                        </button>
-                                    </div>
-                                </form>
-                                <form method="POST"
-                                    action="{{ route('appointments.decline', $appointment->id) }}">
-                                    @csrf
-                                    <div class="tooltip">
-                                        <button type="submit" class="btn btn-danger btn-sm">
-                                            <img src="{{ asset('assets/images/decline.png') }}" alt="">
-                                            <span class="tooltiptext">Decline</span>
-                                        </button>
-                                    </div>
-                                </form>
-                            @endif
-                        </td> --}}
                         <td class="p-1 justify-center items-center max-lg:text-xs">
-                            <a href="{{ route('show.appointment', $appointment->id) }}"
-                                class="flex justify-center items-center border rounded-md py-2 px-4 max-md:py-1 max-md:px-2 text-white font-semibold hover:bg-gray-400 transition-all">
-                                <h1 class="hidden max-2xl:block text-xs font-semibold text-gray-800">View</h1>
-                                <img class="h-5 sm:h-4 sm:w-4 max-md:h-4 max-md:w-4 max-2xl:hidden"
-                                    src="{{ asset('assets/images/user-icon.png') }}" alt="">
-                            </a>
+                            @if ($appointment->status !== 'Cancelled')
+                                <a href="{{ route('show.appointment', $appointment->id) }}"
+                                    class="flex justify-center items-center border rounded-md py-2 px-4 max-md:py-1 max-md:px-2 text-white font-semibold hover:bg-gray-400 transition-all">
+                                    <h1 class="hidden max-2xl:block text-xs font-semibold text-gray-800">View</h1>
+                                    <img class="h-5 sm:h-4 sm:w-4 max-md:h-4 max-md:w-4 max-2xl:hidden"
+                                        src="{{ asset('assets/images/user-icon.png') }}" alt="">
+                                </a>
+                            @endif
                         </td>
                     </tr>
                 @endforeach

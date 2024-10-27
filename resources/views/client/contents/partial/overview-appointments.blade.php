@@ -97,6 +97,7 @@
                                             </div>
                                             <hr class="w-full bg-gray">
 
+
                                         </div>
                                     </div>
                                 </div>
@@ -106,6 +107,12 @@
                             <div class="px-4 py-2 border-t border-t-gray-500 flex justify-end items-center space-x-4">
                                 <button class="border text-gray-600 px-4 py-2 rounded-md transition"
                                     onclick="closeModal('view_modal_{{ $appointment->id }}')">Close </button>
+                                <form action="{{ route('client.cancel', $appointment->id) }}" method="post">
+                                    @csrf
+                                    @method('PUT')
+                                    <button class="border text-gray-600 px-4 py-2 rounded-md transition"
+                                        type="submit">Cancel </button>
+                                </form>
                             </div>
                         </div>
                     </div>
