@@ -15,6 +15,7 @@ use App\Http\Controllers\adminPanel\InventoryController;
 use App\Http\Controllers\adminPanel\ProcedureController;
 use App\Http\Controllers\dentistPanel\DentistController;
 use App\Http\Controllers\patientPanel\PatientController;
+use App\Http\Controllers\patientPanel\PatientHmoController;
 use App\Http\Controllers\patientPanel\PaymentController;
 
 // Notification Routes
@@ -138,6 +139,8 @@ Route::group(['middleware' => ['auth', 'verified','role:admin,staff']], function
     Route::get('/show-patient/{patient}/patient-contract', [PatientController::class, 'patientContract'])->name('patient.contract');
     Route::get('/show-patient/{patient}/patient-background', [PatientController::class, 'patientBackground'])->name('patient.background');
     Route::get('/show-patient/{patient}/patient-xray', [PatientController::class, 'patientXray'])->name('patient.xray');
+    Route::put('/patient/{id}/update-hmo', [PatientController::class, 'updateHmo'])->name('update.patient.hmo');
+
 
     //Testing Patient
     Route::get('/active-patient-list', [PatientController::class, 'activePatient'])->name('patient.active');
@@ -166,9 +169,8 @@ Route::group(['middleware' => ['auth', 'verified','role:admin,staff']], function
 
     //Sale report
     Route::get('/sales-report', [AdminController::class, 'salesReport'])->name('sales');
-
-
 });
+
 
 // Admin Routes
 Route::group(['middleware' => ['auth', 'verified', 'role:admin']], function () {

@@ -197,6 +197,22 @@ class PatientController extends Controller
             'branch_id' => 'required|exists:branches,id',
         ]);
 
+        // Handle HMO company name when "other" is selected
+        $hmoCompany = $request->hmo_company === 'other' ? $request->other_hmo_name : $request->hmo_company;
+
+        $oldData = $patient->toArray();
+
+        $patient->update([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'gender' => $request->gender,
+            'date_of_birth' => $request->date_of_birth,
+            'fb_name' => $request->fb_name,
+            'phone_number' => $request->phone_number,
+            'next_visit' => $request->next_visit,
+            'branch_id' => $request->branch_id,
+        ]);
+
         AuditLog::create([
             'action' => 'Update',
             'model_type' => 'Patient information updated',
@@ -206,8 +222,46 @@ class PatientController extends Controller
             'changes' => json_encode($request->all()), // Log the request data
         ]);
 
-        $patient->update($validated);
         return redirect()->route('show.patient', compact('patient'))->with('success','Patient updated successfully!');
+    }
+
+    public function updateHmo(Request $request, $id)
+    {
+        $patient = Patient::findOrFail($id);
+        
+        $validated = $request->validate([
+            'has_hmo' => 'boolean',
+            'hmo_company' => 'nullable|string|max:255',
+            'hmo_number' => 'nullable|string|max:255',
+            'hmo_type' => 'nullable|string|max:255',
+            'other_hmo_name' => 'nullable|string|max:255',
+        ]);
+
+        // Handle HMO company name when "other" is selected
+        $hmoCompany = $request->hmo_company === 'other' ? $request->other_hmo_name : $request->hmo_company;
+
+        $oldData = $patient->only(['has_hmo', 'hmo_company', 'hmo_number', 'hmo_type']);
+
+        $patient->update([
+            'has_hmo' => $request->has_hmo ? 1 : 0,
+            'hmo_company' => $request->has_hmo ? $hmoCompany : null,
+            'hmo_number' => $request->has_hmo ? $request->hmo_number : null,
+            'hmo_type' => $request->has_hmo ? $request->hmo_type : null,
+        ]);
+
+        AuditLog::create([
+            'action' => 'Update',
+            'model_type' => 'Patient HMO information updated',
+            'model_id' => $patient->id,
+            'user_id' => auth()->id(),
+            'user_email' => auth()->user()->email,
+            'changes' => json_encode([
+                'old' => $oldData,
+                'new' => $patient->only(['has_hmo', 'hmo_company', 'hmo_number', 'hmo_type'])
+            ])
+        ]);
+
+        return redirect()->route('show.patient', $patient)->with('success', 'HMO information updated successfully!');
     }
 
     public function patientContract(Request $request, $id)

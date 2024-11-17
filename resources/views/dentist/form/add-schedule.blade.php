@@ -165,7 +165,16 @@
     </section>
     <script>
         const today = new Date().toISOString().split('T')[0];
-        document.getElementById('date').setAttribute('min', today);
+        const dateInput = document.getElementById('date');
+        dateInput.setAttribute('min', today);
+        
+        dateInput.addEventListener('input', function() {
+            const selected = new Date(this.value);
+            if (selected.getDay() === 0) { // 0 is Sunday
+                alert('Sundays are not available for scheduling');
+                this.value = '';
+            }
+        });
 
         function validateInput(field) {
             const input = document.getElementById(field);
