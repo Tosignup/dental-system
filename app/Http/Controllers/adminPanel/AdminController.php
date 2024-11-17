@@ -165,42 +165,123 @@ class AdminController extends Controller
 
    
 
-    public function salesReport()
+    public function salesReport(Request $request)
     {
-        $paymentHistories = PaymentHistory::with('payment')->orderBy('created_at','Desc')->get();
-        
-        $totalRevenue = $paymentHistories->sum('paid_amount');
-        $transactionCount = $paymentHistories->count();
-        $averageRevenue = $transactionCount > 0 ? $totalRevenue / $transactionCount : 0;
-        $comparisonData = [
-            'Total' => $totalRevenue,
-            'Average' => $averageRevenue
-        ];
+        // Base query for all calculations
+        $baseQuery = PaymentHistory::with([
+            'payment.appointment.branch',
+            'payment.appointment.procedure'
+        ])->whereHas('payment.appointment', function($q) {
+            $q->whereNotNull('branch_id');
+        });
 
-        $todayRevenue = $paymentHistories->where('created_at', '>=', Carbon::today())->sum('paid_amount');
-        $yesterdayRevenue = $paymentHistories->where('created_at', '>=', Carbon::yesterday())->where('created_at', '<', Carbon::today())->sum('paid_amount');
-        $dailyComparisonData = [
-            'Today' => $todayRevenue,
-            'Yesterday' => $yesterdayRevenue
-        ];
-        
-        $monthlyRevenueData = [];
-        foreach ($paymentHistories as $history) {
-            $month = Carbon::parse($history->created_at)->format('Y-m'); 
-            $monthlyRevenueData[$month] = ($monthlyRevenueData[$month] ?? 0) + $history->paid_amount;
+        // Branch filtering
+        if ($request->filled('branch')) {
+            $baseQuery->whereHas('payment.appointment', function($q) use ($request) {
+                $q->where('branch_id', $request->branch);
+            });
         }
 
+        // Get all payment histories for calculations
+        $allPaymentHistories = $baseQuery->get();
         
-        $frequentlyPerformedProcedures = $paymentHistories->groupBy('payment_id')->map(function ($group) {
-            $payment = $group->first();
-            return [
-                'procedure' => $payment->payment->appointment->procedure->name,
-                'count' => $group->count(),
-                'total_amount' => $group->sum('paid_amount'),
-            ];
-        })->sortByDesc('count')->take(3);
+        // Get limited payment histories for display
+        $paymentHistories = $baseQuery->clone()->orderBy('created_at', 'desc')->limit(4)->get();
+        
+        // Calculate metrics using all payment histories
+        $totalRevenue = $allPaymentHistories->sum('paid_amount');
+        $transactionCount = $allPaymentHistories->count();
+        $averageRevenue = $transactionCount > 0 ? $totalRevenue / $transactionCount : 0;
+        
+        // Group data by branch using all payment histories
+        $branchData = $allPaymentHistories->groupBy('payment.appointment.branch.branch_loc')
+            ->map(function ($histories) {
+                return $histories->sum('paid_amount');
+            });
+        
+        // Prepare comparison data for the chart
+        $comparisonData = $branchData->toArray();
+        
+        // Weekly comparison using all payment histories
+        $thisWeekRevenue = $allPaymentHistories
+            ->where('created_at', '>=', Carbon::now()->startOfWeek())
+            ->sum('paid_amount');
+        $lastWeekRevenue = $allPaymentHistories
+            ->where('created_at', '>=', Carbon::now()->subWeek()->startOfWeek())
+            ->where('created_at', '<', Carbon::now()->startOfWeek())
+            ->sum('paid_amount');
+            
+        $weeklyComparisonData = [
+            'This Week' => $thisWeekRevenue,
+            'Last Week' => $lastWeekRevenue
+        ];
+        
+        // Monthly revenue data using all payment histories
+        $monthlyRevenueData = [];
+        $startDate = Carbon::now()->subMonths(5)->startOfMonth(); // Get last 6 months
 
-        return view('admin.contents.sales-report', compact('paymentHistories', 'totalRevenue', 'averageRevenue', 'dailyComparisonData', 'comparisonData', 'monthlyRevenueData', 'frequentlyPerformedProcedures'));
+        // Initialize all months with zero values
+        for ($i = 0; $i <= 5; $i++) {
+            $monthKey = $startDate->copy()->addMonths($i)->format('Y-m'); // Store as YYYY-MM for sorting
+            $monthlyRevenueData[$monthKey] = [
+                'display' => $startDate->copy()->addMonths($i)->format('M Y'),
+                'amount' => 0
+            ];
+        }
+
+        // Fill in actual values using all payment histories
+        foreach ($allPaymentHistories as $history) {
+            $date = Carbon::parse($history->created_at);
+            if ($date >= $startDate) {
+                $monthKey = $date->format('Y-m');
+                if (isset($monthlyRevenueData[$monthKey])) {
+                    $monthlyRevenueData[$monthKey]['amount'] += $history->paid_amount;
+                }
+            }
+        }
+
+        // Sort by date (chronologically)
+        ksort($monthlyRevenueData);
+
+        // Transform for view
+        $monthlyRevenueData = collect($monthlyRevenueData)->mapWithKeys(function ($data, $key) {
+            return [$data['display'] => $data['amount']];
+        })->toArray();
+
+        // Top procedures with branch breakdown
+        $frequentlyPerformedProcedures = $paymentHistories
+            ->groupBy('payment.appointment.procedure.name')
+            ->map(function ($group) {
+                $branchBreakdown = $group->groupBy('payment.appointment.branch.branch_loc')
+                    ->map(function ($branchGroup) {
+                        return [
+                            'count' => $branchGroup->count(),
+                            'total_amount' => $branchGroup->sum('paid_amount')
+                        ];
+                    });
+
+                return [
+                    'procedure' => $group->first()->payment->appointment->procedure->name,
+                    'count' => $group->count(),
+                    'total_amount' => $group->sum('paid_amount'),
+                    'by_branch' => $branchBreakdown
+                ];
+            })
+            ->sortByDesc('count')
+            ->take(3);
+
+        // Get all branches for the dropdown
+        $branches = Branch::all();
+
+        return view('admin.contents.sales-report', compact(
+            'paymentHistories',
+            'comparisonData',
+            'weeklyComparisonData',
+            'monthlyRevenueData',
+            'frequentlyPerformedProcedures',
+            'branches',
+            'totalRevenue'
+        ));
     }
 
 
