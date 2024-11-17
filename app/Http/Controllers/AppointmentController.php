@@ -8,6 +8,8 @@ use App\Models\Dentist;
 use App\Models\Patient;
 use App\Models\Procedure;
 use App\Models\Appointment;
+use App\Models\User;
+use App\Notifications\NewAppointmentNotification;
 use Illuminate\Http\Request;
 use App\Models\DentistSchedule;
 use Illuminate\Support\Facades\DB;
@@ -39,7 +41,7 @@ class AppointmentController extends Controller
     public function addWalkIn()
     {
         $branches = Branch::all();
-        $patients = Patient::all();
+        $patients = Patient::where('is_archived', 0)->get();
         $procedures = Procedure::all();
 
         return view('appointment.add-walk-in-appointment', [
@@ -113,18 +115,47 @@ class AppointmentController extends Controller
         }
 
         // Create the new appointment record
-        $appointment = Appointment::create([
-            'patient_id' => $validatedData['patient_id'],
-            'dentist_id' => $validatedData['dentist_id'],
-            'branch_id' => $validatedData['branch_id'],
-            'schedule_id' => $validatedData['schedule_id'],
-            'proc_id' => $validatedData['proc_id'],
-            'appointment_date' => $validatedData['appointment_date'],
-            'preferred_time' => $validatedData['preferred_time'],
-            'status' => 'scheduled',
-            'pending' => 'pending',
-            'is_online' => $validatedData['is_online'],
-        ]);
+        if (is_array($validatedData['proc_id'])) {
+            foreach ($validatedData['proc_id'] as $procId) {
+                $appointment = Appointment::create([
+                    'patient_id' => $validatedData['patient_id'],
+                    'dentist_id' => $validatedData['dentist_id'],
+                    'branch_id' => $validatedData['branch_id'],
+                    'schedule_id' => $validatedData['schedule_id'],
+                    'proc_id' => $procId,
+                    'appointment_date' => $validatedData['appointment_date'],
+                    'preferred_time' => $validatedData['preferred_time'],
+                    'status' => 'scheduled',
+                    'pending' => 'pending',
+                    'is_online' => $validatedData['is_online'],
+                ]);
+
+                // Send notification to admin and staff users
+                $users = User::whereIn('role', ['admin', 'staff', 'dentist'])->get();
+                foreach ($users as $user) {
+                    $user->notify(new NewAppointmentNotification($appointment));
+                }
+            }
+        } else {
+            $appointment = Appointment::create([
+                'patient_id' => $validatedData['patient_id'],
+                'dentist_id' => $validatedData['dentist_id'],
+                'branch_id' => $validatedData['branch_id'],
+                'schedule_id' => $validatedData['schedule_id'],
+                'proc_id' => $validatedData['proc_id'],
+                'appointment_date' => $validatedData['appointment_date'],
+                'preferred_time' => $validatedData['preferred_time'],
+                'status' => 'scheduled',
+                'pending' => 'pending',
+                'is_online' => $validatedData['is_online'],
+            ]);
+
+            // Send notification to admin and staff users
+            $users = User::whereIn('role', ['admin', 'staff', 'dentist'])->get();
+            foreach ($users as $user) {
+                $user->notify(new NewAppointmentNotification($appointment));
+            }
+        }
 
         return redirect()->route('appointments.walkIn')->with('success', 'Appointment successfully created!');
         session()->flash('success', 'Appointment added successfully!');
@@ -175,18 +206,48 @@ class AppointmentController extends Controller
         }
 
         // Create the new appointment record
-        $appointment = Appointment::create([
-            'patient_id' => $validatedData['patient_id'],
-            'dentist_id' => $validatedData['dentist_id'],
-            'branch_id' => $validatedData['branch_id'],
-            'schedule_id' => $validatedData['schedule_id'], // Store the selected schedule
-            'proc_id' => $validatedData['proc_id'], // Store the selected schedule
-            'appointment_date' => $validatedData['appointment_date'],
-            'preferred_time' => $validatedData['preferred_time'], // Store the selected time slot
-            'status' => 'scheduled',
-            'pending' => 'pending', // Assuming appointments are pending initially
-            'is_online' => $validatedData['is_online'],
-        ]);
+        if (is_array($validatedData['proc_id'])) {
+            foreach ($validatedData['proc_id'] as $procId) {
+                $appointment = Appointment::create([
+                    'patient_id' => $validatedData['patient_id'],
+                    'dentist_id' => $validatedData['dentist_id'],
+                    'branch_id' => $validatedData['branch_id'],
+                    'schedule_id' => $validatedData['schedule_id'],
+                    'proc_id' => $procId,
+                    'appointment_date' => $validatedData['appointment_date'],
+                    'preferred_time' => $validatedData['preferred_time'],
+                    'status' => 'scheduled',
+                    'pending' => 'pending',
+                    'is_online' => $validatedData['is_online'],
+                ]);
+
+                // Send notification to admin and staff users
+                $users = User::whereIn('role', ['admin', 'staff', 'dentist'])->get();
+                foreach ($users as $user) {
+                    $user->notify(new NewAppointmentNotification($appointment));
+                }
+            }
+        } else {
+            $appointment = Appointment::create([
+                'patient_id' => $validatedData['patient_id'],
+                'dentist_id' => $validatedData['dentist_id'],
+                'branch_id' => $validatedData['branch_id'],
+                'schedule_id' => $validatedData['schedule_id'],
+                'proc_id' => $validatedData['proc_id'],
+                'appointment_date' => $validatedData['appointment_date'],
+                'preferred_time' => $validatedData['preferred_time'],
+                'status' => 'scheduled',
+                'pending' => 'pending',
+                'is_online' => $validatedData['is_online'],
+            ]);
+
+            // Send notification to admin and staff users
+            $users = User::whereIn('role', ['admin', 'staff', 'dentist'])->get();
+            foreach ($users as $user) {
+                $user->notify(new NewAppointmentNotification($appointment));
+            }
+        }
+
         $patient = Patient::findOrFail($id);
 
         return redirect()->route('client.overview', compact('patient', 'id'))->with('success', 'Appointment successfully created!');

@@ -104,15 +104,17 @@
                             </div>
 
                             <!-- Modal footer -->
-                            <div class="px-4 py-2 border-t border-t-gray-500 flex justify-end items-center space-x-4">
-                                <button class="border text-gray-600 px-4 py-2 rounded-md transition"
-                                    onclick="closeModal('view_modal_{{ $appointment->id }}')">Close </button>
-                                <form action="{{ route('client.cancel', $appointment->id) }}" method="post">
+                            <div
+                                class="px-4 py-2 border-t border-t-gray-500 flex justify-between items-center space-x-4">
+                                <form action="{{ route('client.cancel', $appointment->id) }}" method="post"
+                                    class="border">
                                     @csrf
                                     @method('PUT')
-                                    <button class="border text-gray-600 px-4 py-2 rounded-md transition"
-                                        type="submit">Cancel </button>
+                                    <button class="border bg-red-600 text-white px-4 py-2 rounded-md transition"
+                                        type="submit">Cancel appointment</button>
                                 </form>
+                                <button class="border text-gray-600 px-4 py-2 rounded-md transition"
+                                    onclick="closeModal('view_modal_{{ $appointment->id }}')">Close </button>
                             </div>
                         </div>
                     </div>

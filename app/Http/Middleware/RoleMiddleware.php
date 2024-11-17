@@ -29,7 +29,7 @@ class RoleMiddleware
 
         // Check if the authenticated user's role is one of the allowed roles
         if (!in_array(auth()->user()->role, $allowedRoles)) {
-            return abort(403);  // Forbidden (or 404 if you prefer)
+            return redirect()->back()->with('error', 'You do not have permission to access this page.');
         }
 
         return $next($request);

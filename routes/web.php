@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ScheduleController;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\adminPanel\AdminController;
 use App\Http\Controllers\adminPanel\ImageController;
 use App\Http\Controllers\staffPanel\StaffController;
@@ -16,6 +17,10 @@ use App\Http\Controllers\dentistPanel\DentistController;
 use App\Http\Controllers\patientPanel\PatientController;
 use App\Http\Controllers\patientPanel\PaymentController;
 
+// Notification Routes
+Route::post('/notifications/{notification}/mark-as-read', [NotificationController::class, 'markAsRead'])
+    ->name('notifications.mark-as-read')
+    ->middleware(['auth']);
 
 Route::get('/', function () {
     return view('welcome');
