@@ -73,16 +73,6 @@ Route::get('/send-test-email', function () {
     return 'Test email has been sent!';
 });
 
-// Route::get('/test-email', function () {
-//     $details = [
-//         'title' => 'Test Email',
-//         'body' => 'This is a test email sent via MailSlurp SMTP.'
-//     ];
-
-//     Mail::to('d30a96df-fe79-46d7-861f-1a5551ae1780@mailslurp.net')->send(new \App\Mail\TestMail($details));
-
-//     return 'Test email sent!';
-// });
 Route::group(['middleware' => ['auth', 'verified','role:admin,staff,dentist']], function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
@@ -92,7 +82,7 @@ Route::group(['middleware' => ['auth', 'verified','role:admin,staff,dentist']], 
 //remove dentist here
 Route::group(['middleware' => ['auth', 'verified','role:admin,staff']], function () {
     Route::get('/patient-list', [PatientController::class, 'patient_list'])->name('patient_list');
-    Route::get('/schedule', [AdminController::class, 'schedule'])->name('schedule');
+    Route::get('/schedule', [ScheduleController::class, 'index'])->name('schedule');
     Route::get('/inventory', [InventoryController::class, 'inventory'])->name('inventory');
     Route::get('/procedure', [ProcedureController::class, 'procedure'])->name('procedure');
     Route::get('/branch', [AdminController::class, 'branch'])->name('branch');
@@ -120,8 +110,7 @@ Route::group(['middleware' => ['auth', 'verified','role:admin,staff']], function
     Route::get('{id}/payment-list/pending', [PaymentController::class, 'pendingPayment'])->name('payments.pending');
     Route::post('/payments/{id}/approve', [PaymentController::class, 'approvePayment'])->name('payments.approve');
 
-    
-    //Testing
+    //Appointments
     Route::get('/appointments/show-appointment/{appointment}', [AppointmentController::class, 'show'])->name('show.appointment');
     Route::get('/appointments/walk-in-request', [AppointmentController::class, 'walkInAppointment'])->name('appointments.walkIn');
     Route::get('/appointments/online-request', [AppointmentController::class, 'onlineAppointment'])->name('appointments.online');
@@ -140,9 +129,6 @@ Route::group(['middleware' => ['auth', 'verified','role:admin,staff']], function
     Route::get('/show-patient/{patient}/patient-background', [PatientController::class, 'patientBackground'])->name('patient.background');
     Route::get('/show-patient/{patient}/patient-xray', [PatientController::class, 'patientXray'])->name('patient.xray');
     Route::put('/patient/{id}/update-hmo', [PatientController::class, 'updateHmo'])->name('update.patient.hmo');
-
-
-    //Testing Patient
     Route::get('/active-patient-list', [PatientController::class, 'activePatient'])->name('patient.active');
     Route::get('/archived-patient-list', [PatientController::class, 'archivedPatient'])->name('patient.archived');
 

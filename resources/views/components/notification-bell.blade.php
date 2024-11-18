@@ -43,9 +43,19 @@
                     $procedure = $data['procedure_name'] ?? '';
                 @endphp
                 <div class="notification-item" id="notification-{{ $notification->id }}">
-                    <a href="{{ $appointmentId ? route('show.appointment', ['appointment' => $appointmentId]) : '#' }}" 
+                    @php
+                        $appointmentRoute = '#';
+                        if ($appointmentId) {
+                            if (Auth::user()->role === 'dentist') {
+                                $appointmentRoute = route('appointments.show', $appointmentId);
+                            } elseif (in_array(Auth::user()->role, ['admin', 'staff'])) {
+                                $appointmentRoute = route('show.appointment', ['appointment' => $appointmentId]);
+                            }
+                        }
+                    @endphp
+                    <a href="{{ $appointmentRoute }}"
                        class="flex items-center px-4 py-3 border-b hover:bg-gray-100"
-                       @click.prevent="handleNotificationClick($event, '{{ $notification->id }}', '{{ $appointmentId ? route('show.appointment', ['appointment' => $appointmentId]) : '#' }}', '{{ csrf_token() }}')">
+                       @click.prevent="handleNotificationClick($event, '{{ $notification->id }}', '{{ $appointmentRoute }}', '{{ csrf_token() }}')">
                         <div class="flex-1">
                             <p class="text-sm font-medium text-gray-900">{{ $message }}</p>
                             @if($date && $time)

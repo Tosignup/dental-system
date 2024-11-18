@@ -142,7 +142,7 @@
                             <option value="60"> 60 Minutes</option>
                         </select> --}}
                 </div>
-                <div class="w-full flex gap-2 mb-3 border">
+                <div class="w-full flex gap-2 mb-3">
 
                     <button
                         class="flex-1 justify-center items-center py-2 px-8 text-center max-md:py-2 max-md:px-2 max-md:text-xs font-semibold rounded-md hover:bg-green-600 hover:border-green-600 hover:text-white text-gray-800 border-2 border-gray-600 transition-all"
