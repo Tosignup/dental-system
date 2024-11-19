@@ -23,6 +23,7 @@
         <div>
             @include('components.sidebar')
         </div>
+
         <div class="w-full max-lg:mt-12">
             @yield('content')
         </div>

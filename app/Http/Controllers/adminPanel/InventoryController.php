@@ -7,15 +7,62 @@ use App\Models\AuditLog;
 use App\Models\Inventory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class InventoryController extends Controller
 {
 
-    public function inventory()
+    public function inventory(Request $request)
     {
-        $items = Inventory::all();
+        // Get analytics data
+        $totalItems = Inventory::count();
+        $totalValue = Inventory::sum(DB::raw('quantity * cost_per_item'));
+        $outOfStockCount = Inventory::where('availability', 'out-of-stock')->count();
+        
+        // Get low stock items
+        $lowStockItems = Inventory::whereRaw('quantity <= minimum_quantity')
+            ->where('quantity', '>', 0)
+            ->get();
+        $lowStockCount = $lowStockItems->count();
 
-        return view('admin.inventory.inventory', compact('items'));
+        // Main inventory query
+        $query = Inventory::query();
+
+        // Apply search if present
+        if ($search = $request->input('search')) {
+            $query->where(function($q) use ($search) {
+                $q->where('item_name', 'like', "%{$search}%")
+                  ->orWhere('serial_number', 'like', "%{$search}%");
+            });
+        }
+
+        // Apply availability filter
+        if ($availability = $request->input('availability')) {
+            $query->where('availability', $availability);
+        }
+
+        // Apply sorting
+        $sortField = $request->input('sort', 'item_name');
+        $sortDirection = $request->input('direction', 'asc');
+        
+        // Validate sort field to prevent SQL injection
+        $allowedSortFields = ['item_name', 'serial_number', 'quantity', 'availability'];
+        if (in_array($sortField, $allowedSortFields)) {
+            $query->orderBy($sortField, $sortDirection);
+        }
+
+        $items = $query->paginate(10)->withQueryString();
+
+        return view('admin.inventory.inventory', compact(
+            'items', 
+            'sortField', 
+            'sortDirection',
+            'totalItems',
+            'totalValue',
+            'outOfStockCount',
+            'lowStockItems',
+            'lowStockCount'
+        ));
     }
 
     public function addItem()
@@ -134,7 +181,7 @@ class InventoryController extends Controller
         AuditLog::create([
             'action' => 'Delete',
             'model_type' => 'Item deleted',
-            'model_id' => $inventory->id,
+            'model_id' => $item->id,
             'user_id' => auth()->id(),
             'user_email' => auth()->user()->email,
             'changes' => json_encode($request->all()), // Log the request data
@@ -143,6 +190,4 @@ class InventoryController extends Controller
         return redirect()->route('inventory')->with('success', 'Item deleted successfully!');
         session()->flash('success', 'Item deleted successfully!');
     }
-
-
 }

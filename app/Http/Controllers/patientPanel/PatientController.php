@@ -31,20 +31,32 @@ class PatientController extends Controller
             });
         }
 
+        // Get sort direction, default to 'asc' if not specified
+        $direction = $request->get('direction', 'asc');
+        
         // Sorting logic
         if ($request->has('sort')) {
             $sortOption = $request->get('sort');
-            if ($sortOption == 'next_visit') {
-                $activePatientQuery->orderBy('next_visit', 'DESC');
-            } elseif ($sortOption == 'id') {
-                $activePatientQuery->orderBy('id', 'ASC');
-            } elseif ($sortOption == 'name') {
-                $activePatientQuery->orderBy('last_name', 'ASC')->orderBy('first_name', 'ASC');
-            } elseif ($sortOption == 'date_added') {
-                $activePatientQuery->orderBy('created_at', 'ASC');
+            switch ($sortOption) {
+                case 'next_visit':
+                    $activePatientQuery->orderBy('next_visit', $direction);
+                    break;
+                case 'id':
+                    $activePatientQuery->orderBy('id', $direction);
+                    break;
+                case 'name':
+                    $activePatientQuery->orderBy('last_name', $direction)
+                                     ->orderBy('first_name', $direction);
+                    break;
+                case 'date_added':
+                    $activePatientQuery->orderBy('created_at', $direction);
+                    break;
+                default:
+                    $activePatientQuery->orderBy('created_at', 'desc');
             }
         } else {
-            $activePatientQuery->orderBy('created_at', 'ASC');
+            // Default sorting
+            $activePatientQuery->orderBy('created_at', 'desc');
         }
 
         // Execute the query and get the results with pagination
@@ -53,7 +65,8 @@ class PatientController extends Controller
         return view('client.patients.active-patients', [
             'activePatients' => $activePatients,
             'search' => $request->get('search'),
-            'sort' => $request->get('sort')
+            'sort' => $request->get('sort'),
+            'direction' => $direction
         ]);
     }
 
@@ -70,20 +83,32 @@ class PatientController extends Controller
             });
         }
 
+        // Get sort direction, default to 'asc' if not specified
+        $direction = $request->get('direction', 'asc');
+        
         // Sorting logic
         if ($request->has('sort')) {
             $sortOption = $request->get('sort');
-            if ($sortOption == 'next_visit') {
-                $archivedPatientQuery->orderBy('next_visit', 'DESC');
-            } elseif ($sortOption == 'id') {
-                $archivedPatientQuery->orderBy('id', 'ASC');
-            } elseif ($sortOption == 'name') {
-                $archivedPatientQuery->orderBy('last_name', 'ASC')->orderBy('first_name', 'ASC');
-            } elseif ($sortOption == 'date_added') {
-                $archivedPatientQuery->orderBy('created_at', 'ASC');
+            switch ($sortOption) {
+                case 'next_visit':
+                    $archivedPatientQuery->orderBy('next_visit', $direction);
+                    break;
+                case 'id':
+                    $archivedPatientQuery->orderBy('id', $direction);
+                    break;
+                case 'name':
+                    $archivedPatientQuery->orderBy('last_name', $direction)
+                                     ->orderBy('first_name', $direction);
+                    break;
+                case 'date_added':
+                    $archivedPatientQuery->orderBy('created_at', $direction);
+                    break;
+                default:
+                    $archivedPatientQuery->orderBy('created_at', 'desc');
             }
         } else {
-            $archivedPatientQuery->orderBy('created_at', 'ASC');
+            // Default sorting
+            $archivedPatientQuery->orderBy('created_at', 'desc');
         }
 
         // Execute the query and get the results with pagination
@@ -92,11 +117,11 @@ class PatientController extends Controller
         return view('client.patients.archived-patients', [
             'archivedPatients' => $archivedPatients,
             'search' => $request->get('search'),
-            'sort' => $request->get('sort')
+            'sort' => $request->get('sort'),
+            'direction' => $direction
         ]);
-   }
+    }
 
-    
     public function addPatient()
     {
         $branches = Branch::all();

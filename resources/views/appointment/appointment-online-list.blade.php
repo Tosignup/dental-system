@@ -10,43 +10,69 @@
     </style> --}}
     <section class=" m-4 p-4 bg-white shadow-lg rounded-md max-lg:mt-14">
         <div class="flex items-center justify-between pt-3 pb-6 max-lg:flex-wrap gap-4 max-md:gap-2 max-md:pt-1 max-md:pb-3">
-            <label class="flex items-center gap-2" for="time">
-                <h1 class="font-bold text-3xl mr-4 max-md:mr-0 max-md:text-2xl">Online Request</h1>
-                <div>
-                    <form id="sort" method="GET" action="{{ route('appointments.online') }}"
-                        class="flex max-lg:text-xs gap-1 items-center max-lg:m-1">
-                        <h1 class="font-semibold">Sort by: </h1>
-                        <select name="sort" id="sortBy"
-                            class="border text-sm w-auto border-gray-400 pr-6 mx-2 rounded-md max-lg:text-xs"
-                            onchange="this.form.submit()">
-                            <option value="created_at" {{ request()->get('sort') == 'created_at' ? 'selected' : '' }}>
-                                Date Submitted</option>
-                            <option value="preferred_time"
-                                {{ request()->get('sort') == 'preferred_time' ? 'selected' : '' }}>Appointment Time
-                            </option>
-                            <option value="appointment_date"
-                                {{ request()->get('sort') == 'appointment_date' ? 'selected' : '' }}>Appointment Date
-                            </option>
-                            <option value="branch" {{ request()->get('sort') == 'branch' ? 'selected' : '' }}>Branch
-                            </option>
-                            <option value="status" {{ request()->get('sort') == 'status' ? 'selected' : '' }}>Status
-                            </option>
-                        </select>
-                    </form>
-                </div>
-            </label>
+            <div class="flex gap-4 max-md:gap-2">
+                <label class="flex items-center gap-2" for="time">
+                    <h1 class="font-bold text-3xl mr-4 max-md:mr-0 max-md:text-2xl">Online Request</h1>
+                </label>
+            </div>
         </div>
         <table class="w-full table-auto text-center">
             <thead>
                 <tr class="bg-green-200 text-green-700">
-                    <th class="max-lg:py-2 max-lg:px-2 border max-lg:text-xs">Patient</th>
-                    <th class="max-lg:py-2 max-lg:px-2 border max-lg:text-xs max-2xl:hidden">Date Submitted</th>
-                    <th class="py-2 px-4 max-lg:py-2 max-lg:px-2 border max-lg:text-xs">Appointment Date</th>
-                    <th class="py-2 px-4 max-lg:py-2 max-lg:px-2 border max-lg:text-xs max-2xl:hidden">Preferred
-                        time
+                    <th class="max-lg:py-2 max-lg:px-2 border max-lg:text-xs">
+                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'patient', 'direction' => request('sort') === 'patient' && request('direction') === 'asc' ? 'desc' : 'asc']) }}"
+                            class="flex items-center justify-center gap-1">
+                            Patient
+                            @if(request('sort') === 'patient')
+                                <span class="text-xs">{{ request('direction') === 'asc' ? '↑' : '↓' }}</span>
+                            @endif
+                        </a>
                     </th>
-                    <th class="py-2 px-4 max-lg:py-2 max-lg:px-2 border max-lg:text-xs max-2xl:hidden">Branch</th>
-                    <th class="py-2 px-4 max-lg:py-2 max-lg:px-2 border max-lg:text-xs">Status</th>
+                    <th class="max-lg:py-2 max-lg:px-2 border max-lg:text-xs max-2xl:hidden">
+                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'date_submitted', 'direction' => request('sort') === 'date_submitted' && request('direction') === 'asc' ? 'desc' : 'asc']) }}"
+                            class="flex items-center justify-center gap-1">
+                            Date Submitted
+                            @if(request('sort') === 'date_submitted')
+                                <span class="text-xs">{{ request('direction') === 'asc' ? '↑' : '↓' }}</span>
+                            @endif
+                        </a>
+                    </th>
+                    <th class="py-2 px-4 max-lg:py-2 max-lg:px-2 border max-lg:text-xs">
+                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'appointment_date', 'direction' => request('sort') === 'appointment_date' && request('direction') === 'asc' ? 'desc' : 'asc']) }}"
+                            class="flex items-center justify-center gap-1">
+                            Appointment Date
+                            @if(request('sort') === 'appointment_date')
+                                <span class="text-xs">{{ request('direction') === 'asc' ? '↑' : '↓' }}</span>
+                            @endif
+                        </a>
+                    </th>
+                    <th class="py-2 px-4 max-lg:py-2 max-lg:px-2 border max-lg:text-xs max-2xl:hidden">
+                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'time', 'direction' => request('sort') === 'time' && request('direction') === 'asc' ? 'desc' : 'asc']) }}"
+                            class="flex items-center justify-center gap-1">
+                            Preferred time
+                            @if(request('sort') === 'time')
+                                <span class="text-xs">{{ request('direction') === 'asc' ? '↑' : '↓' }}</span>
+                            @endif
+                        </a>
+                    </th>
+                    <th class="py-2 px-4 max-lg:py-2 max-lg:px-2 border max-lg:text-xs max-2xl:hidden">
+                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'branch', 'direction' => request('sort') === 'branch' && request('direction') === 'asc' ? 'desc' : 'asc']) }}"
+                            class="flex items-center justify-center gap-1">
+                            Branch
+                            @if(request('sort') === 'branch')
+                                <span class="text-xs">{{ request('direction') === 'asc' ? '↑' : '↓' }}</span>
+                            @endif
+                        </a>
+                    </th>
+                    <th class="py-2 px-4 max-lg:py-2 max-lg:px-2 border max-lg:text-xs">
+                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'status', 'direction' => request('sort') === 'status' && request('direction') === 'asc' ? 'desc' : 'asc']) }}"
+                            class="flex items-center justify-center gap-1">
+                            Status
+                            @if(request('sort') === 'status')
+                                <span class="text-xs">{{ request('direction') === 'asc' ? '↑' : '↓' }}</span>
+                            @endif
+                        </a>
+                    </th>
                     <th class="py-2 px-4 max-lg:py-2 max-lg:px-2 border max-lg:text-xs">Actions</th>
                 </tr>
             </thead>

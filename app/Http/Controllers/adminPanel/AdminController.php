@@ -43,16 +43,95 @@ class AdminController extends Controller
     }
 
 
-    public function staff()
+    public function staff(Request $request)
     {
-        $staffs = Staff::with('branch')->get();
+        $query = Staff::with('branch');
+
+        // Handle search
+        if ($request->has('search') && !empty($request->get('search'))) {
+            $searchTerm = $request->get('search');
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('first_name', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('last_name', 'like', '%' . $searchTerm . '%');
+            });
+        }
+
+        // Get sort direction, default to 'asc' if not specified
+        $direction = $request->get('direction', 'asc');
+        
+        // Handle sorting
+        if ($request->has('sort')) {
+            $sortOption = $request->get('sort');
+            switch ($sortOption) {
+                case 'id':
+                    $query->orderBy('staff.id', $direction);
+                    break;
+                case 'name':
+                    $query->orderBy('staff.last_name', $direction)
+                          ->orderBy('staff.first_name', $direction);
+                    break;
+                case 'branch':
+                    $query->select('staff.*')
+                          ->join('branches', 'staff.branch_id', '=', 'branches.id')
+                          ->orderBy('branches.branch_loc', $direction);
+                    break;
+                default:
+                    $query->orderBy('staff.id', 'asc');
+            }
+        } else {
+            $query->orderBy('staff.id', 'asc');
+        }
+
+        $staffs = $query->paginate(10)->appends($request->except('page'));
 
         return view('admin.contents.staff-overview', compact('staffs'));
     }
-    public function dentist()
-    {
 
-        $dentists = Dentist::with('branch')->get();
+    public function dentist(Request $request)
+    {
+        $query = Dentist::with('branch');
+
+        // Handle search
+        if ($request->has('search') && !empty($request->get('search'))) {
+            $searchTerm = $request->get('search');
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('dentist_first_name', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('dentist_last_name', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('dentist_specialization', 'like', '%' . $searchTerm . '%');
+            });
+        }
+
+        // Get sort direction, default to 'asc' if not specified
+        $direction = $request->get('direction', 'asc');
+        
+        // Handle sorting
+        if ($request->has('sort')) {
+            $sortOption = $request->get('sort');
+            switch ($sortOption) {
+                case 'id':
+                    $query->orderBy('id', $direction);
+                    break;
+                case 'name':
+                    $query->orderBy('dentist_last_name', $direction)
+                          ->orderBy('dentist_first_name', $direction);
+                    break;
+                case 'specialty':
+                    $query->orderBy('dentist_specialization', $direction);
+                    break;
+                case 'branch':
+                    $query->join('branches', 'dentists.branch_id', '=', 'branches.id')
+                          ->orderBy('branches.branch_loc', $direction)
+                          ->select('dentists.*');
+                    break;
+                default:
+                    $query->orderBy('created_at', 'desc');
+            }
+        } else {
+            $query->orderBy('created_at', 'desc');
+        }
+
+        $dentists = $query->paginate(10)->appends($request->except('page'));
+
         return view('admin.contents.dentist-overview', compact('dentists'));
     }
 
@@ -248,27 +327,63 @@ class AdminController extends Controller
             return [$data['display'] => $data['amount']];
         })->toArray();
 
-        // Top procedures with branch breakdown
-        $frequentlyPerformedProcedures = $paymentHistories
-            ->groupBy('payment.appointment.procedure.name')
-            ->map(function ($group) {
-                $branchBreakdown = $group->groupBy('payment.appointment.branch.branch_loc')
-                    ->map(function ($branchGroup) {
-                        return [
-                            'count' => $branchGroup->count(),
-                            'total_amount' => $branchGroup->sum('paid_amount')
-                        ];
-                    });
+        // Daily revenue data for the past 7 days
+        $dailyRevenueData = [];
+        $startDate = Carbon::now()->subDays(6)->startOfDay(); // Get last 7 days including today
 
-                return [
-                    'procedure' => $group->first()->payment->appointment->procedure->name,
-                    'count' => $group->count(),
-                    'total_amount' => $group->sum('paid_amount'),
-                    'by_branch' => $branchBreakdown
-                ];
-            })
-            ->sortByDesc('count')
-            ->take(3);
+        // Initialize all days with zero values
+        for ($i = 0; $i <= 6; $i++) {
+            $dateKey = $startDate->copy()->addDays($i)->format('Y-m-d');
+            $dailyRevenueData[$dateKey] = [
+                'display' => $startDate->copy()->addDays($i)->format('D, M d'),
+                'amount' => 0
+            ];
+        }
+
+        // Fill in actual values
+        foreach ($allPaymentHistories as $history) {
+            $date = Carbon::parse($history->created_at)->format('Y-m-d');
+            if (isset($dailyRevenueData[$date])) {
+                $dailyRevenueData[$date]['amount'] += $history->paid_amount;
+            }
+        }
+
+        // Transform for view
+        $dailyRevenueData = collect($dailyRevenueData)->mapWithKeys(function ($data, $key) {
+            return [$data['display'] => $data['amount']];
+        })->toArray();
+
+        // Get procedures done today
+        $todayProcedures = PaymentHistory::with([
+            'payment.appointment.branch',
+            'payment.appointment.procedure'
+        ])
+        ->whereHas('payment.appointment', function($q) {
+            $q->whereNotNull('branch_id');
+        })
+        ->whereDate('created_at', Carbon::today())
+        ->when($request->filled('branch'), function($query) use ($request) {
+            $query->whereHas('payment.appointment', function($q) use ($request) {
+                $q->where('branch_id', $request->branch);
+            });
+        })
+        ->get()
+        ->map(function ($history) {
+            return [
+                'procedure' => $history->payment->appointment->procedure->name,
+                'count' => 1,
+                'total_amount' => $history->paid_amount
+            ];
+        })
+        ->groupBy('procedure')
+        ->map(function ($group) {
+            return [
+                'procedure' => $group->first()['procedure'],
+                'count' => $group->count(),
+                'total_amount' => $group->sum('total_amount')
+            ];
+        })
+        ->values();
 
         // Get all branches for the dropdown
         $branches = Branch::all();
@@ -278,7 +393,8 @@ class AdminController extends Controller
             'comparisonData',
             'weeklyComparisonData',
             'monthlyRevenueData',
-            'frequentlyPerformedProcedures',
+            'dailyRevenueData',
+            'todayProcedures',
             'branches',
             'totalRevenue'
         ));
@@ -289,7 +405,7 @@ class AdminController extends Controller
 
     public function viewAuditLogs()
     {
-        $auditLogs = AuditLog::orderBy('created_at', 'desc')->paginate(20);
+        $auditLogs = AuditLog::orderBy('created_at', 'desc')->paginate(15);
 
         foreach ($auditLogs as $auditLog) {
             $decodedChanges = json_decode($auditLog->changes, true); // Decode JSON to associative array
