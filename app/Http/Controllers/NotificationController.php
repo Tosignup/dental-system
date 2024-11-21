@@ -25,7 +25,7 @@ class NotificationController extends Controller
         if ($notification) {
             // Update the read_at timestamp
             $notification->update(['read_at' => Carbon::now()]);
-            
+
             return response()->json([
                 'success' => true,
                 'message' => 'Notification marked as read'

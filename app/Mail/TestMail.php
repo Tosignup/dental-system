@@ -5,24 +5,22 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class TestEmail extends Mailable
+class TestMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $details;
-
-    public function __construct($details)
-    {
-        $this->details = $details;
-    }
+    public function __construct() {}
 
     public function build()
     {
-        return $this->from(config('mail.from.address')) // Use the MailSlurp email address
-                    ->subject($this->details['title'])  // Subject from details
-                    ->view('emails.test')               // Email view (blade file)
-                    ->with('details', $this->details);  // Pass data to the view
+        // return $this->from('no-reply@toothimpressionsdentalclinic.xyz')
+        //             ->to('magtoto599@gmail.com')
+        //             ->subject('Test Email from Deployed Laravel App')
+        //             ->view('emails.test');
+
+        return $this->view('emails.mail')
+                    ->subject('Mailjet Test Email');
     }
 }
-

@@ -24,7 +24,7 @@ class ProcedureController extends Controller
 
         // Get sort direction, default to 'asc' if not specified
         $direction = $request->get('direction', 'asc');
-        
+
         // Handle sorting
         if ($request->has('sort')) {
             $sortOption = $request->get('sort');

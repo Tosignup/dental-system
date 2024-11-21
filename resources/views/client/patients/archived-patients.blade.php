@@ -7,14 +7,7 @@
         <div class="flex items-start justify-center max-md:items-start max-md:justify-start flex-col max-md:flex-wrap">
             <label class="flex justify-between w-full items-start gap-2" for="time">
                 <h1 class="font-bold text-3xl max-md:text-xl min-w-max">Archived Patient list</h1>
-                <form class="" method="GET" action="{{ route('add.patient') }}">
-                    @csrf
-                    <button onclick="openModal()"
-                        class="flex justify-center items-center gap-2  rounded-md py-2 px-4 min-w-max border-2 border-gray-600 hover:shadow-md hover:border-green-700 font-semibold text-gray-800 transition-all max-md:px-2">
-                        <span class="max-md:text-xs"> Add patient</span>
-                        <img class="h-8 max-md:h-4" src="{{ asset('assets/images/add-patient.png') }}" alt="">
-                    </button>
-                </form>
+                
             </label>
             <form method="GET" class="flex flex-wrap items-center gap-4 my-4" action="{{ route('patient.archived') }}">
                 <div class="flex items-center gap-4 flex-1">

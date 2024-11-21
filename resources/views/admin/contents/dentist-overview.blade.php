@@ -13,7 +13,7 @@
                     <h1 class="font-bold text-3xl max-md:text-xl">Dentist list</h1>
                 </label>
                 <form method="GET" action="{{ route('dentist') }}" class="flex items-center gap-4">
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Search dentist..." 
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Search dentist..."
                         class="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
                     <input type="hidden" name="direction" value="{{ request('direction', 'asc') }}">
                     <button type="submit"

@@ -36,16 +36,16 @@ class RoleMiddleware
     }
 
 
-    
+
 
     // public function handle(Request $request, Closure $next, ...$roles)
     // {
     //     $rolesArray = explode(',', $roles); // Convert roles into an array
-    
+
     //     if (auth()->check() && in_array(auth()->user()->role, $rolesArray)) {
     //         return $next($request);
     //     }
-        
+
     //     return redirect('/')->with('error', 'Unauthorized Access');
     // }
 }

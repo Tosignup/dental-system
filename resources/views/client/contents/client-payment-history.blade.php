@@ -51,7 +51,7 @@
 
             <table class="table w-full">
                 <thead>
-                    <tr class="pb-2 border-black border-b-2  text-left">
+                    <tr class="pb-2 border-black border-b-2 text-center max-lg:text-xs">
                         <th>Date</th>
                         <th>Amount</th>
                         <th>Method</th>
@@ -61,11 +61,12 @@
                 <tbody>
                     @forelse($paymentHistory as $payment)
                         <tr>
-                            <td class="border-b pb-2 px-2">{{ $payment->created_at->format('Y-m-d') }}</td>
-                            <td class="border-b pb-2 px-2">&#8369; {{ number_format($payment->paid_amount, 2) }}</td>
-                            <td class="border-b pb-2 px-2">{{ ucfirst($payment->payment_method) }}</td>
-                            <td class="border-b pb-2 px-2">{{ $payment->remarks ?? 'N/A' }}</td>
-                            <td class="border-b pb-2 px-2">{{ $payment->remarks ?? 'N/A' }}</td>
+                            <td class="border-b pb-2 px-2 max-xl:text-xs">{{ $payment->created_at->format('Y-m-d') }}</td>
+                            <td class="border-b pb-2 px-2 max-xl:text-xs">&#8369;
+                                {{ number_format($payment->paid_amount, 2) }}</td>
+                            <td class="border-b pb-2 px-2 max-xl:text-xs">{{ ucfirst($payment->payment_method) }}</td>
+                            <td class="border-b pb-2 px-2 max-xl:text-xs">{{ $payment->remarks ?? 'N/A' }}</td>
+
                         </tr>
                     @empty
                         <tr>

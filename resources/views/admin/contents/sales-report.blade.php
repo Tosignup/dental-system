@@ -153,7 +153,7 @@
                         }
                     },
                     x: {
-                        ticks: { 
+                        ticks: {
                             font: { size: 8 },
                             maxRotation: 0,
                             autoSkip: true,

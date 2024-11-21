@@ -8,11 +8,20 @@
     </div>
     <section class="flex flex-col justify-center items-center bg-white border">
         <section class="p-6  flex flex-1 justify-center items-center max-xl:mt-12">
-            @if ($appointment->pending === 'Approved')
+            @if($appointment->status === 'Cancelled')
+                <div class="flex flex-col  justify-center items-center gap-3">
+                    <img class="h-10" src="{{ asset('assets/images/decline-icon.png') }}" alt="">
+                    <h1 class="font-bold text-xl text-blue-600 max-xl:text-md"> Appointment Cancelled!</h1>
+                    <h1 class="text-sm text-blue-600 max-xl:text-center">This appointment for
+                        {{ $appointment->patient->last_name }}
+                        {{ $appointment->patient->first_name }} has been cancelled</h1>
+                </div>
+            @elseif ($appointment->pending === 'Approved')
                 <div class="flex flex-col justify-center items-center gap-3">
                     <img class="h-10" src="{{ asset('assets/images/check-icon.png') }}" alt="">
                     <h1 class="font-bold text-xl text-green-600 max-xl:text-md">Appointment Approved!</h1>
-                    <h1 class="text-sm text-green-600">This appointment for {{ $appointment->patient->last_name }}
+                    <h1 class="text-sm text-green-600 max-xl:text-center">This appointment for
+                        {{ $appointment->patient->last_name }}
                         {{ $appointment->patient->first_name }} has been approved by Dr.
                         {{ $appointment->dentist->dentist_last_name }}
                         {{ $appointment->dentist->dentist_first_name }}</h1>
@@ -21,18 +30,20 @@
             @elseif($appointment->pending === 'Declined')
                 <div class="flex flex-col  justify-center items-center gap-3">
                     <img class="h-10" src="{{ asset('assets/images/decline-icon.png') }}" alt="">
-
                     <h1 class="font-bold text-xl text-red-600 max-xl:text-md"> Appointment Declined!</h1>
-                    <h1 class="text-sm text-red-600">This appointment for {{ $appointment->patient->last_name }}
+                    <h1 class="text-sm text-red-600 max-xl:text-center">This appointment for
+                        {{ $appointment->patient->last_name }}
                         {{ $appointment->patient->first_name }} has been declined by Dr.
                         {{ $appointment->dentist->dentist_last_name }}
                         {{ $appointment->dentist->dentist_first_name }}</h1>
                 </div>
+
             @else
                 <div class="flex flex-col  justify-center items-center gap-3">
                     <img class="h-10" src="{{ asset('assets/images/pending.png') }}" alt="">
                     <h1 class="font-bold text-xl  max-xl:text-md"> Appointment Pending</h1>
-                    <h1 class="text-sm text-center">This appointment for {{ $appointment->patient->last_name }}
+                    <h1 class="text-sm text-center max-xl:text-center">This appointment for
+                        {{ $appointment->patient->last_name }}
                         {{ $appointment->patient->first_name }} is waiting for its response.</h1>
                 </div>
             @endif
@@ -71,87 +82,94 @@
                     </div>
                 </div>
             </section>
-            <section
-                class="p-5 border-2 rounded-md m-3 max-xl:m-1 w-full max-w-3xl flex flex-1 flex-col justify-center  items-start">
-                <h1 class="font-semibold text-gray-400 text-sm pb-3">Payment</h1>
-                <div class="mb-10 flex gap-2 flex-wrap text-2xl max-lg:text-xl">
-                    <h1 class="font-semibold  max-lg:text-lg text-left max-w-1xl min-w-2xl ">Payment Details
-                        for :
-                    </h1>
-                    <h1 class="font-bold max-lg:text-lg">
-                        {{ $appointment->patient->last_name }}
-                        {{ $appointment->patient->first_name }}</h1>
-                </div>
-                {{-- asdadasddddddddddddddddddddddddasdasddssdasdasdasdasd --}}
-                <div class="flex flex-col justify-between w-full max-2xl:flex-wrap p-2 max-md:mb-4">
-                    <div class="flex justify-between items-between w-full ">
-                        <div
-                            class="flex gap-4 flex-col justify-start items-start text-gray-500 font max-xl:text-xs max-xl:gap-8">
-                            <h1 class="border-b w-full max-lg:border-none">Procedure:</h1>
-                            <h1 class="border-b w-full max-lg:border-none">Appointment Date:</h1>
-                            <h1 class="border-b w-full max-lg:border-none">Total Amount Due:</h1>
-                            <h1 class="border-b w-full max-lg:border-none">Status:</h1>
-                        </div>
-                        <div
-                            class="flex gap-4  flex-col text-right justify-start items-end font-semibold max-xl:text-xs max-xl:gap-8">
-                            <h1 class="border-b w-full max-lg:border-none"> {{ $appointment->procedure->name ?? 'None' }}
-                            </h1>
-                            <h1 class="border-b w-full max-lg:border-none"> {{ $appointment->appointment_date }}</h1>
-                            <h1 class="border-b w-full max-lg:border-none">&#8369;
-                                {{ $appointment->procedure->price ?? '0' }}
-                            </h1>
-                            <h1 class="border-b w-full max-lg:border-none">
-                                @if (is_null($appointment->payment) || $appointment->payment->status === null)
-                                    No payment status yet
-                                @else
-                                    {{ $appointment->payment->status }}
-                                @endif
-                            </h1>
-                        </div>
+            @if ($appointment->pending === 'Declined')
+            @else
+                <section
+                    class="p-5 border-2 rounded-md m-3 max-xl:m-1 w-full max-w-3xl flex flex-1 flex-col justify-center items-start">
+                    <h1 class="font-semibold text-gray-400 text-sm pb-3">Payment</h1>
+                    <div class="mb-10 flex gap-2 flex-wrap text-2xl max-lg:text-xl">
+                        <h1 class="font-semibold  max-lg:text-lg text-left max-w-1xl min-w-2xl ">Payment Details
+                            for :
+                        </h1>
+                        <h1 class="font-bold max-lg:text-lg">
+                            {{ $appointment->patient->last_name }}
+                            {{ $appointment->patient->first_name }}</h1>
                     </div>
-                    <div class="">
-                        @if ($appointment->pending === 'Pending')
-                            <h1 class="text-xl font-bold max-md:text-3xl mb-4 max-lg:mb-2 mt-4">Waiting to be approved</h1>
-                        @elseif ($appointment->pending === 'Declined')
-                            <h1 class="text-xl font-bold max-md:text-3xl mb-4 max-lg:mb-2">Appointment has been declined
-                            </h1>
-                        @else
-                            @if (is_null($appointment->payment))
-                                <a href="{{ route('payments.form', $appointment->id) }}"
-                                    class="flex items-center justify-start gap-2 py-2 px-4 my-2 border border-gray-500 w-max rounded-md hover:border-gray-700 hover:shadow-sm transition-all max-sm:justify-center">
-                                    <img class="h-8 max-lg:h-4" src="{{ asset('assets/images/payment.png') }}"
-                                        alt="">
-                                    <h1 class="max-lg:text-xs">Add payment</h1>
-                                </a>
-                            @elseif ($appointment->payment->status === 'Pending')
-                                <div class="mt-6 flex gap-2 flex-grow-0 self-end">
+                    {{-- asdadasddddddddddddddddddddddddasdasddssdasdasdasdasd --}}
+                    <div class="flex flex-col justify-between w-full max-2xl:flex-wrap p-2 max-md:mb-4">
+                        <div class="flex justify-between items-between w-full ">
+                            <div
+                                class="flex gap-4 flex-col justify-start items-start text-gray-500 font max-xl:text-xs max-xl:gap-8">
+                                <h1 class="border-b w-full max-lg:border-none">Procedure:</h1>
+                                <h1 class="border-b w-full max-lg:border-none">Appointment Date:</h1>
+                                <h1 class="border-b w-full max-lg:border-none">Total Amount Due:</h1>
+                                <h1 class="border-b w-full max-lg:border-none">Status:</h1>
+                            </div>
+                            <div
+                                class="flex gap-4  flex-col text-right justify-start items-end font-semibold max-xl:text-xs max-xl:gap-8">
+                                <h1 class="border-b w-full max-lg:border-none">
+                                    {{ $appointment->procedure->name ?? 'None' }}
+                                </h1>
+                                <h1 class="border-b w-full max-lg:border-none"> {{ $appointment->appointment_date }}</h1>
+                                <h1 class="border-b w-full max-lg:border-none">&#8369;
+                                    {{ $appointment->procedure->price ?? '0' }}
+                                </h1>
+                                <h1 class="border-b w-full max-lg:border-none">
+                                    @if (is_null($appointment->payment) || $appointment->payment->status === null)
+                                        No payment status yet
+                                    @else
+                                        {{ $appointment->payment->status }}
+                                    @endif
+                                </h1>
+                            </div>
+                        </div>
+                        <div class="">
+                            @if ($appointment->pending === 'Pending')
+                                <h1 class="text-xl font-bold max-md:text-3xl mb-4 max-lg:mb-2 mt-4">Waiting to be approved
+                                </h1>
+                            @elseif ($appointment->pending === 'Declined')
+                                <h1 class="text-xl font-bold max-md:text-xl mt-6 mb-4 max-lg:mb-2">Appointment has been
+                                    declined
+                                </h1>
+                            @else
+                                @if (is_null($appointment->payment))
                                     <a href="{{ route('payments.form', $appointment->id) }}"
-                                        class="flex items-center justify-start gap-2 px-4 my-2 border border-gray-500 rounded-md hover:border-gray-700 hover:shadow-sm transition-all max-sm:justify-center w-max">
-                                        <img class="h-5 max-lg:h-4" src="{{ asset('assets/images/payment.png') }}"
-                                            alt="">
-                                        <h1 class="max-lg:text-xs text-sm">Add payment</h1>
-                                    </a>
-                                    <a href="{{ route('payments.history', $appointment->id) }}"
                                         class="flex items-center justify-start gap-2 py-2 px-4 my-2 border border-gray-500 w-max rounded-md hover:border-gray-700 hover:shadow-sm transition-all max-sm:justify-center">
-                                        <img class="h-5 max-lg:h-4"
-                                            src="{{ asset('assets/images/transaction-history.png') }}" alt="">
-                                        <h1 class="max-lg:text-xs text-sm">Payment history</h1>
+                                        <img class="h-8 max-lg:h-4" src="{{ asset('assets/images/payment.png') }}"
+                                            alt="">
+                                        <h1 class="max-lg:text-xs">Add payment</h1>
                                     </a>
-                                </div>
-                            @elseif ($appointment->payment->status === 'Paid')
-                                <a href="{{ route('payments.history', $appointment->id) }}"
-                                    class="flex items-center justify-start gap-2 py-2 px-4 my-2 border border-gray-500 rounded-md hover:border-gray-700 hover:shadow-sm transition-all max-sm:justify-center">
-                                    <img class="h-8 max-lg:h-4" src="{{ asset('assets/images/transaction-history.png') }}"
-                                        alt="">
-                                    <h1 class="max-lg:text-xs">Payment history</h1>
-                                </a>
-                            @elseif ($appointment->payment->status === 'Declined')
-                                <p>Payment has been declined</p>
+                                @elseif ($appointment->payment->status === 'Pending')
+                                    <div class="mt-6 flex gap-2 flex-grow-0 self-end">
+                                        <a href="{{ route('payments.form', $appointment->id) }}"
+                                            class="flex items-center justify-start gap-2 px-4 my-2 border border-gray-500 rounded-md hover:border-gray-700 hover:shadow-sm transition-all max-sm:justify-center w-max">
+                                            <img class="h-5 max-lg:h-4" src="{{ asset('assets/images/payment.png') }}"
+                                                alt="">
+                                            <h1 class="max-lg:text-xs text-sm">Add payment</h1>
+                                        </a>
+                                        <a href="{{ route('payments.history', $appointment->id) }}"
+                                            class="flex items-center justify-start gap-2 py-2 px-4 my-2 border border-gray-500 w-max rounded-md hover:border-gray-700 hover:shadow-sm transition-all max-sm:justify-center">
+                                            <img class="h-5 max-lg:h-4"
+                                                src="{{ asset('assets/images/transaction-history.png') }}" alt="">
+                                            <h1 class="max-lg:text-xs text-sm">Payment history</h1>
+                                        </a>
+                                    </div>
+                                @elseif ($appointment->payment->status === 'Paid')
+                                    <a href="{{ route('payments.history', $appointment->id) }}"
+                                        class="flex items-center justify-start gap-2 py-2 px-4 my-2 border border-gray-500 rounded-md hover:border-gray-700 hover:shadow-sm transition-all max-sm:justify-center">
+                                        <img class="h-8 max-lg:h-4"
+                                            src="{{ asset('assets/images/transaction-history.png') }}" alt="">
+                                        <h1 class="max-lg:text-xs">Payment history</h1>
+                                    </a>
+                                @elseif ($appointment->payment->status === 'Declined')
+                                    <p>Payment has been declined</p>
+                                @endif
                             @endif
-                        @endif
+                        </div>
                     </div>
-                </div>
-            </section>
+                </section>
+            @endif
+
         </section>
     </section>
     {{-- asdadasddddddddddddddddddddddddasdasddssdasdasdasdasd --}}

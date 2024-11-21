@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 
+
 class InventoryController extends Controller
 {
 
@@ -18,7 +19,7 @@ class InventoryController extends Controller
         $totalItems = Inventory::count();
         $totalValue = Inventory::sum(DB::raw('quantity * cost_per_item'));
         $outOfStockCount = Inventory::where('availability', 'out-of-stock')->count();
-        
+
         // Get low stock items
         $lowStockItems = Inventory::whereRaw('quantity <= minimum_quantity')
             ->where('quantity', '>', 0)
@@ -44,7 +45,7 @@ class InventoryController extends Controller
         // Apply sorting
         $sortField = $request->input('sort', 'item_name');
         $sortDirection = $request->input('direction', 'asc');
-        
+
         // Validate sort field to prevent SQL injection
         $allowedSortFields = ['item_name', 'serial_number', 'quantity', 'availability'];
         if (in_array($sortField, $allowedSortFields)) {
@@ -54,8 +55,8 @@ class InventoryController extends Controller
         $items = $query->paginate(10)->withQueryString();
 
         return view('admin.inventory.inventory', compact(
-            'items', 
-            'sortField', 
+            'items',
+            'sortField',
             'sortDirection',
             'totalItems',
             'totalValue',
@@ -64,6 +65,7 @@ class InventoryController extends Controller
             'lowStockCount'
         ));
     }
+
 
     public function addItem()
     {
@@ -81,8 +83,8 @@ class InventoryController extends Controller
             'cost_per_item' => 'required|numeric|min:0',
             'notes' => 'nullable|string',
         ]);
-        
-        $minimumQuantity = $validatedData['quantity'] * 0.30; 
+
+        $minimumQuantity = $validatedData['quantity'] * 0.30;
         $availability = $this->determineAvailability($validatedData['quantity'], $minimumQuantity);
         $totalValue = $validatedData['quantity'] * $validatedData['cost_per_item'];
 
@@ -143,7 +145,7 @@ class InventoryController extends Controller
         ]);
 
 
-        $minimumQuantity = $item->minimum_quantity; 
+        $minimumQuantity = $item->minimum_quantity;
         $availability = $this->determineAvailability($validatedData['quantity'], $minimumQuantity);
         $totalValue = $validatedData['quantity'] * $validatedData['cost_per_item'];
 
@@ -172,7 +174,7 @@ class InventoryController extends Controller
         session()->flash('success', 'Item updated successfully!');
     }
 
-    public function deleteItem($id)
+    public function deleteItem(Request $request, $id)
     {
         $item = Inventory::findOrFail($id);
 
@@ -190,4 +192,6 @@ class InventoryController extends Controller
         return redirect()->route('inventory')->with('success', 'Item deleted successfully!');
         session()->flash('success', 'Item deleted successfully!');
     }
+
+
 }

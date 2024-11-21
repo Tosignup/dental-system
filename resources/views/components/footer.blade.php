@@ -44,7 +44,7 @@
                 <hr class="my-4 border-t-2 border-green-700">
                 <div class="flex flex-col gap-8">
                     <h1>About</h1>
-                    <h1>New Patients</h1>
+
                     <h1>Contact</h1>
                     <h1>Patient Referral</h1>
                     <h1>Payment</h1>
@@ -56,50 +56,37 @@
                 </h1>
                 <hr class="my-4 border-t-2 border-green-700">
                 <div class="flex flex-col gap-8">
-                    <h1>Implants</h1>
-                    <h1>Periodontics</h1>
+                    <h1>Orthodontics</h1>
                     <h1>Tooth Extraction</h1>
                     <h1>Tooth Filling</h1>
                     <h1>Braces</h1>
                 </div>
             </div>
-            <div>
-                <h1>
-                    REVIEW US
-                </h1>
-                <hr class="border-t-2 border-green-700 my-4">
-                <div class="flex gap-4 flex-wrap">
-                    <img class="h-12" src="{{ asset('assets/images/gmail-logo.png') }}" alt="">
-                    <img class="h-12" src="{{ asset('assets/images/google.png') }}" alt="">
-                </div>
 
-            </div>
             <div>
                 <h1>
                     SOCIAL MEDIA
                 </h1>
                 <hr class="border-t-2 border-green-700 my-4">
-                <div class="flex gap-5 flex-wrap">
-                    <img class="h-12" src="{{ asset('assets/images/facebook-icon.png') }}" alt="">
-                    <img class="h-12" src="{{ asset('assets/images/gmail-logo.png') }}" alt="">
-                    <img class="h-12" src="{{ asset('assets/images/instagram.png') }}" alt="">
+                <div class="flex flex-wrap">
+                    <a target="blank" href="https://www.facebook.com/ToothImpressions">
+                        <img class="h-12" src="{{ asset('assets/images/facebook-icon.png') }}" alt="">
+                    </a>
                 </div>
-
             </div>
         </section>
         <hr class="border-t-2 w-full py-4 border-green-700">
         <section class="flex justify-evenly max-md:flex-col max-md:items-center items-end w-full gap-4">
-            <div class="max-md:text-sm text-center">
-                <h1>&copy; Tooth Impressions Dental Clinic </h1>
-                <h1>Privacy Policy | Accessibility Statement</h1>
-            </div>
+
             <div class="flex flex-col max-md:text-sm text-center justify-center items-center gap-4">
+                <div class="flex justify-center gap-4">
+                <img class="h-12" src="{{ asset('assets/images/mcc-logo.png') }}" alt="">
                 <img class="h-12" src="{{ asset('assets/images/logo.png') }}" alt="">
-                <h1>Tooth Impressions Dental Clinic</h1>
+                <img class="h-12" src="{{ asset('assets/images/ibce-logo.png') }}" alt="">
             </div>
-            <div class="max-md:text-sm">
-                <h1>Dental Web Design & Marketing by: Vain</h1>
+                <h1>&copy;Tooth Impressions Dental Clinic</h1>
             </div>
+
         </section>
     </footer>
 </body>

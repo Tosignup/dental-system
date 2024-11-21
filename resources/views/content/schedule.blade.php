@@ -29,10 +29,10 @@
                         </select>
                     </form>
                     <form method="GET" action="{{ route('schedule') }}" class="flex items-center gap-2">
-                        <input type="week" name="selectedWeek" 
+                        <input type="week" name="selectedWeek"
                             value="{{ request()->get('selectedWeek', now()->format('Y-\WW')) }}"
                             class="border border-gray-300 rounded-md px-3 py-1.5 bg-white focus:border-green-500 focus:ring-1 focus:ring-green-500">
-                        <button type="submit" 
+                        <button type="submit"
                             class="bg-green-50 text-green-700 px-3 py-1.5 rounded-md hover:bg-green-100 transition-colors">
                             Go to Week
                         </button>

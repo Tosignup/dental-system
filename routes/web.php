@@ -1,10 +1,11 @@
 <?php
 
+use App\Mail\TestMail;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ScheduleController;
-use Illuminate\Auth\Notifications\VerifyEmail;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\adminPanel\AdminController;
@@ -15,19 +16,21 @@ use App\Http\Controllers\adminPanel\InventoryController;
 use App\Http\Controllers\adminPanel\ProcedureController;
 use App\Http\Controllers\dentistPanel\DentistController;
 use App\Http\Controllers\patientPanel\PatientController;
-use App\Http\Controllers\patientPanel\PatientHmoController;
 use App\Http\Controllers\patientPanel\PaymentController;
+use App\Http\Controllers\PaymentController as ControllersPaymentController;
+
 
 // Notification Routes
 Route::post('/notifications/{notification}/mark-as-read', [NotificationController::class, 'markAsRead'])
     ->name('notifications.mark-as-read')
     ->middleware(['auth']);
 
+
 Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 
-// Route::get('/dashboard', [ClientController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -52,35 +55,22 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__ . '/auth.php';
 
-Route::get('/preview-email', function () {
-    $user = Auth::user(); // Or pass a mock user instance for testing
-    $notification = new VerifyEmail();
-
-    return $notification->toMail($user);
-});
 
 Route::get('/send-test-email', function () {
-    $details = [
-        'subject' => 'Test Email from Laravel',
-        'body' => 'This is a test email sent from Laravel using Mailtrap.'
-    ];
-
-    Mail::raw($details['body'], function ($message) use ($details) {
-        $message->to('recipient@example.com')
-                ->subject($details['subject']);
-    });
-
-    return 'Test email has been sent!';
+    Mail::to('giocode007@gmail.com')->send(new TestMail());
+    return 'Email send successfully!';
 });
 
-Route::group(['middleware' => ['auth', 'verified','role:admin,staff,dentist']], function () {
+Route::group(['middleware' => ['auth', 'verified', 'role:admin,staff,dentist']], function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
 });
 
+if(App::environment('local')){
+    Route::get('email/preview/approved', [AppointmentController::class, 'previewEmailApproved']);
+}
 
 //remove dentist here
-Route::group(['middleware' => ['auth', 'verified','role:admin,staff']], function () {
+Route::group(['middleware' => ['auth', 'verified', 'role:admin,staff']], function () {
     Route::get('/patient-list', [PatientController::class, 'patient_list'])->name('patient_list');
     Route::get('/schedule', [ScheduleController::class, 'index'])->name('schedule');
     Route::get('/inventory', [InventoryController::class, 'inventory'])->name('inventory');
@@ -89,7 +79,7 @@ Route::group(['middleware' => ['auth', 'verified','role:admin,staff']], function
 
     //Image Upload
     Route::post('/upload-image', [ImageController::class, 'uploadImage'])->name('upload.image');
-    
+
     //Schedule
     Route::get('/admin/add-dentist-schedule', [ScheduleController::class, 'addSchedule'])->name('add.schedule');
     Route::post('/dentist-schedule', [ScheduleController::class, 'storeSchedule'])->name('store.schedule');
@@ -100,7 +90,7 @@ Route::group(['middleware' => ['auth', 'verified','role:admin,staff']], function
 
     // Route::get('/admin/scheduled-dates/{dentistId}', [ScheduleController::class, 'fetchScheduledDates']);
     Route::get('/scheduled-dates/{dentistId}', [ScheduleController::class, 'fetchScheduledDates']);
-    
+
     //Payment TEsting
     Route::get('{id}/payment-list', [PaymentController::class, 'paymentList'])->name('payments.list');
     Route::get('/patient/{id}/payment', [PaymentController::class, 'create'])->name('payments.form');
@@ -110,7 +100,8 @@ Route::group(['middleware' => ['auth', 'verified','role:admin,staff']], function
     Route::get('{id}/payment-list/pending', [PaymentController::class, 'pendingPayment'])->name('payments.pending');
     Route::post('/payments/{id}/approve', [PaymentController::class, 'approvePayment'])->name('payments.approve');
 
-    //Appointments
+
+    //Testing
     Route::get('/appointments/show-appointment/{appointment}', [AppointmentController::class, 'show'])->name('show.appointment');
     Route::get('/appointments/walk-in-request', [AppointmentController::class, 'walkInAppointment'])->name('appointments.walkIn');
     Route::get('/appointments/online-request', [AppointmentController::class, 'onlineAppointment'])->name('appointments.online');
@@ -157,7 +148,6 @@ Route::group(['middleware' => ['auth', 'verified','role:admin,staff']], function
     Route::get('/sales-report', [AdminController::class, 'salesReport'])->name('sales');
 });
 
-
 // Admin Routes
 Route::group(['middleware' => ['auth', 'verified', 'role:admin']], function () {
     //Navbar
@@ -183,9 +173,6 @@ Route::group(['middleware' => ['auth', 'verified', 'role:admin']], function () {
 
     //Audit Log
     Route::get('/audit-logs', [AdminController::class, 'viewAuditLogs'])->name('audit.logs');
-    
-
-    
 });
 
 // Staff Routes
@@ -195,7 +182,7 @@ Route::group(['middleware' => ['auth', 'verified', 'role:staff']], function () {
 
 });
 // Dentist Routes
-Route::group(['middleware' => ['auth','verified', 'role:dentist']], function () {
+Route::group(['middleware' => ['auth', 'verified', 'role:dentist']], function () {
     Route::get('/dentist/{dentist}/dashboard', [DentistController::class, 'overview'])->name('dentist.dashboard');
     // Route::get('/staff/patient-list', [StaffController::class, 'patient_list'])->name('patient_list');
 
@@ -215,13 +202,10 @@ Route::group(['middleware' => ['auth','verified', 'role:dentist']], function () 
     Route::get('/dentist/payment/{id}', [DentistController::class, 'createDentistPayment'])->name('dentist.paymentForm');
     Route::post('dentist/payment/{id}/store', [DentistController::class, 'storeDentistPartialPayment'])->name('dentist.paymentStore');
     Route::get('/dentist/{paymentId}/history', [DentistController::class, 'showDentistPaymentHistory'])->name('dentist.paymentHistory');
-
-
 });
 
-
 //Client Routes
-Route::group(['middleware' => ['auth', 'verified', 'role:client']], function () {
+Route::group(['middleware' => ['auth', 'verified', 'role:client',]], function () {
     Route::get('/client/dashboard', [ClientController::class, 'dashboard'])->name('dashboard'); //for redirection
     Route::get('/client/dashboard/overview/{id}', [ClientController::class, 'profileOverview'])->name('client.overview');
     Route::get('/client/records/{id}', [ClientController::class, 'clientRecords'])->name('client.records');
@@ -230,12 +214,16 @@ Route::group(['middleware' => ['auth', 'verified', 'role:client']], function () 
     Route::post('/client/{paymentId}/store', [ClientController::class, 'storeClientPartialPayment'])->name('client.store');
     Route::get('/client/{paymentId}/history', [ClientController::class, 'showClientPaymentHistory'])->name('client.history');
 
-
     Route::put('/client/{appointmentId}/cancel', [ClientController::class, 'cancelAppointment'])->name('client.cancel');
 
-
     Route::post('client/upload-proof', [ClientController::class, 'uploadProof'])->name('client.proof');
+
+    Route::post('/client/{appointmentId}/pay', [ControllersPaymentController::class, 'pay'])->name('client.pay');
+    Route::get('success', [ControllersPaymentController::class, 'success']);
 
     // Route::get('/appointment/request', [AppointmentController::class, 'create'])->name('appointments.request');
     // Route::post('/appointment/store', [AppointmentController::class, 'store'])->name('appointments.store');
 });
+
+
+

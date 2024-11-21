@@ -158,7 +158,7 @@
         const today = new Date().toISOString().split('T')[0];
         const dateInput = document.getElementById('date');
         dateInput.setAttribute('min', today);
-        
+
         // Disable Sundays
         dateInput.addEventListener('input', function(e) {
             const selected = new Date(this.value);
@@ -167,7 +167,8 @@
                 this.value = '';
             }
         });
-        
+
+
         function validateInput(field) {
             const input = document.getElementById(field);
             const errorElement = document.getElementById(`${field}_error`);

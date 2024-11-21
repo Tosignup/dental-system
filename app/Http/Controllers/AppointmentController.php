@@ -3,13 +3,12 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Branch;
 use App\Models\Dentist;
 use App\Models\Patient;
 use App\Models\Procedure;
 use App\Models\Appointment;
-use App\Models\User;
-use App\Notifications\NewAppointmentNotification;
 use Illuminate\Http\Request;
 use App\Models\DentistSchedule;
 use Illuminate\Support\Facades\DB;
@@ -17,6 +16,7 @@ use App\Http\Controllers\Controller;
 use App\Notifications\AppointmentApproved;
 use App\Notifications\AppointmentDeclined;
 use Illuminate\Support\Facades\Notification;
+use App\Notifications\NewAppointmentNotification;
 
 class AppointmentController extends Controller
 {
@@ -63,7 +63,7 @@ class AppointmentController extends Controller
             'procedures' => $procedures,
         ]);
     }
-    
+
     //working
     public function storeWalkIn(Request $request)
     {
@@ -247,7 +247,6 @@ class AppointmentController extends Controller
                 $user->notify(new NewAppointmentNotification($appointment));
             }
         }
-
         $patient = Patient::findOrFail($id);
 
         return redirect()->route('client.overview', compact('patient', 'id'))->with('success', 'Appointment successfully created!');
@@ -298,7 +297,7 @@ class AppointmentController extends Controller
      */
     public function getSchedules($dentist_id)
     {
-        $schedules = Schedule::where('dentist_id', $dentist_id)
+        $schedules = DentistSchedule::where('dentist_id', $dentist_id)
             ->whereDoesntHave('appointment', function ($query) {
                 $query->where('status', 'Scheduled');
             })
@@ -314,12 +313,15 @@ class AppointmentController extends Controller
         $appointment->Pending = 'Approved';
         $appointment->save();
 
-        $patient = $appointment->patient; // Assuming the relationship is defined in the Appointment model
-        $patient->next_visit = $appointment->appointment_date; // Set next visit to the appointment date
+        $patient = $appointment->patient;
+        $patient->next_visit = $appointment->appointment_date;
         $patient->branch_id = $appointment->branch_id;
-        $patient->save(); // Save the updated patient record
-        
-        Notification::route('mail', $appointment->email)->notify(new AppointmentApproved($appointment));
+        $patient->save();
+
+        $user = User::where('patient_id', $patient->id)->first();
+        if($user) {
+            $user->notify(new AppointmentApproved($appointment));
+        }
 
         return redirect()->back()->with('success', 'Appointment approved and email sent.');
     }
@@ -330,7 +332,10 @@ class AppointmentController extends Controller
         $appointment->Pending = 'Declined';
         $appointment->save();
 
-        Notification::route('mail', $appointment->email)->notify(new AppointmentDeclined($appointment));
+        $user = User::where('patient_id', $appointment->patient_id)->first();
+        if($user) {
+            $user->notify(new AppointmentDeclined($appointment));
+        }
 
         return redirect()->back()->with('success', 'Appointment declined and email sent.');
     }
@@ -353,7 +358,7 @@ class AppointmentController extends Controller
 
         // Get sort direction, default to 'asc' if not specified
         $direction = $request->get('direction', 'asc');
-        
+
         // Handle sorting
         if ($request->has('sort')) {
             $sortOption = $request->get('sort');
@@ -408,7 +413,7 @@ class AppointmentController extends Controller
 
         // Get sort direction, default to 'asc' if not specified
         $direction = $request->get('direction', 'asc');
-        
+
         // Handle sorting
         if ($request->has('sort')) {
             $sortOption = $request->get('sort');
@@ -445,5 +450,13 @@ class AppointmentController extends Controller
 
         $online_appointments = $query->paginate(10)->appends($request->except('page'));
         return view('appointment.appointment-online-list', compact('online_appointments'));
+    }
+
+    public function previewEmailApproved() {
+        $appointment = Appointment::with(['patient', 'procedure', 'dentist', 'branch'])->first();
+
+        $notification = new AppointmentApproved($appointment);
+
+        return $notification->toMail($appointment->patient)->render();
     }
 }

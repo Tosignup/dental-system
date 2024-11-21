@@ -22,9 +22,10 @@
                         <td class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs"> Dr.
                             {{ $payment->dentist->dentist_last_name . ' ' . $payment->dentist->dentist_first_name }}
                         </td>
-                        <td class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">{{ $payment->procedure->price }}
+                        <td class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs max-xl:hidden">
+                            {{ $payment->procedure->price }}
                         </td>
-                        <td class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs">
+                        <td class="px-4 py-2 max-md:py-1 max-md:px-2 max-md:text-xs max-xl:hidden">
                             @if (is_null($payment->payment))
                                 <h1 class="text-xs  font-semibold bg-red-200 text-red-700 rounded-full py-1">
                                     &#9679; No Payment</h1>

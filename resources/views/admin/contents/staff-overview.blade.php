@@ -13,7 +13,7 @@
                     <h1 class="font-bold text-3xl max-md:text-xl">Staff list</h1>
                 </label>
                 <form method="GET" action="{{ route('staff') }}" class="flex items-center gap-4">
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Search staff..." 
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Search staff..."
                         class="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
                     <input type="hidden" name="direction" value="{{ request('direction', 'asc') }}">
                     <button type="submit"
@@ -93,10 +93,6 @@
                 @endforeach
             </tbody>
         </table>
-        {{-- <div class="w-full">
-            {{ $dentists->links() }}
-        </div> --}}
-
 
     </section>
 

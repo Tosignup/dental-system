@@ -35,10 +35,7 @@
                         class="text-gray-500 pb-2 border-b-2 border-transparent focus:outline-none hover:border-b-green-300 transition-all"
                         data-tab-target="#tab3">Contract
                     </button>
-                    <button
-                        class="text-gray-500 pb-2 border-b-2 border-transparent focus:outline-none hover:border-b-green-300 transition-all"
-                        data-tab-target="#tab4">Proof of payments
-                    </button>
+
                 </nav>
             </div>
             <!-- Table -->
@@ -63,13 +60,19 @@
                                 onclick="openModal('{{ asset('storage/' . $backgroundImage->image_path) }}')">
                         </div>
                     @else
-                        <p>No X-ray images uploaded for this patient.</p>
+                        <div class="flex flex-col justify-center items-center my-4 gap-4">
+                            <img class="h-48" src="{{ asset('assets/images/background.png') }}" alt="">
+                            <p class="text-center">No patient background images uploaded for this patient.</p>
+                        </div>
                     @endif
                 </div>
                 <div id="tab2" class="tab-content text-gray-700 hidden max-h-max">
                     {{-- <h1 class="font-bold mt-9 mb-4 text-2xl">X-rays</h1> --}}
                     @if ($xrayImages->isEmpty())
-                        <p>No X-ray images uploaded for this patient.</p>
+                        <div class="flex flex-col justify-center items-center my-5 gap-4">
+                            <img class="h-48" src="{{ asset('assets/images/x-ray.png') }}" alt="">
+                            <p class="text-center">No patient x-ray images uploaded for this patient.</p>
+                        </div>
                     @else
                         <div class="flex flex-wrap justify-center">
                             @foreach ($xrayImages as $image)
@@ -89,21 +92,10 @@
                                 onclick="openModal('{{ asset('storage/' . $contractImage->image_path) }}')">
                         </div>
                     @else
-                        <p>No contract image uploaded for this patient.</p>
-                    @endif
-                </div>
-                <div id="tab4" class="tab-content text-gray-700 hidden max-h-max">
-                    {{-- <h1 class="font-bold mt-9 mb-4 text-2xl">Contract</h1> --}}
-                    @if ($paymentProof->isEmpty())
-                        <p>No proof of payment uploaded for this patient.</p>
-                    @else
-                        @foreach ($paymentProof as $proof)
-                            <div class="flex justify-center">
-                                <img src="{{ asset('storage/' . $proof->image_path) }}" alt="Contract Image"
-                                    class="img-fluid max-h-96"
-                                    onclick="openModal('{{ asset('storage/' . $proof->image_path) }}')">
-                            </div>
-                        @endforeach
+                        <div class="flex flex-col justify-center items-center my-5 gap-4">
+                            <img class="h-48" src="{{ asset('assets/images/contract.png') }}" alt="">
+                            <p class="text-center">No patient contract images uploaded for this patient.</p>
+                        </div>
                     @endif
                 </div>
             </div>

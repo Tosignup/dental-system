@@ -32,7 +32,6 @@ return new class extends Migration
             $table->enum('patient_type', ['Walk-in', 'Orthodontics', 'Insurance'])->default('Walk-in');
             $table->timestamps();
         });
-
     }
 
     /**

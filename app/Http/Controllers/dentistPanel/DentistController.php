@@ -36,11 +36,12 @@ class DentistController extends Controller
 
         $approvedAppointments = Appointment::where('dentist_id', $dentistId)
         ->where('pending', 'approved')
+        ->where('status', '!=','Cancelled')
         ->count();
     $declinedAppointments = Appointment::where('dentist_id', $dentistId)
         ->where('pending', 'declined')
+        ->where('status', '!=','Cancelled')
         ->count();
-
     $todaysSchedules = DentistSchedule::where('dentist_id', $dentistId)
         ->where('date', $today)
         ->orderBy('start_time', 'desc') // Order by start time to get the most recent
@@ -49,14 +50,16 @@ class DentistController extends Controller
         ->get();
     $pendingAppointmentsDashboard = Appointment::where('dentist_id', $dentistId)
         ->where('pending', 'pending')
+        ->where('status', '!=','Cancelled')
         ->with(['patient', 'procedure', 'branch'])
         ->count();
     $pendingAppointments = Appointment::where('dentist_id', $id)
         ->where('pending', 'Pending')
+        ->where('status', '!=','Cancelled')
         ->where('is_archived', 0)
         ->with(['patient', 'procedure', 'branch'])
         ->paginate(5, ['*'], 'pending_page');
-        
+
     $appointmentPaymentInformation = Appointment::with(['patient', 'procedure', 'dentist'])->find($appointmentId);
 
     $pendingAppointmentsInformation = Appointment::where('dentist_id', $id)
@@ -80,7 +83,6 @@ class DentistController extends Controller
         ->orderBy('created_at', 'desc') // Order by creation date
         ->take(3) // Limit to 3 recent payments
         ->get();
-
     // Combine both collections
     $appointmentIds = $pendingAppointmentsInformation->merge($approvedAppointmentsInformation);
     return view(
@@ -334,7 +336,7 @@ class DentistController extends Controller
         // Start and end times from the schedule
         $startTime = new \DateTime($schedule->start_time);
         $endTime = new \DateTime($schedule->end_time);
-        // $appointmentDuration = $schedule->appointment_duration; 
+        // $appointmentDuration = $schedule->appointment_duration;
         $appointmentDuration = 60; // Duration in minutes
 
         // Array to store time slots

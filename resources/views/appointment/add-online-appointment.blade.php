@@ -217,9 +217,8 @@
                     <label class="flex flex-col flex-1 pb-4" for="proc_id">
                         <h1>Select Procedure(s)</h1>
                         <select id="proc_id" name="proc_id[]" multiple
-                            class="border max-md:text-xs flex-grow min-w-max border-gray-400 py-2 px-4 rounded-md" 
+                            class="border max-md:text-xs flex-grow min-w-max border-gray-400 py-2 px-4 rounded-md"
                             required style="min-height: 120px;">
-                            <option value="">Select Procedure</option>
                             @foreach ($procedures as $procedure)
                                 <option class="max-md:text-xs" value="{{ $procedure->id }}">
                                     {{ $procedure->name }} - &#8369;{{ number_format($procedure->price, 2) }}

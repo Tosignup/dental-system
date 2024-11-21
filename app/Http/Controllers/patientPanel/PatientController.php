@@ -33,7 +33,7 @@ class PatientController extends Controller
 
         // Get sort direction, default to 'asc' if not specified
         $direction = $request->get('direction', 'asc');
-        
+
         // Sorting logic
         if ($request->has('sort')) {
             $sortOption = $request->get('sort');
@@ -85,7 +85,7 @@ class PatientController extends Controller
 
         // Get sort direction, default to 'asc' if not specified
         $direction = $request->get('direction', 'asc');
-        
+
         // Sorting logic
         if ($request->has('sort')) {
             $sortOption = $request->get('sort');
@@ -121,6 +121,8 @@ class PatientController extends Controller
             'direction' => $direction
         ]);
     }
+
+
 
     public function addPatient()
     {
@@ -166,8 +168,8 @@ class PatientController extends Controller
             'has_hmo' => $request->has_hmo ? 1 : 0,
             'hmo_company' => $hmoCompany,
             'hmo_number' => $request->hmo_number,
-            'hmo_type' => $request->hmo_type,  
-            'patient_type' => $request->patient_type,  
+            'hmo_type' => $request->hmo_type,
+            'patient_type' => $request->patient_type,
         ]);
 
         // Create login credentials for the patient in users table
@@ -191,7 +193,7 @@ class PatientController extends Controller
     }
 
     public function showPatient($id)
-    {   
+    {
         $patient = Patient::findOrFail($id);
         $branches = Branch::all();
 
@@ -253,7 +255,7 @@ class PatientController extends Controller
     public function updateHmo(Request $request, $id)
     {
         $patient = Patient::findOrFail($id);
-        
+
         $validated = $request->validate([
             'has_hmo' => 'boolean',
             'hmo_company' => 'nullable|string|max:255',
@@ -293,9 +295,9 @@ class PatientController extends Controller
     {
         $patient = Patient::findOrFail($id);
         $contractImages = Image::where('patient_id', $id)
-                        ->where('image_type', 'contract')
-                        ->get();
-        
+            ->where('image_type', 'contract')
+            ->get();
+
         return view('client.patients.patient-contract', compact('patient', 'contractImages'));
     }
 
@@ -303,8 +305,8 @@ class PatientController extends Controller
     {
         $patient = Patient::findOrFail($id);
         $backgroundImages = Image::where('patient_id', $id)
-                        ->where('image_type', 'background')
-                        ->get();
+            ->where('image_type', 'background')
+            ->get();
 
 
         return view('client.patients.patient-background', compact('patient', 'backgroundImages'));
@@ -313,8 +315,8 @@ class PatientController extends Controller
     {
         $patient = Patient::findOrFail($id);
         $xrayImages = Image::where('patient_id', $id)
-                ->where('image_type', 'xray')
-                ->get();
+            ->where('image_type', 'xray')
+            ->get();
 
 
         return view('client.patients.patient-xray', compact('patient', 'xrayImages'));
@@ -330,7 +332,7 @@ class PatientController extends Controller
         $patient->save();
 
         Appointment::where('patient_id', $id)
-        ->update(['is_archived' => 1, 'archived_at' => now()]); // Assuming you have an archived_at field in appointments
+            ->update(['is_archived' => 1, 'archived_at' => now()]); // Assuming you have an archived_at field in appointments
 
         AuditLog::create([
             'action' => 'Update',
@@ -340,19 +342,19 @@ class PatientController extends Controller
             'user_email' => auth()->user()->email,
             'changes' => json_encode($request->all()), // Log the request data
         ]);
-        
+
         return redirect()->back()->with('success', 'Patient has been archived.');
     }
 
     public function restorePatient(Request $request, $id)
     {
         $patient = Patient::find($id);
-        $patient->is_archived = 0;   
+        $patient->is_archived = 0;
         $patient->archived_at = null;  // Restore patient by nullifying the archived_at field
         $patient->save();
 
         Appointment::where('patient_id', $id)
-        ->update(['is_archived' => 0, 'archived_at' => null]);
+            ->update(['is_archived' => 0, 'archived_at' => null]);
 
         AuditLog::create([
             'action' => 'Update',
@@ -362,9 +364,7 @@ class PatientController extends Controller
             'user_email' => auth()->user()->email,
             'changes' => json_encode($request->all()), // Log the request data
         ]);
-        
+
         return redirect()->back()->with('success', 'Patient has been restored.');
     }
-
-
 }

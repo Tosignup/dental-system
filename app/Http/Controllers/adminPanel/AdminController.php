@@ -58,7 +58,7 @@ class AdminController extends Controller
 
         // Get sort direction, default to 'asc' if not specified
         $direction = $request->get('direction', 'asc');
-        
+
         // Handle sorting
         if ($request->has('sort')) {
             $sortOption = $request->get('sort');
@@ -103,7 +103,7 @@ class AdminController extends Controller
 
         // Get sort direction, default to 'asc' if not specified
         $direction = $request->get('direction', 'asc');
-        
+
         // Handle sorting
         if ($request->has('sort')) {
             $sortOption = $request->get('sort');
@@ -134,6 +134,7 @@ class AdminController extends Controller
 
         return view('admin.contents.dentist-overview', compact('dentists'));
     }
+
 
     public function schedule(Request $request)
     {
@@ -242,7 +243,7 @@ class AdminController extends Controller
         return redirect()->route('branch')->with('success', 'Successfully deleted branch!');
     }
 
-   
+
 
     public function salesReport(Request $request)
     {
@@ -263,24 +264,24 @@ class AdminController extends Controller
 
         // Get all payment histories for calculations
         $allPaymentHistories = $baseQuery->get();
-        
+
         // Get limited payment histories for display
         $paymentHistories = $baseQuery->clone()->orderBy('created_at', 'desc')->limit(4)->get();
-        
+
         // Calculate metrics using all payment histories
         $totalRevenue = $allPaymentHistories->sum('paid_amount');
         $transactionCount = $allPaymentHistories->count();
         $averageRevenue = $transactionCount > 0 ? $totalRevenue / $transactionCount : 0;
-        
+
         // Group data by branch using all payment histories
         $branchData = $allPaymentHistories->groupBy('payment.appointment.branch.branch_loc')
             ->map(function ($histories) {
                 return $histories->sum('paid_amount');
             });
-        
+
         // Prepare comparison data for the chart
         $comparisonData = $branchData->toArray();
-        
+
         // Weekly comparison using all payment histories
         $thisWeekRevenue = $allPaymentHistories
             ->where('created_at', '>=', Carbon::now()->startOfWeek())
@@ -289,12 +290,12 @@ class AdminController extends Controller
             ->where('created_at', '>=', Carbon::now()->subWeek()->startOfWeek())
             ->where('created_at', '<', Carbon::now()->startOfWeek())
             ->sum('paid_amount');
-            
+
         $weeklyComparisonData = [
             'This Week' => $thisWeekRevenue,
             'Last Week' => $lastWeekRevenue
         ];
-        
+
         // Monthly revenue data using all payment histories
         $monthlyRevenueData = [];
         $startDate = Carbon::now()->subMonths(5)->startOfMonth(); // Get last 6 months
@@ -405,7 +406,7 @@ class AdminController extends Controller
 
     public function viewAuditLogs()
     {
-        $auditLogs = AuditLog::orderBy('created_at', 'desc')->paginate(15);
+        $auditLogs = AuditLog::orderBy('created_at', 'desc')->paginate(20);
 
         foreach ($auditLogs as $auditLog) {
             $decodedChanges = json_decode($auditLog->changes, true); // Decode JSON to associative array
@@ -422,5 +423,5 @@ class AdminController extends Controller
     }
 
 
-    
+
 }

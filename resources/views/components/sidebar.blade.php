@@ -274,9 +274,7 @@
                     </div>
                 </div>
             </dialog>
-
         </div>
-        <h1><Strong>Role: </Strong>{{ Auth::user()->role }}</h1>
     </nav>
 
     {{-- - AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA - --}}

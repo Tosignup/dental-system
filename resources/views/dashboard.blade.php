@@ -61,13 +61,14 @@
 <body>
     <div id="overlay"></div>
     <div id="dropdown-overlay"></div>
-    <section class="w-full max-md:h-max md:h-full bg-slate-100 flex justify-start">
+    <section class="w-full max-md:h-max md:h-full bg-green-200 flex justify-start">
         <div>
             @include('components.sidebar')
         </div>
         <div class="w-full max-lg:mt-12">
             @yield('content')
         </div>
+        <x-sdg-footer />
     </section>
     <hr>
 </body>

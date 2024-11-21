@@ -3,8 +3,9 @@
     <div class="m-4">
         @include('components.search')
     </div>
-    <section class="flex flex-col justify-center items-center bg-white border max-w-6xl min-w-full max-xl:w-min ">
-        <section class="flex flex-col justify-center items-start bg-white border-y max-xl:mt-12 my-4">
+    <section class="flex flex-col justify-center items-center  w-full  max-xl:w-min ">
+        <section
+            class="flex flex-col justify-center items-start rounded-lg bg-white shadow-lg border-y max-xl:mt-12 my-4 p-6 max-xl:p-1">
             <section
                 class="flex max-xl:flex-col max-xl:items-start flex-1 flex-wrap justify-between items-center p-6 max-xl:p-2 w-full ">
                 <div>
@@ -12,13 +13,13 @@
                     <h1 class="text-sm"> {{ Auth::user()->branch_loc }}</h1>
                     <h1 class="text-sm">Have a nice day at work!</h1>
                 </div>
-                <div class="flex gap-4 justify-center items-center border p-4 rounded-md bg-slate-100">
+                <div class="flex gap-4 max-lg:my-4 justify-center items-center border p-4 rounded-md bg-slate-100">
                     <p class="font-bold text-xl max-lg:text-xs">{{ now()->format('l, F j, Y') }}</p>
                     <img class="h-6" src="{{ asset('assets/images/calendar.png') }}" alt="">
                 </div>
             </section>
             <section
-                class="flex flex-1 max-xl:flex-col flex-wrap  justify-center max-xl:justify-start gap-8 max-xl:gap-2 items-start border-y w-full px-6 max-xl:px-2 max-xl:hidden ">
+                class="flex  rounded-md flex-1 max-xl:flex-col flex-wrap  justify-center max-xl:justify-start gap-8 max-xl:gap-2 items-start border-y w-full px-6 max-xl:px-2 max-xl:hidden ">
                 <div
                     class="flex flex-1 gap-4 p-4 border-r max-lg:border max-lg:bg-white max-lg:shadow-lg max-lg:p-3 max-lg:rounded-md my-4 max-lg:max-w-min max-xl:p-1 max-xl:my-2 justify-start items-start max-xl:items-center max-xl:justify-center min-w-max">
                     <img class="h-12 max-xl:h-6" src="{{ asset('assets/images/appointment-today.png') }}" alt="">
@@ -51,11 +52,11 @@
                 <div
                     class="flex flex-1 flex-col justify-center items-center bg-white rounded-md shadow-lg p-6 max-xl:p-2 min-w-xl border h-full min-w-max max-xl:max-w-min ">
                     <div class="flex justify-between items-center border-b w-full gap-12 mb-4">
-                        <h1 class="text-xl font-semibold text-left">Pending appointments</h1>
+                        <h1 class="text-xl font-semibold text-left max-lg:py-2">Pending appointments</h1>
                         <a class="text-sm text-blue-400"
                             href="{{ route('appointments.pending', Auth::user()->dentist_id) }}">See all</a>
                     </div>
-                    <div class="flex  flex-col justify-start items-start gap-4 w-full">
+                    <div class="flex flex-col justify-start items-start gap-4 w-full">
                         @if ($pendingAppointmentsInformation->isEmpty())
                             <div class="mt-4 flex flex-1 w-full justify-between items-center gap-4 border-b py-4 ">
                                 <div class="flex justify-center items-center w-full flex-col">
@@ -88,7 +89,7 @@
                 <div
                     class="flex flex-1 flex-col justify-center items-center bg-white rounded-md shadow-lg p-6 max-xl:p-2 max-lg:m-0 min-w-max border max-xl:max-w-min ">
                     <div class="flex flex-wrap justify-between items-center border-b w-full gap-12 max-xl:gap-2 mb-4">
-                        <h1 class="text-xl font-semibold text-left">Recent on going payments</h1>
+                        <h1 class="text-xl font-semibold text-left max-lg:py-2">Recent on going payments</h1>
                         <a class="text-sm text-blue-400"
                             href="{{ route('appointments.payment', Auth::user()->dentist_id) }}">See all</a>
                     </div>

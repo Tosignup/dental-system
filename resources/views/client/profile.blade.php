@@ -14,7 +14,7 @@
     @vite('resources/css/app.css')
 </head>
 
-<body class="bg-slate-100">
+<body class="bg-green-200">
     <section class="flex justify-start items-start">
         <div>
             <div class="h-full">

@@ -13,11 +13,12 @@
             <div class="w-1/2 py-2 flex flex-col justify-center items-start gap-4">
                 {{-- <a class="max-w-sm text-center mt-4" href="{{ route('appointments.request') }}"> --}}
                 {{-- <a class="max-w-sm text-center mt-4" href="{{ route('welcome') }}"> --}}
-                    <a class="min-w-max  bg-green-600 rounded-md py-4 max-md:text-sm px-8 font-bold text-white hover:bg-green-700 transition-all">
-                        BOOK NOW
-                    </a>
-                        <h1 class="text-sm min-w-max">
-                    OR CALL: <span class="font-bold">212-2345-5918</span>
+                <a href="{{ route('login') }}"
+                    class="min-w-max  bg-green-600 rounded-md py-4 max-md:text-sm px-8 font-bold text-white hover:bg-green-700 transition-all">
+                    BOOK NOW
+                </a>
+                <h1 class="text-sm min-w-max">
+                    OR CALL: <span class="font-bold">0927 802 2807</span>
                 </h1>
             </div>
         </div>
@@ -66,7 +67,7 @@
                     <h1 class="text-white text-sm">Our dentists don't make a commission on procedures.</h1>
                 </div>
             </div>
-            <a onclick="test(`test`)" href="" class="my-4 self-center">
+            <a href="https://www.facebook.com/ToothImpressions" class="my-4 self-center">
                 <h1
                     class="bg-white text-gray-900 font-semibold text-md py-4 px-8 rounded-md hover:bg-gray-900 hover:text-white transition-all self-center">
                     Learn more</h1>
@@ -138,8 +139,6 @@
                 {{ session('success') }}
             </div>
         @endif
-        @include('components.contact')
     </div>
-
     @include('components.footer')
 @endsection

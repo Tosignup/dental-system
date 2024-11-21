@@ -50,6 +50,7 @@
                         <h1>
                             Payment</h1>
                     </a>
+
                     <a
                         class=" flex text-sm items-center justify-start gap-2 py-1 px-4 font-semibold border border-gray-500 rounded-md hover:border-gray-700 hover:shadow-sm transition-all">
                         @if (is_null($patient->archived_at))
@@ -86,7 +87,6 @@
                 </div>
             </div>
         </section>
-
         <section class="max-lg:mt-12">
             <div class="flex items-center gap-4 mb-6">
                 <h1 class="text-3xl font-bold ml-4">Personal Information</h1>
@@ -131,7 +131,6 @@
                                     class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
                             @enderror
                         </label>
-
                         <label class="flex flex-col flex-1 min-w-[45%] max-md:text-sm" for="patient_email">
                             <h1>Email</h1>
                             <input class="border border-gray-400 py-2 px-4 rounded-md max-md:text-sm" name="patient_email"
@@ -160,8 +159,6 @@
                                     {{ old('gender', $patient->gender) == 'prefer-not-to-say' ? 'selected' : '' }}>Prefer
                                     not to
                                     say</option>
-
-
                             </select>
                             @error('gender')
                                 <span id="gender_error"
@@ -341,7 +338,7 @@
             const hmoCheckbox = document.getElementById('hmo');
             const hmoFields = document.getElementById('hmoFields');
             const hasHmoInput = document.querySelector('input[type="hidden"][name="has_hmo"]');
-            
+
             hmoFields.style.display = hmoCheckbox.checked ? 'block' : 'none';
             hasHmoInput.value = hmoCheckbox.checked ? '1' : '0';
 
@@ -358,9 +355,9 @@
             const hmoCompanySelect = document.getElementById('patient_hmo_company');
             const otherHmo = document.getElementById('patient_otherHmo');
             const otherHmoInput = document.getElementById('other_hmo_name');
-            
+
             otherHmo.style.display = hmoCompanySelect.value === 'other' ? 'block' : 'none';
-            
+
             if (hmoCompanySelect.value !== 'other') {
                 otherHmoInput.value = '';
             }

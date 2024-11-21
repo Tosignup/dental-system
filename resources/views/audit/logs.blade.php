@@ -6,7 +6,7 @@
     <section class="bg-white shadow-lg rounded-md py-2 px-3 mx-2 max-lg:mt-14">
         <div class="flex justify-between items-center mb-3">
             <h1 class="font-bold text-xl max-md:text-lg">Audit Logs</h1>
-            
+
         </div>
 
         <div class="overflow-x-auto">
@@ -46,7 +46,7 @@
                 </tbody>
             </table>
         </div>
-        
+
         <div class="mt-2 text-sm">
             {{ $auditLogs->links() }}
         </div>

@@ -34,14 +34,14 @@ class AuthenticatedSessionController extends Controller
     //         return redirect()->route('admin.dashboard');
     //     } elseif($request->user()->role === 'staff'){
     //         return redirect()->route('receptionist.dashboard');
-    //     }   
+    //     }
 
     //     return redirect()->intended(RouteServiceProvider::HOME);
     // }
 
     // public function store(LoginRequest $request): RedirectResponse
     // {
-   
+
     //     $request->validate([
     //         'email' => 'required|string|email',
     //         'password' => 'required|string',
@@ -66,7 +66,7 @@ class AuthenticatedSessionController extends Controller
     //             return redirect()->intended(RouteServiceProvider::HOME);
 
     //         }
-    
+
     //     }
 
     //     return back()->withErrors([
@@ -85,16 +85,18 @@ class AuthenticatedSessionController extends Controller
     if (Auth::attempt($request->only('email', 'password'))) {
         $request->session()->regenerate();
 
-        $user = Auth::user(); // Get the authenticated user
+        $user = Auth::user();
 
-        // Check if the user's email is verified
-        if (!$user->hasVerifiedEmail()) {
-            // Send a verification link
-            $user->sendEmailVerificationNotification();
+        // Get the authenticated user
 
-            // Optionally, you can redirect to a specific route with a message
-            return redirect()->route('verification.notice')->with('status', 'Verification link sent! Please check your email.');
-        }
+        // // Check if the user's email is verified
+        // if (!$user->hasVerifiedEmail()) {
+        //     // Send a verification link
+        //     $user->sendEmailVerificationNotification();
+
+        //     // Optionally, you can redirect to a specific route with a message
+        //     return redirect()->route('verification.notice')->with('status', 'Verification link sent! Please check your email.');
+        // }
 
         // Store patient_id in session if it exists
         if ($user->patient_id) {
