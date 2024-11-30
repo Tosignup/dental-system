@@ -9,9 +9,10 @@ use App\Models\Patient;
 use App\Models\Payment;
 use App\Models\AuditLog;
 use App\Models\Appointment;
-use Illuminate\Http\Request;
-use App\Models\PaymentHistory;
 use App\Models\TemporaryPayment;
+use App\Models\PaymentHistory;
+use App\Models\ToothRecord;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use App\Notifications\ClientPendingPayment;
@@ -55,26 +56,53 @@ class ClientController extends Controller
         return view('client.contents.overview', compact('patient', 'appointments', 'payments'));
     }
 
-    public function clientRecords($id){
-
+    public function clientRecords($id)
+    {
+        // Get X-ray images
         $xrayImages = Image::where('patient_id', $id)
-                ->where('image_type', 'xray')
-                ->get();
+            ->where('image_type', 'xray')
+            ->get();
 
+        // Get contract image
         $contractImage = Image::where('patient_id', $id)
-                ->where('image_type', 'contract')
-                ->first();
+            ->where('image_type', 'contract')
+            ->first();
 
-        $backgroundImage = Image::where('patient_id', $id)
-                ->where('image_type', 'background')
-                ->first();
-
+        // Get payment proof images
         $paymentProof = Image::where('patient_id', $id)
-                ->where('image_type', 'proof_of_payment')
-                ->get();
+            ->where('image_type', 'proof_of_payment')
+            ->get();
 
+        // Get dental records
+        $teethRecords = ToothRecord::with('note')
+            ->where('patient_id', $id)
+            ->get()
+            ->keyBy('tooth_number');
 
-        return view('client.contents.client-records', compact('xrayImages', 'contractImage', 'backgroundImage', 'paymentProof'));
+        // Ensure all 32 teeth are represented with proper object structure
+        $completeTeeth = [];
+        for ($i = 1; $i <= 32; $i++) {
+            if (isset($teethRecords[$i])) {
+                $completeTeeth[$i] = [
+                    'tooth_number' => $i,
+                    'status' => $teethRecords[$i]->status,
+                    'note' => $teethRecords[$i]->note ? ['note_text' => $teethRecords[$i]->note->note_text] : null
+                ];
+            } else {
+                $completeTeeth[$i] = [
+                    'tooth_number' => $i,
+                    'status' => 'normal',
+                    'note' => null
+                ];
+            }
+        }
+
+        return view('client.contents.client-records', compact(
+            'xrayImages',
+            'contractImage',
+            'paymentProof',
+            'completeTeeth'
+        ));
     }
 
     public function createClientPayment($appointmentId) {

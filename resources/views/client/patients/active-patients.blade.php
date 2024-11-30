@@ -23,7 +23,7 @@
                 <div class="flex items-center gap-4 flex-1">
                     <!-- Search Input -->
                     <div class="relative flex-1">
-                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Search patients..." 
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Search patients..."
                             class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
                     </div>
 

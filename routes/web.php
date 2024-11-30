@@ -18,7 +18,7 @@ use App\Http\Controllers\dentistPanel\DentistController;
 use App\Http\Controllers\patientPanel\PatientController;
 use App\Http\Controllers\patientPanel\PaymentController;
 use App\Http\Controllers\PaymentController as ControllersPaymentController;
-
+use App\Http\Controllers\ToothRecordController; // Added this line
 
 // Notification Routes
 Route::post('/notifications/{notification}/mark-as-read', [NotificationController::class, 'markAsRead'])
@@ -148,6 +148,14 @@ Route::group(['middleware' => ['auth', 'verified', 'role:admin,staff']], functio
     Route::get('/sales-report', [AdminController::class, 'salesReport'])->name('sales');
 });
 
+// Tooth Record Routes
+Route::prefix('patients/{patientId}/teeth')->middleware('auth')->group(function () {
+    Route::get('/', [ToothRecordController::class, 'getPatientTeeth'])->name('teeth.get');
+    Route::post('/save', [ToothRecordController::class, 'saveTeeth'])->name('teeth.save');
+    Route::post('/{toothNumber}/status', [ToothRecordController::class, 'updateToothStatus'])->name('teeth.status.update');
+    Route::post('/{toothNumber}/note', [ToothRecordController::class, 'updateToothNote'])->name('teeth.note.update');
+});
+
 // Admin Routes
 Route::group(['middleware' => ['auth', 'verified', 'role:admin']], function () {
     //Navbar
@@ -224,6 +232,3 @@ Route::group(['middleware' => ['auth', 'verified', 'role:client',]], function ()
     // Route::get('/appointment/request', [AppointmentController::class, 'create'])->name('appointments.request');
     // Route::post('/appointment/store', [AppointmentController::class, 'store'])->name('appointments.store');
 });
-
-
-

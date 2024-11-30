@@ -36,7 +36,7 @@
                         class=" flex text-sm items-center justify-start gap-2 py-1 px-4 font-semibold border border-gray-500 rounded-md hover:border-gray-700 hover:shadow-sm transition-all">
                         <img class="h-4" src="{{ asset('assets/images/background.png') }}" alt="">
                         <h1>
-                            Background</h1>
+                            Dental Record</h1>
                     </a>
                     <a href="{{ route('patient.xray', $patient->id) }}"
                         class=" flex text-sm items-center justify-start gap-2 py-1 px-4 font-semibold border border-gray-500 rounded-md hover:border-gray-700 hover:shadow-sm transition-all">
@@ -176,18 +176,6 @@
                                     class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
                             @enderror
                         </label>
-
-                        <label class="flex flex-col flex-1 min-w-[45%] max-md:text-sm" for="phone_number">
-                            <h1>Phone number</h1>
-                            <input class="border border-gray-400 py-2 px-4 rounded-md" name="phone_number" type="text"
-                                autocomplete="off" oninput="validateInput('phone_number')"
-                                value="{{ old('phone_number', $patient->phone_number) }}" id="phone_number">
-                            @error('phone_number')
-                                <span id="phone_number_error"
-                                    class="validation-message text-red-600 text-xs p-1 rounded-md show">{{ $message }}</span>
-                            @enderror
-                        </label>
-
 
                         <label class="flex flex-col flex-1 min-w-[45%] max-md:text-sm" for="phone_number">
                             <h1>Phone number</h1>
